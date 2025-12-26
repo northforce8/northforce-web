@@ -19,7 +19,7 @@ export const SetupWizard: React.FC = () => {
     { id: 'verify', title: 'Verify Setup', status: 'pending' },
   ]);
   const [isRunning, setIsRunning] = useState(false);
-  const [adminEmail, setAdminEmail] = useState('admin@northforce.se');
+  const [adminEmail, setAdminEmail] = useState('admin@northforce.io');
   const [adminPassword, setAdminPassword] = useState('Admin123!');
   const [error, setError] = useState<string | null>(null);
 
