@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', system-ui, sans-serif;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+  }
+  
+  h1 {
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+  }
+  
+  h2 {
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+  
+  h3 {
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary-600 to-primary-800 text-white px-10 py-5 rounded-2xl font-bold text-lg shadow-card hover:shadow-glow transition-all duration-300 transform hover:scale-105;
+  }
+  
+  .btn-secondary {
+    @apply bg-white/10 backdrop-blur-sm border border-white/30 text-white px-10 py-5 rounded-2xl font-bold text-lg hover:bg-white/20 transition-all duration-300 shadow-soft hover:shadow-glow;
+  }
+  
+  .btn-accent {
+    @apply bg-gradient-to-r from-primary-600 to-primary-800 text-white px-8 py-4 rounded-2xl font-bold hover:shadow-glow transition-all duration-300 transform hover:scale-105 shadow-soft;
+  }
+  .card-tech {
+    @apply bg-white/90 backdrop-blur-sm border border-gray-200/60 rounded-2xl p-10 shadow-card hover:shadow-glow transition-all duration-300 hover:border-primary-600/40 hover:bg-white;
+  }
+  
+  .section-dark {
+    @apply bg-gradient-to-br from-gray-900 via-primary-900 to-primary-800;
+  }
+  
+  .section-light {
+    @apply bg-gradient-to-br from-gray-50 via-white to-gray-50/80;
+  }
+  
+  .section-accent {
+    @apply bg-gradient-to-br from-[rgba(22,31,100,0.08)] via-[rgba(25,64,133,0.08)] to-[rgba(0,168,232,0.08)];
+  }
+  
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-900 via-primary-600 to-primary-800 bg-clip-text text-transparent font-black;
+  }
+  
+  .text-brand-primary {
+    color: #161f64 !important;
+  }
+  .text-brand-secondary {
+    color: #194085 !important;
+  }
+  .text-brand-accent {
+    color: #00A8E8 !important;
+  }
+  
+  .text-brand-violet {
+    color: #7B61FF !important;
+  }
+  
+  .text-brand-emerald {
+    color: #00A878 !important;
+  }
+  
+  .text-brand-cyan {
+    color: #00A8E8 !important;
+  }
+  
+  .text-sharp-white {
+    color: #FFFFFF !important;
+    text-shadow: none !important;
+  }
+  
+  .bg-homepage-hero {
+    background: linear-gradient(135deg, #161f64 0%, #111827 50%, #161f64 100%) !important;
+  }
+  
+  .bg-subpage-hero {
+    background: linear-gradient(135deg, #194085 0%, #1e40af 50%, #194085 100%) !important;
+  }
+  
+  .bg-gradient-radial {
+    background: radial-gradient(var(--tw-gradient-stops));
+  }
+  
+  .tech-grid {
+    background-image: 
+      linear-gradient(rgba(25, 64, 133, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(25, 64, 133, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+  
+  .hero-gradient {
+    @apply bg-gradient-to-br from-primary-900 via-primary-800 to-primary-600;
+  }
+  
+  .brand-violet {
+    color: #7B61FF;
+  }
+  
+  .brand-emerald {
+    color: #00A878;
+  }
+  
+  .brand-cyan {
+    color: #00A8E8;
+  }
+  
+  .section-dark-consistent {
+    @apply bg-gradient-to-br from-primary-900 via-primary-800 to-primary-600;
+  }
+  
+  .premium-card {
+    @apply bg-gradient-to-br from-white via-gray-50/30 to-white border border-gray-200/60 rounded-2xl p-6 sm:p-8 lg:p-10 shadow-card hover:shadow-glow transition-all duration-300 hover:border-primary-600/30;
+  }
+  
+  .section-divider {
+    @apply h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent;
+  }
+  
+  .footer, .footer * {
+    pointer-events: auto !important;
+  }
+  
+  .footer a {
+    text-decoration: none !important;
+    display: inline-flex !important;
+  }
+  
+  .footer-overlay, .footer::before, .footer::after {
+    pointer-events: none !important;
+    z-index: 0 !important;
+  }
+}
+
+@layer components {
+  .hero-h1--home {
+    @apply font-heading text-6xl lg:text-8xl font-black text-gray-900 mb-12 tracking-tight leading-none;
+  }
+
+  .hero-h1--sub {
+    @apply font-extrabold tracking-[-0.02em] leading-[0.95] text-4xl md:text-5xl lg:text-6xl;
+  }
+
+  .hero-subtitle {
+    @apply text-base md:text-lg lg:text-xl opacity-90 max-w-3xl mx-auto;
+  }
+}

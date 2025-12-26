@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://northforce.io/sitemap.xml
+
+# Block admin areas
+Disallow: /admin-northforce
+Disallow: /admin-login

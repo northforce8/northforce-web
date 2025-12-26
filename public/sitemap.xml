@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://northforce.io/</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://northforce.io/" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://northforce.io/" />
+  </url>
+  <url>
+    <loc>https://northforce.io/hybrid-model</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://northforce.io/hybrid-model" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://northforce.io/hybrid-model" />
+  </url>
+  <url>
+    <loc>https://northforce.io/capabilities</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://northforce.io/capabilities" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://northforce.io/capabilities" />
+  </url>
+  <url>
+    <loc>https://northforce.io/system</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://northforce.io/system" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://northforce.io/system" />
+  </url>
+  <url>
+    <loc>https://northforce.io/ai-automation</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://northforce.io/ai-automation" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://northforce.io/ai-automation" />
+  </url>
+  <url>
+    <loc>https://northforce.io/industries</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://northforce.io/industries" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://northforce.io/industries" />
+  </url>
+  <url>
+    <loc>https://northforce.io/impact</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://northforce.io/impact" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://northforce.io/impact" />
+  </url>
+  <url>
+    <loc>https://northforce.io/audit</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://northforce.io/audit" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://northforce.io/audit" />
+  </url>
+  <url>
+    <loc>https://northforce.io/insights</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://northforce.io/insights" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://northforce.io/insights" />
+  </url>
+  <url>
+    <loc>https://northforce.io/about</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://northforce.io/about" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://northforce.io/about" />
+  </url>
+  <url>
+    <loc>https://northforce.io/contact</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://northforce.io/contact" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://northforce.io/contact" />
+  </url>
+  <url>
+    <loc>https://northforce.io/careers</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://northforce.io/careers" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://northforce.io/careers" />
+  </url>
+  <url>
+    <loc>https://northforce.io/legal</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://northforce.io/legal" />
+    <xhtml:link rel="alternate" hreflang="sv" href="https://northforce.io/legal" />
+  </url>
+</urlset>

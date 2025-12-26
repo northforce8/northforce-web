@@ -1,0 +1,373 @@
+import React, { createContext, useContext, useState, ReactNode } from 'react';
+
+type Language = 'en' | 'sv';
+
+interface LanguageContextType {
+  language: Language;
+  setLanguage: (lang: Language) => void;
+  t: (key: string) => string;
+}
+
+const translations: Record<string, Record<Language, string>> = {
+  // Navigation
+  'nav.hybrid_model': { en: 'The Hybrid Model', sv: 'Hybridmodellen' },
+  'nav.capabilities': { en: 'Capabilities', sv: 'Kapabiliteter' },
+  'nav.industries': { en: 'Industries', sv: 'Branscher' },
+  'nav.systems': { en: 'NorthForce System', sv: 'NorthForce System' },
+  'nav.ai_automation': { en: 'AI & Automation', sv: 'AI & Automation' },
+  'nav.about': { en: 'About', sv: 'Om Oss' },
+  'nav.careers': { en: 'Careers', sv: 'Karriär' },
+  'nav.contact': { en: 'Contact', sv: 'Kontakt' },
+  'nav.free_audit': { en: 'Analysis', sv: 'Analys' },
+  'nav.book_meeting': { en: 'Get in Touch', sv: 'Kom i kontakt' },
+
+  // Hero Section
+  'hero.title': { en: 'The Modern Way to Drive', sv: 'Det moderna sättet att driva' },
+  'hero.title_highlight': { en: 'Competitive Growth', sv: 'konkurrenskraftig tillväxt' },
+  'hero.subtitle': { en: 'Six expert areas. One system. Flexible capacity. No hiring risk.', sv: 'Sex expertområden. Ett system. Flexibel kapacitet. Ingen anställningsrisk.' },
+  'hero.cta_primary': { en: 'Discover the Model', sv: 'Upptäck modellen' },
+  'hero.cta_pricing': { en: 'View Pricing', sv: 'Se priser' },
+  'hero.cta_audit': { en: 'Get Free Audit', sv: 'Få gratis analys' },
+
+  // Problem Section
+  'problem.title': { en: 'The Challenge Growing Companies Face', sv: 'Utmaningen växande företag möter' },
+  'problem.subtitle': { en: 'Hiring is risky. Agencies are fragmented. Projects fade out. Growth stalls.', sv: 'Anställning är riskabelt. Byråer är fragmenterade. Projekt fasas ut. Tillväxten stannar.' },
+  'problem.1.title': { en: 'Hiring is expensive and risky', sv: 'Anställning är dyrt och riskabelt' },
+  'problem.1.desc': { en: 'High costs, long commitments, and the risk of wrong hires', sv: 'Höga kostnader, långa åtaganden och risken för felrekryteringar' },
+  'problem.2.title': { en: 'Multiple vendors create chaos', sv: 'Flera leverantörer skapar kaos' },
+  'problem.2.desc': { en: 'Different systems, conflicting priorities, no single source of truth', sv: 'Olika system, motstridiga prioriteringar, ingen gemensam sanning' },
+  'problem.3.title': { en: 'Projects end, results fade', sv: 'Projekt tar slut, resultat bleknar' },
+  'problem.3.desc': { en: 'No continuity, knowledge disappears when consultants leave', sv: 'Ingen kontinuitet, kunskap försvinner när konsulter lämnar' },
+
+  // Solution Section
+  'solution.title': { en: 'Introducing the NorthForce', sv: 'Introducerar NorthForce' },
+  'solution.title_highlight': { en: 'Hybrid Model', sv: 'hybridmodellen' },
+  'solution.subtitle': { en: 'Leadership + System + Flexible Capacity. All in one subscription.', sv: 'Ledarskap + System + Flexibel kapacitet. Allt i ett abonnemang.' },
+  'solution.system.title': { en: 'Integrated Platform', sv: 'Integrerad plattform' },
+  'solution.system.desc': { en: 'CRM, automation, analytics, and tools in one system', sv: 'CRM, automation, analys och verktyg i ett system' },
+  'solution.experts.title': { en: 'Six Expert Areas', sv: 'Sex expertområden' },
+  'solution.experts.desc': { en: 'Sales, Marketing, Finance, HR, Legal, and Strategy', sv: 'Sälj, Marknad, Ekonomi, HR, Juridik och Strategi' },
+  'solution.tokens.title': { en: 'Token-Based Capacity', sv: 'Token-baserad kapacitet' },
+  'solution.tokens.desc': { en: 'Use capacity where you need it most, flexibly across all areas', sv: 'Använd kapacitet där du behöver den mest, flexibelt över alla områden' },
+
+  // Expert Areas
+  'experts.title': { en: 'Six Expert Areas', sv: 'Sex expertområden' },
+  'experts.title_highlight': { en: 'Working Together', sv: 'arbetar tillsammans' },
+  'experts.subtitle': { en: 'Each area brings specialized expertise. Together they create exponential value.', sv: 'Varje område bidrar med specialistkompetens. Tillsammans skapar de exponentiellt värde.' },
+  'experts.sales.title': { en: 'Sales', sv: 'Sälj' },
+  'experts.sales.desc': { en: 'Pipeline management, conversion optimization, forecast, and sales support', sv: 'Pipelinehantering, konverteringsoptimering, forecast och säljstöd' },
+  'experts.marketing.title': { en: 'Marketing', sv: 'Marknad' },
+  'experts.marketing.desc': { en: 'Strategy, positioning, content, SEO, visibility, and campaigns', sv: 'Strategi, positionering, innehåll, SEO, synlighet och kampanjer' },
+  'experts.finance.title': { en: 'Finance', sv: 'Ekonomi' },
+  'experts.finance.desc': { en: 'Profitability, KPIs, pricing, margin analysis, and business decisions', sv: 'Lönsamhet, nyckeltal, prissättning, marginalanalys och affärsbeslut' },
+  'experts.leadership.title': { en: 'Leadership & Strategy', sv: 'Ledning & Strategi' },
+  'experts.leadership.desc': { en: 'Priorities, steering, goals, decisions, and business development', sv: 'Prioriteringar, styrning, mål, beslut och affärsutveckling' },
+  'experts.hr.title': { en: 'HR', sv: 'HR' },
+  'experts.hr.desc': { en: 'Recruitment, culture, onboarding, employer branding, and team development', sv: 'Rekrytering, kultur, onboarding, employer branding och teamutveckling' },
+  'experts.legal.title': { en: 'Legal', sv: 'Juridik' },
+  'experts.legal.desc': { en: 'Contracts, compliance, regulations, risk assessment, and deal support', sv: 'Avtal, efterlevnad, regelverk, riskbedömning och affärsstöd' },
+
+  // Pricing
+  'pricing.title': { en: 'Simple,', sv: 'Enkel,' },
+  'pricing.title_highlight': { en: 'Transparent Pricing', sv: 'transparent prissättning' },
+  'pricing.subtitle': { en: 'Choose your package. Scale up or down. No surprises.', sv: 'Välj ditt paket. Skala upp eller ner. Inga överraskningar.' },
+  'pricing.system_fee': { en: 'System Fee', sv: 'Systemavgift' },
+  'pricing.capacity': { en: 'Capacity', sv: 'Kapacitet' },
+  'pricing.total': { en: 'Total', sv: 'Totalt' },
+  'pricing.per_month': { en: '/month', sv: '/månad' },
+  'pricing.tokens': { en: 'tokens', sv: 'tokens' },
+  'pricing.essential.title': { en: 'Essential', sv: 'Essential' },
+  'pricing.essential.desc': { en: 'Foundation for growth', sv: 'Grund för tillväxt' },
+  'pricing.core.title': { en: 'Core', sv: 'Core' },
+  'pricing.core.desc': { en: 'Stable, continuous growth', sv: 'Stabil, kontinuerlig tillväxt' },
+  'pricing.professional.title': { en: 'Professional', sv: 'Professional' },
+  'pricing.professional.desc': { en: 'Multiple active areas', sv: 'Flera aktiva områden' },
+  'pricing.enterprise.title': { en: 'Enterprise', sv: 'Enterprise' },
+  'pricing.enterprise.desc': { en: 'Large-scale operations', sv: 'Storskalig verksamhet' },
+  'pricing.cta': { en: 'Get Started', sv: 'Kom igång' },
+
+  // Token Model
+  'tokens.title': { en: 'How Tokens', sv: 'Hur tokens' },
+  'tokens.title_highlight': { en: 'Work', sv: 'fungerar' },
+  'tokens.subtitle': { en: 'Simple, flexible capacity. Use it where you need it most.', sv: 'Enkel, flexibel kapacitet. Använd den där du behöver den mest.' },
+  'tokens.what': { en: 'What is a token?', sv: 'Vad är en token?' },
+  'tokens.what_desc': { en: 'One token = 30 minutes of expert work + system activation in that area', sv: 'En token = 30 minuter expertarbete + systemaktivering i det området' },
+  'tokens.use': { en: 'How do I use them?', sv: 'Hur använder jag dem?' },
+  'tokens.use_desc': { en: 'Activate any expert area when you need it. Tokens are used only when work begins.', sv: 'Aktivera vilket expertområde som helst när du behöver det. Tokens används endast när arbetet börjar.' },
+  'tokens.flexible': { en: 'Complete flexibility', sv: 'Fullständig flexibilitet' },
+  'tokens.flexible_desc': { en: 'Move capacity between Sales, Marketing, Finance, HR, Legal, or Strategy as priorities change', sv: 'Flytta kapacitet mellan Sälj, Marknad, Ekonomi, HR, Juridik eller Strategi när prioriteringar ändras' },
+
+  // Benefits (20 reasons)
+  'benefits.title': { en: '20 Reasons Companies', sv: '20 anledningar företag' },
+  'benefits.title_highlight': { en: 'Choose NorthForce', sv: 'väljer NorthForce' },
+  'benefits.subtitle': { en: 'A modern alternative to hiring, agencies, and traditional consulting', sv: 'Ett modernt alternativ till anställning, byråer och traditionell konsultverksamhet' },
+  'benefits.1.title': { en: 'Lower risk than hiring', sv: 'Lägre risk än anställning' },
+  'benefits.1.desc': { en: 'No long-term salary commitments or risk of wrong hires. Scale capacity up or down based on actual needs.', sv: 'Inga långsiktiga lönekostnader eller risk för felrekryteringar. Skala kapacitet upp eller ner efter faktiskt behov.' },
+  'benefits.2.title': { en: 'No dependency on key persons', sv: 'Inget beroende av nyckelpersoner' },
+  'benefits.2.desc': { en: 'Systems and documented processes ensure continuity even when people change. Knowledge stays in the company.', sv: 'System och dokumenterade processer säkerställer kontinuitet även när personer byts ut. Kunskapen finns kvar i bolaget.' },
+  'benefits.3.title': { en: 'Faster start than large projects', sv: 'Snabbare igång än stora projekt' },
+  'benefits.3.desc': { en: 'Weekly iterations instead of long planning phases. You see results within weeks, not months.', sv: 'Veckovisa iterationer istället för långa planeringsfaser. Ni ser resultat inom veckor, inte månader.' },
+  'benefits.4.title': { en: 'Continuity instead of campaigns', sv: 'Kontinuitet istället för kampanjer' },
+  'benefits.4.desc': { en: 'Ongoing strategic work that builds momentum. Results accumulate over time instead of fading after project end.', sv: 'Kontinuerligt strategiskt arbete som bygger momentum. Resultat ackumuleras över tid istället för att falna när projekt tar slut.' },
+  'benefits.5.title': { en: 'Always right expertise at right time', sv: 'Alltid rätt expertis vid rätt tillfälle' },
+  'benefits.5.desc': { en: 'Access to specialists across all areas without needing to employ them full-time. Use capacity where pressure is greatest.', sv: 'Tillgång till specialister inom alla områden utan att behöva anställa heltid. Använd kapacitet där trycket är störst.' },
+  'benefits.6.title': { en: 'Systems that carry the work', sv: 'System som bär arbetet' },
+  'benefits.6.desc': { en: 'Automated workflows, dashboards, and integrations that continue working even when consultants step back.', sv: 'Automatiserade arbetsflöden, dashboards och integrationer som fortsätter fungera även när konsulter kliver tillbaka.' },
+  'benefits.7.title': { en: 'Better cost control', sv: 'Bättre kostnadskontroll' },
+  'benefits.7.desc': { en: 'Transparent subscription model. You know exactly what you pay for and can adjust capacity as business needs change.', sv: 'Transparent abonnemangsmodell. Ni vet exakt vad ni betalar för och kan justera kapacitet när affärsbehoven ändras.' },
+  'benefits.8.title': { en: 'Shorter path to results', sv: 'Kortare väg till resultat' },
+  'benefits.8.desc': { en: 'No bureaucracy or long decision chains. Strategic priorities are executed directly with measurable outcomes.', sv: 'Ingen byråkrati eller långa beslutskedjor. Strategiska prioriteringar genomförs direkt med mätbara resultat.' },
+  'benefits.9.title': { en: 'Scalable without chaos', sv: 'Skalbar utan kaos' },
+  'benefits.9.desc': { en: 'Grow your capacity without losing control. Systems and processes scale with you while maintaining quality.', sv: 'Väx er kapacitet utan att tappa kontrollen. System och processer skalar med er samtidigt som kvaliteten bibehålls.' },
+  'benefits.10.title': { en: 'Leadership and systems in one package', sv: 'Ledarskap och system i samma paket' },
+  'benefits.10.desc': { en: 'Strategic guidance combined with operational execution. You get both thinking and doing in an integrated model.', sv: 'Strategisk vägledning kombinerat med operativ exekvering. Ni får både tänk och gör i en integrerad modell.' },
+  'benefits.11.title': { en: 'Less dependency on individual vendors', sv: 'Mindre beroende av enskilda leverantörer' },
+  'benefits.11.desc': { en: 'One partner coordinates all capabilities. No more juggling multiple agencies with different agendas and tools.', sv: 'En partner samordnar alla kompetenser. Slut på att jonglera med flera byråer med olika agendor och verktyg.' },
+  'benefits.12.title': { en: 'Higher quality in decisions', sv: 'Högre beslutskvalitet' },
+  'benefits.12.desc': { en: 'Data-driven insights and clear metrics make it easier to prioritize and make strategic choices with confidence.', sv: 'Datadriven insikt och tydliga nyckeltal gör det enklare att prioritera och fatta strategiska val med trygghet.' },
+  'benefits.13.title': { en: 'Clearer ownership in leadership', sv: 'Tydligare ägarskap i ledningen' },
+  'benefits.13.desc': { en: 'Leadership maintains full control while getting expert support. Decisions stay where they belong - with you.', sv: 'Ledningen behåller full kontroll samtidigt som ni får expertstöd. Besluten finns kvar där de hör hemma - hos er.' },
+  'benefits.14.title': { en: 'Easier to stop or adjust', sv: 'Enklare att pausa eller justera' },
+  'benefits.14.desc': { en: 'Flexible agreements without long lock-in periods. Adjust scope and capacity as business priorities shift.', sv: 'Flexibla avtal utan långa bindningstider. Justera omfattning och kapacitet när affärsprioriteringar skiftar.' },
+  'benefits.15.title': { en: 'Modern work form that attracts talent', sv: 'Modern arbetsmodell som attraherar talang' },
+  'benefits.15.desc': { en: 'Working with advanced systems and strategic partners makes your company more attractive to high performers.', sv: 'Att arbeta med avancerade system och strategiska partners gör ert företag mer attraktivt för högpresterande medarbetare.' },
+  'benefits.16.title': { en: 'Better use of existing tools', sv: 'Bättre utnyttjande av befintliga verktyg' },
+  'benefits.16.desc': { en: 'We optimize and integrate what you already have instead of adding more subscriptions and complexity.', sv: 'Vi optimerar och integrerar det ni redan har istället för att lägga till fler prenumerationer och komplexitet.' },
+  'benefits.17.title': { en: 'Shorter time to internal change', sv: 'Kortare tid till intern förändring' },
+  'benefits.17.desc': { en: 'Weekly iterations create momentum. Teams adapt gradually instead of facing overwhelming big-bang transformations.', sv: 'Veckovisa iterationer skapar momentum. Team anpassar sig gradvis istället för att möta överväldigande big-bang-förändringar.' },
+  'benefits.18.title': { en: 'Clear connection between effort and value', sv: 'Tydlig koppling mellan insats och värde' },
+  'benefits.18.desc': { en: 'Token-based capacity makes it transparent where work happens and what business outcomes result from each area.', sv: 'Tokenbaserad kapacitet gör det transparent var arbete sker och vilka affärsresultat som kommer från varje område.' },
+  'benefits.19.title': { en: 'Future-proof way of working', sv: 'Framtidssäkert arbetssätt' },
+  'benefits.19.desc': { en: 'Built on modern platforms, AI automation, and flexible capacity - adaptable to whatever comes next.', sv: 'Byggt på moderna plattformar, AI-automation och flexibel kapacitet - anpassningsbart för vad som än kommer härnäst.' },
+  'benefits.20.title': { en: 'Stronger negotiation position', sv: 'Starkare förhandlingsposition' },
+  'benefits.20.desc': { en: 'Internal capability and documented systems reduce dependency on external vendors and improve your bargaining power.', sv: 'Intern kapabilitet och dokumenterade system minskar beroendet av externa leverantörer och förbättrar er förhandlingsstyrka.' },
+
+  // Objections (20 objections with answers)
+  'objections.title': { en: 'Common Questions', sv: 'Vanliga frågor' },
+  'objections.title_highlight': { en: 'Answered', sv: 'besvarade' },
+  'objections.subtitle': { en: 'We understand your concerns. Here are honest answers.', sv: 'Vi förstår dina funderingar. Här är ärliga svar.' },
+  'objections.1.q': { en: 'It will be more expensive than hiring', sv: 'Det blir dyrare än att anställa' },
+  'objections.1.a': { en: 'Hiring includes salary, social fees, vacation, overhead, and risk of wrong hire. With the hybrid model, you only pay for capacity actually used and can scale up and down without hidden costs.', sv: 'En anställning innebär lön, sociala avgifter, semester, overhead och risk för felrekrytering. Med hybridmodellen betalar ni bara för kapacitet som faktiskt används och kan skala upp och ner utan dolda kostnader.' },
+  'objections.2.q': { en: 'We want someone on-site in the team', sv: 'Vi vill hellre ha någon på plats i teamet' },
+  'objections.2.a': { en: 'You get clear contact responsibility and a weekly process where we sit close to leadership and key people, but without carrying the full cost of a full-time position. Systems make work visible in dashboards, meeting notes, and results.', sv: 'Ni får ett tydligt kontaktansvar och en veckoprocess där vi sitter nära ledning och nyckelpersoner, men utan att ni behöver bära hela kostnaden för en heltidstjänst. Systemen gör att arbetet syns i dashboards, mötesanteckningar och resultat.' },
+  'objections.3.q': { en: 'We already have agencies and consultants', sv: 'Vi har redan byråer och konsulter' },
+  'objections.3.a': { en: 'That is why a model that holds everything together is needed. NorthForce does not replace everything overnight, but coordinates, prioritizes, and builds systems around what you already have.', sv: 'Just därför behövs en modell som håller ihop allt. NorthForce ersätter inte allt över en natt, utan samordnar, prioriterar och bygger system runt det ni redan har.' },
+  'objections.4.q': { en: 'It sounds complex with six areas and tokens', sv: 'Det låter komplext med sex områden och tokens' },
+  'objections.4.a': { en: 'Under the surface, the model is advanced, but for you it is simple. You get a subscription plan, a clear weekly process, and tokens to use where pressure is greatest right now.', sv: 'Under ytan är modellen avancerad, men för er är det enkelt. Ni får en abonnemangsplan, en tydlig veckoprocess och tokens att använda där trycket är störst just nu.' },
+  'objections.5.q': { en: 'We become too dependent on you', sv: 'Vi blir för beroende av er' },
+  'objections.5.a': { en: 'The whole point is to reduce person dependency, not create a new one. We document processes, build systems, dashboards, and structure that you own. If we step out, the model, tools, and documentation remain.', sv: 'Hela poängen är att minska personberoende, inte skapa ett nytt. Vi dokumenterar processer, bygger system, dashboards och struktur som ni äger. Skulle vi kliva ur finns modellen, verktygen och dokumentationen kvar.' },
+  'objections.6.q': { en: 'Can the effect really be measured?', sv: 'Går det verkligen att mäta effekten?' },
+  'objections.6.a': { en: 'We always start with goals and metrics. Pipeline, cycle time, booked meetings, ROMI, CAC, organic traffic, ranking, response times in CRM. Every week we look at the numbers and what has changed.', sv: 'Vi börjar alltid med mål och mätpunkter. Pipeline, cykeltid, bokade möten, ROMI, CAC, organisk trafik, ranking, svarstider i CRM. Varje vecka tittar vi på siffrorna och vad som förändrats.' },
+  'objections.7.q': { en: 'Leadership does not have time for another model', sv: 'Ledningen har inte tid för ännu en modell' },
+  'objections.7.a': { en: 'The model is built to relieve leadership, not take more time. One steering meeting per week, short and focused, where we prepare decision basis in advance.', sv: 'Modellen är byggd för att avlasta ledningen, inte ta mer tid. Ett styrande möte i veckan, kort och fokuserat, där vi tar fram beslutsunderlag i förväg.' },
+  'objections.8.q': { en: 'Our employees will feel threatened', sv: 'Våra medarbetare kommer känna sig hotade' },
+  'objections.8.a': { en: 'We always go in with the logic to strengthen people, not replace them. Employees get clearer structure, better tools, and less chaos. Many experience it as a career boost.', sv: 'Vi går alltid in med logiken att förstärka människor, inte ersätta dem. Medarbetare får tydligare struktur, bättre verktyg och mindre stök. Många upplever det som en karriärlyft.' },
+  'objections.9.q': { en: 'You cannot know our industry well enough', sv: 'Ni kan inte vår bransch tillräckligt' },
+  'objections.9.a': { en: 'You provide industry knowledge, we provide structure, systems, and working methods. The model is made to be industry-independent but goal-focused.', sv: 'Ni står för branschkunskapen, vi står för struktur, system och arbetssätt. Modellen är gjord för att vara branschoberoende men målfokuserad.' },
+  'objections.10.q': { en: 'Tokens sound like something complicated we will not manage', sv: 'Tokens låter som något krångligt vi inte orkar med' },
+  'objections.10.a': { en: 'Tokens are really just a way to make the effort clear. You know how much capacity exists, what it is used for, and what it costs. In practice, it works like hours or credits, but with better control.', sv: 'Tokens är egentligen bara ett sätt att göra insatsen tydlig. Ni vet hur mycket kapacitet som finns, vad den används till och vad det kostar. I praktiken fungerar det som timmar eller krediter, men med bättre styrning.' },
+  'objections.11.q': { en: 'Subscriptions tie us up too much', sv: 'Abonnemang binder upp oss för mycket' },
+  'objections.11.a': { en: 'The subscription is adjusted for reality. You avoid long project agreements and heavy notice periods, but still get stability in the work.', sv: 'Abonnemanget är justerat för verkligheten. Ni slipper långa projektavtal och tunga uppsägningstider, men får ändå stabilitet i arbetet.' },
+  'objections.12.q': { en: 'We have burned ourselves on consultants before', sv: 'Vi har bränt oss på konsulter förut' },
+  'objections.12.a': { en: 'Classic consulting logic is often point efforts without responsibility for the whole. The hybrid model is based on continuity, weekly process, systems, and measurable goals.', sv: 'Klassisk konsultlogik är ofta punktinsatser utan ansvar för helheten. Hybridmodellen bygger på kontinuitet, veckoprocess, system och mätbara mål.' },
+  'objections.13.q': { en: 'How secure are our data and systems?', sv: 'Hur säkra är våra data och system?' },
+  'objections.13.a': { en: 'We always work with established platforms, clear access rights, and documented processes. You own data and accounts, we help you structure everything so security, traceability, and compliance become easier.', sv: 'Vi arbetar alltid med etablerade plattformar, tydliga åtkomsträttigheter och dokumenterade processer. Ni äger data och konton, vi hjälper er strukturera upp allt så säkerhet, spårbarhet och efterlevnad blir enklare.' },
+  'objections.14.q': { en: 'We want to own our systems ourselves', sv: 'Vi vill äga våra system själva' },
+  'objections.14.a': { en: 'You should. You own the platforms, licenses, and data. NorthForce helps with design, implementation, integration, and continuous improvement.', sv: 'Det ska ni också. Ni äger plattformarna, licenserna och datan. NorthForce hjälper med design, implementation, integration och löpande förbättring.' },
+  'objections.15.q': { en: 'We are too small for such an advanced model', sv: 'Vi är för små för en så här avancerad modell' },
+  'objections.15.a': { en: 'Smaller companies need structure even more, because every misstep is felt directly in the cash register. We can start at a lower level with focus on a few flows, then scale when effect comes.', sv: 'Mindre bolag behöver struktur ännu mer, eftersom varje felsteg känns direkt i kassan. Vi kan börja på en lägre nivå med fokus på några få flöden, sedan skala när effekten kommer.' },
+  'objections.16.q': { en: 'We are too large and complex', sv: 'Vi är för stora och komplexa' },
+  'objections.16.a': { en: 'The model is made for complex environments with multiple functions, markets, and teams. We start in one unit or business area, show results, and build from there.', sv: 'Modellen är gjord för komplexa miljöer med flera funktioner, marknader och team. Vi börjar i en enhet eller ett affärsområde, visar resultat och bygger därifrån.' },
+  'objections.17.q': { en: 'It becomes too much change at once', sv: 'Det blir för mycket förändring på en gång' },
+  'objections.17.a': { en: 'We never work with "big bang". We prioritize some critical flows and win trust there first. With weekly cycles and small iterations, change becomes manageable.', sv: 'Vi jobbar aldrig med "big bang". Vi prioriterar några kritiska flöden och vinner förtroende där först. Med veckocykler och små iterationer blir förändringen hanterbar.' },
+  'objections.18.q': { en: 'The board will not understand the model', sv: 'Styrelsen kommer inte förstå modellen' },
+  'objections.18.a': { en: 'Boards care about risk, profitability, and predictability. The hybrid model is easy to translate into just that. Lower risk than hiring, better control of cost than projects, and clear metrics.', sv: 'Styrelser bryr sig om risk, lönsamhet och förutsägbarhet. Hybridmodellen är lätt att översätta till just det. Lägre risk än anställningar, bättre kontroll på kostnad än projekt och tydliga nyckeltal.' },
+  'objections.19.q': { en: 'What happens if you or NorthForce disappear?', sv: 'Vad händer om du eller NorthForce försvinner?' },
+  'objections.19.a': { en: 'The model is not built on one person, but on documented processes, dashboards, accounts, and structure at your place. Everything we do is documented and owned by the company.', sv: 'Modellen bygger inte på en person, utan på dokumenterade processer, dashboards, konton och struktur hos er. Allt vi gör dokumenteras och ägs av bolaget.' },
+  'objections.20.q': { en: 'AI and automation feel uncertain and "hyped"', sv: 'AI och automation känns osäkert och "hypat"' },
+  'objections.20.a': { en: 'We use AI and automation where it provides concrete business value, not as a trend. It is about removing manual waste, providing better decision basis, and creating smoother flows in sales and marketing.', sv: 'Vi använder AI och automation där det ger konkret affärsvärde, inte som en trend. Det handlar om att ta bort manuellt slöseri, ge bättre beslutsunderlag och skapa jämnare flöden i sälj och marknad.' },
+
+  // Before/After
+  'before_after.title': { en: 'Before vs', sv: 'Innan vs' },
+  'before_after.title_highlight': { en: 'After NorthForce', sv: 'efter NorthForce' },
+  'before_after.before': { en: 'Before', sv: 'Innan' },
+  'before_after.after': { en: 'After', sv: 'Efter' },
+  'before_after.subtitle': { en: 'From chaos to structure. From reactive to proactive. From guessing to data.', sv: 'Från kaos till struktur. Från reaktivt till proaktivt. Från gissningar till data.' },
+  'before_after.before_1': { en: 'Ad hoc work without structure', sv: 'Ad hoc-arbete utan struktur' },
+  'before_after.before_2': { en: 'Multiple fragmented vendors', sv: 'Flera fragmenterade leverantörer' },
+  'before_after.before_3': { en: 'No unified reporting', sv: 'Ingen samlad rapportering' },
+  'before_after.before_4': { en: 'Long time to results', sv: 'Lång tid till resultat' },
+  'before_after.before_5': { en: 'Unclear priorities', sv: 'Oklara prioriteringar' },
+  'before_after.before_6': { en: 'Person-dependent solutions', sv: 'Personberoende lösningar' },
+  'before_after.after_1': { en: 'Clear weekly process', sv: 'Tydlig veckoprocess' },
+  'before_after.after_2': { en: 'One system, one team', sv: 'Ett system, ett team' },
+  'before_after.after_3': { en: 'Measurable results every week', sv: 'Mätbara resultat varje vecka' },
+  'before_after.after_4': { en: 'Fast impact in right areas', sv: 'Snabb effekt på rätt områden' },
+  'before_after.after_5': { en: 'Focused efforts', sv: 'Fokuserade insatser' },
+  'before_after.after_6': { en: 'System-based continuity', sv: 'Systembaserad kontinuitet' },
+
+  // How We Work
+  'how_work.title': { en: 'How We Work', sv: 'Så arbetar vi' },
+  'how_work.title_highlight': { en: 'Together', sv: 'tillsammans' },
+  'how_work.subtitle': { en: 'A continuous process that creates results week by week', sv: 'En kontinuerlig process som skapar resultat vecka för vecka' },
+
+  // Token Deep Dive
+  'token_deep.title': { en: 'Understanding', sv: 'Förstå' },
+  'token_deep.title_highlight': { en: 'The Token Model', sv: 'tokenmodellen' },
+  'token_deep.subtitle': { en: 'Simple, transparent, and flexible capacity', sv: 'Enkel, transparent och flexibel kapacitet' },
+
+  // Ownership
+  'ownership.title': { en: 'You Own', sv: 'Ni äger' },
+  'ownership.title_highlight': { en: 'Everything', sv: 'allt' },
+  'ownership.subtitle': { en: 'Data, systems, materials, and knowledge stay with you', sv: 'Data, system, material och kunskap stannar hos er' },
+
+  // Footer
+  'footer.subscribe': { en: 'Subscribe', sv: 'Prenumerera' },
+  'footer.email_placeholder': { en: 'Enter your email', sv: 'Ange din e-post' },
+  'footer.rights': { en: 'All rights reserved', sv: 'Alla rättigheter förbehållna' },
+  'footer.solutions': { en: 'Solutions', sv: 'Lösningar' },
+  'footer.company': { en: 'Company', sv: 'Företag' },
+  'footer.resources': { en: 'Resources', sv: 'Resurser' },
+  'footer.about': { en: 'About Us', sv: 'Om oss' },
+  'footer.our_method': { en: 'Our Method', sv: 'Vår metod' },
+  'footer.case_studies': { en: 'Case Studies', sv: 'Fallstudier' },
+  'footer.careers': { en: 'Careers', sv: 'Karriärer' },
+  'footer.insights': { en: 'Insights', sv: 'Insikter' },
+  'footer.contact': { en: 'Contact', sv: 'Kontakt' },
+  'footer.legal': { en: 'Legal', sv: 'Juridiskt' },
+  'footer.core_systems': { en: 'Core Systems', sv: 'Kärnsystem' },
+  'footer.system_solutions': { en: 'System Solutions', sv: 'Systemlösningar' },
+
+  // BenefitsGrid UI
+  'benefits.read_more': { en: 'Read more', sv: 'Läs mer' },
+  'benefits.show_less': { en: 'Show less', sv: 'Visa mindre' },
+
+  // Audit Page
+  'audit.hero.badge': { en: 'Enterprise Growth Strategy', sv: 'Företagstillväxtstrategi' },
+  'audit.hero.title': { en: 'Strategic Advisory', sv: 'Strategisk rådgivning' },
+  'audit.hero.title_highlight': { en: 'Session', sv: 'session' },
+  'audit.hero.subtitle': { en: 'Work directly with our strategic team to unlock multi-million dollar growth opportunities. Executive-level guidance tailored to your business objectives.', sv: 'Arbeta direkt med vårt strategiska team för att låsa upp tillväxtmöjligheter värda miljontals kronor. Vägledning på ledningsnivå skräddarsydd för dina affärsmål.' },
+  'audit.hero.cta_primary': { en: 'Book Strategic Advisory Session', sv: 'Boka strategisk rådgivningssession' },
+  'audit.hero.cta_secondary': { en: 'Not ready for strategic advisory?', sv: 'Inte redo för strategisk rådgivning?' },
+  'audit.hero.cta_secondary_link': { en: 'Start with AI Analysis', sv: 'Börja med AI-analys' },
+  'audit.hero.benefit_1': { en: 'C-Level Strategy', sv: 'C-nivå strategi' },
+  'audit.hero.benefit_2': { en: 'Custom Roadmap', sv: 'Skräddarsydd färdplan' },
+  'audit.hero.benefit_3': { en: 'Growth Systems', sv: 'Tillväxtsystem' },
+  'audit.hero.benefit_4': { en: 'ROI Focused', sv: 'ROI-fokuserad' },
+
+  'audit.path.title': { en: 'Choose Your', sv: 'Välj din' },
+  'audit.path.title_highlight': { en: 'Path', sv: 'väg' },
+  'audit.path.subtitle': { en: 'Two ways to start your growth journey. Pick what matches your current stage.', sv: 'Två sätt att starta din tillväxtresa. Välj det som passar din nuvarande situation.' },
+  'audit.path.recommended': { en: 'Recommended', sv: 'Rekommenderas' },
+  'audit.path.advisory.title': { en: 'Strategic Advisory Session', sv: 'Strategisk rådgivningssession' },
+  'audit.path.advisory.desc': { en: 'For businesses ready to execute. Work directly with our team to build a custom growth system that delivers measurable ROI.', sv: 'För företag redo att genomföra. Arbeta direkt med vårt team för att bygga ett skräddarsytt tillväxtsystem som levererar mätbar ROI.' },
+  'audit.path.advisory.feature_1': { en: '1-on-1 strategic session with senior advisors', sv: '1-till-1 strategisk session med seniora rådgivare' },
+  'audit.path.advisory.feature_2': { en: 'Custom growth roadmap tailored to your business', sv: 'Skräddarsydd tillväxtfärdplan för ditt företag' },
+  'audit.path.advisory.feature_3': { en: 'Implementation support & system design', sv: 'Implementeringsstöd & systemdesign' },
+  'audit.path.advisory.feature_4': { en: 'ROI projections & performance metrics', sv: 'ROI-prognoser & prestationsmått' },
+  'audit.path.advisory.cta': { en: 'Book Your Session', sv: 'Boka din session' },
+  'audit.path.advisory.note': { en: 'Limited to 5 new clients per quarter', sv: 'Begränsat till 5 nya kunder per kvartal' },
+  'audit.path.ai.title': { en: 'AI Analysis', sv: 'AI-analys' },
+  'audit.path.ai.desc': { en: 'For businesses in research phase. Get an automated analysis to understand your baseline and identify quick wins.', sv: 'För företag i undersökningsfas. Få en automatiserad analys för att förstå din utgångspunkt och identifiera snabba vinster.' },
+  'audit.path.ai.feature_1': { en: 'AI-powered analysis of 6 key areas', sv: 'AI-driven analys av 6 nyckelområden' },
+  'audit.path.ai.feature_2': { en: 'Detailed PDF report with insights', sv: 'Detaljerad PDF-rapport med insikter' },
+  'audit.path.ai.feature_3': { en: '48-hour delivery, no obligation', sv: '48-timmars leverans, ingen förpliktelse' },
+  'audit.path.ai.feature_4': { en: 'Competitive benchmarking data', sv: 'Konkurrensjämförelsedata' },
+  'audit.path.ai.cta': { en: 'Get AI Analysis', sv: 'Få AI-analys' },
+  'audit.path.ai.note': { en: 'Upgrade to Strategic Advisory anytime', sv: 'Uppgradera till strategisk rådgivning när som helst' },
+
+  'audit.form.title': { en: 'Book Your Strategic', sv: 'Boka din strategiska' },
+  'audit.form.title_highlight': { en: 'Advisory Session', sv: 'rådgivningssession' },
+  'audit.form.subtitle': { en: 'Tell us about your business and growth objectives. We\'ll prepare a custom strategy for our session together.', sv: 'Berätta om ditt företag och dina tillväxtmål. Vi förbereder en skräddarsydd strategi för vår gemensamma session.' },
+
+  'audit.analyze.title': { en: 'What the AI', sv: 'Vad AI:n' },
+  'audit.analyze.title_highlight': { en: 'Analyzes', sv: 'analyserar' },
+  'audit.analyze.subtitle': { en: 'Six key areas analyzed to reveal your biggest opportunities for growth and improvement.', sv: 'Sex nyckelområden analyseras för att avslöja dina största möjligheter till tillväxt och förbättring.' },
+  'audit.analyze.site': { en: 'Site', sv: 'Webbplats' },
+  'audit.analyze.site_desc': { en: 'Complete technical analysis of your website structure, performance, and user experience to identify improvement opportunities.', sv: 'Komplett teknisk analys av din webbplatsstruktur, prestanda och användarupplevelse för att identifiera förbättringsmöjligheter.' },
+  'audit.analyze.seo': { en: 'SEO', sv: 'SEO' },
+  'audit.analyze.seo_desc': { en: 'In-depth search engine optimization review covering keywords, meta data, backlinks, and technical SEO factors.', sv: 'Djupgående sökmotoroptimeringsgranskning som täcker nyckelord, metadata, bakåtlänkar och tekniska SEO-faktorer.' },
+  'audit.analyze.content': { en: 'Content Strategy', sv: 'Innehållsstrategi' },
+  'audit.analyze.content_desc': { en: 'Evaluation of your content quality, relevance, engagement metrics, and opportunities for strategic improvements.', sv: 'Utvärdering av din innehållskvalitet, relevans, engagemangsmått och möjligheter för strategiska förbättringar.' },
+  'audit.analyze.listings': { en: 'Online Listings', sv: 'Onlinelistor' },
+  'audit.analyze.listings_desc': { en: 'Comprehensive audit of your business listings across directories, maps, and review platforms for consistency and visibility.', sv: 'Omfattande granskning av dina företagslistor över kataloger, kartor och recensionsplattformar för konsistens och synlighet.' },
+  'audit.analyze.speed': { en: 'Site Speed', sv: 'Webbplatshastighet' },
+  'audit.analyze.speed_desc': { en: 'Performance analysis measuring load times, Core Web Vitals, and optimization opportunities for faster user experience.', sv: 'Prestandaanalys som mäter laddningstider, Core Web Vitals och optimeringsmöjligheter för snabbare användarupplevelse.' },
+  'audit.analyze.social': { en: 'Social Presence', sv: 'Social närvaro' },
+  'audit.analyze.social_desc': { en: 'Review of your social media channels, engagement rates, content strategy, and brand consistency across platforms.', sv: 'Granskning av dina sociala mediekanaler, engagemangsnivåer, innehållsstrategi och varumärkeskonsistens över plattformar.' },
+  'audit.analyze.form_title': { en: 'Request Your AI Analysis', sv: 'Begär din AI-analys' },
+  'audit.analyze.form_subtitle': { en: 'Fill in your details and we\'ll send you the comprehensive report within 48 hours.', sv: 'Fyll i dina uppgifter så skickar vi dig den omfattande rapporten inom 48 timmar.' },
+
+  'audit.credentials.title': { en: 'Enterprise-Grade', sv: 'Företagsklass' },
+  'audit.credentials.title_highlight': { en: 'Strategy', sv: 'strategi' },
+  'audit.credentials.subtitle': { en: 'Our strategic advisory combines Fortune 500 methodology with growth-stage execution speed. Built for businesses serious about scaling.', sv: 'Vår strategiska rådgivning kombinerar Fortune 500-metodik med snabb exekvering i tillväxtfas. Byggd för företag som är seriösa om skalning.' },
+  'audit.credentials.revenue': { en: 'Revenue Generated', sv: 'Intäkter genererade' },
+  'audit.credentials.revenue_desc': { en: 'For clients in first 12 months', sv: 'För kunder under de första 12 månaderna' },
+  'audit.credentials.retention': { en: 'Client Retention', sv: 'Kundbehållning' },
+  'audit.credentials.retention_desc': { en: 'Long-term partnerships', sv: 'Långsiktiga partnerskap' },
+  'audit.credentials.growth': { en: 'Average Growth', sv: 'Genomsnittlig tillväxt' },
+  'audit.credentials.growth_desc': { en: 'Lead increase in 6 weeks', sv: 'Ökade leads på 6 veckor' },
+  'audit.credentials.different.title': { en: 'What Makes Us Different', sv: 'Vad som gör oss annorlunda' },
+  'audit.credentials.different.systems.title': { en: 'Systems, Not Services', sv: 'System, inte tjänster' },
+  'audit.credentials.different.systems.desc': { en: 'We don\'t just consult - we build revenue-generating systems that work 24/7. From AI automation to conversion optimization.', sv: 'Vi konsulterar inte bara - vi bygger intäktsskapande system som fungerar 24/7. Från AI-automation till konverteringsoptimering.' },
+  'audit.credentials.different.roi.title': { en: 'ROI-First Approach', sv: 'ROI-först-strategi' },
+  'audit.credentials.different.roi.desc': { en: 'Every recommendation tied to revenue impact. We prioritize initiatives with measurable business outcomes.', sv: 'Varje rekommendation kopplad till intäktspåverkan. Vi prioriterar initiativ med mätbara affärsresultat.' },
+  'audit.credentials.different.hybrid.title': { en: 'Hybrid Model Excellence', sv: 'Hybridmodell-excellens' },
+  'audit.credentials.different.hybrid.desc': { en: 'Combine senior strategic guidance with AI-powered execution. Get enterprise quality at growth-stage speed.', sv: 'Kombinera senior strategisk vägledning med AI-driven exekvering. Få företagskvalitet i tillväxtfashastighet.' },
+  'audit.credentials.for.title': { en: 'Who This Is For', sv: 'Vem detta är för' },
+  'audit.credentials.for.growth': { en: 'Growth-stage companies', sv: 'Tillväxtföretag' },
+  'audit.credentials.for.growth_desc': { en: 'ready to scale from $1M to $10M+ ARR', sv: 'redo att skala från 10 till 100+ miljoner kronor ARR' },
+  'audit.credentials.for.service': { en: 'Service businesses', sv: 'Tjänsteföretag' },
+  'audit.credentials.for.service_desc': { en: 'looking to systematize and automate operations', sv: 'som vill systematisera och automatisera verksamheten' },
+  'audit.credentials.for.b2b': { en: 'B2B companies', sv: 'B2B-företag' },
+  'audit.credentials.for.b2b_desc': { en: 'needing predictable lead generation and sales systems', sv: 'som behöver förutsägbar leadsgenerering och säljsystem' },
+  'audit.credentials.for.leadership': { en: 'Leadership teams', sv: 'Ledningsgrupper' },
+  'audit.credentials.for.leadership_desc': { en: 'committed to implementing strategic recommendations', sv: 'engagerade i att implementera strategiska rekommendationer' },
+  'audit.credentials.for.note': { en: 'We\'re selective about who we work with. Our advisory model requires executive commitment and readiness to execute.', sv: 'Vi är selektiva när det gäller vem vi arbetar med. Vår rådgivningsmodell kräver ledningsengagemang och beredskap att genomföra.' },
+
+  'audit.industries.title': { en: 'Trusted Across', sv: 'Betrodd inom' },
+  'audit.industries.title_highlight': { en: 'Industries', sv: 'branscher' },
+  'audit.industries.subtitle': { en: 'Our strategic methodology adapts to your sector\'s unique challenges and growth opportunities.', sv: 'Vår strategiska metodik anpassas till din branschs unika utmaningar och tillväxtmöjligheter.' },
+  'audit.industries.real_estate': { en: 'Real Estate', sv: 'Fastigheter' },
+  'audit.industries.legal': { en: 'Legal', sv: 'Juridik' },
+  'audit.industries.finance': { en: 'Finance', sv: 'Finans' },
+  'audit.industries.education': { en: 'Education', sv: 'Utbildning' },
+  'audit.industries.healthcare': { en: 'Healthcare', sv: 'Hälsovård' },
+  'audit.industries.local_services': { en: 'Local Services', sv: 'Lokala tjänster' },
+  'audit.industries.ecommerce': { en: 'E-commerce', sv: 'E-handel' },
+  'audit.industries.travel': { en: 'Travel & Events', sv: 'Resor & evenemang' },
+  'audit.industries.recruitment': { en: 'Recruitment', sv: 'Rekrytering' },
+  'audit.industries.creative': { en: 'Creative', sv: 'Kreativt' },
+  'audit.industries.b2b': { en: 'B2B Agencies', sv: 'B2B-byråer' },
+  'audit.industries.tech': { en: 'Tech Startups', sv: 'Teknikstartups' },
+
+  'audit.cta.title': { en: 'Ready to Unlock Your Growth', sv: 'Redo att låsa upp din tillväxt' },
+  'audit.cta.title_highlight': { en: 'Potential?', sv: 'potential?' },
+  'audit.cta.subtitle': { en: 'Get your audit and discover exactly what\'s holding your business back.', sv: 'Få din analys och upptäck exakt vad som håller ditt företag tillbaka.' },
+  'audit.cta.request': { en: 'Request Audit', sv: 'Begär analys' },
+  'audit.cta.solutions': { en: 'View Our Solutions', sv: 'Se våra lösningar' },
+};
+
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+
+export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [language, setLanguage] = useState<Language>('en');
+
+  const t = (key: string): string => {
+    return translations[key]?.[language] || key;
+  };
+
+  return (
+    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+};
+
+export const useLanguage = (): LanguageContextType => {
+  const context = useContext(LanguageContext);
+  if (!context) {
+    throw new Error('useLanguage must be used within a LanguageProvider');
+  }
+  return context;
+};
