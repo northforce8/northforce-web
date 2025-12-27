@@ -37,6 +37,11 @@ const LeadManagementPage: React.FC = () => {
   }, []);
 
   const loadLeads = async () => {
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+
     try {
       const [contactsRes, bookingsRes, newslettersRes] = await Promise.all([
         supabase.from('contact_submissions').select(`

@@ -35,6 +35,11 @@ const BillingPeriodsPage: React.FC = () => {
   }, [statusFilter]);
 
   const loadBillingPeriods = async () => {
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+
     try {
       let query = supabase
         .from('billing_periods')

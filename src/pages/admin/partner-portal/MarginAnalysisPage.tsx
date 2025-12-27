@@ -34,6 +34,11 @@ const MarginAnalysisPage: React.FC = () => {
   }, [periodFilter]);
 
   const loadMarginAnalysis = async () => {
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+
     try {
       const { data, error } = await supabase
         .from('margin_analysis')
