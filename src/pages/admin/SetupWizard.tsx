@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle2, AlertCircle, Loader2, Database, Users, Zap } from 'lucide-react';
-import { supabase } from '../../lib/supabase';
+import { CheckCircle2, AlertCircle, Loader2, Database, Users, Zap, AlertTriangle } from 'lucide-react';
+import { supabase, getMissingEnvVars } from '../../lib/supabase';
 import { ADMIN_ROUTES } from '../../lib/admin-routes';
 
 interface SetupStep {
@@ -22,6 +22,14 @@ export const SetupWizard: React.FC = () => {
   const [adminEmail, setAdminEmail] = useState('admin@northforce.io');
   const [adminPassword, setAdminPassword] = useState('Admin123!');
   const [error, setError] = useState<string | null>(null);
+  const [configError, setConfigError] = useState<string[]>([]);
+
+  useEffect(() => {
+    const missing = getMissingEnvVars();
+    if (missing.length > 0) {
+      setConfigError(missing);
+    }
+  }, []);
 
   const updateStep = (id: string, updates: Partial<SetupStep>) => {
     setSteps(prev => prev.map(step =>
@@ -30,6 +38,11 @@ export const SetupWizard: React.FC = () => {
   };
 
   const runSetup = async () => {
+    if (!supabase) {
+      setError('Supabase is not configured. Please check environment variables.');
+      return;
+    }
+
     setIsRunning(true);
     setError(null);
 
@@ -213,6 +226,28 @@ export const SetupWizard: React.FC = () => {
           </p>
         </div>
 
+        {configError.length > 0 && (
+          <div className="mb-6 p-6 bg-red-50 border-2 border-red-500 rounded-lg">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="h-6 w-6 text-red-600 flex-shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <h3 className="font-bold text-red-900 mb-2">Configuration Error</h3>
+                <p className="text-red-800 text-sm mb-3">
+                  Missing required environment variables in production:
+                </p>
+                <ul className="list-disc list-inside text-red-700 text-sm space-y-1 mb-3">
+                  {configError.map(varName => (
+                    <li key={varName} className="font-mono">{varName}</li>
+                  ))}
+                </ul>
+                <p className="text-red-800 text-sm font-medium">
+                  Please configure these in your deployment platform (Netlify) and redeploy.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {error && (
           <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
             <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
@@ -233,7 +268,7 @@ export const SetupWizard: React.FC = () => {
               type="email"
               value={adminEmail}
               onChange={(e) => setAdminEmail(e.target.value)}
-              disabled={isRunning || isComplete}
+              disabled={isRunning || isComplete || configError.length > 0}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
             />
           </div>
@@ -245,7 +280,7 @@ export const SetupWizard: React.FC = () => {
               type="password"
               value={adminPassword}
               onChange={(e) => setAdminPassword(e.target.value)}
-              disabled={isRunning || isComplete}
+              disabled={isRunning || isComplete || configError.length > 0}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
             />
           </div>
@@ -297,7 +332,7 @@ export const SetupWizard: React.FC = () => {
           {!isComplete ? (
             <button
               onClick={runSetup}
-              disabled={isRunning}
+              disabled={isRunning || configError.length > 0}
               className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 px-6 rounded-lg transition-colors disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {isRunning ? (
