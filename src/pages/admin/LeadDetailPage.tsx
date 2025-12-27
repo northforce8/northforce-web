@@ -63,11 +63,15 @@ const LeadDetailPage = () => {
     try {
       setIsLoading(true);
 
+      if (!supabase) {
+        throw new Error('Supabase is not configured. Please check environment variables.');
+      }
+
       const tableName = type === 'contact' ? 'contact_submissions' :
                         type === 'booking' ? 'booking_submissions' :
                         'newsletter_submissions';
 
-      const { data: leadData, error } = await supabase!
+      const { data: leadData, error } = await supabase
         .from(tableName)
         .select('*')
         .eq('id', id)
