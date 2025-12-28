@@ -14,12 +14,15 @@ const AdminLogin = () => {
   const [configError, setConfigError] = useState<string[]>([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const missing = getMissingEnvVars();
-    if (missing.length > 0) {
-      setConfigError(missing);
-    }
-  }, []);
+useEffect(() => {
+  const missing = getMissingEnvVars();
+
+  // Visa konfig-fel endast i lokal/dev – inte i production
+  if (import.meta.env.DEV && missing.length > 0) {
+    setConfigError(missing);
+  }
+}, []);
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
