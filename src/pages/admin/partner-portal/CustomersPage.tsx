@@ -131,7 +131,7 @@ const CustomersPage: React.FC = () => {
   };
 
   const filteredCustomers = customers.filter(customer => {
-    const matchesSearch = customer.company_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    const matchesSearch = customer.company_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          customer.industry?.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = filterStatus === 'all' || customer.status === filterStatus;
     return matchesSearch && matchesStatus;

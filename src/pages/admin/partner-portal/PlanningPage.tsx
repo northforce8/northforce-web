@@ -243,7 +243,7 @@ export default function PlanningPage() {
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  {mode.charAt(0).toUpperCase() + mode.slice(1)}
+                  {mode ? mode.charAt(0).toUpperCase() + mode.slice(1) : '—'}
                 </button>
               ))}
             </div>

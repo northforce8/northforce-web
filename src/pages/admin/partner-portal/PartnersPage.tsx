@@ -128,7 +128,7 @@ const PartnersPage: React.FC = () => {
 
   const filteredPartners = partners.filter(partner => {
     const matchesSearch =
-      partner.partner_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      partner.partner_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       partner.partner_company?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       partner.email?.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus =

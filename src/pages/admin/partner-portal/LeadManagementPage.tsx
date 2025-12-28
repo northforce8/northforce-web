@@ -100,7 +100,7 @@ const LeadManagementPage: React.FC = () => {
   const filteredLeads = getLeadsForTab().filter(lead => {
     const matchesSearch =
       (lead.name?.toLowerCase().includes(searchTerm.toLowerCase()) || false) ||
-      lead.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (lead.email?.toLowerCase().includes(searchTerm.toLowerCase()) || false) ||
       (lead.company?.toLowerCase().includes(searchTerm.toLowerCase()) || false);
 
     const matchesStatus = statusFilter === 'all' || lead.status === statusFilter;

@@ -182,7 +182,7 @@ const EnterprisePlansPage: React.FC = () => {
                     plan.plan_level
                   )}`}
                 >
-                  {plan.plan_level.toUpperCase()}
+                  {plan.plan_level?.toUpperCase() || '—'}
                 </span>
               </div>
               {!plan.is_active && (
