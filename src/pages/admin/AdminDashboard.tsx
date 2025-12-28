@@ -25,13 +25,13 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const isAuth = await isAdminAuthenticated();
-      if (!isAuth) {
-        navigate('/admin-login');
-        return;
-      }
-
       try {
+        const isAuth = await isAdminAuthenticated();
+        if (!isAuth) {
+          navigate('/admin-login');
+          return;
+        }
+
         const allSubmissions = await getAllSubmissions();
         setSubmissions(allSubmissions);
         setFilteredSubmissions(allSubmissions);

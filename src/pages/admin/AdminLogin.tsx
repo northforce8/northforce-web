@@ -16,9 +16,7 @@ const AdminLogin = () => {
 
 useEffect(() => {
   const missing = getMissingEnvVars();
-
-  // Visa konfig-fel endast i lokal/dev – inte i production
-  if (import.meta.env.DEV && missing.length > 0) {
+  if (missing.length > 0) {
     setConfigError(missing);
   }
 }, []);

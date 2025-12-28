@@ -41,12 +41,17 @@ const AdminLayout: React.FC = () => {
 
   useEffect(() => {
     const loadUser = async () => {
-      const currentUser = await getCurrentUser();
-      if (!currentUser) {
+      try {
+        const currentUser = await getCurrentUser();
+        if (!currentUser) {
+          navigate('/admin-login');
+          return;
+        }
+        setUser(currentUser);
+      } catch (error) {
+        console.error('Error loading user:', error);
         navigate('/admin-login');
-        return;
       }
-      setUser(currentUser);
     };
     loadUser();
   }, [navigate]);
