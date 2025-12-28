@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Plus, Edit2, Trash2, Save, X, Award, DollarSign, Users, Zap } from 'lucide-react';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import type { EnterprisePlan, PlanLevel } from '../../../lib/partner-portal-types';
+import { normalizeArray, normalizeEnterprisePlan } from '../../../lib/data-validators';
+import { logAdminError } from '../../../lib/admin-error-logger';
 
 const EnterprisePlansPage: React.FC = () => {
   const [plans, setPlans] = useState<EnterprisePlan[]>([]);
@@ -25,9 +27,27 @@ const EnterprisePlansPage: React.FC = () => {
     is_active: true,
   });
 
+  const loadPlans = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const rawData = await partnerPortalApi.enterprisePlans.getAll();
+      const normalizedPlans = normalizeArray(rawData, normalizeEnterprisePlan);
+      setPlans(normalizedPlans);
+    } catch (err) {
+      const errorId = logAdminError(err as Error, {
+        route: '/admin/partner-portal/enterprise-plans',
+        action: 'loadPlans',
+      });
+      setError(`Failed to load enterprise plans (Error ID: ${errorId})`);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     loadPlans();
-  }, []);
+  }, [loadPlans]);
 
   useEffect(() => {
     if (success || error) {
@@ -39,20 +59,7 @@ const EnterprisePlansPage: React.FC = () => {
     }
   }, [success, error]);
 
-  const loadPlans = async () => {
-    try {
-      setLoading(true);
-      const data = await partnerPortalApi.enterprisePlans.getAll();
-      setPlans(data);
-    } catch (err) {
-      console.error('Error loading plans:', err);
-      setError('Failed to load enterprise plans');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleCreatePlan = async (e: React.FormEvent) => {
+  const handleCreatePlan = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await partnerPortalApi.enterprisePlans.create(newPlan);
@@ -73,12 +80,15 @@ const EnterprisePlansPage: React.FC = () => {
       setSuccess('Plan created successfully');
       await loadPlans();
     } catch (err) {
-      console.error('Error creating plan:', err);
-      setError('Failed to create plan');
+      const errorId = logAdminError(err as Error, {
+        route: '/admin/partner-portal/enterprise-plans',
+        action: 'createPlan',
+      });
+      setError(`Failed to create plan (Error ID: ${errorId})`);
     }
-  };
+  }, [newPlan, loadPlans]);
 
-  const handleUpdatePlan = async (e: React.FormEvent) => {
+  const handleUpdatePlan = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingPlan) return;
 
@@ -89,12 +99,15 @@ const EnterprisePlansPage: React.FC = () => {
       setSuccess('Plan updated successfully');
       await loadPlans();
     } catch (err) {
-      console.error('Error updating plan:', err);
-      setError('Failed to update plan');
+      const errorId = logAdminError(err as Error, {
+        route: '/admin/partner-portal/enterprise-plans',
+        action: 'updatePlan',
+      });
+      setError(`Failed to update plan (Error ID: ${errorId})`);
     }
-  };
+  }, [editingPlan, loadPlans]);
 
-  const handleDeletePlan = async (planId: string) => {
+  const handleDeletePlan = useCallback(async (planId: string) => {
     if (!confirm('Are you sure you want to delete this plan?')) return;
 
     try {
@@ -102,12 +115,15 @@ const EnterprisePlansPage: React.FC = () => {
       setSuccess('Plan deleted successfully');
       await loadPlans();
     } catch (err) {
-      console.error('Error deleting plan:', err);
-      setError('Failed to delete plan');
+      const errorId = logAdminError(err as Error, {
+        route: '/admin/partner-portal/enterprise-plans',
+        action: 'deletePlan',
+      });
+      setError(`Failed to delete plan (Error ID: ${errorId})`);
     }
-  };
+  }, [loadPlans]);
 
-  const getPlanLevelColor = (level: PlanLevel) => {
+  const getPlanLevelColor = useMemo(() => (level: PlanLevel) => {
     switch (level) {
       case 'starter':
         return 'bg-green-100 text-green-800 border-green-300';
@@ -118,15 +134,15 @@ const EnterprisePlansPage: React.FC = () => {
       case 'custom':
         return 'bg-orange-100 text-orange-800 border-orange-300';
     }
-  };
+  }, []);
 
-  const formatCurrency = (amount: number) => {
+  const formatCurrency = useMemo(() => (amount: number) => {
     return new Intl.NumberFormat('sv-SE', {
       style: 'currency',
       currency: 'SEK',
       minimumFractionDigits: 0,
     }).format(amount);
-  };
+  }, []);
 
   if (loading) {
     return (

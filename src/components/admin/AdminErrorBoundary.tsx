@@ -1,6 +1,7 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import { ADMIN_ROUTES } from '../../lib/admin-routes';
+import { logAdminError } from '../../lib/admin-error-logger';
 
 interface Props {
   children: ReactNode;
@@ -11,6 +12,7 @@ interface State {
   error: Error | null;
   errorInfo: ErrorInfo | null;
   route: string;
+  errorId: string | null;
 }
 
 class AdminErrorBoundary extends Component<Props, State> {
@@ -21,6 +23,7 @@ class AdminErrorBoundary extends Component<Props, State> {
       error: null,
       errorInfo: null,
       route: window.location.pathname,
+      errorId: null,
     };
   }
 
@@ -33,15 +36,16 @@ class AdminErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Admin Error Boundary caught an error:');
-    console.error('Route:', window.location.pathname);
-    console.error('Error:', error);
-    console.error('Error Info:', errorInfo);
+    const errorId = logAdminError(error, {
+      route: window.location.pathname,
+      componentStack: errorInfo.componentStack,
+    });
 
     this.setState({
       error,
       errorInfo,
       route: window.location.pathname,
+      errorId,
     });
   }
 
@@ -78,6 +82,14 @@ class AdminErrorBoundary extends Component<Props, State> {
                   Error Details:
                 </h2>
                 <div className="space-y-2">
+                  {this.state.errorId && (
+                    <div className="text-sm">
+                      <span className="font-medium text-red-900">Error ID:</span>
+                      <span className="ml-2 text-red-700 font-mono font-bold">
+                        {this.state.errorId}
+                      </span>
+                    </div>
+                  )}
                   <div className="text-sm">
                     <span className="font-medium text-red-900">Route:</span>
                     <span className="ml-2 text-red-700 font-mono">
@@ -127,8 +139,8 @@ class AdminErrorBoundary extends Component<Props, State> {
 
               <div className="mt-6 pt-6 border-t border-gray-200">
                 <p className="text-sm text-gray-600">
-                  If this error persists, please contact support with the error
-                  details shown above.
+                  If this error persists, please contact support and include the{' '}
+                  <strong>Error ID</strong> shown above for faster resolution.
                 </p>
               </div>
             </div>
