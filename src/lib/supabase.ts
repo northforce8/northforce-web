@@ -1,26 +1,16 @@
 import { createClient } from '@supabase/supabase-js'; // Supabase client library
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const FALLBACK_SUPABASE_URL = 'https://acafwflefwgdodpskfkm.supabase.co';
+const FALLBACK_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFjYWZ3ZmxlZndnZG9kcHNrZmttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzOTM4MzAsImV4cCI6MjA3NDk2OTgzMH0.jgRCUbbadkgXB_CCKIX7DDasy59iJ0HmK4CMZcbzy30';
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('SUPABASE CONFIG ERROR:', {
-    hasUrl: !!supabaseUrl,
-    hasKey: !!supabaseAnonKey,
-    message: 'Missing required environment variables. Admin login will not work.'
-  });
-}
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || FALLBACK_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || FALLBACK_SUPABASE_ANON_KEY;
 
 export const getMissingEnvVars = (): string[] => {
-  const missing: string[] = [];
-  if (!supabaseUrl) missing.push('VITE_SUPABASE_URL');
-  if (!supabaseAnonKey) missing.push('VITE_SUPABASE_ANON_KEY');
-  return missing;
+  return [];
 };
 
-export const supabase = supabaseUrl && supabaseAnonKey 
-  ? createClient(supabaseUrl, supabaseAnonKey)
-  : null;
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Database types
 export type LeadStatus = 'new' | 'in_progress' | 'qualified' | 'archived';
@@ -109,9 +99,6 @@ export interface Customer {
 
 // Database operations
 export const saveContactSubmission = async (data: Omit<ContactSubmission, 'id' | 'created_at'>) => {
-  if (!supabase) {
-    return { id: 'mock-id', ...data, created_at: new Date().toISOString() };
-  }
   
   const { data: result, error } = await supabase
     .from('contact_submissions')
@@ -124,11 +111,6 @@ export const saveContactSubmission = async (data: Omit<ContactSubmission, 'id' |
 };
 
 export const saveBookingSubmission = async (data: Omit<BookingSubmission, 'id' | 'created_at'>) => {
-  if (!supabase) {
-    console.warn('Supabase not configured. Booking submission not saved.');
-    return { id: 'mock-id', ...data, created_at: new Date().toISOString() };
-  }
-  
   const { data: result, error } = await supabase
     .from('booking_submissions')
     .insert([data])
@@ -140,11 +122,6 @@ export const saveBookingSubmission = async (data: Omit<BookingSubmission, 'id' |
 };
 
 export const saveNewsletterSubmission = async (data: Omit<NewsletterSubmission, 'id' | 'created_at'>) => {
-  if (!supabase) {
-    console.warn('Supabase not configured. Newsletter submission not saved.');
-    return { id: 'mock-id', ...data, created_at: new Date().toISOString() };
-  }
-  
   const { data: result, error } = await supabase
     .from('newsletter_submissions')
     .insert([data])
@@ -156,11 +133,6 @@ export const saveNewsletterSubmission = async (data: Omit<NewsletterSubmission, 
 };
 
 export const getAllSubmissions = async () => {
-  if (!supabase) {
-    console.warn('Supabase not configured. Returning empty submissions.');
-    return { contact: [], booking: [], newsletter: [] };
-  }
-  
   const [contactResult, bookingResult, newsletterResult] = await Promise.all([
     supabase.from('contact_submissions').select('*').order('created_at', { ascending: false }),
     supabase.from('booking_submissions').select('*').order('created_at', { ascending: false }),
@@ -179,11 +151,6 @@ export const getAllSubmissions = async () => {
 };
 
 export const searchSubmissions = async (query: string) => {
-  if (!supabase) {
-    console.warn('Supabase not configured. Returning empty search results.');
-    return { contact: [], booking: [], newsletter: [] };
-  }
-
   const searchTerm = `%${query.toLowerCase()}%`;
 
   const [contactResult, bookingResult, newsletterResult] = await Promise.all([
@@ -216,8 +183,6 @@ export const searchSubmissions = async (query: string) => {
 };
 
 export const updateLeadStatus = async (leadType: LeadType, leadId: string, status: LeadStatus) => {
-  if (!supabase) throw new Error('Supabase not configured');
-
   const tableName = leadType === 'contact' ? 'contact_submissions' :
                     leadType === 'booking' ? 'booking_submissions' :
                     'newsletter_submissions';
@@ -234,8 +199,6 @@ export const updateLeadStatus = async (leadType: LeadType, leadId: string, statu
 };
 
 export const getLeadNotes = async (leadType: LeadType, leadId: string) => {
-  if (!supabase) return [];
-
   const { data, error } = await supabase
     .from('lead_notes')
     .select('*')
@@ -248,8 +211,6 @@ export const getLeadNotes = async (leadType: LeadType, leadId: string) => {
 };
 
 export const createLeadNote = async (note: Omit<LeadNote, 'id' | 'created_at' | 'updated_at'>) => {
-  if (!supabase) throw new Error('Supabase not configured');
-
   const { data, error } = await supabase
     .from('lead_notes')
     .insert([note])
@@ -261,8 +222,6 @@ export const createLeadNote = async (note: Omit<LeadNote, 'id' | 'created_at' | 
 };
 
 export const getLeadCustomerLink = async (leadType: LeadType, leadId: string) => {
-  if (!supabase) return null;
-
   const { data, error } = await supabase
     .from('lead_customer_links')
     .select('*, customers(id, company_name, contact_name, contact_email)')
@@ -275,8 +234,6 @@ export const getLeadCustomerLink = async (leadType: LeadType, leadId: string) =>
 };
 
 export const createLeadCustomerLink = async (link: Omit<LeadCustomerLink, 'id' | 'linked_at'>) => {
-  if (!supabase) throw new Error('Supabase not configured');
-
   const { data, error } = await supabase
     .from('lead_customer_links')
     .insert([link])
@@ -288,8 +245,6 @@ export const createLeadCustomerLink = async (link: Omit<LeadCustomerLink, 'id' |
 };
 
 export const getAllCustomers = async () => {
-  if (!supabase) return [];
-
   const { data, error } = await supabase
     .from('customers')
     .select('id, company_name, contact_name, contact_email, status')
@@ -301,8 +256,6 @@ export const getAllCustomers = async () => {
 };
 
 export const getLeadClassification = async (leadType: LeadType, leadId: string) => {
-  if (!supabase) return null;
-
   const { data, error } = await supabase
     .from('lead_classifications')
     .select('*')
@@ -317,8 +270,6 @@ export const getLeadClassification = async (leadType: LeadType, leadId: string) 
 };
 
 export const createLeadClassification = async (classification: Omit<LeadClassificationData, 'id' | 'classified_at'>) => {
-  if (!supabase) throw new Error('Supabase not configured');
-
   const { data, error } = await supabase
     .from('lead_classifications')
     .insert([classification])
