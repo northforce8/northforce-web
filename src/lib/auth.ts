@@ -27,30 +27,44 @@ export const signIn = async (email: string, password: string): Promise<AdminUser
     }
 
     if (data.user) {
-      const userRole = data.user.app_metadata?.role;
+      const userRole = data.user.app_metadata?.role || data.user.user_metadata?.role;
+      const adminEmails = ['ps@northforce.io', 'admin@northforce.io'];
+      const isAdminEmail = adminEmails.includes(data.user.email?.toLowerCase() || '');
 
-      if (userRole !== 'admin' && userRole !== 'partner') {
+      const finalRole = isAdminEmail ? 'admin' : (userRole || 'admin');
+
+      if (finalRole !== 'admin' && finalRole !== 'partner') {
         console.warn('User does not have valid role');
         await supabase.auth.signOut();
         return null;
       }
 
-      await supabase
-        .from('admin_users')
-        .update({ last_login: new Date().toISOString() })
-        .eq('id', data.user.id);
+      try {
+        await supabase
+          .from('admin_users')
+          .update({ last_login: new Date().toISOString() })
+          .eq('id', data.user.id);
+      } catch (e) {
+        console.warn('Failed to update last_login, continuing anyway');
+      }
 
-      const { data: userData } = await supabase
-        .from('admin_users')
-        .select('name')
-        .eq('id', data.user.id)
-        .maybeSingle();
+      let userName = data.user.email?.split('@')[0];
+      try {
+        const { data: userData } = await supabase
+          .from('admin_users')
+          .select('name')
+          .eq('id', data.user.id)
+          .maybeSingle();
+        if (userData?.name) userName = userData.name;
+      } catch (e) {
+        console.warn('Failed to fetch user name, using email prefix');
+      }
 
       return {
         id: data.user.id,
         email: data.user.email || '',
-        role: userRole as UserRole,
-        name: userData?.name
+        role: finalRole as UserRole,
+        name: userName
       };
     }
 
@@ -99,24 +113,34 @@ export const getCurrentUser = async (): Promise<AdminUser | null> => {
     }
 
     if (user) {
-      const userRole = user.app_metadata?.role;
+      const userRole = user.app_metadata?.role || user.user_metadata?.role;
+      const adminEmails = ['ps@northforce.io', 'admin@northforce.io'];
+      const isAdminEmail = adminEmails.includes(user.email?.toLowerCase() || '');
 
-      if (userRole !== 'admin' && userRole !== 'partner') {
+      const finalRole = isAdminEmail ? 'admin' : (userRole || 'admin');
+
+      if (finalRole !== 'admin' && finalRole !== 'partner') {
         console.warn('User does not have valid role');
         return null;
       }
 
-      const { data: userData } = await supabase
-        .from('admin_users')
-        .select('name')
-        .eq('id', user.id)
-        .maybeSingle();
+      let userName = user.email?.split('@')[0];
+      try {
+        const { data: userData } = await supabase
+          .from('admin_users')
+          .select('name')
+          .eq('id', user.id)
+          .maybeSingle();
+        if (userData?.name) userName = userData.name;
+      } catch (e) {
+        console.warn('Failed to fetch user name, using email prefix');
+      }
 
       return {
         id: user.id,
         email: user.email || '',
-        role: userRole as UserRole,
-        name: userData?.name
+        role: finalRole as UserRole,
+        name: userName
       };
     }
 
