@@ -201,9 +201,9 @@ const EnterpriseDashboard: React.FC = () => {
               <div className="text-sm font-medium text-gray-600">Total Credits</div>
               <Coins className="w-5 h-5 text-primary-600" />
             </div>
-            <div className="text-3xl font-bold text-gray-900">{totalCreditsCount.toFixed(0)}</div>
+            <div className="text-3xl font-bold text-gray-900">{safeNumber(totalCreditsCount, 0).toFixed(0)}</div>
             <div className="text-xs text-gray-500 mt-1">
-              {totalCreditsAllocation > 0 ? `${(safeDivide(totalCreditsCount, totalCreditsAllocation, 0) * 100).toFixed(1)}% of ${totalCreditsAllocation.toFixed(0)} allocated` : 'Credits remaining'}
+              {totalCreditsAllocation > 0 ? `${(safeDivide(totalCreditsCount, totalCreditsAllocation, 0) * 100).toFixed(1)}% of ${safeNumber(totalCreditsAllocation, 0).toFixed(0)} allocated` : 'Credits remaining'}
             </div>
             <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
               <div
@@ -225,11 +225,11 @@ const EnterpriseDashboard: React.FC = () => {
             <div className="space-y-1">
               <div className="flex items-center justify-between">
                 <span className="text-xs text-gray-600">Cost:</span>
-                <span className="text-sm font-semibold text-red-600">{(totalInternalCost / 1000).toFixed(0)}k</span>
+                <span className="text-sm font-semibold text-red-600">{(safeNumber(totalInternalCost, 0) / 1000).toFixed(0)}k</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-xs text-gray-600">Credits:</span>
-                <span className="text-sm font-semibold text-green-600">{(totalCreditsConsumedValue / 1000).toFixed(0)}k</span>
+                <span className="text-sm font-semibold text-green-600">{(safeNumber(totalCreditsConsumedValue, 0) / 1000).toFixed(0)}k</span>
               </div>
               <div className="flex items-center justify-between pt-1 border-t border-gray-200">
                 <span className="text-xs font-medium text-gray-700">Margin:</span>
@@ -247,7 +247,7 @@ const EnterpriseDashboard: React.FC = () => {
               <div className="text-sm font-medium text-gray-600">Total MRR</div>
               <DollarSign className="w-5 h-5 text-accent-emerald" />
             </div>
-            <div className="text-3xl font-bold text-gray-900">{(totalMRR / 1000).toFixed(0)}k</div>
+            <div className="text-3xl font-bold text-gray-900">{(safeNumber(totalMRR, 0) / 1000).toFixed(0)}k</div>
             <div className="text-xs text-gray-500 mt-1">Monthly Recurring Revenue (SEK)</div>
           </div>
 
@@ -329,15 +329,15 @@ const EnterpriseDashboard: React.FC = () => {
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Current Balance:</span>
-                      <span className="font-semibold text-gray-900">{forecast.current_balance.toFixed(1)}</span>
+                      <span className="font-semibold text-gray-900">{safeNumber(forecast.current_balance, 0).toFixed(1)}</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Projected Usage:</span>
-                      <span className="font-semibold text-gray-900">{forecast.projected_usage.toFixed(1)}</span>
+                      <span className="font-semibold text-gray-900">{safeNumber(forecast.projected_usage, 0).toFixed(1)}</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">End Balance:</span>
-                      <span className="font-semibold text-gray-900">{forecast.projected_end_balance.toFixed(1)}</span>
+                      <span className="font-semibold text-gray-900">{safeNumber(forecast.projected_end_balance, 0).toFixed(1)}</span>
                     </div>
                     {forecast.days_until_depletion && (
                       <div className="mt-3 pt-3 border-t border-gray-200">
@@ -493,14 +493,14 @@ const EnterpriseDashboard: React.FC = () => {
                         <div className="flex items-center gap-2">
                           <div className="text-right">
                             <div className="text-sm font-semibold text-gray-900">
-                              {customer.credits_balance?.toFixed(0) || 0} credits
+                              {safeNumber(customer.credits_balance, 0).toFixed(0)} credits
                             </div>
                             <div className={`text-xs font-medium ${
                               creditsPercent < 20 ? 'text-red-600' :
                               creditsPercent < 40 ? 'text-yellow-600' :
                               'text-green-600'
                             }`}>
-                              {creditsPercent.toFixed(0)}%
+                              {safeNumber(creditsPercent, 0).toFixed(0)}%
                             </div>
                           </div>
                         </div>
@@ -509,7 +509,7 @@ const EnterpriseDashboard: React.FC = () => {
                         <span>{customer.industry || '—'}</span>
                         <span className="flex items-center gap-1">
                           <TrendingDown className="w-4 h-4" />
-                          <span className="font-medium">{dailyBurnRate?.toFixed(1) || 0}</span> credits/day
+                          <span className="font-medium">{safeNumber(dailyBurnRate, 0).toFixed(1)}</span> credits/day
                         </span>
                         <span className={`font-medium ${daysRemaining < 30 ? 'text-red-600' : 'text-gray-600'}`}>
                           {daysRemaining < 999 ? `${daysRemaining} days left` : '∞ days'}
