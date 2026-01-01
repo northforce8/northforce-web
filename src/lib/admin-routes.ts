@@ -89,6 +89,7 @@ export const ADMIN_NAV_LABELS = {
   LEADS_MANAGEMENT: 'All Leads',
   SETTINGS: 'Settings',
   HEALTH: 'Health',
+  WEBSITE: 'Website',
 } as const;
 
 // Type-safe navigation items
@@ -97,6 +98,7 @@ export interface AdminNavItem {
   path: string;
   icon?: string;
   roles: string[];
+  external?: boolean;
 }
 
 export interface AdminNavGroup {
@@ -159,6 +161,7 @@ export const ADMIN_NAVIGATION_GROUPED: AdminNavGroup[] = [
     items: [
       { label: ADMIN_NAV_LABELS.SETTINGS, path: ADMIN_ROUTES.SETTINGS, roles: ['admin'] },
       { label: ADMIN_NAV_LABELS.SUPPORT, path: ADMIN_ROUTES.SUPPORT, roles: ['admin'] },
+      { label: ADMIN_NAV_LABELS.WEBSITE, path: 'https://northforce.io', roles: ['admin'], external: true },
     ]
   },
 ];
