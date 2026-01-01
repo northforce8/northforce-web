@@ -105,19 +105,27 @@ export default function ContractDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-gray-500">Loading contract...</div>
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading contract...</p>
+        </div>
       </div>
     );
   }
 
   if (!contract) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <p className="text-gray-500">Contract not found</p>
-          <Link to="/admin/partner-portal/contracts" className="text-blue-600 hover:text-blue-900 mt-2 inline-block">
-            ← Back to contracts
+      <div className="max-w-7xl mx-auto p-6">
+        <div className="text-center py-12">
+          <h3 className="text-lg font-medium text-gray-900 mb-2">Contract Not Found</h3>
+          <p className="text-gray-600 mb-6">The contract you're looking for doesn't exist.</p>
+          <Link
+            to="/admin/partner-portal/contracts"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Contracts
           </Link>
         </div>
       </div>
@@ -130,15 +138,14 @@ export default function ContractDetailPage() {
   const canActivate = contract.status === 'signed';
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="max-w-7xl mx-auto p-6">
+      <div className="mb-8 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link
             to="/admin/partner-portal/contracts"
-            className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700"
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
-            <ArrowLeft className="h-4 w-4 mr-1" />
-            Back to contracts
+            <ArrowLeft className="h-5 w-5 text-gray-600" />
           </Link>
           <h1 className="text-2xl font-bold text-gray-900">{contract.contract_number}</h1>
           <ContractStatusBadge status={contract.status} />
@@ -209,9 +216,8 @@ export default function ContractDetailPage() {
         </div>
       </div>
 
-      {/* AI Contract Validation - Compliance & Risk Check */}
       {(canEdit || canSend || canSign || canActivate) && (
-        <div className="mb-6">
+        <div className="mb-8">
           <ContractValidationAI contractId={contractId!} />
         </div>
       )}
@@ -219,51 +225,51 @@ export default function ContractDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Contract Information</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-6">Contract Information</h2>
             <dl className="grid grid-cols-2 gap-4">
               <div>
-                <dt className="text-sm font-medium text-gray-500">Contract Type</dt>
+                <dt className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Contract Type</dt>
                 <dd className="mt-1 text-sm text-gray-900 uppercase">{contract.contract_type}</dd>
               </div>
               <div>
-                <dt className="text-sm font-medium text-gray-500">Version</dt>
+                <dt className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Version</dt>
                 <dd className="mt-1 text-sm text-gray-900">{contract.version}</dd>
               </div>
               <div>
-                <dt className="text-sm font-medium text-gray-500">Start Date</dt>
+                <dt className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Start Date</dt>
                 <dd className="mt-1 text-sm text-gray-900">
                   {new Date(contract.start_date).toLocaleDateString('sv-SE')}
                 </dd>
               </div>
               <div>
-                <dt className="text-sm font-medium text-gray-500">End Date</dt>
+                <dt className="text-xs font-semibold text-gray-500 uppercase tracking-wide">End Date</dt>
                 <dd className="mt-1 text-sm text-gray-900">
                   {contract.end_date ? new Date(contract.end_date).toLocaleDateString('sv-SE') : 'No end date'}
                 </dd>
               </div>
               {contract.value && (
                 <div>
-                  <dt className="text-sm font-medium text-gray-500">Contract Value</dt>
-                  <dd className="mt-1 text-sm font-medium text-gray-900">
+                  <dt className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Contract Value</dt>
+                  <dd className="mt-1 text-sm font-semibold text-gray-900">
                     <CurrencyDisplay amount={contract.value} currency={contract.currency_code || 'SEK'} />
                   </dd>
                 </div>
               )}
               {contract.auto_renew !== null && (
                 <div>
-                  <dt className="text-sm font-medium text-gray-500">Auto-Renew</dt>
+                  <dt className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Auto-Renew</dt>
                   <dd className="mt-1 text-sm text-gray-900">{contract.auto_renew ? 'Yes' : 'No'}</dd>
                 </div>
               )}
               {contract.notice_period_days && (
                 <div>
-                  <dt className="text-sm font-medium text-gray-500">Notice Period</dt>
+                  <dt className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Notice Period</dt>
                   <dd className="mt-1 text-sm text-gray-900">{contract.notice_period_days} days</dd>
                 </div>
               )}
               {contract.template && (
                 <div>
-                  <dt className="text-sm font-medium text-gray-500">Based on Template</dt>
+                  <dt className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Based on Template</dt>
                   <dd className="mt-1 text-sm text-gray-900">{contract.template.template_name}</dd>
                 </div>
               )}
@@ -272,7 +278,7 @@ export default function ContractDetailPage() {
 
           {contract.content && (
             <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Contract Content</h2>
+              <h2 className="text-lg font-semibold text-gray-900 mb-6">Contract Content</h2>
               <div className="prose max-w-none text-sm text-gray-700 whitespace-pre-wrap">
                 {contract.content}
               </div>
@@ -281,7 +287,7 @@ export default function ContractDetailPage() {
 
           {contract.notes && (
             <div className="bg-gray-50 rounded-lg border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Notes</h2>
+              <h2 className="text-lg font-semibold text-gray-900 mb-6">Notes</h2>
               <p className="text-sm text-gray-700">{contract.notes}</p>
             </div>
           )}
@@ -289,37 +295,37 @@ export default function ContractDetailPage() {
 
         <div className="space-y-6">
           <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Customer</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-6">Customer</h2>
             <Link
               to={`/admin/partner-portal/customers/${contract.customer.id}`}
               className="block hover:bg-gray-50 -m-2 p-2 rounded"
             >
-              <div className="font-medium text-gray-900">{contract.customer.company_name}</div>
+              <div className="font-semibold text-gray-900">{contract.customer.company_name}</div>
               {contract.customer.org_number && (
-                <div className="text-sm text-gray-500 mt-1">Org: {contract.customer.org_number}</div>
+                <div className="text-sm text-gray-500 mt-1 font-medium">Org: {contract.customer.org_number}</div>
               )}
               {contract.customer.contact_email && (
-                <div className="text-sm text-gray-500 mt-1">{contract.customer.contact_email}</div>
+                <div className="text-sm text-gray-500 mt-1 font-medium">{contract.customer.contact_email}</div>
               )}
             </Link>
           </div>
 
           <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Timeline</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-6">Timeline</h2>
             <div className="space-y-3">
               <div>
-                <div className="text-xs text-gray-500">Created</div>
+                <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Created</div>
                 <div className="text-sm text-gray-900">
                   {new Date(contract.created_at).toLocaleDateString('sv-SE')}
                 </div>
                 {contract.created_by_user && (
-                  <div className="text-xs text-gray-500">{contract.created_by_user.email}</div>
+                  <div className="text-xs text-gray-500 mt-1 font-medium">{contract.created_by_user.email}</div>
                 )}
               </div>
 
               {contract.sent_date && (
                 <div className="pt-2 border-t border-gray-100">
-                  <div className="text-xs text-gray-500">Sent</div>
+                  <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Sent</div>
                   <div className="text-sm text-gray-900">
                     {new Date(contract.sent_date).toLocaleDateString('sv-SE')}
                   </div>
@@ -328,12 +334,12 @@ export default function ContractDetailPage() {
 
               {contract.signed_date && (
                 <div className="pt-2 border-t border-gray-100">
-                  <div className="text-xs text-gray-500">Signed</div>
+                  <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Signed</div>
                   <div className="text-sm text-gray-900">
                     {new Date(contract.signed_date).toLocaleDateString('sv-SE')}
                   </div>
                   {contract.customer_signatory_name && (
-                    <div className="text-xs text-gray-500 mt-1">
+                    <div className="text-xs text-gray-500 mt-1 font-medium">
                       by {contract.customer_signatory_name}
                     </div>
                   )}
@@ -343,9 +349,9 @@ export default function ContractDetailPage() {
           </div>
 
           {contract.status === 'active' && contract.end_date && (
-            <div className="bg-blue-50 rounded-lg border border-blue-200 p-4">
-              <h3 className="text-sm font-medium text-blue-900 mb-2">Contract Period</h3>
-              <div className="text-sm text-blue-700">
+            <div className="bg-blue-50 rounded-lg border border-blue-200 p-6">
+              <h3 className="text-sm font-semibold text-blue-900 mb-2">Contract Period</h3>
+              <div className="text-sm text-blue-700 font-medium">
                 {(() => {
                   const today = new Date();
                   const endDate = new Date(contract.end_date);
@@ -368,8 +374,8 @@ export default function ContractDetailPage() {
       </div>
 
       {showVersions && versions.length > 0 && (
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <div className="flex items-center justify-between mb-4">
+        <div className="bg-white rounded-lg border border-gray-200 p-6 mt-6">
+          <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-semibold text-gray-900 flex items-center">
               <GitBranch className="h-5 w-5 mr-2 text-gray-500" />
               Version History
@@ -384,33 +390,33 @@ export default function ContractDetailPage() {
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                         Version {version.version_number}
                       </span>
-                      <span className="text-sm text-gray-500">
+                      <span className="text-sm text-gray-500 font-medium">
                         {new Date(version.created_at).toLocaleDateString('sv-SE')} at{' '}
                         {new Date(version.created_at).toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' })}
                       </span>
                       {version.created_by_user && (
-                        <span className="text-sm text-gray-500">
+                        <span className="text-sm text-gray-500 font-medium">
                           by {version.created_by_user.name || version.created_by_user.email}
                         </span>
                       )}
                     </div>
                     {version.change_summary && (
-                      <p className="text-sm text-gray-700 mb-1">{version.change_summary}</p>
+                      <p className="text-sm text-gray-700 font-medium mb-1">{version.change_summary}</p>
                     )}
                     {version.change_reason && (
-                      <p className="text-xs text-gray-500">{version.change_reason}</p>
+                      <p className="text-xs text-gray-500 font-medium">{version.change_reason}</p>
                     )}
                     <div className="mt-2 grid grid-cols-3 gap-4 text-xs text-gray-600">
                       <div>
-                        <span className="font-medium">Status:</span> {version.status}
+                        <span className="font-semibold">Status:</span> <span className="font-medium">{version.status}</span>
                       </div>
                       <div>
-                        <span className="font-medium">Start:</span>{' '}
-                        {new Date(version.start_date).toLocaleDateString('sv-SE')}
+                        <span className="font-semibold">Start:</span>{' '}
+                        <span className="font-medium">{new Date(version.start_date).toLocaleDateString('sv-SE')}</span>
                       </div>
                       {version.contract_value && (
                         <div>
-                          <span className="font-medium">Value:</span>{' '}
+                          <span className="font-semibold">Value:</span>{' '}
                           <CurrencyDisplay amount={version.contract_value} currency={version.currency_code || 'SEK'} />
                         </div>
                       )}
