@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FileSignature, Plus, Search } from 'lucide-react';
+import { FileSignature, Plus, Search, FileText } from 'lucide-react';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { ContractStatusBadge } from '../../../components/admin/ContractStatusBadge';
 import { CurrencyDisplay } from '../../../components/admin/CurrencyDisplay';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { useToast } from '../../../contexts/ToastContext';
+import { logAdminError } from '../../../lib/admin-error-logger';
+import { safeString } from '../../../lib/data-validators';
 
 export default function ContractsPage() {
   const [contracts, setContracts] = useState<any[]>([]);
@@ -34,11 +36,24 @@ export default function ContractsPage() {
         partnerPortalApi.contractTemplates.getAll(),
       ]);
 
-      setContracts(contractsData);
-      setCustomers(customersData);
-      setTemplates(templatesData);
+      const safeContracts = (contractsData || []).map(c => ({
+        ...c,
+        contract_number: safeString(c.contract_number, '—'),
+        title: safeString(c.title, '—'),
+        contract_type: safeString(c.contract_type, 'other'),
+        start_date: c.start_date || new Date().toISOString(),
+        status: safeString(c.status, 'draft'),
+      }));
+
+      setContracts(safeContracts);
+      setCustomers(customersData || []);
+      setTemplates(templatesData || []);
     } catch (error) {
-      console.error('Error loading data:', error);
+      const errorId = logAdminError(error as Error, {
+        route: '/admin/partner-portal/contracts',
+        action: 'loadData',
+      });
+      console.error(`[${errorId}] Error loading data:`, error);
     } finally {
       setLoading(false);
     }
@@ -190,18 +205,18 @@ export default function ContractsPage() {
                         to={`/admin/partner-portal/contracts/${contract.id}`}
                         className="text-sm font-medium text-blue-600 hover:text-blue-900"
                       >
-                        {contract.contract_number}
+                        {contract.contract_number || '—'}
                       </Link>
-                      <div className="text-xs text-gray-500 mt-1">{contract.title}</div>
+                      <div className="text-xs text-gray-500 mt-1">{contract.title || '—'}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{contract.customer?.company_name}</div>
+                      <div className="text-sm text-gray-900">{contract.customer?.company_name || '—'}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-sm text-gray-900 uppercase">{contract.contract_type}</span>
+                      <span className="text-sm text-gray-900 uppercase">{(contract.contract_type || 'other').toUpperCase()}</span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(contract.start_date).toLocaleDateString('sv-SE')}
+                      {contract.start_date ? new Date(contract.start_date).toLocaleDateString('sv-SE') : '—'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {contract.end_date ? new Date(contract.end_date).toLocaleDateString('sv-SE') : '—'}
@@ -333,7 +348,7 @@ function CreateContractModal({ customers, templates, onClose, onSuccess }: any) 
             >
               <option value="">Select customer...</option>
               {customers.map((c: any) => (
-                <option key={c.id} value={c.id}>{c.company_name}</option>
+                <option key={c.id} value={c.id}>{c.company_name || 'Unknown'}</option>
               ))}
             </select>
           </div>
@@ -349,7 +364,7 @@ function CreateContractModal({ customers, templates, onClose, onSuccess }: any) 
               >
                 <option value="">Select template...</option>
                 {templates.map((t: any) => (
-                  <option key={t.id} value={t.id}>{t.template_name}</option>
+                  <option key={t.id} value={t.id}>{t.template_name || 'Unnamed Template'}</option>
                 ))}
               </select>
             </div>

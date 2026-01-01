@@ -5,6 +5,8 @@ import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { InvoiceStatusBadge } from '../../../components/admin/InvoiceStatusBadge';
 import { CurrencyDisplay } from '../../../components/admin/CurrencyDisplay';
 import { useToast } from '../../../contexts/ToastContext';
+import { logAdminError } from '../../../lib/admin-error-logger';
+import { safeString, safeNumber } from '../../../lib/data-validators';
 
 export default function InvoicesPage() {
   const [invoices, setInvoices] = useState<any[]>([]);
@@ -32,10 +34,24 @@ export default function InvoicesPage() {
         partnerPortalApi.customers.getAll(),
       ]);
 
-      setInvoices(invoicesData);
-      setCustomers(customersData);
+      const safeInvoices = (invoicesData || []).map(i => ({
+        ...i,
+        invoice_number: safeString(i.invoice_number, '—'),
+        total_amount: safeNumber(i.total_amount, 0),
+        status: safeString(i.status, 'draft'),
+        invoice_date: i.invoice_date || new Date().toISOString(),
+        due_date: i.due_date || new Date().toISOString(),
+        currency_code: safeString(i.currency_code, 'SEK'),
+      }));
+
+      setInvoices(safeInvoices);
+      setCustomers(customersData || []);
     } catch (error) {
-      console.error('Error loading data:', error);
+      const errorId = logAdminError(error as Error, {
+        route: '/admin/partner-portal/invoices',
+        action: 'loadData',
+      });
+      console.error(`[${errorId}] Error loading data:`, error);
     } finally {
       setLoading(false);
     }
@@ -159,7 +175,7 @@ export default function InvoicesPage() {
                 <option value="all">All Customers</option>
                 {customers.map((customer) => (
                   <option key={customer.id} value={customer.id}>
-                    {customer.company_name}
+                    {customer.company_name || 'Unknown'}
                   </option>
                 ))}
               </select>
@@ -220,17 +236,17 @@ export default function InvoicesPage() {
                         to={`/admin/partner-portal/invoices/${invoice.id}`}
                         className="text-sm font-medium text-blue-600 hover:text-blue-900"
                       >
-                        {invoice.invoice_number}
+                        {invoice.invoice_number || '—'}
                       </Link>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{invoice.customer?.company_name}</div>
+                      <div className="text-sm text-gray-900">{invoice.customer?.company_name || '—'}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(invoice.invoice_date).toLocaleDateString('sv-SE')}
+                      {invoice.invoice_date ? new Date(invoice.invoice_date).toLocaleDateString('sv-SE') : '—'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(invoice.due_date).toLocaleDateString('sv-SE')}
+                      {invoice.due_date ? new Date(invoice.due_date).toLocaleDateString('sv-SE') : '—'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       <CurrencyDisplay
@@ -336,7 +352,7 @@ function CreateInvoiceModal({ customers, onClose, onSuccess }: any) {
             >
               <option value="">Select customer...</option>
               {customers.map((c: any) => (
-                <option key={c.id} value={c.id}>{c.company_name}</option>
+                <option key={c.id} value={c.id}>{c.company_name || 'Unknown'}</option>
               ))}
             </select>
           </div>
@@ -445,7 +461,7 @@ function GenerateInvoiceModal({ customers, onClose, onSuccess }: any) {
             >
               <option value="">Select customer...</option>
               {customers.map((c: any) => (
-                <option key={c.id} value={c.id}>{c.company_name}</option>
+                <option key={c.id} value={c.id}>{c.company_name || 'Unknown'}</option>
               ))}
             </select>
           </div>

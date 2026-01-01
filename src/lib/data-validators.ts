@@ -112,6 +112,22 @@ export function normalizeProject(raw: unknown): Project {
   };
 }
 
+export function safeNumber(value: unknown, fallback: number = 0): number {
+  const num = Number(value);
+  return isNaN(num) || !isFinite(num) ? fallback : num;
+}
+
+export function safeString(value: unknown, fallback: string = ''): string {
+  if (value === null || value === undefined) return fallback;
+  return String(value);
+}
+
+export function safeDivide(numerator: number, denominator: number, fallback: number = 0): number {
+  if (denominator === 0 || !isFinite(denominator) || isNaN(denominator)) return fallback;
+  const result = numerator / denominator;
+  return isNaN(result) || !isFinite(result) ? fallback : result;
+}
+
 export function normalizeArray<T>(
   raw: unknown,
   normalizer: (item: unknown) => T

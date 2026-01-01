@@ -19,6 +19,8 @@ import CreditsDisplay from '../../../components/admin/CreditsDisplay';
 import RecommendationCard from '../../../components/admin/RecommendationCard';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { getCurrentUser } from '../../../lib/auth';
+import { logAdminError } from '../../../lib/admin-error-logger';
+import { safeNumber, safeDivide, safeString } from '../../../lib/data-validators';
 import type {
   Customer,
   Recommendation,
@@ -54,36 +56,48 @@ const EnterpriseDashboard: React.FC = () => {
       ]);
       const metricsData = null;
 
-      setCustomers(customersData);
+      const safeCustomers = (customersData || []).map(c => ({
+        ...c,
+        company_name: safeString(c.company_name, 'Unknown'),
+        industry: safeString(c.industry, '—'),
+        credits_balance: safeNumber(c.credits_balance, 0),
+        credits_monthly_allocation: safeNumber(c.credits_monthly_allocation, 0),
+        credits_consumed_this_month: safeNumber(c.credits_consumed_this_month, 0),
+        monthly_recurring_revenue: safeNumber(c.monthly_recurring_revenue, 0),
+        credits_price_per_credit: safeNumber(c.credits_price_per_credit, 1500),
+        delivery_status: safeString(c.delivery_status, 'on_track'),
+        strategic_status: safeString(c.strategic_status, 'on_track'),
+        commercial_status: safeString(c.commercial_status, 'on_track'),
+        collaboration_status: safeString(c.collaboration_status, 'good'),
+        impact_status: safeString(c.impact_status, 'on_track'),
+      }));
+
+      setCustomers(safeCustomers);
       setRecommendations(recommendationsData);
       setDashboardMetrics(metricsData);
 
-      const mrr = customersData.reduce((sum, c) => sum + (Number(c.monthly_recurring_revenue) || 0), 0);
+      const mrr = safeCustomers.reduce((sum, c) => sum + c.monthly_recurring_revenue, 0);
       setTotalMRR(mrr);
 
-      const creditsBalance = customersData.reduce((sum, c) => sum + (Number(c.credits_balance) || 0), 0);
-      const creditsAllocation = customersData.reduce((sum, c) => sum + (Number(c.credits_monthly_allocation) || 0), 0);
+      const creditsBalance = safeCustomers.reduce((sum, c) => sum + c.credits_balance, 0);
+      const creditsAllocation = safeCustomers.reduce((sum, c) => sum + c.credits_monthly_allocation, 0);
       setTotalCreditsCount(creditsBalance);
       setTotalCreditsAllocation(creditsAllocation);
 
-      const creditsValue = customersData.reduce((sum, c) => {
-        const balance = Number(c.credits_balance) || 0;
-        const pricePerCredit = Number(c.credits_price_per_credit) || 1500;
-        return sum + (balance * pricePerCredit);
+      const creditsValue = safeCustomers.reduce((sum, c) => {
+        return sum + (c.credits_balance * c.credits_price_per_credit);
       }, 0);
       setTotalCreditsValue(creditsValue);
 
-      const creditsConsumedValue = customersData.reduce((sum, c) => {
-        const consumed = Number(c.credits_consumed_this_month) || 0;
-        const pricePerCredit = Number(c.credits_price_per_credit) || 1500;
-        return sum + (consumed * pricePerCredit);
+      const creditsConsumedValue = safeCustomers.reduce((sum, c) => {
+        return sum + (c.credits_consumed_this_month * c.credits_price_per_credit);
       }, 0);
       setTotalCreditsConsumedValue(creditsConsumedValue);
 
       const monthStart = new Date();
       monthStart.setDate(1);
       const margins = await Promise.all(
-        customersData.slice(0, 10).map(c =>
+        safeCustomers.slice(0, 10).map(c =>
           partnerPortalApi.marginAnalysis.calculate(
             c.id,
             monthStart.toISOString().split('T')[0],
@@ -93,22 +107,26 @@ const EnterpriseDashboard: React.FC = () => {
       );
       const validMargins = margins.filter(m => m !== null);
       const avgMarginValue = validMargins.length > 0
-        ? validMargins.reduce((sum, m) => sum + (Number(m!.margin_percentage) || 0), 0) / validMargins.length
+        ? validMargins.reduce((sum, m) => sum + safeNumber(m!.margin_percentage, 0), 0) / validMargins.length
         : 0;
       setAvgMargin(avgMarginValue);
 
-      const totalInternalCostValue = validMargins.reduce((sum, m) => sum + (Number(m!.internal_cost) || 0), 0);
+      const totalInternalCostValue = validMargins.reduce((sum, m) => sum + safeNumber(m!.internal_cost, 0), 0);
       setTotalInternalCost(totalInternalCostValue);
 
       const forecastsData = await Promise.all(
-        customersData.slice(0, 10).map(c =>
+        safeCustomers.slice(0, 10).map(c =>
           partnerPortalApi.creditsForecast.generateForecast(c.id, 30).catch(() => null)
         )
       );
       const validForecasts = forecastsData.filter(f => f !== null) as CreditsForecast[];
       setForecasts(validForecasts);
     } catch (error) {
-      console.error('Error loading dashboard:', error);
+      const errorId = logAdminError(error as Error, {
+        route: '/admin/partner-portal/enterprise',
+        action: 'loadDashboard',
+      });
+      console.error(`[${errorId}] Error loading dashboard:`, error);
     } finally {
       setLoading(false);
     }
@@ -141,9 +159,9 @@ const EnterpriseDashboard: React.FC = () => {
   const getAlertsCount = () => {
     return {
       atRisk: customers.filter(c => c.delivery_status === 'at_risk' || c.delivery_status === 'delayed').length,
-      lowCredits: customers.filter(c => (c.credits_balance / c.credits_monthly_allocation) < 0.2).length,
+      lowCredits: customers.filter(c => safeDivide(c.credits_balance, c.credits_monthly_allocation, 1) < 0.2).length,
       blocked: customers.filter(c => c.collaboration_status === 'blockerad').length,
-      criticalRecommendations: recommendations.filter(r => r.priority === 'critical').length,
+      criticalRecommendations: recommendations.filter(r => r?.priority === 'critical').length,
     };
   };
 
@@ -185,16 +203,16 @@ const EnterpriseDashboard: React.FC = () => {
             </div>
             <div className="text-3xl font-bold text-gray-900">{totalCreditsCount.toFixed(0)}</div>
             <div className="text-xs text-gray-500 mt-1">
-              {totalCreditsAllocation > 0 ? `${((totalCreditsCount / totalCreditsAllocation) * 100).toFixed(1)}% of ${totalCreditsAllocation.toFixed(0)} allocated` : 'Credits remaining'}
+              {totalCreditsAllocation > 0 ? `${(safeDivide(totalCreditsCount, totalCreditsAllocation, 0) * 100).toFixed(1)}% of ${totalCreditsAllocation.toFixed(0)} allocated` : 'Credits remaining'}
             </div>
             <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
               <div
                 className={`h-2 rounded-full ${
-                  (totalCreditsCount / totalCreditsAllocation) * 100 < 20 ? 'bg-red-600' :
-                  (totalCreditsCount / totalCreditsAllocation) * 100 < 40 ? 'bg-yellow-600' :
+                  safeDivide(totalCreditsCount, totalCreditsAllocation, 0) * 100 < 20 ? 'bg-red-600' :
+                  safeDivide(totalCreditsCount, totalCreditsAllocation, 0) * 100 < 40 ? 'bg-yellow-600' :
                   'bg-green-600'
                 }`}
-                style={{ width: `${Math.min((totalCreditsCount / totalCreditsAllocation) * 100, 100)}%` }}
+                style={{ width: `${Math.min(safeDivide(totalCreditsCount, totalCreditsAllocation, 0) * 100, 100)}%` }}
               />
             </div>
           </div>
@@ -218,7 +236,7 @@ const EnterpriseDashboard: React.FC = () => {
                 <span className={`text-lg font-bold ${
                   totalCreditsConsumedValue - totalInternalCost >= 0 ? 'text-green-600' : 'text-red-600'
                 }`}>
-                  {totalCreditsConsumedValue > 0 ? (((totalCreditsConsumedValue - totalInternalCost) / totalCreditsConsumedValue) * 100).toFixed(0) : 0}%
+                  {totalCreditsConsumedValue > 0 ? (safeDivide(totalCreditsConsumedValue - totalInternalCost, totalCreditsConsumedValue, 0) * 100).toFixed(0) : 0}%
                 </span>
               </div>
             </div>
@@ -458,11 +476,9 @@ const EnterpriseDashboard: React.FC = () => {
           <div className="space-y-4">
             {customers.slice(0, 5).map((customer) => {
               const daysElapsed = new Date().getDate();
-              const dailyBurnRate = customer.credits_consumed_this_month / (daysElapsed || 1);
-              const daysRemaining = dailyBurnRate > 0 ? Math.floor(customer.credits_balance / dailyBurnRate) : 999;
-              const creditsPercent = customer.credits_monthly_allocation > 0
-                ? (customer.credits_balance / customer.credits_monthly_allocation) * 100
-                : 100;
+              const dailyBurnRate = safeDivide(customer.credits_consumed_this_month, daysElapsed || 1, 0);
+              const daysRemaining = dailyBurnRate > 0 ? Math.floor(safeDivide(customer.credits_balance, dailyBurnRate, 999)) : 999;
+              const creditsPercent = safeDivide(customer.credits_balance, customer.credits_monthly_allocation, 1) * 100;
 
               return (
                 <Link
@@ -473,11 +489,11 @@ const EnterpriseDashboard: React.FC = () => {
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
-                        <h3 className="font-semibold text-gray-900">{customer.company_name}</h3>
+                        <h3 className="font-semibold text-gray-900">{customer.company_name || 'Unknown'}</h3>
                         <div className="flex items-center gap-2">
                           <div className="text-right">
                             <div className="text-sm font-semibold text-gray-900">
-                              {customer.credits_balance.toFixed(0)} credits
+                              {customer.credits_balance?.toFixed(0) || 0} credits
                             </div>
                             <div className={`text-xs font-medium ${
                               creditsPercent < 20 ? 'text-red-600' :
@@ -490,10 +506,10 @@ const EnterpriseDashboard: React.FC = () => {
                         </div>
                       </div>
                       <div className="flex items-center gap-4 mt-2 text-sm text-gray-600">
-                        <span>{customer.industry}</span>
+                        <span>{customer.industry || '—'}</span>
                         <span className="flex items-center gap-1">
                           <TrendingDown className="w-4 h-4" />
-                          <span className="font-medium">{dailyBurnRate.toFixed(1)}</span> credits/day
+                          <span className="font-medium">{dailyBurnRate?.toFixed(1) || 0}</span> credits/day
                         </span>
                         <span className={`font-medium ${daysRemaining < 30 ? 'text-red-600' : 'text-gray-600'}`}>
                           {daysRemaining < 999 ? `${daysRemaining} days left` : '∞ days'}
