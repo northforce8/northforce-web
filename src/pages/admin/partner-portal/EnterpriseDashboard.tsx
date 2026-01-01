@@ -17,6 +17,8 @@ import {
 import StatusIndicator from '../../../components/admin/StatusIndicator';
 import CreditsDisplay from '../../../components/admin/CreditsDisplay';
 import RecommendationCard from '../../../components/admin/RecommendationCard';
+import { Card, CardHeader, CardBody } from '../../../components/admin/ui/Card';
+import { StatCard } from '../../../components/admin/ui/StatCard';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { getCurrentUser } from '../../../lib/auth';
 import { logAdminError } from '../../../lib/admin-error-logger';
@@ -187,121 +189,133 @@ const EnterpriseDashboard: React.FC = () => {
 
   return (
     <div>
-      <div className="p-6 max-w-7xl mx-auto">
-        <div className="mb-8">
+      <div className="p-6 max-w-7xl mx-auto space-y-8">
+        <div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Enterprise Dashboard</h1>
-          <p className="text-gray-600">
+          <p className="text-gray-600 leading-relaxed">
             Operational intelligence for strategic control and decision-making
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white border border-gray-200 rounded-lg p-4">
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-sm font-medium text-gray-600">Total Credits</div>
-              <Coins className="w-5 h-5 text-primary-600" />
-            </div>
-            <div className="text-3xl font-bold text-gray-900">{safeNumber(totalCreditsCount, 0).toFixed(0)}</div>
-            <div className="text-xs text-gray-500 mt-1">
-              {totalCreditsAllocation > 0 ? `${(safeDivide(totalCreditsCount, totalCreditsAllocation, 0) * 100).toFixed(1)}% of ${safeNumber(totalCreditsAllocation, 0).toFixed(0)} allocated` : 'Credits remaining'}
-            </div>
-            <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
-              <div
-                className={`h-2 rounded-full ${
-                  safeDivide(totalCreditsCount, totalCreditsAllocation, 0) * 100 < 20 ? 'bg-red-600' :
-                  safeDivide(totalCreditsCount, totalCreditsAllocation, 0) * 100 < 40 ? 'bg-yellow-600' :
-                  'bg-green-600'
-                }`}
-                style={{ width: `${Math.min(safeDivide(totalCreditsCount, totalCreditsAllocation, 0) * 100, 100)}%` }}
-              />
-            </div>
-          </div>
-
-          <div className="bg-white border border-gray-200 rounded-lg p-4">
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-sm font-medium text-gray-600">Cost vs Credits</div>
-              <Activity className="w-5 h-5 text-accent-cyan" />
-            </div>
-            <div className="space-y-1">
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-gray-600">Cost:</span>
-                <span className="text-sm font-semibold text-red-600">{(safeNumber(totalInternalCost, 0) / 1000).toFixed(0)}k</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="flex items-start justify-between mb-4">
+              <div className="p-2.5 rounded-lg bg-blue-50">
+                <Coins className="h-6 w-6 text-blue-600" />
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-gray-600">Credits:</span>
-                <span className="text-sm font-semibold text-green-600">{(safeNumber(totalCreditsConsumedValue, 0) / 1000).toFixed(0)}k</span>
-              </div>
-              <div className="flex items-center justify-between pt-1 border-t border-gray-200">
-                <span className="text-xs font-medium text-gray-700">Margin:</span>
-                <span className={`text-lg font-bold ${
-                  totalCreditsConsumedValue - totalInternalCost >= 0 ? 'text-green-600' : 'text-red-600'
-                }`}>
-                  {totalCreditsConsumedValue > 0 ? (safeDivide(totalCreditsConsumedValue - totalInternalCost, totalCreditsConsumedValue, 0) * 100).toFixed(0) : 0}%
-                </span>
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-600 mb-2">Total Credits</p>
+              <p className="text-3xl font-bold text-gray-900">{safeNumber(totalCreditsCount, 0).toFixed(0)}</p>
+            </div>
+            <div className="mt-4 pt-4 border-t border-gray-100">
+              <p className="text-xs text-gray-600 mb-2">
+                {totalCreditsAllocation > 0 ? `${(safeDivide(totalCreditsCount, totalCreditsAllocation, 0) * 100).toFixed(1)}% of ${safeNumber(totalCreditsAllocation, 0).toFixed(0)} allocated` : 'Credits remaining'}
+              </p>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  className={`h-2 rounded-full transition-all ${
+                    safeDivide(totalCreditsCount, totalCreditsAllocation, 0) * 100 < 20 ? 'bg-red-600' :
+                    safeDivide(totalCreditsCount, totalCreditsAllocation, 0) * 100 < 40 ? 'bg-yellow-600' :
+                    'bg-green-600'
+                  }`}
+                  style={{ width: `${Math.min(safeDivide(totalCreditsCount, totalCreditsAllocation, 0) * 100, 100)}%` }}
+                />
               </div>
             </div>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-lg p-4">
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-sm font-medium text-gray-600">Total MRR</div>
-              <DollarSign className="w-5 h-5 text-accent-emerald" />
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="flex items-start justify-between mb-4">
+              <div className="p-2.5 rounded-lg bg-blue-50">
+                <Activity className="h-6 w-6 text-blue-600" />
+              </div>
             </div>
-            <div className="text-3xl font-bold text-gray-900">{(safeNumber(totalMRR, 0) / 1000).toFixed(0)}k</div>
-            <div className="text-xs text-gray-500 mt-1">Monthly Recurring Revenue (SEK)</div>
+            <div>
+              <p className="text-sm font-medium text-gray-600 mb-2">Cost vs Credits</p>
+              <p className={`text-3xl font-bold ${
+                totalCreditsConsumedValue - totalInternalCost >= 0 ? 'text-green-600' : 'text-red-600'
+              }`}>
+                {totalCreditsConsumedValue > 0 ? (safeDivide(totalCreditsConsumedValue - totalInternalCost, totalCreditsConsumedValue, 0) * 100).toFixed(0) : 0}%
+              </p>
+            </div>
+            <div className="mt-4 pt-4 border-t border-gray-100 space-y-2">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-600">Cost:</span>
+                <span className="font-semibold text-red-600">{(safeNumber(totalInternalCost, 0) / 1000).toFixed(0)}k</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-600">Credits:</span>
+                <span className="font-semibold text-green-600">{(safeNumber(totalCreditsConsumedValue, 0) / 1000).toFixed(0)}k</span>
+              </div>
+            </div>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-lg p-4">
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-sm font-medium text-gray-600">High Risk</div>
-              <AlertTriangle className="w-5 h-5 text-red-600" />
+          <StatCard
+            title="Total MRR"
+            value={`${(safeNumber(totalMRR, 0) / 1000).toFixed(0)}k`}
+            icon={DollarSign}
+            iconColor="green"
+          />
+
+          <StatCard
+            title="High Risk"
+            value={alerts.atRisk + alerts.blocked}
+            icon={AlertTriangle}
+            iconColor="red"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-5">
+            <div className="flex items-start justify-between mb-3">
+              <div className="p-2 rounded-lg bg-yellow-100">
+                <AlertTriangle className="w-5 h-5 text-yellow-700" />
+              </div>
             </div>
-            <div className="text-3xl font-bold text-gray-900">{alerts.atRisk + alerts.blocked}</div>
-            <div className="text-xs text-gray-500 mt-1">Customers requiring attention</div>
+            <p className="text-sm font-medium text-yellow-800 mb-1">At Risk</p>
+            <p className="text-2xl font-bold text-yellow-900 mb-2">{alerts.atRisk}</p>
+            <p className="text-xs text-yellow-700">Delivery issues</p>
+          </div>
+
+          <div className="bg-red-50 border border-red-200 rounded-lg p-5">
+            <div className="flex items-start justify-between mb-3">
+              <div className="p-2 rounded-lg bg-red-100">
+                <Coins className="w-5 h-5 text-red-700" />
+              </div>
+            </div>
+            <p className="text-sm font-medium text-red-800 mb-1">Low Credits</p>
+            <p className="text-2xl font-bold text-red-900 mb-2">{alerts.lowCredits}</p>
+            <p className="text-xs text-red-700">Below 20% threshold</p>
+          </div>
+
+          <div className="bg-red-50 border border-red-200 rounded-lg p-5">
+            <div className="flex items-start justify-between mb-3">
+              <div className="p-2 rounded-lg bg-red-100">
+                <AlertTriangle className="w-5 h-5 text-red-700" />
+              </div>
+            </div>
+            <p className="text-sm font-medium text-red-800 mb-1">Blocked</p>
+            <p className="text-2xl font-bold text-red-900 mb-2">{alerts.blocked}</p>
+            <p className="text-xs text-red-700">Collaboration issues</p>
+          </div>
+
+          <div className="bg-orange-50 border border-orange-200 rounded-lg p-5">
+            <div className="flex items-start justify-between mb-3">
+              <div className="p-2 rounded-lg bg-orange-100">
+                <TrendingUp className="w-5 h-5 text-orange-700" />
+              </div>
+            </div>
+            <p className="text-sm font-medium text-orange-800 mb-1">Critical Actions</p>
+            <p className="text-2xl font-bold text-orange-900 mb-2">{alerts.criticalRecommendations}</p>
+            <p className="text-xs text-orange-700">Need immediate action</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-sm font-medium text-yellow-800">At Risk</div>
-              <AlertTriangle className="w-5 h-5 text-yellow-600" />
-            </div>
-            <div className="text-2xl font-bold text-yellow-900">{alerts.atRisk}</div>
-            <div className="text-xs text-yellow-700 mt-1">Delivery issues</div>
-          </div>
-
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-sm font-medium text-red-800">Low Credits</div>
-              <Coins className="w-5 h-5 text-red-600" />
-            </div>
-            <div className="text-2xl font-bold text-red-900">{alerts.lowCredits}</div>
-            <div className="text-xs text-red-700 mt-1">Below 20% threshold</div>
-          </div>
-
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-sm font-medium text-red-800">Blocked</div>
-              <AlertTriangle className="w-5 h-5 text-red-600" />
-            </div>
-            <div className="text-2xl font-bold text-red-900">{alerts.blocked}</div>
-            <div className="text-xs text-red-700 mt-1">Collaboration issues</div>
-          </div>
-
-          <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-sm font-medium text-orange-800">Critical Actions</div>
-              <TrendingUp className="w-5 h-5 text-orange-600" />
-            </div>
-            <div className="text-2xl font-bold text-orange-900">{alerts.criticalRecommendations}</div>
-            <div className="text-xs text-orange-700 mt-1">Need immediate action</div>
-          </div>
-        </div>
-
-        <div className="bg-white border border-gray-200 rounded-lg p-6 mb-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Credits Forecast</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card>
+          <CardHeader title="Credits Forecast" />
+          <CardBody>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {forecasts.slice(0, 3).map((forecast) => {
               const customer = customers.find(c => c.id === forecast.customer_id);
               if (!customer) return null;
@@ -351,129 +365,133 @@ const EnterpriseDashboard: React.FC = () => {
                 </div>
               );
             })}
-          </div>
-          {forecasts.length > 3 && (
-            <div className="mt-4 text-center">
-              <Link
-                to="/admin/partner-portal/reports"
-                className="text-primary-600 hover:text-primary-700 text-sm font-medium"
-              >
-                View all forecasts →
-              </Link>
             </div>
-          )}
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          <div className="lg:col-span-2 bg-white border border-gray-200 rounded-lg p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h2 className="text-xl font-bold text-gray-900">Intelligent Recommendations</h2>
-                <p className="text-xs text-gray-600 mt-1">
-                  AI-ranked by business impact, urgency, and customer value
-                </p>
-              </div>
-              <select
-                value={filterPriority}
-                onChange={(e) => setFilterPriority(e.target.value)}
-                className="text-sm border border-gray-300 rounded px-3 py-1.5"
-              >
-                <option value="all">All Priorities</option>
-                <option value="critical">Critical</option>
-                <option value="high">High</option>
-                <option value="medium">Medium</option>
-                <option value="low">Low</option>
-              </select>
-            </div>
-
-            <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-              <div className="flex items-start gap-2">
-                <Activity className="w-4 h-4 text-blue-600 mt-0.5" />
-                <div className="text-xs text-blue-800">
-                  <span className="font-semibold">AI Prioritization:</span> Actions are ranked by business criticality considering customer MRR, credits urgency, delivery risk, and collaboration status. Higher priority scores demand immediate attention.
-                </div>
-              </div>
-            </div>
-
-            {filteredRecommendations.length === 0 ? (
-              <div className="text-center py-12">
-                <TrendingUp className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-600">No active recommendations</p>
-                <p className="text-sm text-gray-500 mt-1">System is monitoring for issues</p>
-              </div>
-            ) : (
-              <div className="space-y-4 max-h-[600px] overflow-y-auto">
-                {filteredRecommendations.map((rec) => (
-                  <RecommendationCard
-                    key={rec.id}
-                    recommendation={rec}
-                    onDismiss={handleDismissRecommendation}
-                    onAction={handleActionRecommendation}
-                  />
-                ))}
+            {forecasts.length > 3 && (
+              <div className="mt-6 text-center">
+                <Link
+                  to="/admin/partner-portal/reports"
+                  className="text-primary-600 hover:text-primary-700 text-sm font-medium inline-flex items-center gap-1"
+                >
+                  View all forecasts <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
             )}
-          </div>
+          </CardBody>
+        </Card>
 
-          <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-6">Quick Filters</h2>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <Card className="lg:col-span-2">
+            <div className="px-6 py-5 border-b border-gray-200">
+              <div className="flex items-start justify-between">
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900 mb-1.5">Intelligent Recommendations</h2>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    AI-ranked by business impact, urgency, and customer value
+                  </p>
+                </div>
+                <select
+                  value={filterPriority}
+                  onChange={(e) => setFilterPriority(e.target.value)}
+                  className="text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                >
+                  <option value="all">All Priorities</option>
+                  <option value="critical">Critical</option>
+                  <option value="high">High</option>
+                  <option value="medium">Medium</option>
+                  <option value="low">Low</option>
+                </select>
+              </div>
+            </div>
 
-            <div className="space-y-3">
+            <CardBody>
+              <div className="mb-5 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <div className="flex items-start gap-3">
+                  <Activity className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <div className="text-sm text-blue-800 leading-relaxed">
+                    <span className="font-semibold">AI Prioritization:</span> Actions are ranked by business criticality considering customer MRR, credits urgency, delivery risk, and collaboration status. Higher priority scores demand immediate attention.
+                  </div>
+                </div>
+              </div>
+
+              {filteredRecommendations.length === 0 ? (
+                <div className="text-center py-12">
+                  <TrendingUp className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                  <p className="text-base font-medium text-gray-600 mb-1">No active recommendations</p>
+                  <p className="text-sm text-gray-500">System is monitoring for issues</p>
+                </div>
+              ) : (
+                <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
+                  {filteredRecommendations.map((rec) => (
+                    <RecommendationCard
+                      key={rec.id}
+                      recommendation={rec}
+                      onDismiss={handleDismissRecommendation}
+                      onAction={handleActionRecommendation}
+                    />
+                  ))}
+                </div>
+              )}
+            </CardBody>
+          </Card>
+
+          <Card>
+            <CardHeader title="Quick Filters" />
+            <CardBody className="space-y-3">
               <Link
                 to="/admin/partner-portal/customers?filter=at_risk"
-                className="block p-3 border border-yellow-200 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition-colors"
+                className="block p-4 border border-yellow-200 bg-yellow-50 rounded-lg hover:bg-yellow-100 hover:shadow-sm transition-all"
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-semibold text-gray-900">Delivery At Risk</div>
+                    <div className="font-semibold text-gray-900 mb-1">Delivery At Risk</div>
                     <div className="text-sm text-gray-600">{alerts.atRisk} customers</div>
                   </div>
-                  <ArrowRight className="w-5 h-5 text-yellow-600" />
+                  <ArrowRight className="w-5 h-5 text-yellow-600 flex-shrink-0" />
                 </div>
               </Link>
 
               <Link
                 to="/admin/partner-portal/customers?filter=low_credits"
-                className="block p-3 border border-red-200 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
+                className="block p-4 border border-red-200 bg-red-50 rounded-lg hover:bg-red-100 hover:shadow-sm transition-all"
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-semibold text-gray-900">Credits Running Low</div>
+                    <div className="font-semibold text-gray-900 mb-1">Credits Running Low</div>
                     <div className="text-sm text-gray-600">{alerts.lowCredits} customers</div>
                   </div>
-                  <ArrowRight className="w-5 h-5 text-red-600" />
+                  <ArrowRight className="w-5 h-5 text-red-600 flex-shrink-0" />
                 </div>
               </Link>
 
               <Link
                 to="/admin/partner-portal/customers?filter=blocked"
-                className="block p-3 border border-red-200 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
+                className="block p-4 border border-red-200 bg-red-50 rounded-lg hover:bg-red-100 hover:shadow-sm transition-all"
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-semibold text-gray-900">Collaboration Blocked</div>
+                    <div className="font-semibold text-gray-900 mb-1">Collaboration Blocked</div>
                     <div className="text-sm text-gray-600">{alerts.blocked} customers</div>
                   </div>
-                  <ArrowRight className="w-5 h-5 text-red-600" />
+                  <ArrowRight className="w-5 h-5 text-red-600 flex-shrink-0" />
                 </div>
               </Link>
-            </div>
-          </div>
+            </CardBody>
+          </Card>
         </div>
 
-        <div className="bg-white border border-gray-200 rounded-lg p-6">
-          <div className="flex items-center justify-between mb-6">
+        <Card>
+          <div className="px-6 py-5 border-b border-gray-200 flex items-center justify-between">
             <h2 className="text-xl font-bold text-gray-900">Customer Overview</h2>
             <Link
               to="/admin/partner-portal/customers"
-              className="text-primary-600 hover:text-primary-700 font-medium text-sm flex items-center gap-1"
+              className="text-primary-600 hover:text-primary-700 font-medium text-sm inline-flex items-center gap-1"
             >
               View All
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
-
-          <div className="space-y-4">
+          <CardBody noPadding>
+            <div className="divide-y divide-gray-200">
             {customers.slice(0, 5).map((customer) => {
               const daysElapsed = new Date().getDate();
               const dailyBurnRate = safeDivide(customer.credits_consumed_this_month, daysElapsed || 1, 0);
@@ -484,7 +502,7 @@ const EnterpriseDashboard: React.FC = () => {
                 <Link
                   key={customer.id}
                   to={`/admin/partner-portal/customers/${customer.id}`}
-                  className="block border border-gray-200 rounded-lg p-4 hover:border-primary-300 hover:bg-gray-50 transition-all"
+                  className="block p-6 hover:bg-gray-50 transition-colors"
                 >
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
@@ -543,8 +561,9 @@ const EnterpriseDashboard: React.FC = () => {
                 </Link>
               );
             })}
-          </div>
-        </div>
+            </div>
+          </CardBody>
+        </Card>
       </div>
     </div>
   );
