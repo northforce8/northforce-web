@@ -107,39 +107,32 @@ export interface AdminNavGroup {
 
 export const ADMIN_NAVIGATION_GROUPED: AdminNavGroup[] = [
   {
-    label: 'BUSINESS INTELLIGENCE',
-    roles: ['admin'],
-    items: [
-      { label: ADMIN_NAV_LABELS.ENTERPRISE_INTELLIGENCE, path: ADMIN_ROUTES.ENTERPRISE, roles: ['admin'] },
-      { label: ADMIN_NAV_LABELS.CREDITS, path: ADMIN_ROUTES.CREDITS, roles: ['admin'] },
-      { label: ADMIN_NAV_LABELS.MARGIN_ANALYSIS, path: ADMIN_ROUTES.MARGIN_ANALYSIS, roles: ['admin'] },
-    ]
-  },
-  {
-    label: 'SALES & DELIVERY',
+    label: 'SALES & CUSTOMERS',
     roles: ['admin', 'partner'],
     items: [
       { label: ADMIN_NAV_LABELS.LEADS_MANAGEMENT, path: ADMIN_ROUTES.LEADS_MANAGEMENT, roles: ['admin'] },
       { label: ADMIN_NAV_LABELS.CUSTOMERS, path: ADMIN_ROUTES.CUSTOMERS, roles: ['admin', 'partner'] },
-      { label: ADMIN_NAV_LABELS.PROJECTS, path: ADMIN_ROUTES.PROJECTS, roles: ['admin', 'partner'] },
+      { label: ADMIN_NAV_LABELS.CONTRACTS, path: ADMIN_ROUTES.CONTRACTS, roles: ['admin'] },
     ]
   },
   {
-    label: 'OPERATIONS',
+    label: 'DELIVERY',
     roles: ['admin', 'partner'],
     items: [
+      { label: ADMIN_NAV_LABELS.PROJECTS, path: ADMIN_ROUTES.PROJECTS, roles: ['admin', 'partner'] },
       { label: ADMIN_NAV_LABELS.TIME_REPORTING, path: ADMIN_ROUTES.TIME, roles: ['admin', 'partner'] },
-      { label: ADMIN_NAV_LABELS.NOTES, path: ADMIN_ROUTES.NOTES, roles: ['admin', 'partner'] },
       { label: ADMIN_NAV_LABELS.PLANNING, path: ADMIN_ROUTES.PLANNING, roles: ['admin'] },
+      { label: ADMIN_NAV_LABELS.NOTES, path: ADMIN_ROUTES.NOTES, roles: ['admin', 'partner'] },
     ]
   },
   {
-    label: 'FINANCE & CONTRACTS',
+    label: 'FINANCE',
     roles: ['admin'],
     items: [
       { label: ADMIN_NAV_LABELS.INVOICES, path: ADMIN_ROUTES.INVOICES, roles: ['admin'] },
-      { label: ADMIN_NAV_LABELS.CONTRACTS, path: ADMIN_ROUTES.CONTRACTS, roles: ['admin'] },
       { label: ADMIN_NAV_LABELS.BILLING_PERIODS, path: ADMIN_ROUTES.BILLING_PERIODS, roles: ['admin'] },
+      { label: ADMIN_NAV_LABELS.CREDITS, path: ADMIN_ROUTES.CREDITS, roles: ['admin'] },
+      { label: ADMIN_NAV_LABELS.MARGIN_ANALYSIS, path: ADMIN_ROUTES.MARGIN_ANALYSIS, roles: ['admin'] },
     ]
   },
   {
@@ -152,10 +145,12 @@ export const ADMIN_NAVIGATION_GROUPED: AdminNavGroup[] = [
     ]
   },
   {
-    label: 'REPORTS & ANALYTICS',
+    label: 'ANALYTICS',
     roles: ['admin'],
     items: [
+      { label: ADMIN_NAV_LABELS.ENTERPRISE_INTELLIGENCE, path: ADMIN_ROUTES.ENTERPRISE, roles: ['admin'] },
       { label: ADMIN_NAV_LABELS.REPORTS, path: ADMIN_ROUTES.REPORTS, roles: ['admin'] },
+      { label: ADMIN_NAV_LABELS.HEALTH, path: ADMIN_ROUTES.HEALTH, roles: ['admin'] },
     ]
   },
   {
@@ -164,7 +159,6 @@ export const ADMIN_NAVIGATION_GROUPED: AdminNavGroup[] = [
     items: [
       { label: ADMIN_NAV_LABELS.SETTINGS, path: ADMIN_ROUTES.SETTINGS, roles: ['admin'] },
       { label: ADMIN_NAV_LABELS.SUPPORT, path: ADMIN_ROUTES.SUPPORT, roles: ['admin'] },
-      { label: ADMIN_NAV_LABELS.HEALTH, path: ADMIN_ROUTES.HEALTH, roles: ['admin'] },
     ]
   },
 ];
