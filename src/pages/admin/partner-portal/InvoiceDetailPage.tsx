@@ -142,19 +142,27 @@ export default function InvoiceDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-gray-500">Loading invoice...</div>
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading invoice...</p>
+        </div>
       </div>
     );
   }
 
   if (!invoice) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <p className="text-gray-500">Invoice not found</p>
-          <Link to="/admin/partner-portal/invoices" className="text-blue-600 hover:text-blue-900 mt-2 inline-block">
-            ← Back to invoices
+      <div className="max-w-7xl mx-auto p-6">
+        <div className="text-center py-12">
+          <h3 className="text-lg font-medium text-gray-900 mb-2">Invoice Not Found</h3>
+          <p className="text-gray-600 mb-6">The invoice you're looking for doesn't exist.</p>
+          <Link
+            to="/admin/partner-portal/invoices"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Invoices
           </Link>
         </div>
       </div>
@@ -166,15 +174,15 @@ export default function InvoiceDetailPage() {
   const canMarkPaid = invoice.status === 'sent' || invoice.status === 'overdue';
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <>
+    <div className="max-w-7xl mx-auto p-6">
+      <div className="mb-8 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link
             to="/admin/partner-portal/invoices"
-            className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700"
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
-            <ArrowLeft className="h-4 w-4 mr-1" />
-            Back to invoices
+            <ArrowLeft className="h-5 w-5 text-gray-600" />
           </Link>
           <h1 className="text-2xl font-bold text-gray-900">{invoice.invoice_number}</h1>
           <InvoiceStatusBadge status={invoice.status} />
@@ -221,9 +229,8 @@ export default function InvoiceDetailPage() {
         </div>
       </div>
 
-      {/* AI Invoice Validation - Pre-Send Guardrails */}
       {canSend && (
-        <div className="mb-6">
+        <div className="mb-8">
           <InvoiceValidationAI invoiceId={invoiceId!} />
         </div>
       )}
@@ -231,16 +238,16 @@ export default function InvoiceDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Invoice Details</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-6">Invoice Details</h2>
             <dl className="grid grid-cols-2 gap-4">
               <div>
-                <dt className="text-sm font-medium text-gray-500">Invoice Date</dt>
+                <dt className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Invoice Date</dt>
                 <dd className="mt-1 text-sm text-gray-900">
                   {new Date(invoice.invoice_date).toLocaleDateString('sv-SE')}
                 </dd>
               </div>
               <div>
-                <dt className="text-sm font-medium text-gray-500">Due Date</dt>
+                <dt className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Due Date</dt>
                 <dd className="mt-1 text-sm text-gray-900">
                   {new Date(invoice.due_date).toLocaleDateString('sv-SE')}
                 </dd>
@@ -248,13 +255,13 @@ export default function InvoiceDetailPage() {
               {invoice.billing_period_start && (
                 <>
                   <div>
-                    <dt className="text-sm font-medium text-gray-500">Period Start</dt>
+                    <dt className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Period Start</dt>
                     <dd className="mt-1 text-sm text-gray-900">
                       {new Date(invoice.billing_period_start).toLocaleDateString('sv-SE')}
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-sm font-medium text-gray-500">Period End</dt>
+                    <dt className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Period End</dt>
                     <dd className="mt-1 text-sm text-gray-900">
                       {new Date(invoice.billing_period_end).toLocaleDateString('sv-SE')}
                     </dd>
@@ -263,7 +270,7 @@ export default function InvoiceDetailPage() {
               )}
               {invoice.notes && (
                 <div className="col-span-2">
-                  <dt className="text-sm font-medium text-gray-500">Notes</dt>
+                  <dt className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Notes</dt>
                   <dd className="mt-1 text-sm text-gray-900">{invoice.notes}</dd>
                 </div>
               )}
@@ -287,10 +294,10 @@ export default function InvoiceDetailPage() {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Description</th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Qty</th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Unit Price</th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Amount</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">Description</th>
+                    <th className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wide">Qty</th>
+                    <th className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wide">Unit Price</th>
+                    <th className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wide">Amount</th>
                     {canEdit && <th className="px-6 py-3"></th>}
                   </tr>
                 </thead>
@@ -298,9 +305,9 @@ export default function InvoiceDetailPage() {
                   {lineItems.map((item) => (
                     <tr key={item.id}>
                       <td className="px-6 py-4">
-                        <div className="text-sm text-gray-900">{item.description}</div>
+                        <div className="text-sm font-medium text-gray-900">{item.description}</div>
                         {item.project && (
-                          <div className="text-xs text-gray-500 mt-1">
+                          <div className="text-xs text-gray-500 mt-1 font-medium">
                             Project: {item.project.project_name}
                           </div>
                         )}
@@ -332,33 +339,33 @@ export default function InvoiceDetailPage() {
 
         <div className="space-y-6">
           <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Customer</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-6">Customer</h2>
             <Link
               to={`/admin/partner-portal/customers/${invoice.customer.id}`}
               className="block hover:bg-gray-50 -m-2 p-2 rounded"
             >
-              <div className="font-medium text-gray-900">{invoice.customer.company_name}</div>
+              <div className="font-semibold text-gray-900">{invoice.customer.company_name}</div>
               {invoice.customer.org_number && (
-                <div className="text-sm text-gray-500 mt-1">Org: {invoice.customer.org_number}</div>
+                <div className="text-sm text-gray-500 mt-1 font-medium">Org: {invoice.customer.org_number}</div>
               )}
               {invoice.customer.contact_email && (
-                <div className="text-sm text-gray-500 mt-1">{invoice.customer.contact_email}</div>
+                <div className="text-sm text-gray-500 mt-1 font-medium">{invoice.customer.contact_email}</div>
               )}
             </Link>
           </div>
 
           <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Summary</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-6">Summary</h2>
             <dl className="space-y-3">
               <div className="flex justify-between text-sm">
-                <dt className="text-gray-500">Subtotal</dt>
-                <dd className="font-medium text-gray-900">
+                <dt className="text-gray-500 font-medium">Subtotal</dt>
+                <dd className="font-semibold text-gray-900">
                   <CurrencyDisplay amount={invoice.subtotal} currency={invoice.currency_code} />
                 </dd>
               </div>
               <div className="flex justify-between text-sm">
-                <dt className="text-gray-500">Tax ({invoice.tax_rate}%)</dt>
-                <dd className="font-medium text-gray-900">
+                <dt className="text-gray-500 font-medium">Tax ({invoice.tax_rate}%)</dt>
+                <dd className="font-semibold text-gray-900">
                   <CurrencyDisplay amount={invoice.tax_amount} currency={invoice.currency_code} />
                 </dd>
               </div>
@@ -372,13 +379,13 @@ export default function InvoiceDetailPage() {
           </div>
 
           {invoice.sent_date && (
-            <div className="bg-blue-50 rounded-lg border border-blue-200 p-4">
-              <h3 className="text-sm font-medium text-blue-900 mb-2">Sent Information</h3>
-              <div className="text-sm text-blue-700">
+            <div className="bg-blue-50 rounded-lg border border-blue-200 p-6">
+              <h3 className="text-sm font-semibold text-blue-900 mb-2">Sent Information</h3>
+              <div className="text-sm text-blue-700 font-medium">
                 Sent on {new Date(invoice.sent_date).toLocaleDateString('sv-SE')}
               </div>
               {invoice.sent_by_user && (
-                <div className="text-sm text-blue-600 mt-1">
+                <div className="text-sm text-blue-600 mt-1 font-medium">
                   by {invoice.sent_by_user.email}
                 </div>
               )}
@@ -386,13 +393,13 @@ export default function InvoiceDetailPage() {
           )}
 
           {invoice.paid_date && (
-            <div className="bg-green-50 rounded-lg border border-green-200 p-4">
-              <h3 className="text-sm font-medium text-green-900 mb-2">Payment Information</h3>
-              <div className="text-sm text-green-700">
+            <div className="bg-green-50 rounded-lg border border-green-200 p-6">
+              <h3 className="text-sm font-semibold text-green-900 mb-2">Payment Information</h3>
+              <div className="text-sm text-green-700 font-medium">
                 Paid on {new Date(invoice.paid_date).toLocaleDateString('sv-SE')}
               </div>
               {invoice.payment_method && (
-                <div className="text-sm text-green-600 mt-1">
+                <div className="text-sm text-green-600 mt-1 font-medium">
                   Method: {invoice.payment_method}
                 </div>
               )}
@@ -400,27 +407,28 @@ export default function InvoiceDetailPage() {
           )}
         </div>
       </div>
-
-      {showAddLineItem && (
-        <AddLineItemModal
-          invoiceId={invoiceId!}
-          currency={invoice.currency_code}
-          onClose={() => setShowAddLineItem(false)}
-          onSuccess={() => {
-            setShowAddLineItem(false);
-            loadInvoice();
-          }}
-        />
-      )}
-
-      {showPDFPreview && (
-        <InvoicePDFPreview
-          invoice={invoice}
-          onClose={() => setShowPDFPreview(false)}
-          onSendEmail={canSend ? handleSendEmail : undefined}
-        />
-      )}
     </div>
+
+    {showAddLineItem && (
+      <AddLineItemModal
+        invoiceId={invoiceId!}
+        currency={invoice.currency_code}
+        onClose={() => setShowAddLineItem(false)}
+        onSuccess={() => {
+          setShowAddLineItem(false);
+          loadInvoice();
+        }}
+      />
+    )}
+
+    {showPDFPreview && (
+      <InvoicePDFPreview
+        invoice={invoice}
+        onClose={() => setShowPDFPreview(false)}
+        onSendEmail={canSend ? handleSendEmail : undefined}
+      />
+    )}
+    </>
   );
 }
 
