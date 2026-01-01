@@ -236,94 +236,95 @@ const PartnerDetailPage: React.FC = () => {
     : 0;
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <div className="mb-6">
-        <button
-          onClick={() => navigate('/admin/partner-portal/partners')}
-          className="flex items-center text-gray-600 hover:text-gray-900 mb-4"
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Partners
-        </button>
-
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">{partner.partner_name}</h1>
-            <p className="text-gray-600 mt-1">{role?.role_name || partner.role || 'Partner'}</p>
-          </div>
+    <div className="max-w-7xl mx-auto p-6">
+      <div className="mb-8 flex items-center justify-between">
+        <div className="flex items-center gap-4">
           <button
-            onClick={() => setShowEditPartnerModal(true)}
-            className="flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+            onClick={() => navigate('/admin/partner-portal/partners')}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
-            <Edit2 className="h-4 w-4 mr-2" />
-            Edit Partner
+            <ArrowLeft className="h-5 w-5 text-gray-600" />
           </button>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">{partner.partner_name}</h1>
+            <p className="text-sm text-gray-500 mt-1 font-medium">{role?.role_name || partner.role || 'Partner'}</p>
+          </div>
         </div>
+        <button
+          onClick={() => setShowEditPartnerModal(true)}
+          className="flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+        >
+          <Edit2 className="h-4 w-4 mr-2" />
+          Edit Partner
+        </button>
       </div>
 
       {recommendations.length > 0 && (
-        <div className="mb-6 space-y-3">
-          {recommendations.map((rec) => (
-            <div key={rec.id} className={`p-4 rounded-lg border ${getSeverityColor(rec.severity)}`}>
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <AlertTriangle className="h-5 w-5" />
-                    <h3 className="font-semibold">{rec.title}</h3>
-                    <span className="text-xs px-2 py-0.5 bg-white rounded uppercase">
-                      {rec.severity}
-                    </span>
+        <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
+          <h2 className="text-lg font-semibold text-gray-900 mb-6">Active Recommendations</h2>
+          <div className="space-y-3">
+            {recommendations.map((rec) => (
+              <div key={rec.id} className={`p-4 rounded-lg border ${getSeverityColor(rec.severity)}`}>
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <AlertTriangle className="h-5 w-5" />
+                      <h3 className="font-semibold">{rec.title}</h3>
+                      <span className="text-xs px-2 py-0.5 bg-white rounded uppercase font-medium">
+                        {rec.severity}
+                      </span>
+                    </div>
+                    <p className="text-sm mb-2 font-medium">{rec.description}</p>
+                    {rec.suggested_action && (
+                      <p className="text-sm font-semibold">Suggested: {rec.suggested_action}</p>
+                    )}
                   </div>
-                  <p className="text-sm mb-2">{rec.description}</p>
-                  {rec.suggested_action && (
-                    <p className="text-sm font-medium">Suggested: {rec.suggested_action}</p>
-                  )}
+                  <button
+                    onClick={() => handleDismissRecommendation(rec.id)}
+                    className="ml-4 text-gray-500 hover:text-gray-700"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
                 </div>
-                <button
-                  onClick={() => handleDismissRecommendation(rec.id)}
-                  className="ml-4 text-gray-500 hover:text-gray-700"
-                >
-                  <X className="h-4 w-4" />
-                </button>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Contact Information</h2>
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-6">Contact Information</h2>
           <div className="space-y-3">
             <div className="flex items-center text-sm">
               <Mail className="h-4 w-4 text-gray-400 mr-3" />
-              <span className="text-gray-900">{partner.email || 'N/A'}</span>
+              <span className="text-gray-900 font-medium">{partner.email || 'N/A'}</span>
             </div>
             <div className="flex items-center text-sm">
               <Phone className="h-4 w-4 text-gray-400 mr-3" />
-              <span className="text-gray-900">{partner.phone || 'N/A'}</span>
+              <span className="text-gray-900 font-medium">{partner.phone || 'N/A'}</span>
             </div>
             {partner.partner_company && (
               <div className="flex items-center text-sm">
                 <Building className="h-4 w-4 text-gray-400 mr-3" />
-                <span className="text-gray-900">{partner.partner_company}</span>
+                <span className="text-gray-900 font-medium">{partner.partner_company}</span>
               </div>
             )}
             <div className="flex items-center text-sm">
               <Calendar className="h-4 w-4 text-gray-400 mr-3" />
-              <span className="text-gray-900">
+              <span className="text-gray-900 font-medium">
                 Joined {new Date(partner.onboarding_date || partner.created_at).toLocaleDateString()}
               </span>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Capacity & Utilization</h2>
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-6">Capacity & Utilization</h2>
           <div className="space-y-4">
             <div>
               <div className="flex justify-between text-sm mb-1">
-                <span className="text-gray-600">Current Utilization</span>
+                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Current Utilization</span>
                 <span className="font-semibold text-gray-900">{safeNumber(utilizationPercentage, 0).toFixed(0)}%</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
@@ -341,36 +342,36 @@ const PartnerDetailPage: React.FC = () => {
             </div>
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div>
-                <p className="text-gray-600">Capacity/Month</p>
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Capacity/Month</p>
                 <p className="font-semibold text-gray-900">{partner.capacity_hours_per_month}h</p>
               </div>
               <div>
-                <p className="text-gray-600">This Month</p>
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">This Month</p>
                 <p className="font-semibold text-gray-900">{currentCapacity?.actual_hours || 0}h</p>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Cost & Rates</h2>
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-6">Cost & Rates</h2>
           <div className="space-y-3">
             <div>
-              <p className="text-sm text-gray-600">Current Hourly Rate</p>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Current Hourly Rate</p>
               <p className="text-2xl font-bold text-gray-900">
                 {partner.hourly_cost_rate || partner.default_hourly_cost} SEK
               </p>
             </div>
             {role && (
               <div className="text-sm">
-                <p className="text-gray-600">Role Range</p>
-                <p className="text-gray-900">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Role Range</p>
+                <p className="text-gray-900 font-medium">
                   {role.hourly_rate_min} - {role.hourly_rate_max} SEK
                 </p>
               </div>
             )}
             {costRates.length > 0 && (
-              <div className="text-xs text-gray-500 pt-2 border-t">
+              <div className="text-xs text-gray-500 pt-2 border-t font-medium">
                 {costRates.length} rate {costRates.length === 1 ? 'change' : 'changes'} recorded
               </div>
             )}
@@ -379,47 +380,47 @@ const PartnerDetailPage: React.FC = () => {
       </div>
 
       {performanceMetrics && (
-        <div className="bg-white rounded-lg shadow mb-6 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Performance Metrics</h2>
+        <div className="bg-white rounded-lg border border-gray-200 mb-6 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-6">Performance Metrics</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center p-4 bg-blue-50 rounded-lg">
               <Clock className="h-6 w-6 text-blue-600 mx-auto mb-2" />
-              <p className="text-sm text-gray-600">Total Hours</p>
+              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Total Hours</p>
               <p className="text-2xl font-bold text-gray-900">{safeNumber(performanceMetrics.total_hours, 0).toFixed(1)}</p>
             </div>
             <div className="text-center p-4 bg-green-50 rounded-lg">
               <CheckCircle className="h-6 w-6 text-green-600 mx-auto mb-2" />
-              <p className="text-sm text-gray-600">Billable Hours</p>
+              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Billable Hours</p>
               <p className="text-2xl font-bold text-gray-900">{safeNumber(performanceMetrics.billable_hours, 0).toFixed(1)}</p>
             </div>
             <div className="text-center p-4 bg-primary-50 rounded-lg">
               <Coins className="h-6 w-6 text-primary-600 mx-auto mb-2" />
-              <p className="text-sm text-gray-600">Credits Generated</p>
+              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Credits Generated</p>
               <p className="text-2xl font-bold text-gray-900">{safeNumber(performanceMetrics.credits_generated, 0).toFixed(0)}</p>
             </div>
             <div className="text-center p-4 bg-orange-50 rounded-lg">
               <DollarSign className="h-6 w-6 text-orange-600 mx-auto mb-2" />
-              <p className="text-sm text-gray-600">Internal Cost</p>
+              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Internal Cost</p>
               <p className="text-2xl font-bold text-gray-900">{(safeNumber(performanceMetrics.internal_cost, 0) / 1000).toFixed(0)}k</p>
             </div>
             <div className="text-center p-4 bg-purple-50 rounded-lg">
               <TrendingUp className="h-6 w-6 text-purple-600 mx-auto mb-2" />
-              <p className="text-sm text-gray-600">Efficiency Score</p>
+              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Efficiency Score</p>
               <p className="text-2xl font-bold text-gray-900">{safeNumber(performanceMetrics.efficiency_score, 0).toFixed(0)}%</p>
             </div>
             <div className="text-center p-4 bg-yellow-50 rounded-lg">
               <Target className="h-6 w-6 text-yellow-600 mx-auto mb-2" />
-              <p className="text-sm text-gray-600">Quality Score</p>
+              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Quality Score</p>
               <p className="text-2xl font-bold text-gray-900">{safeNumber(performanceMetrics.quality_score, 0).toFixed(0)}%</p>
             </div>
             <div className="text-center p-4 bg-teal-50 rounded-lg">
               <Users className="h-6 w-6 text-teal-600 mx-auto mb-2" />
-              <p className="text-sm text-gray-600">Active Customers</p>
+              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Active Customers</p>
               <p className="text-2xl font-bold text-gray-900">{performanceMetrics.active_customers_count}</p>
             </div>
             <div className="text-center p-4 bg-cyan-50 rounded-lg">
               <Briefcase className="h-6 w-6 text-cyan-600 mx-auto mb-2" />
-              <p className="text-sm text-gray-600">Active Projects</p>
+              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Active Projects</p>
               <p className="text-2xl font-bold text-gray-900">{performanceMetrics.active_projects_count}</p>
             </div>
           </div>
@@ -427,8 +428,8 @@ const PartnerDetailPage: React.FC = () => {
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex items-center justify-between mb-4">
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-semibold text-gray-900">Work Type Assignments</h2>
             <button
               onClick={() => setShowAddWorkTypeModal(true)}
@@ -468,8 +469,8 @@ const PartnerDetailPage: React.FC = () => {
           )}
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex items-center justify-between mb-4">
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-semibold text-gray-900">Capacity Periods</h2>
             <button
               onClick={() => setShowAddCapacityModal(true)}
