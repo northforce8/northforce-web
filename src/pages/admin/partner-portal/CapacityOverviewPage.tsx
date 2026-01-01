@@ -9,6 +9,7 @@ import {
   Activity,
   BarChart3,
   RefreshCw,
+  Gauge,
 } from 'lucide-react';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import type {
@@ -123,18 +124,23 @@ const CapacityOverviewPage: React.FC = () => {
   }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Capacity Overview</h1>
-          <p className="text-gray-600 mt-1">Monitor and optimize partner workload allocation</p>
+    <div className="max-w-7xl mx-auto p-6">
+      <div className="mb-8 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="flex-shrink-0 w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
+            <Gauge className="h-6 w-6 text-primary-600" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Capacity Planning</h1>
+            <p className="text-sm text-gray-500 mt-1">Monitor and optimize partner workload allocation</p>
+          </div>
         </div>
         <button
           onClick={handleGenerateRecommendations}
           disabled={generatingRecommendations}
-          className="flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
         >
-          <RefreshCw className={`h-5 w-5 mr-2 ${generatingRecommendations ? 'animate-spin' : ''}`} />
+          <RefreshCw className={`h-5 w-5 ${generatingRecommendations ? 'animate-spin' : ''}`} />
           {generatingRecommendations ? 'Generating...' : 'Generate Recommendations'}
         </button>
       </div>
@@ -145,53 +151,53 @@ const CapacityOverviewPage: React.FC = () => {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white rounded-lg shadow p-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-600">Total Partners</span>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Total Partners</h3>
             <Users className="w-5 h-5 text-gray-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{stats.total}</div>
-          <div className="text-xs text-gray-500 mt-1">{stats.totalCapacity}h total capacity</div>
+          <p className="text-3xl font-bold text-gray-900">{stats.total}</p>
+          <p className="text-xs text-gray-500 mt-1 font-medium">{stats.totalCapacity}h total capacity</p>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-600">Avg Utilization</span>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Avg Utilization</h3>
             <Activity className="w-5 h-5 text-gray-400" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{stats.avgUtilization.toFixed(0)}%</div>
-          <div className="text-xs text-gray-500 mt-1">
+          <p className="text-3xl font-bold text-gray-900">{stats.avgUtilization.toFixed(0)}%</p>
+          <p className="text-xs text-gray-500 mt-1 font-medium">
             {stats.totalUsed.toFixed(0)}h / {stats.totalCapacity}h
-          </div>
+          </p>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-600">Optimal Load</span>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Optimal Load</h3>
             <CheckCircle className="w-5 h-5 text-green-500" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{stats.optimal}</div>
-          <div className="text-xs text-gray-500 mt-1">60-90% utilization</div>
+          <p className="text-3xl font-bold text-gray-900">{stats.optimal}</p>
+          <p className="text-xs text-gray-500 mt-1 font-medium">60-90% utilization</p>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-600">Needs Attention</span>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Needs Attention</h3>
             <AlertTriangle className="w-5 h-5 text-red-500" />
           </div>
-          <div className="text-3xl font-bold text-gray-900">
+          <p className="text-3xl font-bold text-gray-900">
             {stats.overloaded + stats.underutilized}
-          </div>
-          <div className="text-xs text-gray-500 mt-1">
+          </p>
+          <p className="text-xs text-gray-500 mt-1 font-medium">
             {stats.overloaded} overloaded, {stats.underutilized} underutilized
-          </div>
+          </p>
         </div>
       </div>
 
       {recommendations.length > 0 && (
-        <div className="bg-white rounded-lg shadow mb-6 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+        <div className="bg-white rounded-lg border border-gray-200 mb-6 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-6">
             AI-Powered Recommendations ({recommendations.length})
           </h2>
           <div className="space-y-3">

@@ -23,7 +23,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
   action,
 }) => {
   return (
-    <div className="mb-6 flex items-center justify-between">
+    <div className="mb-8 flex items-center justify-between">
       <div className="flex items-center gap-3">
         {Icon && (
           <div className="flex-shrink-0 w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
@@ -31,16 +31,16 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
           </div>
         )}
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">{title}</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
           {description && (
-            <p className="text-gray-600 mt-1">{description}</p>
+            <p className="text-sm text-gray-500 mt-1">{description}</p>
           )}
         </div>
       </div>
       {action && (
         <button
           onClick={action.onClick}
-          className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium shadow-sm hover:shadow-md"
+          className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"
         >
           {action.icon && <action.icon className="h-5 w-5" />}
           {action.label}

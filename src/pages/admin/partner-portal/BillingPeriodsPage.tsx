@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, DollarSign, TrendingUp, AlertCircle, Download, Plus } from 'lucide-react';
 import { supabase } from '../../../lib/supabase';
 import { CurrencyDisplay } from '../../../components/admin/CurrencyDisplay';
+import { PageHeader } from '../../../components/admin/PageHeader';
 
 interface BillingPeriod {
   id: string;
@@ -98,50 +99,50 @@ const BillingPeriodsPage: React.FC = () => {
   }
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Billing Periods</h1>
-          <p className="text-gray-600 mt-1">Manage billing cycles and revenue tracking</p>
-        </div>
-        <button className="btn-primary flex items-center space-x-2">
-          <Plus className="h-5 w-5" />
-          <span>New Period</span>
-        </button>
-      </div>
+    <div className="max-w-7xl mx-auto p-6">
+      <PageHeader
+        title="Billing Periods"
+        description="Manage billing cycles and revenue tracking"
+        icon={Calendar}
+        action={{
+          label: 'New Period',
+          onClick: () => {},
+          icon: Plus
+        }}
+      />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-medium text-gray-600">Total Revenue</h3>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Total Revenue</h3>
             <DollarSign className="h-5 w-5 text-green-500" />
           </div>
           <p className="text-3xl font-bold text-gray-900">
             <CurrencyDisplay amount={totalRevenue} currencyCode="SEK" />
           </p>
-          <p className="text-sm text-gray-500 mt-1">From paid periods</p>
+          <p className="text-xs text-gray-500 mt-1 font-medium">From paid periods</p>
         </div>
 
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-medium text-gray-600">Total Margin</h3>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Total Margin</h3>
             <TrendingUp className="h-5 w-5 text-blue-500" />
           </div>
           <p className="text-3xl font-bold text-gray-900">
             <CurrencyDisplay amount={totalMargin} currencyCode="SEK" />
           </p>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-xs text-gray-500 mt-1 font-medium">
             Avg {avgMarginPercentage.toFixed(1)}% margin
           </p>
         </div>
 
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-medium text-gray-600">Active Periods</h3>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Active Periods</h3>
             <Calendar className="h-5 w-5 text-purple-500" />
           </div>
           <p className="text-3xl font-bold text-gray-900">{periods.length}</p>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-xs text-gray-500 mt-1 font-medium">
             {periods.filter(p => p.status === 'approved').length} approved
           </p>
         </div>

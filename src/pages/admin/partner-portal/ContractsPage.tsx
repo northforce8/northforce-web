@@ -77,7 +77,7 @@ export default function ContractsPage() {
   }).length;
 
   return (
-    <div className="space-y-6">
+    <div className="max-w-7xl mx-auto p-6">
       <PageHeader
         title="Contracts"
         description="Manage customer contracts and agreements"
@@ -89,35 +89,29 @@ export default function ContractsPage() {
         }}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Total Contracts</p>
-              <p className="mt-2 text-3xl font-bold text-gray-900">{filteredContracts.length}</p>
-            </div>
-            <FileText className="h-8 w-8 text-gray-400" />
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Total Contracts</h3>
+            <FileText className="h-5 w-5 text-gray-400" />
           </div>
+          <p className="text-3xl font-bold text-gray-900">{filteredContracts.length}</p>
         </div>
 
         <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Active</p>
-              <p className="mt-2 text-3xl font-bold text-green-600">{activeContracts}</p>
-            </div>
-            <FileText className="h-8 w-8 text-green-400" />
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Active</h3>
+            <FileText className="h-5 w-5 text-green-500" />
           </div>
+          <p className="text-3xl font-bold text-green-600">{activeContracts}</p>
         </div>
 
         <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Expiring Soon</p>
-              <p className="mt-2 text-3xl font-bold text-orange-600">{expiringContracts}</p>
-            </div>
-            <FileText className="h-8 w-8 text-orange-400" />
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Expiring Soon</h3>
+            <FileText className="h-5 w-5 text-orange-500" />
           </div>
+          <p className="text-3xl font-bold text-orange-600">{expiringContracts}</p>
         </div>
       </div>
 
@@ -132,7 +126,7 @@ export default function ContractsPage() {
                   placeholder="Search contracts..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                 />
               </div>
             </div>
@@ -140,7 +134,7 @@ export default function ContractsPage() {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500"
+                className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary-600"
               >
                 <option value="all">All Status</option>
                 <option value="draft">Draft</option>
@@ -153,7 +147,7 @@ export default function ContractsPage() {
               <select
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value)}
-                className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500"
+                className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary-600"
               >
                 <option value="all">All Types</option>
                 <option value="msa">MSA</option>

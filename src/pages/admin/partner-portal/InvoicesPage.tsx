@@ -7,6 +7,7 @@ import { CurrencyDisplay } from '../../../components/admin/CurrencyDisplay';
 import { useToast } from '../../../contexts/ToastContext';
 import { logAdminError } from '../../../lib/admin-error-logger';
 import { safeString, safeNumber } from '../../../lib/data-validators';
+import { PageHeader } from '../../../components/admin/PageHeader';
 
 export default function InvoicesPage() {
   const [invoices, setInvoices] = useState<any[]>([]);
@@ -75,67 +76,66 @@ export default function InvoicesPage() {
     .reduce((sum, inv) => sum + Number(inv.total_amount || 0), 0);
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Invoices</h1>
-          <p className="mt-1 text-sm text-gray-500">
-            Manage customer invoices and billing
-          </p>
+    <div className="max-w-7xl mx-auto p-6">
+      <div className="mb-8 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="flex-shrink-0 w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
+            <FileText className="h-6 w-6 text-primary-600" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Invoices</h1>
+            <p className="text-sm text-gray-500 mt-1">
+              Manage customer invoices and billing
+            </p>
+          </div>
         </div>
         <div className="flex gap-3">
           <button
             onClick={() => setShowGenerateModal(true)}
-            className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+            className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium"
           >
-            <DollarSign className="h-4 w-4 mr-2" />
+            <DollarSign className="h-5 w-5" />
             Generate from Time
           </button>
           <button
             onClick={() => setShowCreateModal(true)}
-            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
+            className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"
           >
-            <Plus className="h-4 w-4 mr-2" />
+            <Plus className="h-5 w-5" />
             Create Invoice
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Total Invoiced</p>
-              <p className="mt-2 text-3xl font-bold text-gray-900">
-                <CurrencyDisplay amount={totalAmount} currency="SEK" />
-              </p>
-            </div>
-            <FileText className="h-8 w-8 text-gray-400" />
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Total Invoiced</h3>
+            <FileText className="h-5 w-5 text-gray-400" />
           </div>
+          <p className="text-3xl font-bold text-gray-900">
+            <CurrencyDisplay amount={totalAmount} currency="SEK" />
+          </p>
         </div>
 
         <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Paid</p>
-              <p className="mt-2 text-3xl font-bold text-green-600">
-                <CurrencyDisplay amount={paidAmount} currency="SEK" />
-              </p>
-            </div>
-            <DollarSign className="h-8 w-8 text-green-400" />
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Paid</h3>
+            <DollarSign className="h-5 w-5 text-green-500" />
           </div>
+          <p className="text-3xl font-bold text-green-600">
+            <CurrencyDisplay amount={paidAmount} currency="SEK" />
+          </p>
         </div>
 
         <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Overdue</p>
-              <p className="mt-2 text-3xl font-bold text-red-600">
-                <CurrencyDisplay amount={overdueAmount} currency="SEK" />
-              </p>
-            </div>
-            <FileText className="h-8 w-8 text-red-400" />
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Overdue</h3>
+            <FileText className="h-5 w-5 text-red-500" />
           </div>
+          <p className="text-3xl font-bold text-red-600">
+            <CurrencyDisplay amount={overdueAmount} currency="SEK" />
+          </p>
         </div>
       </div>
 
