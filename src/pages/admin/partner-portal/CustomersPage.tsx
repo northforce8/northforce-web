@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Plus, Search, Building2, Users, FolderKanban, Coins, TrendingUp, AlertTriangle, Edit2, Trash2, ExternalLink } from 'lucide-react';
 import { isAdmin } from '../../../lib/auth';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
+import { safeNumber } from '../../../lib/data-validators';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import type { Customer } from '../../../lib/partner-portal-types';
 
@@ -257,10 +258,10 @@ const CustomersPage: React.FC = () => {
                               <Coins className="h-4 w-4 text-primary-600 mr-2" />
                               <div>
                                 <p className="text-sm font-semibold text-gray-900">
-                                  {customer.credits_balance?.toFixed(1) || '0.0'}
+                                  {safeNumber(customer.credits_balance, 0).toFixed(1)}
                                 </p>
                                 <p className="text-xs text-gray-500">
-                                  of {customer.credits_monthly_allocation?.toFixed(0) || '0'}
+                                  of {safeNumber(customer.credits_monthly_allocation, 0).toFixed(0)}
                                 </p>
                               </div>
                             </div>
@@ -270,7 +271,7 @@ const CustomersPage: React.FC = () => {
                               <TrendingUp className="h-4 w-4 text-accent-emerald mr-2" />
                               <p className="text-sm font-medium text-gray-900">
                                 {customer.monthly_recurring_revenue
-                                  ? `${(customer.monthly_recurring_revenue / 1000).toFixed(0)}k SEK`
+                                  ? `${(safeNumber(customer.monthly_recurring_revenue, 0) / 1000).toFixed(0)}k SEK`
                                   : '-'}
                               </p>
                             </div>

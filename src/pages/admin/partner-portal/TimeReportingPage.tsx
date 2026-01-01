@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Calendar, Clock, Trash2, Coins, DollarSign, Activity } from 'lucide-react';
 import { getCurrentUser, isAdmin } from '../../../lib/auth';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
+import { safeNumber, safeDivide } from '../../../lib/data-validators';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import type { TimeEntryWithRelations, Customer, Project, WorkType, Partner } from '../../../lib/partner-portal-types';
 
@@ -215,9 +216,9 @@ const TimeReportingPage: React.FC = () => {
                 <span className="text-sm font-medium text-blue-800">Total Hours</span>
                 <Clock className="w-5 h-5 text-blue-600" />
               </div>
-              <div className="text-3xl font-bold text-blue-900">{totalHours.toFixed(1)}</div>
+              <div className="text-3xl font-bold text-blue-900">{safeNumber(totalHours, 0).toFixed(1)}</div>
               <div className="text-xs text-blue-700 mt-1">
-                {billableHours.toFixed(1)} billable ({((billableHours / totalHours) * 100 || 0).toFixed(0)}%)
+                {safeNumber(billableHours, 0).toFixed(1)} billable ({(safeDivide(billableHours, totalHours, 0) * 100).toFixed(0)}%)
               </div>
             </div>
 
@@ -226,9 +227,9 @@ const TimeReportingPage: React.FC = () => {
                 <span className="text-sm font-medium text-primary-800">Credits Used</span>
                 <Coins className="w-5 h-5 text-primary-600" />
               </div>
-              <div className="text-3xl font-bold text-primary-900">{totalCredits.toFixed(1)}</div>
+              <div className="text-3xl font-bold text-primary-900">{safeNumber(totalCredits, 0).toFixed(1)}</div>
               <div className="text-xs text-primary-700 mt-1">
-                Avg {(totalCredits / totalHours || 0).toFixed(2)} per hour
+                Avg {safeDivide(totalCredits, totalHours, 0).toFixed(2)} per hour
               </div>
             </div>
 
@@ -237,9 +238,9 @@ const TimeReportingPage: React.FC = () => {
                 <span className="text-sm font-medium text-orange-800">Internal Cost</span>
                 <DollarSign className="w-5 h-5 text-orange-600" />
               </div>
-              <div className="text-3xl font-bold text-orange-900">{(totalCost / 1000).toFixed(1)}k</div>
+              <div className="text-3xl font-bold text-orange-900">{(safeNumber(totalCost, 0) / 1000).toFixed(1)}k</div>
               <div className="text-xs text-orange-700 mt-1">
-                {(totalCost / totalHours || 0).toFixed(0)} SEK/hour
+                {safeDivide(totalCost, totalHours, 0).toFixed(0)} SEK/hour
               </div>
             </div>
 

@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { getCurrentUser, isAdmin } from '../../../lib/auth';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
+import { safeNumber } from '../../../lib/data-validators';
 import type { TimeEntryWithRelations, NoteWithRelations, Partner, Customer, Recommendation } from '../../../lib/partner-portal-types';
 
 const PartnerDashboard: React.FC = () => {
@@ -109,7 +110,7 @@ const PartnerDashboard: React.FC = () => {
           id: `credits-critical-${customer.id}`,
           type: 'critical',
           title: `Critical: ${customer.company_name} - Credits Depleted`,
-          description: `Only ${customer.credits_balance.toFixed(1)} credits remaining (${creditsPercentage.toFixed(0)}%). Immediate action required.`,
+          description: `Only ${safeNumber(customer.credits_balance, 0).toFixed(1)} credits remaining (${safeNumber(creditsPercentage, 0).toFixed(0)}%). Immediate action required.`,
           action: { label: 'Add Credits', link: `/admin/partner-portal/customers/${customer.id}` },
           icon: <AlertTriangle className="h-5 w-5" />,
         });
@@ -118,7 +119,7 @@ const PartnerDashboard: React.FC = () => {
           id: `credits-low-${customer.id}`,
           type: 'warning',
           title: `${customer.company_name} - Low Credits`,
-          description: `${customer.credits_balance.toFixed(1)} credits remaining (${creditsPercentage.toFixed(0)}%). Consider refilling.`,
+          description: `${safeNumber(customer.credits_balance, 0).toFixed(1)} credits remaining (${safeNumber(creditsPercentage, 0).toFixed(0)}%). Consider refilling.`,
           action: { label: 'Manage Credits', link: `/admin/partner-portal/customers/${customer.id}` },
           icon: <AlertCircle className="h-5 w-5" />,
         });

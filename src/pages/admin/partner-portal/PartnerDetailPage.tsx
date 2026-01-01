@@ -23,6 +23,7 @@ import {
   X,
 } from 'lucide-react';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
+import { safeNumber } from '../../../lib/data-validators';
 import type {
   Partner,
   PartnerRole,
@@ -323,7 +324,7 @@ const PartnerDetailPage: React.FC = () => {
             <div>
               <div className="flex justify-between text-sm mb-1">
                 <span className="text-gray-600">Current Utilization</span>
-                <span className="font-semibold text-gray-900">{utilizationPercentage.toFixed(0)}%</span>
+                <span className="font-semibold text-gray-900">{safeNumber(utilizationPercentage, 0).toFixed(0)}%</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div
@@ -384,32 +385,32 @@ const PartnerDetailPage: React.FC = () => {
             <div className="text-center p-4 bg-blue-50 rounded-lg">
               <Clock className="h-6 w-6 text-blue-600 mx-auto mb-2" />
               <p className="text-sm text-gray-600">Total Hours</p>
-              <p className="text-2xl font-bold text-gray-900">{performanceMetrics.total_hours.toFixed(1)}</p>
+              <p className="text-2xl font-bold text-gray-900">{safeNumber(performanceMetrics.total_hours, 0).toFixed(1)}</p>
             </div>
             <div className="text-center p-4 bg-green-50 rounded-lg">
               <CheckCircle className="h-6 w-6 text-green-600 mx-auto mb-2" />
               <p className="text-sm text-gray-600">Billable Hours</p>
-              <p className="text-2xl font-bold text-gray-900">{performanceMetrics.billable_hours.toFixed(1)}</p>
+              <p className="text-2xl font-bold text-gray-900">{safeNumber(performanceMetrics.billable_hours, 0).toFixed(1)}</p>
             </div>
             <div className="text-center p-4 bg-primary-50 rounded-lg">
               <Coins className="h-6 w-6 text-primary-600 mx-auto mb-2" />
               <p className="text-sm text-gray-600">Credits Generated</p>
-              <p className="text-2xl font-bold text-gray-900">{performanceMetrics.credits_generated.toFixed(0)}</p>
+              <p className="text-2xl font-bold text-gray-900">{safeNumber(performanceMetrics.credits_generated, 0).toFixed(0)}</p>
             </div>
             <div className="text-center p-4 bg-orange-50 rounded-lg">
               <DollarSign className="h-6 w-6 text-orange-600 mx-auto mb-2" />
               <p className="text-sm text-gray-600">Internal Cost</p>
-              <p className="text-2xl font-bold text-gray-900">{(performanceMetrics.internal_cost / 1000).toFixed(0)}k</p>
+              <p className="text-2xl font-bold text-gray-900">{(safeNumber(performanceMetrics.internal_cost, 0) / 1000).toFixed(0)}k</p>
             </div>
             <div className="text-center p-4 bg-purple-50 rounded-lg">
               <TrendingUp className="h-6 w-6 text-purple-600 mx-auto mb-2" />
               <p className="text-sm text-gray-600">Efficiency Score</p>
-              <p className="text-2xl font-bold text-gray-900">{performanceMetrics.efficiency_score.toFixed(0)}%</p>
+              <p className="text-2xl font-bold text-gray-900">{safeNumber(performanceMetrics.efficiency_score, 0).toFixed(0)}%</p>
             </div>
             <div className="text-center p-4 bg-yellow-50 rounded-lg">
               <Target className="h-6 w-6 text-yellow-600 mx-auto mb-2" />
               <p className="text-sm text-gray-600">Quality Score</p>
-              <p className="text-2xl font-bold text-gray-900">{performanceMetrics.quality_score.toFixed(0)}%</p>
+              <p className="text-2xl font-bold text-gray-900">{safeNumber(performanceMetrics.quality_score, 0).toFixed(0)}%</p>
             </div>
             <div className="text-center p-4 bg-teal-50 rounded-lg">
               <Users className="h-6 w-6 text-teal-600 mx-auto mb-2" />
@@ -483,7 +484,9 @@ const PartnerDetailPage: React.FC = () => {
           ) : (
             <div className="space-y-2">
               {capacityPeriods.slice(0, 5).map((period) => {
-                const utilization = (period.actual_hours / period.available_hours) * 100;
+                const utilization = period.available_hours > 0
+                  ? (safeNumber(period.actual_hours, 0) / safeNumber(period.available_hours, 1)) * 100
+                  : 0;
                 return (
                   <div key={period.id} className="p-3 bg-gray-50 rounded-lg">
                     <div className="flex justify-between items-start mb-2">
@@ -498,7 +501,7 @@ const PartnerDetailPage: React.FC = () => {
                         <p className="text-sm font-semibold text-gray-900">
                           {period.actual_hours} / {period.available_hours}h
                         </p>
-                        <p className="text-xs text-gray-600">{utilization.toFixed(0)}% used</p>
+                        <p className="text-xs text-gray-600">{safeNumber(utilization, 0).toFixed(0)}% used</p>
                       </div>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-1.5">

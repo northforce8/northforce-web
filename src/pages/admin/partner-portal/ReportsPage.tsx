@@ -11,6 +11,7 @@ import {
   Filter,
 } from 'lucide-react';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
+import { safeNumber } from '../../../lib/data-validators';
 import ReportsInsightsAI from '../../../components/admin/ReportsInsightsAI';
 import type {
   MarginAnalysis,
@@ -237,7 +238,7 @@ const ReportsPage: React.FC = () => {
               <span className="text-sm font-medium text-green-800">Total Revenue</span>
               <DollarSign className="w-5 h-5 text-green-600" />
             </div>
-            <div className="text-3xl font-bold text-green-900">{(totalRevenue / 1000).toFixed(0)}k</div>
+            <div className="text-3xl font-bold text-green-900">{(safeNumber(totalRevenue, 0) / 1000).toFixed(0)}k</div>
             <div className="text-xs text-green-700 mt-1">SEK</div>
           </div>
 
@@ -246,8 +247,8 @@ const ReportsPage: React.FC = () => {
               <span className="text-sm font-medium text-blue-800">Total Margin</span>
               <PieChart className="w-5 h-5 text-blue-600" />
             </div>
-            <div className="text-3xl font-bold text-blue-900">{(totalMargin / 1000).toFixed(0)}k</div>
-            <div className="text-xs text-blue-700 mt-1">{avgMarginPercentage.toFixed(1)}% avg</div>
+            <div className="text-3xl font-bold text-blue-900">{(safeNumber(totalMargin, 0) / 1000).toFixed(0)}k</div>
+            <div className="text-xs text-blue-700 mt-1">{safeNumber(avgMarginPercentage, 0).toFixed(1)}% avg</div>
           </div>
 
           <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-4">
@@ -255,7 +256,7 @@ const ReportsPage: React.FC = () => {
               <span className="text-sm font-medium text-orange-800">Total Hours</span>
               <Calendar className="w-5 h-5 text-orange-600" />
             </div>
-            <div className="text-3xl font-bold text-orange-900">{totalHours.toFixed(0)}</div>
+            <div className="text-3xl font-bold text-orange-900">{safeNumber(totalHours, 0).toFixed(0)}</div>
             <div className="text-xs text-orange-700 mt-1">delivered</div>
           </div>
 
@@ -305,21 +306,21 @@ const ReportsPage: React.FC = () => {
                           </p>
                         </div>
                         <span className={`text-lg font-bold ${marginColor}`}>
-                          {Number(report.margin_percentage).toFixed(1)}%
+                          {safeNumber(Number(report.margin_percentage), 0).toFixed(1)}%
                         </span>
                       </div>
                       <div className="grid grid-cols-3 gap-2 text-sm">
                         <div>
                           <p className="text-gray-500">Revenue</p>
-                          <p className="font-semibold text-gray-900">{(Number(report.revenue_sek) / 1000).toFixed(0)}k</p>
+                          <p className="font-semibold text-gray-900">{(safeNumber(Number(report.revenue_sek), 0) / 1000).toFixed(0)}k</p>
                         </div>
                         <div>
                           <p className="text-gray-500">Cost</p>
-                          <p className="font-semibold text-gray-900">{(Number(report.internal_cost_sek) / 1000).toFixed(0)}k</p>
+                          <p className="font-semibold text-gray-900">{(safeNumber(Number(report.internal_cost_sek), 0) / 1000).toFixed(0)}k</p>
                         </div>
                         <div>
                           <p className="text-gray-500">Margin</p>
-                          <p className="font-semibold text-green-600">{(Number(report.margin_sek) / 1000).toFixed(0)}k</p>
+                          <p className="font-semibold text-green-600">{(safeNumber(Number(report.margin_sek), 0) / 1000).toFixed(0)}k</p>
                         </div>
                       </div>
                     </div>
@@ -365,17 +366,17 @@ const ReportsPage: React.FC = () => {
                           </p>
                         </div>
                         <span className={`text-lg font-bold ${billableColor}`}>
-                          {billablePercentage.toFixed(0)}%
+                          {safeNumber(billablePercentage, 0).toFixed(0)}%
                         </span>
                       </div>
                       <div className="grid grid-cols-3 gap-2 text-sm">
                         <div>
                           <p className="text-gray-500">Hours</p>
-                          <p className="font-semibold text-gray-900">{Number(perf.total_hours).toFixed(0)}</p>
+                          <p className="font-semibold text-gray-900">{safeNumber(Number(perf.total_hours), 0).toFixed(0)}</p>
                         </div>
                         <div>
                           <p className="text-gray-500">Credits</p>
-                          <p className="font-semibold text-primary-600">{Number(perf.credits_generated).toFixed(0)}</p>
+                          <p className="font-semibold text-primary-600">{safeNumber(Number(perf.credits_generated), 0).toFixed(0)}</p>
                         </div>
                         <div>
                           <p className="text-gray-500">Customers</p>
@@ -427,19 +428,19 @@ const ReportsPage: React.FC = () => {
                             <span className="font-medium text-gray-900">{customer?.company_name}</span>
                           </td>
                           <td className="py-3 px-4 text-right text-sm text-gray-900">
-                            {(Number(report.revenue_sek) / 1000).toFixed(0)}k SEK
+                            {(safeNumber(Number(report.revenue_sek), 0) / 1000).toFixed(0)}k SEK
                           </td>
                           <td className="py-3 px-4 text-right text-sm text-gray-900">
-                            {(Number(report.internal_cost_sek) / 1000).toFixed(0)}k SEK
+                            {(safeNumber(Number(report.internal_cost_sek), 0) / 1000).toFixed(0)}k SEK
                           </td>
                           <td className="py-3 px-4 text-right text-sm font-semibold text-green-600">
-                            {(Number(report.margin_sek) / 1000).toFixed(0)}k SEK
+                            {(safeNumber(Number(report.margin_sek), 0) / 1000).toFixed(0)}k SEK
                           </td>
                           <td className={`py-3 px-4 text-right text-sm font-bold ${marginColor}`}>
-                            {marginPercentage.toFixed(1)}%
+                            {safeNumber(marginPercentage, 0).toFixed(1)}%
                           </td>
                           <td className="py-3 px-4 text-right text-sm text-gray-900">
-                            {Number(report.hours_delivered).toFixed(0)}h
+                            {safeNumber(Number(report.hours_delivered), 0).toFixed(0)}h
                           </td>
                         </tr>
                       );
