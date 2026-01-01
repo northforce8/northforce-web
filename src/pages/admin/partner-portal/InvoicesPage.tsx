@@ -78,16 +78,11 @@ export default function InvoicesPage() {
   return (
     <div className="max-w-7xl mx-auto p-6">
       <div className="mb-8 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex-shrink-0 w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
-            <FileText className="h-6 w-6 text-primary-600" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Invoices</h1>
-            <p className="text-sm text-gray-500 mt-1">
-              Manage customer invoices and billing
-            </p>
-          </div>
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Invoices</h1>
+          <p className="text-sm text-gray-500 mt-1">
+            Manage customer invoices and billing
+          </p>
         </div>
         <div className="flex gap-3">
           <button

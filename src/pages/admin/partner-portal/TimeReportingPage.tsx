@@ -176,7 +176,6 @@ const TimeReportingPage: React.FC = () => {
       <PageHeader
         title="Time Reporting"
         description="Track and manage your work hours"
-        icon={Clock}
         action={{
           label: 'Report Time',
           onClick: () => setShowCreateModal(true),

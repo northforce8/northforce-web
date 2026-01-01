@@ -197,7 +197,6 @@ const ProjectsPage: React.FC = () => {
         <PageHeader
           title="Projects"
           description="Manage customer projects and deliveries"
-          icon={FolderKanban}
           action={isAdminUser ? {
             label: 'Add Project',
             onClick: () => setShowCreateModal(true),

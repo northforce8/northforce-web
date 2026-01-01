@@ -156,7 +156,6 @@ const PartnersPage: React.FC = () => {
       <PageHeader
         title="Partners"
         description="Manage partner profiles and assignments"
-        icon={Users}
         action={isAdminUser ? {
           label: 'Add Partner',
           onClick: () => setShowCreateModal(true),

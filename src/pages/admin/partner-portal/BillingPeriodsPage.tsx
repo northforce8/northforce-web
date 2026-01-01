@@ -103,7 +103,6 @@ const BillingPeriodsPage: React.FC = () => {
       <PageHeader
         title="Billing Periods"
         description="Manage billing cycles and revenue tracking"
-        icon={Calendar}
         action={{
           label: 'New Period',
           onClick: () => {},

@@ -247,7 +247,6 @@ const SettingsPage: React.FC = () => {
         <PageHeader
           title="Settings"
           description="Configure Partner Portal system settings and work types"
-          icon={SettingsIcon}
         />
 
         {saveSuccess && (

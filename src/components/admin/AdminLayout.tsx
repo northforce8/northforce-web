@@ -140,7 +140,7 @@ const AdminLayout: React.FC = () => {
             <nav className="px-3">
               <Link
                 to={ADMIN_ROUTES.DASHBOARD}
-                className={`flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-colors mb-4 ${
+                className={`flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors mb-4 ${
                   isActive(ADMIN_ROUTES.DASHBOARD)
                     ? 'bg-primary-50 text-primary-700'
                     : 'text-gray-700 hover:bg-gray-50'

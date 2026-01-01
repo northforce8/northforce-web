@@ -157,7 +157,6 @@ const CustomersPage: React.FC = () => {
         <PageHeader
           title="Customers"
           description="Manage customer relationships and assignments"
-          icon={Building2}
           action={isAdminUser ? {
             label: 'Add Customer',
             onClick: () => setShowCreateModal(true),

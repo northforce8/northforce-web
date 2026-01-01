@@ -81,7 +81,6 @@ export default function ContractsPage() {
       <PageHeader
         title="Contracts"
         description="Manage customer contracts and agreements"
-        icon={FileSignature}
         action={{
           label: 'Create Contract',
           onClick: () => setShowCreateModal(true),

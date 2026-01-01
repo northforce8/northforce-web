@@ -214,7 +214,6 @@ const NotesPage: React.FC = () => {
       <PageHeader
         title="Notes"
         description="Collaboration and documentation"
-        icon={FileText}
         action={{
           label: 'Add Note',
           onClick: openAddModal,
