@@ -536,7 +536,7 @@ const CustomerDetailPage: React.FC = () => {
 
     return (
       <div className="group">
-        <label className="text-xs font-medium text-gray-500 uppercase">{label}</label>
+        <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide">{label}</label>
         {isEditing ? (
           <div className="flex items-center gap-2 mt-1">
             {type === 'select' && options ? (
@@ -625,7 +625,7 @@ const CustomerDetailPage: React.FC = () => {
           </div>
         )}
 
-        <div className="mb-6 flex items-center justify-between">
+        <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button
               onClick={() => navigate('/admin/partner-portal/customers')}
@@ -634,39 +634,39 @@ const CustomerDetailPage: React.FC = () => {
               <ArrowLeft className="h-5 w-5 text-gray-600" />
             </button>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-                <Building2 className="h-8 w-8 text-primary-600" />
+              <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                <Building2 className="h-7 w-7 text-primary-600" />
                 {customer.company_name}
               </h1>
-              <p className="text-gray-600 mt-1">
+              <p className="text-sm text-gray-500 mt-1">
                 {customer.industry} • {customer.country}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className={`px-4 py-2 rounded-lg border-2 ${getRiskColor(customer.overdelivery_risk_level || 'low')}`}>
-              <p className="text-xs font-medium uppercase">Risk: {customer.overdelivery_risk_level || 'Low'}</p>
+            <div className={`px-3 py-1.5 rounded-lg border ${getRiskColor(customer.overdelivery_risk_level || 'low')}`}>
+              <p className="text-xs font-semibold uppercase">Risk: {customer.overdelivery_risk_level || 'Low'}</p>
             </div>
           </div>
         </div>
 
         {aiSummary && (
-          <div className="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4">
+          <div className="mb-8 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6">
             <div className="flex items-start gap-3">
               <Sparkles className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
               <div className="flex-1">
-                <p className="text-sm font-medium text-blue-900">AI Status Summary</p>
-                <p className="text-sm text-blue-800 mt-1">{aiSummary}</p>
+                <p className="text-sm font-semibold text-blue-900">AI Status Summary</p>
+                <p className="text-sm text-blue-800 mt-2">{aiSummary}</p>
               </div>
               <div className="text-right">
                 <p className={`text-2xl font-bold ${healthScore.color}`}>{healthScore.score}</p>
-                <p className="text-xs text-gray-600 uppercase">{healthScore.status}</p>
+                <p className="text-xs text-gray-500 uppercase font-medium">{healthScore.status}</p>
               </div>
             </div>
           </div>
         )}
 
-        <div className="mb-6">
+        <div className="mb-8">
           <PlanPricingCard
             planName={customer.credits_plan || 'starter'}
             pricePerCreditEUR={Number(customer.credits_price_per_credit) / (customer.currency_code === 'EUR' ? 1 : 11.5) || 150}
@@ -684,7 +684,7 @@ const CustomerDetailPage: React.FC = () => {
               {isAdminUser && (
                 <button
                   onClick={() => setShowCreditsModal(true)}
-                  className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                  className="text-sm text-primary-600 hover:text-primary-700 font-semibold"
                 >
                   Manage
                 </button>
@@ -693,12 +693,12 @@ const CustomerDetailPage: React.FC = () => {
             <p className="text-3xl font-bold text-gray-900">
               {creditsRemaining.toFixed(1)}
             </p>
-            <p className="text-sm text-gray-600 mt-1">
+            <p className="text-sm font-medium text-gray-600 mt-1">
               of {customer.credits_monthly_allocation?.toFixed(0)} credits
             </p>
-            <div className="mt-3 w-full bg-gray-200 rounded-full h-2.5">
+            <div className="mt-4 w-full bg-gray-200 rounded-full h-2">
               <div
-                className={`h-2.5 rounded-full transition-all ${
+                className={`h-2 rounded-full transition-all ${
                   creditsPercentage < 20 ? 'bg-red-500' :
                   creditsPercentage < 40 ? 'bg-orange-500' :
                   'bg-green-500'
@@ -706,7 +706,7 @@ const CustomerDetailPage: React.FC = () => {
                 style={{ width: `${Math.min(creditsPercentage, 100)}%` }}
               />
             </div>
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-gray-500 mt-2 font-medium">
               {creditsPercentage.toFixed(0)}% remaining
             </p>
           </div>
@@ -720,8 +720,8 @@ const CustomerDetailPage: React.FC = () => {
             <p className="text-3xl font-bold text-gray-900">
               {formatCurrency(customer.monthly_recurring_revenue || 0)}
             </p>
-            <p className="text-sm text-gray-600 mt-1">Monthly Recurring Revenue</p>
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-sm font-medium text-gray-600 mt-1">Monthly Recurring Revenue</p>
+            <p className="text-xs text-gray-500 mt-2 font-medium">
               {customer.credits_price_per_credit?.toFixed(0)} SEK per credit
             </p>
           </div>
@@ -735,8 +735,8 @@ const CustomerDetailPage: React.FC = () => {
             <p className="text-3xl font-bold text-gray-900">
               {thisMonthData.totalCredits.toFixed(1)}
             </p>
-            <p className="text-sm text-gray-600 mt-1">Credits Used This Month</p>
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-sm font-medium text-gray-600 mt-1">Credits Used This Month</p>
+            <p className="text-xs text-gray-500 mt-2 font-medium">
               {thisMonthData.totalHours.toFixed(1)}h reported
             </p>
           </div>
@@ -750,8 +750,8 @@ const CustomerDetailPage: React.FC = () => {
             <p className="text-3xl font-bold text-gray-900">
               {burnRate.daily.toFixed(2)}
             </p>
-            <p className="text-sm text-gray-600 mt-1">Credits Per Day</p>
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-sm font-medium text-gray-600 mt-1">Credits Per Day</p>
+            <p className="text-xs text-gray-500 mt-2 font-medium">
               {burnRate.projected.toFixed(0)} projected this month
             </p>
           </div>
@@ -770,12 +770,12 @@ const CustomerDetailPage: React.FC = () => {
             >
               <div className="flex items-center gap-2">
                 <Zap className="h-5 w-5 text-accent-amber" />
-                <h3 className="font-semibold text-gray-900">Burn Rate Forecast</h3>
+                <h3 className="text-lg font-semibold text-gray-900">Burn Rate Forecast</h3>
               </div>
               {expandedSections.burnRate ? <ChevronUp className="h-5 w-5 text-gray-400" /> : <ChevronDown className="h-5 w-5 text-gray-400" />}
             </div>
             {expandedSections.burnRate && (
-              <div className="px-6 pb-6 space-y-3">
+              <div className="px-6 pb-6 space-y-4">
                 <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
                   <span className="text-sm text-gray-600">Current consumption:</span>
                   <span className="font-bold text-blue-600">{burnRate.current.toFixed(1)} credits</span>
@@ -833,12 +833,12 @@ const CustomerDetailPage: React.FC = () => {
             >
               <div className="flex items-center gap-2">
                 <BarChart3 className="h-5 w-5 text-accent-emerald" />
-                <h3 className="font-semibold text-gray-900">Margin Analysis</h3>
+                <h3 className="text-lg font-semibold text-gray-900">Margin Analysis</h3>
               </div>
               {expandedSections.margin ? <ChevronUp className="h-5 w-5 text-gray-400" /> : <ChevronDown className="h-5 w-5 text-gray-400" />}
             </div>
             {expandedSections.margin && (
-              <div className="px-6 pb-6 space-y-3">
+              <div className="px-6 pb-6 space-y-4">
                 <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
                   <span className="text-sm text-gray-600">Revenue (actual):</span>
                   <span className="font-bold text-green-600">{formatCurrency(marginData.revenue)}</span>
@@ -890,11 +890,11 @@ const CustomerDetailPage: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center gap-2">
               <Target className="h-5 w-5 text-primary-600" />
               Status Dimensions
             </h3>
-            <div className="space-y-3">
+            <div className="space-y-4">
               <EditableField
                 label="Delivery Status"
                 fieldName="delivery_status"
@@ -1143,7 +1143,7 @@ const CustomerDetailPage: React.FC = () => {
                 )}
 
                 <div className="pt-4 border-t border-gray-200">
-                  <label className="text-xs font-medium text-gray-500 uppercase">Created</label>
+                  <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide">Created</label>
                   <p className="text-sm text-gray-900 mt-1">
                     {formatDate(customer.created_at)}
                   </p>
@@ -1162,14 +1162,14 @@ const CustomerDetailPage: React.FC = () => {
                   {transactions.slice(0, 8).map(tx => (
                     <div key={tx.id} className="flex items-center justify-between text-sm py-2 border-b border-gray-100 last:border-0">
                       <div className="flex-1">
-                        <p className={`font-medium capitalize ${
+                        <p className={`text-sm font-semibold capitalize ${
                           tx.transaction_type === 'deduction' ? 'text-red-600' :
                           tx.transaction_type === 'allocation' ? 'text-green-600' :
                           'text-gray-900'
                         }`}>
                           {tx.transaction_type}
                         </p>
-                        <p className="text-xs text-gray-600 mt-0.5">
+                        <p className="text-xs text-gray-500 mt-0.5 font-medium">
                           {formatDate(tx.created_at)}
                         </p>
                       </div>
@@ -1223,10 +1223,10 @@ const CustomerDetailPage: React.FC = () => {
                   step="0.1"
                   placeholder="Enter + or - amount"
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-gray-500 mt-2 font-medium">
                   Current balance: {customer.credits_balance?.toFixed(1)} credits
                   {creditsForm.balance_adjustment !== 0 && (
-                    <span className="ml-2 font-medium">
+                    <span className="ml-2 font-semibold text-gray-700">
                       → New: {((customer.credits_balance || 0) + creditsForm.balance_adjustment).toFixed(1)} credits
                     </span>
                   )}
