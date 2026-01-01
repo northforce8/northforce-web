@@ -31,7 +31,8 @@ import {
 } from 'lucide-react';
 import { getCurrentUser, signOut } from '../../lib/auth';
 import type { AdminUser } from '../../lib/auth';
-import { ADMIN_ROUTES, ADMIN_NAV_LABELS } from '../../lib/admin-routes';
+import { ADMIN_ROUTES, ADMIN_NAVIGATION_GROUPED } from '../../lib/admin-routes';
+import type { AdminNavGroup } from '../../lib/admin-routes';
 
 const AdminLayout: React.FC = () => {
   const [user, setUser] = useState<AdminUser | null>(null);
@@ -71,30 +72,35 @@ const AdminLayout: React.FC = () => {
     return location.pathname.startsWith(path);
   };
 
-  const navItems = [
-    { path: ADMIN_ROUTES.DASHBOARD, label: ADMIN_NAV_LABELS.DASHBOARD, icon: LayoutDashboard, roles: ['admin', 'partner'] },
-    { path: ADMIN_ROUTES.LEADS_MANAGEMENT, label: ADMIN_NAV_LABELS.LEADS_MANAGEMENT, icon: ListChecks, roles: ['admin'] },
-    { path: ADMIN_ROUTES.ENTERPRISE, label: ADMIN_NAV_LABELS.ENTERPRISE_INTELLIGENCE, icon: TrendingUp, roles: ['admin'] },
-    { path: ADMIN_ROUTES.ENTERPRISE_PLANS, label: ADMIN_NAV_LABELS.ENTERPRISE_PLANS, icon: Activity, roles: ['admin'] },
-    { path: ADMIN_ROUTES.CREDITS, label: ADMIN_NAV_LABELS.CREDITS, icon: Coins, roles: ['admin'] },
-    { path: ADMIN_ROUTES.CUSTOMERS, label: ADMIN_NAV_LABELS.CUSTOMERS, icon: Building2, roles: ['admin', 'partner'] },
-    { path: ADMIN_ROUTES.PROJECTS, label: ADMIN_NAV_LABELS.PROJECTS, icon: FolderKanban, roles: ['admin', 'partner'] },
-    { path: ADMIN_ROUTES.TIME, label: ADMIN_NAV_LABELS.TIME_REPORTING, icon: Clock, roles: ['admin', 'partner'] },
-    { path: ADMIN_ROUTES.INVOICES, label: ADMIN_NAV_LABELS.INVOICES, icon: Receipt, roles: ['admin'] },
-    { path: ADMIN_ROUTES.BILLING_PERIODS, label: ADMIN_NAV_LABELS.BILLING_PERIODS, icon: CreditCard, roles: ['admin'] },
-    { path: ADMIN_ROUTES.CONTRACTS, label: ADMIN_NAV_LABELS.CONTRACTS, icon: FileSignature, roles: ['admin'] },
-    { path: ADMIN_ROUTES.PARTNER_MANAGEMENT, label: ADMIN_NAV_LABELS.PARTNER_MANAGEMENT, icon: UserCog, roles: ['admin'] },
-    { path: ADMIN_ROUTES.CAPACITY, label: ADMIN_NAV_LABELS.CAPACITY, icon: Gauge, roles: ['admin'] },
-    { path: ADMIN_ROUTES.PLANNING, label: ADMIN_NAV_LABELS.PLANNING, icon: Calendar, roles: ['admin'] },
-    { path: ADMIN_ROUTES.NOTES, label: ADMIN_NAV_LABELS.NOTES, icon: FileText, roles: ['admin', 'partner'] },
-    { path: ADMIN_ROUTES.REPORTS, label: ADMIN_NAV_LABELS.REPORTS, icon: BarChart3, roles: ['admin'] },
-    { path: ADMIN_ROUTES.MARGIN_ANALYSIS, label: ADMIN_NAV_LABELS.MARGIN_ANALYSIS, icon: PieChart, roles: ['admin'] },
-    { path: ADMIN_ROUTES.SUPPORT, label: ADMIN_NAV_LABELS.SUPPORT, icon: LifeBuoy, roles: ['admin'] },
-    { path: ADMIN_ROUTES.SETTINGS, label: ADMIN_NAV_LABELS.SETTINGS, icon: Settings, roles: ['admin'] },
-    { path: ADMIN_ROUTES.HEALTH, label: ADMIN_NAV_LABELS.HEALTH, icon: Activity, roles: ['admin'] },
-  ];
+  const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+    [ADMIN_ROUTES.DASHBOARD]: LayoutDashboard,
+    [ADMIN_ROUTES.LEADS_MANAGEMENT]: ListChecks,
+    [ADMIN_ROUTES.ENTERPRISE]: TrendingUp,
+    [ADMIN_ROUTES.ENTERPRISE_PLANS]: Activity,
+    [ADMIN_ROUTES.CREDITS]: Coins,
+    [ADMIN_ROUTES.CUSTOMERS]: Building2,
+    [ADMIN_ROUTES.PROJECTS]: FolderKanban,
+    [ADMIN_ROUTES.TIME]: Clock,
+    [ADMIN_ROUTES.INVOICES]: Receipt,
+    [ADMIN_ROUTES.BILLING_PERIODS]: CreditCard,
+    [ADMIN_ROUTES.CONTRACTS]: FileSignature,
+    [ADMIN_ROUTES.PARTNER_MANAGEMENT]: UserCog,
+    [ADMIN_ROUTES.CAPACITY]: Gauge,
+    [ADMIN_ROUTES.PLANNING]: Calendar,
+    [ADMIN_ROUTES.NOTES]: FileText,
+    [ADMIN_ROUTES.REPORTS]: BarChart3,
+    [ADMIN_ROUTES.MARGIN_ANALYSIS]: PieChart,
+    [ADMIN_ROUTES.SUPPORT]: LifeBuoy,
+    [ADMIN_ROUTES.SETTINGS]: Settings,
+    [ADMIN_ROUTES.HEALTH]: Activity,
+  };
 
-  const filteredNavItems = navItems.filter(item => item.roles.includes(user?.role || ''));
+  const filteredNavGroups = ADMIN_NAVIGATION_GROUPED
+    .map(group => ({
+      ...group,
+      items: group.items.filter(item => item.roles.includes(user?.role || ''))
+    }))
+    .filter(group => group.roles.includes(user?.role || '') && group.items.length > 0);
 
   if (!user) {
     return (
@@ -130,30 +136,51 @@ const AdminLayout: React.FC = () => {
           </div>
 
           <div className="flex-1 overflow-y-auto py-4">
-            <nav className="px-3 space-y-1">
-              {filteredNavItems.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    className={`flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
-                      isActive(item.path)
-                        ? 'bg-primary-50 text-primary-700'
-                        : 'text-gray-700 hover:bg-gray-50'
-                    }`}
-                  >
-                    <Icon className="h-5 w-5 mr-3" />
-                    {item.label}
-                  </Link>
-                );
-              })}
+            <nav className="px-3">
+              <Link
+                to={ADMIN_ROUTES.DASHBOARD}
+                className={`flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors mb-4 ${
+                  isActive(ADMIN_ROUTES.DASHBOARD)
+                    ? 'bg-primary-50 text-primary-700'
+                    : 'text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                <LayoutDashboard className="h-5 w-5 mr-3" />
+                Dashboard
+              </Link>
+
+              {filteredNavGroups.map((group, groupIndex) => (
+                <div key={group.label} className={groupIndex > 0 ? 'mt-6' : 'mt-0'}>
+                  <div className="px-3 mb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    {group.label}
+                  </div>
+                  <div className="space-y-1">
+                    {group.items.map((item) => {
+                      const Icon = iconMap[item.path] || FileText;
+                      return (
+                        <Link
+                          key={item.path}
+                          to={item.path}
+                          className={`flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                            isActive(item.path)
+                              ? 'bg-primary-50 text-primary-700'
+                              : 'text-gray-700 hover:bg-gray-50'
+                          }`}
+                        >
+                          <Icon className="h-5 w-5 mr-3" />
+                          {item.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
 
               <a
                 href="https://northforce.io"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors text-gray-500 hover:bg-gray-50 hover:text-gray-700 mt-4 border-t border-gray-200 pt-4"
+                className="flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors text-gray-500 hover:bg-gray-50 hover:text-gray-700 mt-6 pt-6 border-t border-gray-200"
               >
                 <ExternalLink className="h-5 w-5 mr-3" />
                 Website

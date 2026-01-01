@@ -69,9 +69,9 @@ export const buildContractDetailRoute = (contractId: string) =>
 export const ADMIN_NAV_LABELS = {
   DASHBOARD: 'Dashboard',
   LEAD_MANAGEMENT: 'Lead Management',
-  ENTERPRISE_INTELLIGENCE: 'Enterprise Intelligence',
+  ENTERPRISE_INTELLIGENCE: 'Enterprise Dashboard',
   ENTERPRISE_PLANS: 'Enterprise Plans',
-  CREDITS: 'Credits & Capacity',
+  CREDITS: 'Credits & Forecasts',
   PARTNERS: 'Partners Overview',
   PARTNER_MANAGEMENT: 'Partner Management',
   CAPACITY: 'Capacity Planning',
@@ -82,13 +82,13 @@ export const ADMIN_NAV_LABELS = {
   NOTES: 'Notes',
   INVOICES: 'Invoices',
   CONTRACTS: 'Contracts',
-  REPORTS: 'Reports & Analytics',
-  SUPPORT: 'Support & Tickets',
+  REPORTS: 'Reports Overview',
+  SUPPORT: 'Support',
   BILLING_PERIODS: 'Billing Periods',
   MARGIN_ANALYSIS: 'Margin Analysis',
   LEADS_MANAGEMENT: 'All Leads',
   SETTINGS: 'Settings',
-  HEALTH: 'System Health',
+  HEALTH: 'Health',
 } as const;
 
 // Type-safe navigation items
@@ -96,30 +96,77 @@ export interface AdminNavItem {
   label: string;
   path: string;
   icon?: string;
-  children?: AdminNavItem[];
+  roles: string[];
 }
 
-export const ADMIN_NAVIGATION: AdminNavItem[] = [
-  { label: ADMIN_NAV_LABELS.DASHBOARD, path: ADMIN_ROUTES.DASHBOARD },
-  { label: ADMIN_NAV_LABELS.LEADS_MANAGEMENT, path: ADMIN_ROUTES.LEADS_MANAGEMENT },
-  { label: ADMIN_NAV_LABELS.ENTERPRISE_INTELLIGENCE, path: ADMIN_ROUTES.ENTERPRISE },
-  { label: ADMIN_NAV_LABELS.ENTERPRISE_PLANS, path: ADMIN_ROUTES.ENTERPRISE_PLANS },
-  { label: ADMIN_NAV_LABELS.CREDITS, path: ADMIN_ROUTES.CREDITS },
-  { label: ADMIN_NAV_LABELS.CUSTOMERS, path: ADMIN_ROUTES.CUSTOMERS },
-  { label: ADMIN_NAV_LABELS.PROJECTS, path: ADMIN_ROUTES.PROJECTS },
-  { label: ADMIN_NAV_LABELS.TIME_REPORTING, path: ADMIN_ROUTES.TIME },
-  { label: ADMIN_NAV_LABELS.INVOICES, path: ADMIN_ROUTES.INVOICES },
-  { label: ADMIN_NAV_LABELS.BILLING_PERIODS, path: ADMIN_ROUTES.BILLING_PERIODS },
-  { label: ADMIN_NAV_LABELS.CONTRACTS, path: ADMIN_ROUTES.CONTRACTS },
-  { label: ADMIN_NAV_LABELS.PARTNER_MANAGEMENT, path: ADMIN_ROUTES.PARTNER_MANAGEMENT },
-  { label: ADMIN_NAV_LABELS.CAPACITY, path: ADMIN_ROUTES.CAPACITY },
-  { label: ADMIN_NAV_LABELS.PLANNING, path: ADMIN_ROUTES.PLANNING },
-  { label: ADMIN_NAV_LABELS.NOTES, path: ADMIN_ROUTES.NOTES },
-  { label: ADMIN_NAV_LABELS.REPORTS, path: ADMIN_ROUTES.REPORTS },
-  { label: ADMIN_NAV_LABELS.MARGIN_ANALYSIS, path: ADMIN_ROUTES.MARGIN_ANALYSIS },
-  { label: ADMIN_NAV_LABELS.SUPPORT, path: ADMIN_ROUTES.SUPPORT },
-  { label: ADMIN_NAV_LABELS.SETTINGS, path: ADMIN_ROUTES.SETTINGS },
-  { label: ADMIN_NAV_LABELS.HEALTH, path: ADMIN_ROUTES.HEALTH },
+export interface AdminNavGroup {
+  label: string;
+  roles: string[];
+  items: AdminNavItem[];
+}
+
+export const ADMIN_NAVIGATION_GROUPED: AdminNavGroup[] = [
+  {
+    label: 'BUSINESS INTELLIGENCE',
+    roles: ['admin'],
+    items: [
+      { label: ADMIN_NAV_LABELS.ENTERPRISE_INTELLIGENCE, path: ADMIN_ROUTES.ENTERPRISE, roles: ['admin'] },
+      { label: ADMIN_NAV_LABELS.CREDITS, path: ADMIN_ROUTES.CREDITS, roles: ['admin'] },
+      { label: ADMIN_NAV_LABELS.MARGIN_ANALYSIS, path: ADMIN_ROUTES.MARGIN_ANALYSIS, roles: ['admin'] },
+    ]
+  },
+  {
+    label: 'SALES & DELIVERY',
+    roles: ['admin', 'partner'],
+    items: [
+      { label: ADMIN_NAV_LABELS.LEADS_MANAGEMENT, path: ADMIN_ROUTES.LEADS_MANAGEMENT, roles: ['admin'] },
+      { label: ADMIN_NAV_LABELS.CUSTOMERS, path: ADMIN_ROUTES.CUSTOMERS, roles: ['admin', 'partner'] },
+      { label: ADMIN_NAV_LABELS.PROJECTS, path: ADMIN_ROUTES.PROJECTS, roles: ['admin', 'partner'] },
+    ]
+  },
+  {
+    label: 'OPERATIONS',
+    roles: ['admin', 'partner'],
+    items: [
+      { label: ADMIN_NAV_LABELS.TIME_REPORTING, path: ADMIN_ROUTES.TIME, roles: ['admin', 'partner'] },
+      { label: ADMIN_NAV_LABELS.NOTES, path: ADMIN_ROUTES.NOTES, roles: ['admin', 'partner'] },
+      { label: ADMIN_NAV_LABELS.PLANNING, path: ADMIN_ROUTES.PLANNING, roles: ['admin'] },
+    ]
+  },
+  {
+    label: 'FINANCE & CONTRACTS',
+    roles: ['admin'],
+    items: [
+      { label: ADMIN_NAV_LABELS.INVOICES, path: ADMIN_ROUTES.INVOICES, roles: ['admin'] },
+      { label: ADMIN_NAV_LABELS.CONTRACTS, path: ADMIN_ROUTES.CONTRACTS, roles: ['admin'] },
+      { label: ADMIN_NAV_LABELS.BILLING_PERIODS, path: ADMIN_ROUTES.BILLING_PERIODS, roles: ['admin'] },
+    ]
+  },
+  {
+    label: 'RESOURCES',
+    roles: ['admin'],
+    items: [
+      { label: ADMIN_NAV_LABELS.PARTNER_MANAGEMENT, path: ADMIN_ROUTES.PARTNER_MANAGEMENT, roles: ['admin'] },
+      { label: ADMIN_NAV_LABELS.CAPACITY, path: ADMIN_ROUTES.CAPACITY, roles: ['admin'] },
+      { label: ADMIN_NAV_LABELS.ENTERPRISE_PLANS, path: ADMIN_ROUTES.ENTERPRISE_PLANS, roles: ['admin'] },
+    ]
+  },
+  {
+    label: 'REPORTS & ANALYTICS',
+    roles: ['admin'],
+    items: [
+      { label: ADMIN_NAV_LABELS.REPORTS, path: ADMIN_ROUTES.REPORTS, roles: ['admin'] },
+    ]
+  },
+  {
+    label: 'SYSTEM',
+    roles: ['admin'],
+    items: [
+      { label: ADMIN_NAV_LABELS.SETTINGS, path: ADMIN_ROUTES.SETTINGS, roles: ['admin'] },
+      { label: ADMIN_NAV_LABELS.SUPPORT, path: ADMIN_ROUTES.SUPPORT, roles: ['admin'] },
+      { label: ADMIN_NAV_LABELS.HEALTH, path: ADMIN_ROUTES.HEALTH, roles: ['admin'] },
+    ]
+  },
 ];
 
 // Check if a path is an admin route
