@@ -151,7 +151,7 @@ const AdminLayout: React.FC = () => {
           <div className="flex-1 overflow-y-auto py-4">
             <nav className="px-3">
               {filteredNavGroups.map((group, groupIndex) => {
-                const groupKey = `admin.nav.${group.label.toLowerCase().replace(/\s+/g, '_')}`;
+                const groupKey = `admin.nav.${group.label.toLowerCase().replace(/\s+/g, '_').replace(/&/g, '').replace(/__+/g, '_')}`;
                 return (
                 <div key={group.label} className={groupIndex === 0 ? '' : 'mt-6 pt-6 border-t border-gray-200'}>
                   <div className="px-3 mb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
