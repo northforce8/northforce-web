@@ -451,6 +451,69 @@ const translations: Record<string, Record<Language, string>> = {
   'admin.select_option': { en: 'Select an option', sv: 'Välj ett alternativ' },
   'admin.required': { en: 'Required', sv: 'Obligatoriskt' },
   'admin.optional': { en: 'Optional', sv: 'Valfritt' },
+
+  // Customer Portal
+  'customer.loading': { en: 'Loading...', sv: 'Laddar...' },
+  'customer.sign_out': { en: 'Sign Out', sv: 'Logga ut' },
+  'customer.portal.title': { en: 'Customer Portal', sv: 'Kundportal' },
+
+  // Customer Login
+  'customer.login.title': { en: 'Customer Portal', sv: 'Kundportal' },
+  'customer.login.subtitle': { en: 'Access your engagement overview', sv: 'Få tillgång till din engagemangsöversikt' },
+  'customer.login.email': { en: 'Email Address', sv: 'E-postadress' },
+  'customer.login.email_placeholder': { en: 'your.email@company.com', sv: 'din.epost@foretag.se' },
+  'customer.login.password': { en: 'Password', sv: 'Lösenord' },
+  'customer.login.password_placeholder': { en: 'Enter your password', sv: 'Ange ditt lösenord' },
+  'customer.login.sign_in': { en: 'Sign In', sv: 'Logga in' },
+  'customer.login.signing_in': { en: 'Signing in...', sv: 'Loggar in...' },
+  'customer.login.error_not_customer': { en: 'Access denied. This portal is for customers only.', sv: 'Åtkomst nekad. Denna portal är endast för kunder.' },
+  'customer.login.error_generic': { en: 'Login failed. Please check your credentials.', sv: 'Inloggningen misslyckades. Kontrollera dina uppgifter.' },
+  'customer.login.support_text': { en: 'Need help? Contact your account manager.', sv: 'Behöver du hjälp? Kontakta din kontoansvarige.' },
+
+  // Customer Navigation
+  'customer.nav.overview': { en: 'Overview', sv: 'Översikt' },
+  'customer.nav.activity': { en: 'Activity', sv: 'Aktivitet' },
+  'customer.nav.documents': { en: 'Documents', sv: 'Dokument' },
+  'customer.nav.help': { en: 'Help', sv: 'Hjälp' },
+
+  // Customer Dashboard
+  'customer.dashboard.title': { en: 'Overview', sv: 'Översikt' },
+  'customer.dashboard.subtitle': { en: 'Your engagement at a glance', sv: 'Ditt engagemang i ett ögonkast' },
+  'customer.dashboard.active_projects': { en: 'Active Projects', sv: 'Aktiva projekt' },
+  'customer.dashboard.completed_deliveries': { en: 'Completed Deliveries', sv: 'Slutförda leveranser' },
+  'customer.dashboard.capacity_remaining': { en: 'Capacity Remaining', sv: 'Återstående kapacitet' },
+  'customer.dashboard.capacity_used': { en: 'Capacity Used', sv: 'Använd kapacitet' },
+  'customer.dashboard.recent_activity': { en: 'Recent Activity', sv: 'Senaste aktivitet' },
+  'customer.dashboard.no_activity': { en: 'No recent activity', sv: 'Ingen senaste aktivitet' },
+  'customer.dashboard.capacity_overview': { en: 'Capacity Overview', sv: 'Kapacitetsöversikt' },
+  'customer.dashboard.capacity_consumed': { en: 'Consumed', sv: 'Förbrukad' },
+  'customer.dashboard.capacity_available': { en: 'Available', sv: 'Tillgänglig' },
+  'customer.dashboard.utilized': { en: 'utilized', sv: 'utnyttjad' },
+  'customer.dashboard.activity_delivery': { en: 'New delivery completed', sv: 'Ny leverans slutförd' },
+  'customer.dashboard.activity_milestone': { en: 'Project milestone reached', sv: 'Projektmilstolpe nådd' },
+
+  // Customer Activity
+  'customer.activity.title': { en: 'Activity', sv: 'Aktivitet' },
+  'customer.activity.subtitle': { en: 'Detailed view of work performed', sv: 'Detaljerad vy av utfört arbete' },
+  'customer.activity.filter': { en: 'Show', sv: 'Visa' },
+  'customer.activity.filter_week': { en: 'Last Week', sv: 'Senaste veckan' },
+  'customer.activity.filter_month': { en: 'Last Month', sv: 'Senaste månaden' },
+  'customer.activity.filter_all': { en: 'All Time', sv: 'All tid' },
+  'customer.activity.no_data': { en: 'No activity recorded for this period', sv: 'Ingen aktivitet registrerad för denna period' },
+
+  // Customer Documents
+  'customer.documents.title': { en: 'Documents', sv: 'Dokument' },
+  'customer.documents.subtitle': { en: 'Deliverables and reports', sv: 'Leveranser och rapporter' },
+  'customer.documents.coming_soon': { en: 'Coming Soon', sv: 'Kommer snart' },
+  'customer.documents.coming_soon_text': { en: 'Document access will be available here shortly. You will be able to view and download all deliverables, reports, and engagement documentation.', sv: 'Dokumentåtkomst kommer att vara tillgänglig här inom kort. Du kommer att kunna visa och ladda ner alla leveranser, rapporter och engagemangsdokumentation.' },
+
+  // Customer Help
+  'customer.help.title': { en: 'Help', sv: 'Hjälp' },
+  'customer.help.subtitle': { en: 'Learn how to use your Customer Portal', sv: 'Lär dig hur du använder din Kundportal' },
+  'customer.help.welcome_title': { en: 'Welcome to Your Portal', sv: 'Välkommen till din portal' },
+  'customer.help.welcome_text': { en: 'This help center provides guidance on using the Customer Portal effectively. Expand any section below to learn more about specific features and concepts.', sv: 'Detta hjälpcenter ger vägledning om hur du använder Kundportalen effektivt. Expandera valfritt avsnitt nedan för att lära dig mer om specifika funktioner och begrepp.' },
+  'customer.help.need_support': { en: 'Need Additional Support?', sv: 'Behöver du ytterligare support?' },
+  'customer.help.support_text': { en: 'If you have questions not covered in this help center, please contact your account manager directly.', sv: 'Om du har frågor som inte täcks i detta hjälpcenter, vänligen kontakta din kontoansvarige direkt.' },
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);

@@ -66,6 +66,14 @@ import MarginAnalysisPage from './pages/admin/partner-portal/MarginAnalysisPage'
 import LeadManagementPage from './pages/admin/partner-portal/LeadManagementPage';
 import HelpCenterPage from './pages/admin/HelpCenterPage';
 
+// Customer Portal Pages
+import CustomerLogin from './pages/customer/CustomerLogin';
+import CustomerLayout from './components/customer/CustomerLayout';
+import CustomerPortalDashboard from './pages/customer/CustomerPortalDashboard';
+import CustomerActivityPage from './pages/customer/CustomerActivityPage';
+import CustomerDocumentsPage from './pages/customer/CustomerDocumentsPage';
+import CustomerHelpPage from './pages/customer/CustomerHelpPage';
+
 function App() {
   const location = useLocation();
   const isAdmin = isAdminRoute(location.pathname);
@@ -152,6 +160,15 @@ function App() {
           <Route path="settings" element={<SettingsPage />} />
           <Route path="health" element={<AdminHealthPage />} />
           <Route path="help" element={<HelpCenterPage />} />
+        </Route>
+
+        {/* Customer Portal Routes */}
+        <Route path="/customer/login" element={<CustomerLogin />} />
+        <Route path="/customer/portal" element={<CustomerLayout />}>
+          <Route index element={<CustomerPortalDashboard />} />
+          <Route path="activity" element={<CustomerActivityPage />} />
+          <Route path="documents" element={<CustomerDocumentsPage />} />
+          <Route path="help" element={<CustomerHelpPage />} />
         </Route>
       </Routes>
 
