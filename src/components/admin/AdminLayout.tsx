@@ -151,8 +151,8 @@ const AdminLayout: React.FC = () => {
                   <div className="space-y-1">
                     {group.items.map((item) => {
                       const Icon = iconMap[item.path] || FileText;
-                      const labelKey = `admin.nav.${item.label.toLowerCase().replace(/\s+/g, '_').replace(/&/g, '')}`;
-                      const translatedLabel = t(labelKey) || item.label;
+                      const labelKey = `admin.nav.${item.label.toLowerCase().replace(/\s+/g, '_').replace(/&/g, '').replace(/__+/g, '_')}`;
+                      const translatedLabel = t(labelKey) !== labelKey ? t(labelKey) : item.label;
 
                       if (item.external) {
                         return (

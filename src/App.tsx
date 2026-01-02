@@ -162,14 +162,18 @@ function App() {
           <Route path="help" element={<HelpCenterPage />} />
         </Route>
 
-        {/* Customer Portal Routes */}
-        <Route path="/customer/login" element={<CustomerLogin />} />
-        <Route path="/customer/portal" element={<CustomerLayout />}>
+        {/* Customer Portal Routes - Under Admin */}
+        <Route path="/admin/customer/login" element={<CustomerLogin />} />
+        <Route path="/admin/customer/portal" element={<CustomerLayout />}>
           <Route index element={<CustomerPortalDashboard />} />
           <Route path="activity" element={<CustomerActivityPage />} />
           <Route path="documents" element={<CustomerDocumentsPage />} />
           <Route path="help" element={<CustomerHelpPage />} />
         </Route>
+
+        {/* Legacy Customer Portal Redirects */}
+        <Route path="/customer/login" element={<Navigate to="/admin/customer/login" replace />} />
+        <Route path="/customer/portal" element={<Navigate to="/admin/customer/portal" replace />} />
       </Routes>
 
         {!isAdmin && <Footer />}

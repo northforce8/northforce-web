@@ -23,7 +23,7 @@ const CustomerLogin: React.FC = () => {
           .maybeSingle();
 
         if (profile?.role === 'customer') {
-          navigate('/customer/portal');
+          navigate('/admin/customer/portal');
         }
       }
     };
@@ -53,7 +53,7 @@ const CustomerLogin: React.FC = () => {
         if (profileError) throw profileError;
 
         if (profile?.role === 'customer') {
-          navigate('/customer/portal');
+          navigate('/admin/customer/portal');
         } else {
           await supabase.auth.signOut();
           setError(t('customer.login.error_not_customer'));

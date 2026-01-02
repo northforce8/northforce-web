@@ -21,7 +21,7 @@ const CustomerLayout: React.FC = () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) {
-          navigate('/customer/login');
+          navigate('/admin/customer/login');
           return;
         }
 
@@ -33,7 +33,7 @@ const CustomerLayout: React.FC = () => {
 
         if (profile?.role !== 'customer') {
           await supabase.auth.signOut();
-          navigate('/customer/login');
+          navigate('/admin/customer/login');
           return;
         }
 
@@ -50,7 +50,7 @@ const CustomerLayout: React.FC = () => {
         });
       } catch (error) {
         console.error('Failed to load user:', error);
-        navigate('/customer/login');
+        navigate('/admin/customer/login');
       }
     };
 
@@ -60,7 +60,7 @@ const CustomerLayout: React.FC = () => {
   const handleSignOut = async () => {
     try {
       await supabase.auth.signOut();
-      navigate('/customer/login');
+      navigate('/admin/customer/login');
     } catch (error) {
       console.error('Sign out error:', error);
     }
@@ -76,22 +76,22 @@ const CustomerLayout: React.FC = () => {
 
   const navItems = [
     {
-      path: '/customer/portal',
+      path: '/admin/customer/portal',
       icon: LayoutDashboard,
       label: t('customer.nav.overview'),
     },
     {
-      path: '/customer/portal/activity',
+      path: '/admin/customer/portal/activity',
       icon: TrendingUp,
       label: t('customer.nav.activity'),
     },
     {
-      path: '/customer/portal/documents',
+      path: '/admin/customer/portal/documents',
       icon: FileText,
       label: t('customer.nav.documents'),
     },
     {
-      path: '/customer/portal/help',
+      path: '/admin/customer/portal/help',
       icon: HelpCircle,
       label: t('customer.nav.help'),
     },
