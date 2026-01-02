@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
-import { LayoutDashboard, FileText, TrendingUp, HelpCircle, LogOut, Globe } from 'lucide-react';
+import { LayoutDashboard, FileText, TrendingUp, HelpCircle, LogOut, Globe, Target, Users, BarChart3 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useLanguage } from '../../contexts/LanguageContext';
 
@@ -84,6 +84,26 @@ const CustomerLayout: React.FC = () => {
       path: '/admin/customer/portal/activity',
       icon: TrendingUp,
       label: t('customer.nav.activity'),
+    },
+    {
+      path: '/admin/customer/portal/growth',
+      icon: TrendingUp,
+      label: t('customer.nav.growth_journey'),
+    },
+    {
+      path: '/admin/customer/portal/leadership',
+      icon: Users,
+      label: t('customer.nav.leadership'),
+    },
+    {
+      path: '/admin/customer/portal/campaigns',
+      icon: Target,
+      label: t('customer.nav.campaigns'),
+    },
+    {
+      path: '/admin/customer/portal/business-health',
+      icon: BarChart3,
+      label: t('customer.nav.business_health'),
     },
     {
       path: '/admin/customer/portal/documents',
