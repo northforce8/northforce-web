@@ -162,6 +162,31 @@ const CustomersPage: React.FC = () => {
             onClick: () => setShowCreateModal(true),
             icon: Plus
           } : undefined}
+          help={{
+            purpose: 'Customers is the central hub for managing active client relationships, viewing engagement history, and monitoring customer health across all projects and contracts.',
+            usage: [
+              'View all active customers and their engagement status',
+              'Access customer details including contact information and projects',
+              'Monitor credit consumption and contract utilization',
+              'Review customer health metrics and risk indicators',
+              'Navigate to related contracts, projects, and invoices',
+              'Update customer information and notes after interactions'
+            ],
+            concepts: [
+              {
+                term: 'Customer Health',
+                definition: 'Assessment of engagement quality based on credit burn rate, payment status, project progress, and satisfaction indicators.'
+              },
+              {
+                term: 'Active vs. Inactive',
+                definition: 'Active customers have ongoing contracts or projects. Inactive customers have completed engagements but may return.'
+              },
+              {
+                term: 'Customer Record Authority',
+                definition: 'Customer records serve as the single source of truth for all engagement activity. Always check here first.'
+              }
+            ]
+          }}
         />
 
         {error && (

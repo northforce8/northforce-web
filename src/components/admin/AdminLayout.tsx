@@ -41,7 +41,7 @@ const AdminLayout: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
     const loadUser = async () => {
@@ -141,14 +141,18 @@ const AdminLayout: React.FC = () => {
 
           <div className="flex-1 overflow-y-auto py-4">
             <nav className="px-3">
-              {filteredNavGroups.map((group, groupIndex) => (
+              {filteredNavGroups.map((group, groupIndex) => {
+                const groupKey = `admin.nav.${group.label.toLowerCase().replace(/\s+/g, '_')}`;
+                return (
                 <div key={group.label} className={groupIndex === 0 ? '' : 'mt-6 pt-6 border-t border-gray-200'}>
                   <div className="px-3 mb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                    {group.label}
+                    {t(groupKey)}
                   </div>
                   <div className="space-y-1">
                     {group.items.map((item) => {
                       const Icon = iconMap[item.path] || FileText;
+                      const labelKey = `admin.nav.${item.label.toLowerCase().replace(/\s+/g, '_').replace(/&/g, '')}`;
+                      const translatedLabel = t(labelKey) || item.label;
 
                       if (item.external) {
                         return (
@@ -160,7 +164,7 @@ const AdminLayout: React.FC = () => {
                             className="flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors text-gray-700 hover:bg-gray-50"
                           >
                             <Icon className="h-5 w-5 mr-3" />
-                            {item.label}
+                            {translatedLabel}
                           </a>
                         );
                       }
@@ -176,13 +180,13 @@ const AdminLayout: React.FC = () => {
                           }`}
                         >
                           <Icon className="h-5 w-5 mr-3" />
-                          {item.label}
+                          {translatedLabel}
                         </Link>
                       );
                     })}
                   </div>
                 </div>
-              ))}
+              )})}
             </nav>
           </div>
 
@@ -208,7 +212,7 @@ const AdminLayout: React.FC = () => {
               className="w-full flex items-center justify-center px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors"
             >
               <LogOut className="h-4 w-4 mr-2" />
-              Sign Out
+              {t('admin.sign_out')}
             </button>
           </div>
         </div>

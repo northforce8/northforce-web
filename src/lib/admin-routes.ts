@@ -43,6 +43,7 @@ export const ADMIN_ROUTES = {
   LEADS_MANAGEMENT: '/admin/partner-portal/leads-management',
   SETTINGS: '/admin/partner-portal/settings',
   HEALTH: '/admin/partner-portal/health',
+  HELP: '/admin/partner-portal/help',
 
   // Legacy redirects (for backwards compatibility)
   LEGACY_LEAD_DASHBOARD: '/admin-northforce',
@@ -89,6 +90,7 @@ export const ADMIN_NAV_LABELS = {
   LEADS_MANAGEMENT: 'All Leads',
   SETTINGS: 'Settings',
   HEALTH: 'Health',
+  HELP: 'Help',
   WEBSITE: 'Website',
 } as const;
 
@@ -164,8 +166,9 @@ export const ADMIN_NAVIGATION_GROUPED: AdminNavGroup[] = [
   },
   {
     label: 'SYSTEM',
-    roles: ['admin'],
+    roles: ['admin', 'partner'],
     items: [
+      { label: ADMIN_NAV_LABELS.HELP, path: ADMIN_ROUTES.HELP, roles: ['admin', 'partner'] },
       { label: ADMIN_NAV_LABELS.SETTINGS, path: ADMIN_ROUTES.SETTINGS, roles: ['admin'] },
       { label: ADMIN_NAV_LABELS.SUPPORT, path: ADMIN_ROUTES.SUPPORT, roles: ['admin'] },
       { label: ADMIN_NAV_LABELS.WEBSITE, path: 'https://northforce.io', roles: ['admin'], external: true },

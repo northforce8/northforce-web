@@ -64,6 +64,7 @@ import ContractDetailPage from './pages/admin/partner-portal/ContractDetailPage'
 import BillingPeriodsPage from './pages/admin/partner-portal/BillingPeriodsPage';
 import MarginAnalysisPage from './pages/admin/partner-portal/MarginAnalysisPage';
 import LeadManagementPage from './pages/admin/partner-portal/LeadManagementPage';
+import HelpCenterPage from './pages/admin/HelpCenterPage';
 
 function App() {
   const location = useLocation();
@@ -150,6 +151,7 @@ function App() {
           <Route path="leads-management" element={<LeadManagementPage />} />
           <Route path="settings" element={<SettingsPage />} />
           <Route path="health" element={<AdminHealthPage />} />
+          <Route path="help" element={<HelpCenterPage />} />
         </Route>
       </Routes>
 
