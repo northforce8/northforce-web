@@ -197,6 +197,186 @@ export const helpContent: HelpSection[] = [
     category: 'sales',
     route: '/admin/partner-portal/leads-management',
   },
+  {
+    id: 'growth_plans',
+    title: { en: 'Growth Plans', sv: 'Tillväxtplaner' },
+    content: {
+      en: 'Create and manage strategic growth plans for customers. Define vision, mission, and time horizons. Track overall progress and link to specific growth objectives. Growth plans provide a structured framework for customer success.',
+      sv: 'Skapa och hantera strategiska tillväxtplaner för kunder. Definiera vision, mission och tidshorisonter. Spåra övergripande framsteg och länka till specifika tillväxtmål. Tillväxtplaner ger ett strukturerat ramverk för kundframgång.',
+    },
+    category: 'growth',
+    route: '/admin/partner-portal/growth-plans',
+  },
+  {
+    id: 'growth_objectives',
+    title: { en: 'Growth Objectives', sv: 'Tillväxtmål' },
+    content: {
+      en: 'Define measurable objectives within growth plans. Set baselines, targets, and track progress. Objectives can be categorized by revenue, market share, operational efficiency, and more. Each objective can have multiple initiatives to achieve the goal.',
+      sv: 'Definiera mätbara mål inom tillväxtplaner. Ställ in baslinjer, mål och spåra framsteg. Mål kan kategoriseras efter intäkter, marknadsandel, operativ effektivitet och mer. Varje mål kan ha flera initiativ för att uppnå målet.',
+    },
+    category: 'growth',
+    route: '/admin/partner-portal/growth-plans',
+  },
+  {
+    id: 'growth_initiatives',
+    title: { en: 'Growth Initiatives', sv: 'Tillväxtinitiativ' },
+    content: {
+      en: 'Concrete initiatives to achieve growth objectives. Link initiatives to projects, assign partners, and track credit consumption. Monitor deliverables and completion status. Initiatives bridge strategy and execution.',
+      sv: 'Konkreta initiativ för att uppnå tillväxtmål. Länka initiativ till projekt, tilldela partners och spåra kreditförbrukning. Övervaka leveranser och slutförandestatus. Initiativ överbryggar strategi och genomförande.',
+    },
+    category: 'growth',
+    route: '/admin/partner-portal/growth-plans',
+  },
+  {
+    id: 'leadership_assessments',
+    title: { en: 'Leadership Assessments', sv: 'Ledarskapsbe­dömningar' },
+    content: {
+      en: 'Launch 360-degree leadership assessment campaigns. Evaluate participants across 10 core competencies using multi-rater feedback. Track completion rates and generate development plans based on assessment results.',
+      sv: 'Starta 360-graders ledarskaps­bedömnings­kampanjer. Utvärdera deltagare över 10 kärnkompetenser med hjälp av multi-rater-feedback. Spåra slutförandegrad och generera utvecklingsplaner baserat på bedömningsresultat.',
+    },
+    category: 'leadership',
+    route: '/admin/partner-portal/leadership-assessments',
+  },
+  {
+    id: 'leadership_competencies',
+    title: { en: 'Leadership Competencies', sv: 'Ledarskaps­kompetenser' },
+    content: {
+      en: 'Core competency framework includes Strategic Thinking, Decision Making, Communication, People Development, Change Leadership, Execution Excellence, Innovation, Emotional Intelligence, Collaboration, and Financial Acumen. Each competency has 5 proficiency levels.',
+      sv: 'Kärnkompetensramverket inkluderar Strategiskt tänkande, Beslutsfattande, Kommunikation, Människoutveckling, Förändringsledarskap, Genomförandeexcellens, Innovation, Emotionell intelligens, Samarbete och Finansiell förståelse. Varje kompetens har 5 färdighetsnivåer.',
+    },
+    category: 'leadership',
+    route: '/admin/partner-portal/leadership-assessments',
+  },
+  {
+    id: 'development_plans',
+    title: { en: 'Development Plans', sv: 'Utvecklingsplaner' },
+    content: {
+      en: 'Personal Development Plans (PDPs) help leaders grow systematically. Identify key strengths and development areas from assessments. Define development actions with target dates and track progress. Schedule regular reviews to ensure continuous improvement.',
+      sv: 'Personliga utvecklingsplaner (PDP:er) hjälper ledare att växa systematiskt. Identifiera nyckelstyrkor och utvecklingsområden från bedömningar. Definiera utvecklingsåtgärder med måldatum och spåra framsteg. Schemalägg regelbundna granskningar för att säkerställa kontinuerlig förbättring.',
+    },
+    category: 'leadership',
+    route: '/admin/partner-portal/leadership-assessments',
+  },
+  {
+    id: 'marketing_campaigns',
+    title: { en: 'Marketing Campaigns', sv: 'Marknadsförings­kampanjer' },
+    content: {
+      en: 'Plan, execute, and track marketing campaigns for customers. Define objectives, target audiences, budgets, and timelines. Monitor leads generated, conversions, and ROI. Link campaigns to projects for seamless delivery tracking.',
+      sv: 'Planera, genomför och spåra marknadsföringskampanjer för kunder. Definiera mål, målgrupper, budgetar och tidslinjer. Övervaka genererade leads, konverteringar och ROI. Länka kampanjer till projekt för sömlös leveransspårning.',
+    },
+    category: 'marketing',
+    route: '/admin/partner-portal/marketing-campaigns',
+  },
+  {
+    id: 'campaign_activities',
+    title: { en: 'Campaign Activities', sv: 'Kampanjaktiviteter' },
+    content: {
+      en: 'Break down campaigns into specific activities (content, ads, email, social, events). Assign activities to partners, track credit and budget consumption. Log deliverables and completion dates. Activities provide granular execution tracking.',
+      sv: 'Dela upp kampanjer i specifika aktiviteter (innehåll, annonser, e-post, socialt, evenemang). Tilldela aktiviteter till partners, spåra kredit- och budgetförbrukning. Logga leveranser och slutförandedatum. Aktiviteter ger detaljerad genomförandespårning.',
+    },
+    category: 'marketing',
+    route: '/admin/partner-portal/marketing-campaigns',
+  },
+  {
+    id: 'campaign_results',
+    title: { en: 'Campaign Results', sv: 'Kampanjresultat' },
+    content: {
+      en: 'Track campaign performance metrics: impressions, clicks, leads, conversions, engagement rates. Log results at campaign or activity level. Analyze performance trends to optimize future campaigns. Data-driven marketing decisions start here.',
+      sv: 'Spåra kampanjprestandamått: visningar, klick, leads, konverteringar, engagemangsgrader. Logga resultat på kampanj- eller aktivitetsnivå. Analysera prestandatrender för att optimera framtida kampanjer. Datadrivna marknadsföringsbeslut börjar här.',
+    },
+    category: 'marketing',
+    route: '/admin/partner-portal/marketing-campaigns',
+  },
+  {
+    id: 'business_models',
+    title: { en: 'Business Models', sv: 'Affärsmodeller' },
+    content: {
+      en: 'Document customer business models using Business Model Canvas framework. Define value proposition, customer segments, channels, revenue streams, cost structure, and more. Version control ensures historical tracking. Strategic alignment starts with understanding the business model.',
+      sv: 'Dokumentera kundaffärsmodeller med hjälp av Business Model Canvas-ramverket. Definiera värdeförslag, kundsegment, kanaler, intäktsströmmar, kostnadsstruktur och mer. Versionskontroll säkerställer historisk spårning. Strategisk anpassning börjar med att förstå affärsmodellen.',
+    },
+    category: 'strategy',
+    route: '/admin/partner-portal/business-models',
+  },
+  {
+    id: 'strategic_goals',
+    title: { en: 'Strategic Goals', sv: 'Strategiska mål' },
+    content: {
+      en: 'Set high-level strategic goals for customers: revenue, margin, market share, customer satisfaction, employee engagement, innovation. Track baseline, current, and target values. Link goals to growth plans. Monitor goal achievement status and receive alerts for at-risk goals.',
+      sv: 'Ställ in högnivå strategiska mål för kunder: intäkter, marginal, marknadsandel, kundtillfredsställelse, medarbetarengagemang, innovation. Spåra baslinje, nuvarande och målvärden. Länka mål till tillväxtplaner. Övervaka måluppnåendestatus och få varningar för riskabla mål.',
+    },
+    category: 'strategy',
+    route: '/admin/partner-portal/strategic-goals',
+  },
+  {
+    id: 'financial_snapshots',
+    title: { en: 'Financial Snapshots', sv: 'Finansiella ögonblicksbilder' },
+    content: {
+      en: 'Capture periodic financial performance: revenue, costs, margins, EBITDA. Link financial data to projects and campaigns to understand ROI. Monthly, quarterly, and annual snapshots provide trend analysis. Connect operational activities to financial outcomes.',
+      sv: 'Fånga periodisk finansiell prestanda: intäkter, kostnader, marginaler, EBITDA. Länka finansiell data till projekt och kampanjer för att förstå ROI. Månatliga, kvartalsvisa och årliga ögonblicksbilder ger trendanalys. Koppla operativa aktiviteter till finansiella resultat.',
+    },
+    category: 'strategy',
+    route: '/admin/partner-portal/financial-snapshots',
+  },
+  {
+    id: 'methodology_templates',
+    title: { en: 'Methodology Templates', sv: 'Metodmallar' },
+    content: {
+      en: 'Reusable project templates for common engagement types: growth strategy, leadership development, marketing excellence, operational transformation. Templates include phases, deliverables, typical duration, and credit estimates. Accelerate project setup and ensure consistent delivery quality.',
+      sv: 'Återanvändbara projektmallar för vanliga engagemangstyper: tillväxtstrategi, ledarutveckling, marknadsföringsexcellens, operativ transformation. Mallar inkluderar faser, leveranser, typisk varaktighet och kredituppskattningar. Påskynda projektuppstart och säkerställ konsekvent leveranskvalitet.',
+    },
+    category: 'knowledge',
+    route: '/admin/partner-portal/methodology-templates',
+  },
+  {
+    id: 'best_practices',
+    title: { en: 'Best Practices', sv: 'Bästa praxis' },
+    content: {
+      en: 'Knowledge base of proven approaches and methodologies. Each practice includes description, when to use, tools needed, expected outcomes, and case study references. Organized by category. Capture institutional knowledge and enable rapid skill transfer across the organization.',
+      sv: 'Kunskapsbas med beprövade tillvägagångssätt och metoder. Varje praxis inkluderar beskrivning, när den ska användas, verktyg som behövs, förväntade resultat och fallstudiehänvisningar. Organiserad efter kategori. Fånga institutionell kunskap och möjliggör snabb kompetensöverföring över organisationen.',
+    },
+    category: 'knowledge',
+    route: '/admin/partner-portal/best-practices',
+  },
+  {
+    id: 'customer_growth_journey',
+    title: { en: 'My Growth Journey', sv: 'Min tillväxtresa' },
+    content: {
+      en: 'View your strategic growth plan, objectives, and initiatives. Track progress towards goals in real-time. See linked projects and deliverables. Transparent view of consultant activities aligned with your business goals.',
+      sv: 'Visa din strategiska tillväxtplan, mål och initiativ. Spåra framsteg mot mål i realtid. Se länkade projekt och leveranser. Transparent vy av konsultaktiviteter anpassade till dina affärsmål.',
+    },
+    category: 'customer',
+    route: '/customer/portal/growth',
+  },
+  {
+    id: 'customer_leadership',
+    title: { en: 'Leadership Development', sv: 'Ledarutveckling' },
+    content: {
+      en: 'Access your leadership assessment results, development plan, and progress tracking. View competency scores across 10 core leadership areas. Track completion of development actions and schedule review meetings.',
+      sv: 'Få tillgång till dina ledarskaps­bedömningsresultat, utvecklingsplan och framstegsspårning. Visa kompetenspoäng över 10 ledarskapskärnområden. Spåra slutförande av utvecklingsåtgärder och schemalägg granskningsmöten.',
+    },
+    category: 'customer',
+    route: '/customer/portal/leadership',
+  },
+  {
+    id: 'customer_campaigns',
+    title: { en: 'Marketing Performance', sv: 'Marknadsföringsprestanda' },
+    content: {
+      en: 'Review active and completed marketing campaigns. Approve campaign plans before execution. Track budget consumption, leads generated, and ROI in real-time. Transparent marketing execution with measurable results.',
+      sv: 'Granska aktiva och slutförda marknadsföringskampanjer. Godkänn kampanjplaner före genomförande. Spåra budgetförbrukning, genererade leads och ROI i realtid. Transparent marknadsföringsgenomförande med mätbara resultat.',
+    },
+    category: 'customer',
+    route: '/customer/portal/campaigns',
+  },
+  {
+    id: 'customer_business_health',
+    title: { en: 'Business Health', sv: 'Affärshälsa' },
+    content: {
+      en: 'Dashboard view of your business performance: strategic goals progress, financial snapshots, project status. See how consulting engagements connect to business outcomes. Data-driven visibility into ROI and value delivery.',
+      sv: 'Instrumentpanelvy av din affärsprestanda: strategiska målframsteg, finansiella ögonblicksbilder, projektstatus. Se hur konsultengagemang kopplar till affärsresultat. Datadriven synlighet i ROI och värdeleverans.',
+    },
+    category: 'customer',
+    route: '/customer/portal/business-health',
+  },
 ];
 
 export const getHelpContent = (id: string, language: 'en' | 'sv' = 'en'): HelpSection | undefined => {

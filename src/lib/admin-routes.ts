@@ -45,6 +45,15 @@ export const ADMIN_ROUTES = {
   HEALTH: '/admin/partner-portal/health',
   HELP: '/admin/partner-portal/help',
 
+  // Enterprise Management System
+  GROWTH_PLANS: '/admin/partner-portal/growth-plans',
+  GROWTH_PLAN_DETAIL: '/admin/partner-portal/growth-plans/:planId',
+  LEADERSHIP_ASSESSMENTS: '/admin/partner-portal/leadership-assessments',
+  MARKETING_CAMPAIGNS: '/admin/partner-portal/marketing-campaigns',
+  BUSINESS_MODELS: '/admin/partner-portal/business-models',
+  BEST_PRACTICES: '/admin/partner-portal/best-practices',
+  METHODOLOGY_TEMPLATES: '/admin/partner-portal/methodology-templates',
+
   // Legacy redirects (for backwards compatibility)
   LEGACY_LEAD_DASHBOARD: '/admin-northforce',
   LEGACY_LEAD_DETAIL: '/admin-northforce/lead/:type/:id',
@@ -92,6 +101,12 @@ export const ADMIN_NAV_LABELS = {
   HEALTH: 'Health',
   HELP: 'Help',
   WEBSITE: 'Website',
+  GROWTH_PLANS: 'Growth Plans',
+  LEADERSHIP_ASSESSMENTS: 'Leadership Assessments',
+  MARKETING_CAMPAIGNS: 'Marketing Campaigns',
+  BUSINESS_MODELS: 'Business Models',
+  BEST_PRACTICES: 'Best Practices',
+  METHODOLOGY_TEMPLATES: 'Methodology Templates',
 } as const;
 
 // Type-safe navigation items
@@ -162,6 +177,30 @@ export const ADMIN_NAVIGATION_GROUPED: AdminNavGroup[] = [
       { label: ADMIN_NAV_LABELS.ENTERPRISE_INTELLIGENCE, path: ADMIN_ROUTES.ENTERPRISE, roles: ['admin'] },
       { label: ADMIN_NAV_LABELS.REPORTS, path: ADMIN_ROUTES.REPORTS, roles: ['admin'] },
       { label: ADMIN_NAV_LABELS.HEALTH, path: ADMIN_ROUTES.HEALTH, roles: ['admin'] },
+    ]
+  },
+  {
+    label: 'GROWTH & STRATEGY',
+    roles: ['admin'],
+    items: [
+      { label: ADMIN_NAV_LABELS.GROWTH_PLANS, path: ADMIN_ROUTES.GROWTH_PLANS, roles: ['admin'] },
+      { label: ADMIN_NAV_LABELS.BUSINESS_MODELS, path: ADMIN_ROUTES.BUSINESS_MODELS, roles: ['admin'] },
+    ]
+  },
+  {
+    label: 'LEADERSHIP & MARKETING',
+    roles: ['admin'],
+    items: [
+      { label: ADMIN_NAV_LABELS.LEADERSHIP_ASSESSMENTS, path: ADMIN_ROUTES.LEADERSHIP_ASSESSMENTS, roles: ['admin'] },
+      { label: ADMIN_NAV_LABELS.MARKETING_CAMPAIGNS, path: ADMIN_ROUTES.MARKETING_CAMPAIGNS, roles: ['admin'] },
+    ]
+  },
+  {
+    label: 'KNOWLEDGE BASE',
+    roles: ['admin', 'partner'],
+    items: [
+      { label: ADMIN_NAV_LABELS.METHODOLOGY_TEMPLATES, path: ADMIN_ROUTES.METHODOLOGY_TEMPLATES, roles: ['admin', 'partner'] },
+      { label: ADMIN_NAV_LABELS.BEST_PRACTICES, path: ADMIN_ROUTES.BEST_PRACTICES, roles: ['admin', 'partner'] },
     ]
   },
   {

@@ -65,6 +65,13 @@ import BillingPeriodsPage from './pages/admin/partner-portal/BillingPeriodsPage'
 import MarginAnalysisPage from './pages/admin/partner-portal/MarginAnalysisPage';
 import LeadManagementPage from './pages/admin/partner-portal/LeadManagementPage';
 import HelpCenterPage from './pages/admin/HelpCenterPage';
+import GrowthPlansPage from './pages/admin/partner-portal/GrowthPlansPage';
+import GrowthPlanDetailPage from './pages/admin/partner-portal/GrowthPlanDetailPage';
+import LeadershipAssessmentsPage from './pages/admin/partner-portal/LeadershipAssessmentsPage';
+import MarketingCampaignsPage from './pages/admin/partner-portal/MarketingCampaignsPage';
+import BusinessModelsPage from './pages/admin/partner-portal/BusinessModelsPage';
+import BestPracticesPage from './pages/admin/partner-portal/BestPracticesPage';
+import MethodologyTemplatesPage from './pages/admin/partner-portal/MethodologyTemplatesPage';
 
 // Customer Portal Pages
 import CustomerLogin from './pages/customer/CustomerLogin';
@@ -73,6 +80,10 @@ import CustomerPortalDashboard from './pages/customer/CustomerPortalDashboard';
 import CustomerActivityPage from './pages/customer/CustomerActivityPage';
 import CustomerDocumentsPage from './pages/customer/CustomerDocumentsPage';
 import CustomerHelpPage from './pages/customer/CustomerHelpPage';
+import CustomerGrowthJourneyPage from './pages/customer/CustomerGrowthJourneyPage';
+import CustomerLeadershipPage from './pages/customer/CustomerLeadershipPage';
+import CustomerCampaignsPage from './pages/customer/CustomerCampaignsPage';
+import CustomerBusinessHealthPage from './pages/customer/CustomerBusinessHealthPage';
 
 function App() {
   const location = useLocation();
@@ -157,6 +168,13 @@ function App() {
           <Route path="billing-periods" element={<BillingPeriodsPage />} />
           <Route path="margin-analysis" element={<MarginAnalysisPage />} />
           <Route path="leads-management" element={<LeadManagementPage />} />
+          <Route path="growth-plans" element={<GrowthPlansPage />} />
+          <Route path="growth-plans/:planId" element={<GrowthPlanDetailPage />} />
+          <Route path="leadership-assessments" element={<LeadershipAssessmentsPage />} />
+          <Route path="marketing-campaigns" element={<MarketingCampaignsPage />} />
+          <Route path="business-models" element={<BusinessModelsPage />} />
+          <Route path="best-practices" element={<BestPracticesPage />} />
+          <Route path="methodology-templates" element={<MethodologyTemplatesPage />} />
           <Route path="settings" element={<SettingsPage />} />
           <Route path="health" element={<AdminHealthPage />} />
           <Route path="help" element={<HelpCenterPage />} />
@@ -168,6 +186,10 @@ function App() {
           <Route index element={<CustomerPortalDashboard />} />
           <Route path="activity" element={<CustomerActivityPage />} />
           <Route path="documents" element={<CustomerDocumentsPage />} />
+          <Route path="growth" element={<CustomerGrowthJourneyPage />} />
+          <Route path="leadership" element={<CustomerLeadershipPage />} />
+          <Route path="campaigns" element={<CustomerCampaignsPage />} />
+          <Route path="business-health" element={<CustomerBusinessHealthPage />} />
           <Route path="help" element={<CustomerHelpPage />} />
         </Route>
 

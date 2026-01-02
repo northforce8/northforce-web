@@ -28,7 +28,10 @@ import {
   LifeBuoy,
   PieChart,
   CreditCard,
-  ListChecks
+  ListChecks,
+  Target,
+  Briefcase,
+  Lightbulb
 } from 'lucide-react';
 import { getCurrentUser, signOut } from '../../lib/auth';
 import type { AdminUser } from '../../lib/auth';
@@ -96,6 +99,12 @@ const AdminLayout: React.FC = () => {
     [ADMIN_ROUTES.SUPPORT]: LifeBuoy,
     [ADMIN_ROUTES.SETTINGS]: Settings,
     [ADMIN_ROUTES.HEALTH]: Activity,
+    [ADMIN_ROUTES.GROWTH_PLANS]: TrendingUp,
+    [ADMIN_ROUTES.LEADERSHIP_ASSESSMENTS]: Users,
+    [ADMIN_ROUTES.MARKETING_CAMPAIGNS]: Target,
+    [ADMIN_ROUTES.BUSINESS_MODELS]: Briefcase,
+    [ADMIN_ROUTES.BEST_PRACTICES]: Lightbulb,
+    [ADMIN_ROUTES.METHODOLOGY_TEMPLATES]: FileText,
     'https://northforce.io': ExternalLink,
   };
 
