@@ -190,9 +190,9 @@ const EnterpriseDashboard: React.FC = () => {
   return (
     <div>
       <div className="p-6 max-w-7xl mx-auto space-y-8">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Enterprise Dashboard</h1>
-          <p className="text-gray-600 leading-relaxed">
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold text-gray-900">Enterprise Dashboard</h1>
+          <p className="text-sm text-gray-500 mt-1">
             Operational intelligence for strategic control and decision-making
           </p>
         </div>

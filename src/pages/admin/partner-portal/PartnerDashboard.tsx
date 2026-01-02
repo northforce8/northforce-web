@@ -194,10 +194,10 @@ const PartnerDashboard: React.FC = () => {
     <div>
       <div className="p-6 max-w-7xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-gray-900">
             {isAdminUser ? 'Partner Portal Dashboard' : 'My Dashboard'}
           </h1>
-          <p className="text-gray-600 mt-1">
+          <p className="text-sm text-gray-500 mt-1">
             {isAdminUser ? 'Overview of all partner activities' : 'Your activity overview'}
           </p>
         </div>

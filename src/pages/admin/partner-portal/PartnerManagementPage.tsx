@@ -152,10 +152,10 @@ const PartnerManagementPage: React.FC = () => {
   return (
     <div>
       <div className="p-6 max-w-7xl mx-auto">
-        <div className="mb-6 flex items-center justify-between">
+        <div className="mb-8 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Partner Management</h1>
-            <p className="text-gray-600 mt-1">Manage partner network, costs, and capacity</p>
+            <h1 className="text-2xl font-bold text-gray-900">Partner Management</h1>
+            <p className="text-sm text-gray-500 mt-1">Manage partner network, costs, and capacity</p>
           </div>
           <button
             onClick={() => setShowPartnerModal(true)}

@@ -109,6 +109,13 @@ export interface AdminNavGroup {
 
 export const ADMIN_NAVIGATION_GROUPED: AdminNavGroup[] = [
   {
+    label: 'DASHBOARD',
+    roles: ['admin', 'partner'],
+    items: [
+      { label: 'Partner Portal Dashboard', path: ADMIN_ROUTES.DASHBOARD, roles: ['admin', 'partner'] },
+    ]
+  },
+  {
     label: 'SALES & CUSTOMERS',
     roles: ['admin', 'partner'],
     items: [

@@ -84,10 +84,10 @@ const MarginAnalysisPage: React.FC = () => {
   }
 
   return (
-    <div className="p-6 space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Margin Analysis</h1>
-        <p className="text-gray-600 mt-1">Track profitability across customers and projects</p>
+    <div className="p-6 max-w-7xl mx-auto space-y-6">
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-gray-900">Margin Analysis</h1>
+        <p className="text-sm text-gray-500 mt-1">Track profitability across customers and projects</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
