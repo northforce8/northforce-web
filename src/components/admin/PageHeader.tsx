@@ -1,5 +1,6 @@
 import React from 'react';
 import { LucideIcon } from 'lucide-react';
+import { ContextualHelp } from './ContextualHelp';
 
 interface PageHeaderProps {
   title: string;
@@ -14,6 +15,14 @@ interface PageHeaderProps {
     label: string;
     href?: string;
   }>;
+  help?: {
+    purpose: string;
+    usage: string[];
+    concepts?: Array<{
+      term: string;
+      definition: string;
+    }>;
+  };
 }
 
 export const PageHeader: React.FC<PageHeaderProps> = ({
@@ -21,6 +30,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
   description,
   icon: Icon,
   action,
+  help,
 }) => {
   return (
     <div className="mb-8 flex items-center justify-between">
@@ -31,7 +41,17 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
           </div>
         )}
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
+            {help && (
+              <ContextualHelp
+                title={title}
+                purpose={help.purpose}
+                usage={help.usage}
+                concepts={help.concepts}
+              />
+            )}
+          </div>
           {description && (
             <p className="text-sm text-gray-500 mt-1">{description}</p>
           )}

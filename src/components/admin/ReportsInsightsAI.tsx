@@ -46,7 +46,7 @@ const ReportsInsightsAI: React.FC = () => {
       case 'critical':
         return 'bg-red-100 text-red-800 border-red-300';
       case 'high':
-        return 'bg-orange-100 text-orange-800 border-orange-300';
+        return 'bg-amber-50 text-amber-900 border-amber-200';
       case 'medium':
         return 'bg-blue-100 text-blue-800 border-blue-300';
       default:
@@ -134,7 +134,7 @@ const ReportsInsightsAI: React.FC = () => {
                       action.priority === 'critical'
                         ? 'bg-red-600 text-white hover:bg-red-700'
                         : action.priority === 'high'
-                        ? 'bg-orange-600 text-white hover:bg-orange-700'
+                        ? 'bg-amber-500 text-white hover:bg-amber-600'
                         : 'bg-blue-600 text-white hover:bg-blue-700'
                     }`}
                   >

@@ -156,7 +156,7 @@ const EnterprisePlansPage: React.FC = () => {
     <div className="p-6 max-w-7xl mx-auto">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Enterprise Plans</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Capacity Plans</h1>
           <p className="text-sm text-gray-500 mt-1">Manage subscription plans and pricing</p>
         </div>
         <button
@@ -181,6 +181,34 @@ const EnterprisePlansPage: React.FC = () => {
           <p className="text-green-800">{success}</p>
         </div>
       )}
+
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
+        <div className="flex items-start gap-4">
+          <div className="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+            <Zap className="h-6 w-6 text-blue-600" />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Understanding Credits</h3>
+            <p className="text-sm text-gray-600 mb-3">
+              Credits are the core capacity unit in the NorthForce system. Each credit represents a standardized unit of work that can be consumed across different work types and partners.
+            </p>
+            <div className="space-y-2">
+              <div className="flex items-start gap-2">
+                <span className="text-sm font-medium text-gray-700 min-w-[140px]">Credit Value:</span>
+                <span className="text-sm text-gray-600">1 credit ≈ 1,500 SEK (reference value)</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-sm font-medium text-gray-700 min-w-[140px]">Work Multipliers:</span>
+                <span className="text-sm text-gray-600">Different work types consume credits at different rates based on complexity and expertise required</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-sm font-medium text-gray-700 min-w-[140px]">Flexibility:</span>
+                <span className="text-sm text-gray-600">Credits can be allocated across customers, projects, and work types as business priorities shift</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {plans.map((plan) => (

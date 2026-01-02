@@ -186,7 +186,7 @@ const NotesPage: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="p-6 max-w-7xl mx-auto space-y-6">
       {successMessage && (
         <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded">
           <div className="flex items-center">

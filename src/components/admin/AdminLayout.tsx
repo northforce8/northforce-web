@@ -12,6 +12,7 @@ import {
   Menu,
   X,
   LogOut,
+  Globe,
   TrendingUp,
   UserCog,
   MessageSquare,
@@ -33,12 +34,14 @@ import { getCurrentUser, signOut } from '../../lib/auth';
 import type { AdminUser } from '../../lib/auth';
 import { ADMIN_ROUTES, ADMIN_NAVIGATION_GROUPED } from '../../lib/admin-routes';
 import type { AdminNavGroup } from '../../lib/admin-routes';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const AdminLayout: React.FC = () => {
   const [user, setUser] = useState<AdminUser | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
+  const { language, setLanguage } = useLanguage();
 
   useEffect(() => {
     const loadUser = async () => {
@@ -190,6 +193,15 @@ const AdminLayout: React.FC = () => {
                 <p className="text-xs text-gray-500 capitalize">{user.role}</p>
               </div>
             </div>
+
+            <button
+              onClick={() => setLanguage(language === 'en' ? 'sv' : 'en')}
+              className="w-full flex items-center justify-center px-3 py-2 mb-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              title={language === 'en' ? 'Switch to Swedish' : 'Växla till engelska'}
+            >
+              <Globe className="h-4 w-4 mr-2" />
+              {language.toUpperCase()}
+            </button>
 
             <button
               onClick={handleSignOut}

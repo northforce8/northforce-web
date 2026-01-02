@@ -70,7 +70,7 @@ export const ADMIN_NAV_LABELS = {
   DASHBOARD: 'Dashboard',
   LEAD_MANAGEMENT: 'Lead Management',
   ENTERPRISE_INTELLIGENCE: 'Enterprise Dashboard',
-  ENTERPRISE_PLANS: 'Enterprise Plans',
+  ENTERPRISE_PLANS: 'Capacity Plans',
   CREDITS: 'Credits & Forecasts',
   PARTNERS: 'Partners Overview',
   PARTNER_MANAGEMENT: 'Partner Management',
