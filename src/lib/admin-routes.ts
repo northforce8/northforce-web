@@ -54,6 +54,29 @@ export const ADMIN_ROUTES = {
   BEST_PRACTICES: '/admin/partner-portal/best-practices',
   METHODOLOGY_TEMPLATES: '/admin/partner-portal/methodology-templates',
 
+  // Strategic Frameworks - 10 Core Models
+  FRAMEWORKS: '/admin/partner-portal/strategic-frameworks',
+  OKR: '/admin/partner-portal/strategic-frameworks/okr',
+  OKR_DETAIL: '/admin/partner-portal/strategic-frameworks/okr/:id',
+  SWOT: '/admin/partner-portal/strategic-frameworks/swot',
+  SWOT_DETAIL: '/admin/partner-portal/strategic-frameworks/swot/:id',
+  PORTER: '/admin/partner-portal/strategic-frameworks/porter',
+  PORTER_DETAIL: '/admin/partner-portal/strategic-frameworks/porter/:id',
+  BMC: '/admin/partner-portal/strategic-frameworks/bmc',
+  BMC_DETAIL: '/admin/partner-portal/strategic-frameworks/bmc/:id',
+  BSC: '/admin/partner-portal/strategic-frameworks/bsc',
+  BSC_DETAIL: '/admin/partner-portal/strategic-frameworks/bsc/:id',
+  ADKAR: '/admin/partner-portal/strategic-frameworks/adkar',
+  ADKAR_DETAIL: '/admin/partner-portal/strategic-frameworks/adkar/:id',
+  AGILE: '/admin/partner-portal/strategic-frameworks/agile',
+  AGILE_DETAIL: '/admin/partner-portal/strategic-frameworks/agile/:id',
+  MCKINSEY_7S: '/admin/partner-portal/strategic-frameworks/mckinsey-7s',
+  MCKINSEY_7S_DETAIL: '/admin/partner-portal/strategic-frameworks/mckinsey-7s/:id',
+  LEAN_STARTUP: '/admin/partner-portal/strategic-frameworks/lean-startup',
+  LEAN_STARTUP_DETAIL: '/admin/partner-portal/strategic-frameworks/lean-startup/:id',
+  DESIGN_THINKING: '/admin/partner-portal/strategic-frameworks/design-thinking',
+  DESIGN_THINKING_DETAIL: '/admin/partner-portal/strategic-frameworks/design-thinking/:id',
+
   // Legacy redirects (for backwards compatibility)
   LEGACY_LEAD_DASHBOARD: '/admin-northforce',
   LEGACY_LEAD_DETAIL: '/admin-northforce/lead/:type/:id',
@@ -107,6 +130,17 @@ export const ADMIN_NAV_LABELS = {
   BUSINESS_MODELS: 'Business Models',
   BEST_PRACTICES: 'Best Practices',
   METHODOLOGY_TEMPLATES: 'Methodology Templates',
+  FRAMEWORKS: 'Strategic Frameworks',
+  OKR: 'OKR - Objectives & Key Results',
+  SWOT: 'SWOT Analysis',
+  PORTER: "Porter's Five Forces",
+  BMC: 'Business Model Canvas',
+  BSC: 'Balanced Scorecard',
+  ADKAR: 'Change Management (ADKAR)',
+  AGILE: 'Agile Transformation',
+  MCKINSEY_7S: 'McKinsey 7S Framework',
+  LEAN_STARTUP: 'Lean Startup',
+  DESIGN_THINKING: 'Design Thinking',
 } as const;
 
 // Type-safe navigation items
@@ -193,6 +227,23 @@ export const ADMIN_NAVIGATION_GROUPED: AdminNavGroup[] = [
     items: [
       { label: ADMIN_NAV_LABELS.LEADERSHIP_ASSESSMENTS, path: ADMIN_ROUTES.LEADERSHIP_ASSESSMENTS, roles: ['admin'] },
       { label: ADMIN_NAV_LABELS.MARKETING_CAMPAIGNS, path: ADMIN_ROUTES.MARKETING_CAMPAIGNS, roles: ['admin'] },
+    ]
+  },
+  {
+    label: 'STRATEGIC FRAMEWORKS',
+    roles: ['admin', 'partner'],
+    items: [
+      { label: ADMIN_NAV_LABELS.FRAMEWORKS, path: ADMIN_ROUTES.FRAMEWORKS, roles: ['admin', 'partner'] },
+      { label: ADMIN_NAV_LABELS.OKR, path: ADMIN_ROUTES.OKR, roles: ['admin', 'partner'] },
+      { label: ADMIN_NAV_LABELS.SWOT, path: ADMIN_ROUTES.SWOT, roles: ['admin', 'partner'] },
+      { label: ADMIN_NAV_LABELS.PORTER, path: ADMIN_ROUTES.PORTER, roles: ['admin', 'partner'] },
+      { label: ADMIN_NAV_LABELS.BMC, path: ADMIN_ROUTES.BMC, roles: ['admin', 'partner'] },
+      { label: ADMIN_NAV_LABELS.BSC, path: ADMIN_ROUTES.BSC, roles: ['admin', 'partner'] },
+      { label: ADMIN_NAV_LABELS.ADKAR, path: ADMIN_ROUTES.ADKAR, roles: ['admin', 'partner'] },
+      { label: ADMIN_NAV_LABELS.AGILE, path: ADMIN_ROUTES.AGILE, roles: ['admin', 'partner'] },
+      { label: ADMIN_NAV_LABELS.MCKINSEY_7S, path: ADMIN_ROUTES.MCKINSEY_7S, roles: ['admin', 'partner'] },
+      { label: ADMIN_NAV_LABELS.LEAN_STARTUP, path: ADMIN_ROUTES.LEAN_STARTUP, roles: ['admin', 'partner'] },
+      { label: ADMIN_NAV_LABELS.DESIGN_THINKING, path: ADMIN_ROUTES.DESIGN_THINKING, roles: ['admin', 'partner'] },
     ]
   },
   {

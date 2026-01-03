@@ -73,6 +73,19 @@ import BusinessModelsPage from './pages/admin/partner-portal/BusinessModelsPage'
 import BestPracticesPage from './pages/admin/partner-portal/BestPracticesPage';
 import MethodologyTemplatesPage from './pages/admin/partner-portal/MethodologyTemplatesPage';
 
+// Strategic Frameworks Pages
+import StrategicFrameworksOverviewPage from './pages/admin/partner-portal/StrategicFrameworksOverviewPage';
+import OKRPage from './pages/admin/partner-portal/OKRPage';
+import SWOTPage from './pages/admin/partner-portal/SWOTPage';
+import PorterPage from './pages/admin/partner-portal/PorterPage';
+import BMCPage from './pages/admin/partner-portal/BMCPage';
+import BSCPage from './pages/admin/partner-portal/BSCPage';
+import ADKARPage from './pages/admin/partner-portal/ADKARPage';
+import AgilePage from './pages/admin/partner-portal/AgilePage';
+import McKinsey7SPage from './pages/admin/partner-portal/McKinsey7SPage';
+import LeanStartupPage from './pages/admin/partner-portal/LeanStartupPage';
+import DesignThinkingPage from './pages/admin/partner-portal/DesignThinkingPage';
+
 // Customer Portal Pages
 import CustomerLogin from './pages/customer/CustomerLogin';
 import CustomerLayout from './components/customer/CustomerLayout';
@@ -175,6 +188,20 @@ function App() {
           <Route path="business-models" element={<BusinessModelsPage />} />
           <Route path="best-practices" element={<BestPracticesPage />} />
           <Route path="methodology-templates" element={<MethodologyTemplatesPage />} />
+
+          {/* Strategic Frameworks */}
+          <Route path="strategic-frameworks" element={<StrategicFrameworksOverviewPage />} />
+          <Route path="strategic-frameworks/okr" element={<OKRPage />} />
+          <Route path="strategic-frameworks/swot" element={<SWOTPage />} />
+          <Route path="strategic-frameworks/porter" element={<PorterPage />} />
+          <Route path="strategic-frameworks/bmc" element={<BMCPage />} />
+          <Route path="strategic-frameworks/bsc" element={<BSCPage />} />
+          <Route path="strategic-frameworks/adkar" element={<ADKARPage />} />
+          <Route path="strategic-frameworks/agile" element={<AgilePage />} />
+          <Route path="strategic-frameworks/mckinsey-7s" element={<McKinsey7SPage />} />
+          <Route path="strategic-frameworks/lean-startup" element={<LeanStartupPage />} />
+          <Route path="strategic-frameworks/design-thinking" element={<DesignThinkingPage />} />
+
           <Route path="settings" element={<SettingsPage />} />
           <Route path="health" element={<AdminHealthPage />} />
           <Route path="help" element={<HelpCenterPage />} />
