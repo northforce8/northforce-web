@@ -29,7 +29,14 @@ import type {
   PorterAnalysis,
   PorterForce,
   PorterAnalysisWithForces,
-  PorterForceType
+  PorterForceType,
+  BalancedScorecard,
+  BSCPerspective,
+  BSCMetric,
+  BSCPerspectiveWithMetrics,
+  BalancedScorecardWithDetails,
+  BSCPerspectiveType,
+  BSCMetricStatus
 } from './enterprise-types';
 
 export const enterpriseAPI = {
@@ -1419,5 +1426,388 @@ export const enterpriseAPI = {
       lowest_threat: { force_type: lowest.force_type, intensity: lowest.intensity_rating },
       overall_market_attractiveness: Math.round(attractiveness)
     };
+  },
+
+  async getBalancedScorecards(customerId?: string): Promise<BalancedScorecard[]> {
+    let query = supabase
+      .from('balanced_scorecards')
+      .select('*, customer:customers(id, company_name)')
+      .order('created_at', { ascending: false });
+
+    if (customerId) {
+      query = query.eq('customer_id', customerId);
+    }
+
+    const { data, error } = await query;
+
+    if (error) throw error;
+    return data || [];
+  },
+
+  async getBalancedScorecardById(id: string): Promise<BalancedScorecardWithDetails | null> {
+    const { data: scorecard, error: scorecardError } = await supabase
+      .from('balanced_scorecards')
+      .select('*, customer:customers(id, company_name)')
+      .eq('id', id)
+      .maybeSingle();
+
+    if (scorecardError) throw scorecardError;
+    if (!scorecard) return null;
+
+    const { data: perspectives, error: perspectivesError } = await supabase
+      .from('bsc_perspectives')
+      .select('*')
+      .eq('scorecard_id', id)
+      .order('perspective_type');
+
+    if (perspectivesError) throw perspectivesError;
+
+    const perspectivesWithMetrics: BSCPerspectiveWithMetrics[] = [];
+
+    for (const perspective of perspectives || []) {
+      const { data: metrics, error: metricsError } = await supabase
+        .from('bsc_metrics')
+        .select('*')
+        .eq('perspective_id', perspective.id)
+        .order('metric_name');
+
+      if (metricsError) throw metricsError;
+
+      perspectivesWithMetrics.push({
+        ...perspective,
+        metrics: metrics || []
+      });
+    }
+
+    return {
+      ...scorecard,
+      perspectives: perspectivesWithMetrics
+    };
+  },
+
+  async createBalancedScorecard(
+    scorecard: Omit<BalancedScorecard, 'id' | 'created_at' | 'updated_at'>
+  ): Promise<BalancedScorecard> {
+    const { data, error } = await supabase
+      .from('balanced_scorecards')
+      .insert(scorecard)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async updateBalancedScorecard(
+    id: string,
+    updates: Partial<BalancedScorecard>
+  ): Promise<BalancedScorecard> {
+    const { data, error } = await supabase
+      .from('balanced_scorecards')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async deleteBalancedScorecard(id: string): Promise<void> {
+    const perspectives = await this.getBSCPerspectives(id);
+
+    for (const perspective of perspectives) {
+      await supabase
+        .from('bsc_metrics')
+        .delete()
+        .eq('perspective_id', perspective.id);
+    }
+
+    await supabase
+      .from('bsc_perspectives')
+      .delete()
+      .eq('scorecard_id', id);
+
+    const { error } = await supabase
+      .from('balanced_scorecards')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+  },
+
+  async getBSCPerspectives(scorecardId: string): Promise<BSCPerspective[]> {
+    const { data, error } = await supabase
+      .from('bsc_perspectives')
+      .select('*')
+      .eq('scorecard_id', scorecardId)
+      .order('perspective_type');
+
+    if (error) throw error;
+    return data || [];
+  },
+
+  async getBSCPerspectiveById(id: string): Promise<BSCPerspectiveWithMetrics | null> {
+    const { data: perspective, error: perspectiveError } = await supabase
+      .from('bsc_perspectives')
+      .select('*')
+      .eq('id', id)
+      .maybeSingle();
+
+    if (perspectiveError) throw perspectiveError;
+    if (!perspective) return null;
+
+    const { data: metrics, error: metricsError } = await supabase
+      .from('bsc_metrics')
+      .select('*')
+      .eq('perspective_id', id)
+      .order('metric_name');
+
+    if (metricsError) throw metricsError;
+
+    return {
+      ...perspective,
+      metrics: metrics || []
+    };
+  },
+
+  async createBSCPerspective(
+    perspective: Omit<BSCPerspective, 'id' | 'created_at'>
+  ): Promise<BSCPerspective> {
+    const { data, error } = await supabase
+      .from('bsc_perspectives')
+      .insert(perspective)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async updateBSCPerspective(
+    id: string,
+    updates: Partial<BSCPerspective>
+  ): Promise<BSCPerspective> {
+    const { data, error } = await supabase
+      .from('bsc_perspectives')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async deleteBSCPerspective(id: string): Promise<void> {
+    await supabase
+      .from('bsc_metrics')
+      .delete()
+      .eq('perspective_id', id);
+
+    const { error } = await supabase
+      .from('bsc_perspectives')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+  },
+
+  async getBSCMetrics(perspectiveId: string): Promise<BSCMetric[]> {
+    const { data, error } = await supabase
+      .from('bsc_metrics')
+      .select('*')
+      .eq('perspective_id', perspectiveId)
+      .order('metric_name');
+
+    if (error) throw error;
+    return data || [];
+  },
+
+  async getBSCMetricById(id: string): Promise<BSCMetric | null> {
+    const { data, error } = await supabase
+      .from('bsc_metrics')
+      .select('*')
+      .eq('id', id)
+      .maybeSingle();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async createBSCMetric(
+    metric: Omit<BSCMetric, 'id' | 'created_at' | 'updated_at'>
+  ): Promise<BSCMetric> {
+    const { data, error } = await supabase
+      .from('bsc_metrics')
+      .insert(metric)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async updateBSCMetric(
+    id: string,
+    updates: Partial<BSCMetric>
+  ): Promise<BSCMetric> {
+    const { data, error } = await supabase
+      .from('bsc_metrics')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async deleteBSCMetric(id: string): Promise<void> {
+    const { error } = await supabase
+      .from('bsc_metrics')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+  },
+
+  async updateBSCMetricValue(
+    id: string,
+    currentValue: number
+  ): Promise<BSCMetric> {
+    const metric = await this.getBSCMetricById(id);
+    if (!metric) throw new Error('Metric not found');
+
+    let status: BSCMetricStatus = 'not_started';
+
+    if (metric.target_value) {
+      const progress = (currentValue / metric.target_value) * 100;
+
+      if (progress >= 100) {
+        status = 'achieved';
+      } else if (progress >= 80) {
+        status = 'on_track';
+      } else if (progress >= 60) {
+        status = 'at_risk';
+      } else {
+        status = 'off_track';
+      }
+    }
+
+    return await this.updateBSCMetric(id, {
+      current_value: currentValue,
+      status
+    });
+  },
+
+  async getBSCScorecardStatistics(scorecardId: string): Promise<{
+    total_perspectives: number;
+    total_metrics: number;
+    metrics_by_perspective: Record<BSCPerspectiveType, number>;
+    metrics_by_status: Record<BSCMetricStatus, number>;
+    overall_completion: number;
+    perspectives_with_data: number;
+    average_progress: number;
+  }> {
+    const perspectives = await this.getBSCPerspectives(scorecardId);
+
+    let totalMetrics = 0;
+    const metricsByPerspective: Record<BSCPerspectiveType, number> = {
+      financial: 0,
+      customer: 0,
+      internal_process: 0,
+      learning_growth: 0
+    };
+    const metricsByStatus: Record<BSCMetricStatus, number> = {
+      on_track: 0,
+      at_risk: 0,
+      off_track: 0,
+      achieved: 0,
+      not_started: 0
+    };
+
+    let totalProgress = 0;
+    let metricsWithValues = 0;
+
+    for (const perspective of perspectives) {
+      const metrics = await this.getBSCMetrics(perspective.id);
+      totalMetrics += metrics.length;
+      metricsByPerspective[perspective.perspective_type] = metrics.length;
+
+      for (const metric of metrics) {
+        if (metric.status) {
+          metricsByStatus[metric.status]++;
+        }
+
+        if (metric.current_value !== null && metric.target_value !== null) {
+          const progress = (metric.current_value / metric.target_value) * 100;
+          totalProgress += Math.min(progress, 100);
+          metricsWithValues++;
+        }
+      }
+    }
+
+    const perspectivesWithData = perspectives.filter(p =>
+      metricsByPerspective[p.perspective_type] > 0
+    ).length;
+
+    return {
+      total_perspectives: 4,
+      total_metrics: totalMetrics,
+      metrics_by_perspective: metricsByPerspective,
+      metrics_by_status: metricsByStatus,
+      overall_completion: metricsWithValues > 0 ? Math.round(totalProgress / metricsWithValues) : 0,
+      perspectives_with_data: perspectivesWithData,
+      average_progress: metricsWithValues > 0 ? Math.round(totalProgress / metricsWithValues) : 0
+    };
+  },
+
+  async getBSCPerspectiveByType(
+    scorecardId: string,
+    perspectiveType: BSCPerspectiveType
+  ): Promise<BSCPerspectiveWithMetrics | null> {
+    const { data: perspective, error: perspectiveError } = await supabase
+      .from('bsc_perspectives')
+      .select('*')
+      .eq('scorecard_id', scorecardId)
+      .eq('perspective_type', perspectiveType)
+      .maybeSingle();
+
+    if (perspectiveError) throw perspectiveError;
+    if (!perspective) return null;
+
+    const { data: metrics, error: metricsError } = await supabase
+      .from('bsc_metrics')
+      .select('*')
+      .eq('perspective_id', perspective.id)
+      .order('metric_name');
+
+    if (metricsError) throw metricsError;
+
+    return {
+      ...perspective,
+      metrics: metrics || []
+    };
+  },
+
+  async upsertBSCPerspective(
+    scorecardId: string,
+    perspectiveType: BSCPerspectiveType,
+    perspectiveData: Partial<BSCPerspective>
+  ): Promise<BSCPerspective> {
+    const existing = await this.getBSCPerspectiveByType(scorecardId, perspectiveType);
+
+    if (existing) {
+      return await this.updateBSCPerspective(existing.id, perspectiveData);
+    } else {
+      return await this.createBSCPerspective({
+        scorecard_id: scorecardId,
+        perspective_type: perspectiveType,
+        objective: perspectiveData.objective || '',
+        description: perspectiveData.description,
+        target: perspectiveData.target
+      });
+    }
   }
 };

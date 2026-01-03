@@ -637,3 +637,179 @@ export interface PorterForceComparison {
   factors_removed: string[];
   impact_change: string;
 }
+
+export type BSCPerspectiveType =
+  | 'financial'
+  | 'customer'
+  | 'internal_process'
+  | 'learning_growth';
+
+export type BSCMetricStatus =
+  | 'on_track'
+  | 'at_risk'
+  | 'off_track'
+  | 'achieved'
+  | 'not_started';
+
+export interface BalancedScorecard {
+  id: string;
+  customer_id?: string;
+  title: string;
+  time_period: string;
+  vision?: string;
+  strategy?: string;
+  created_by?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface BSCPerspective {
+  id: string;
+  scorecard_id: string;
+  perspective_type: BSCPerspectiveType;
+  objective: string;
+  description?: string;
+  target?: string;
+  created_at: string;
+}
+
+export interface BSCMetric {
+  id: string;
+  perspective_id: string;
+  metric_name: string;
+  description?: string;
+  target_value?: number;
+  current_value?: number;
+  unit?: string;
+  measurement_frequency?: string;
+  status?: BSCMetricStatus;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface BSCPerspectiveWithMetrics extends BSCPerspective {
+  metrics: BSCMetric[];
+}
+
+export interface BalancedScorecardWithDetails extends BalancedScorecard {
+  perspectives: BSCPerspectiveWithMetrics[];
+  customer?: {
+    id: string;
+    company_name: string;
+  };
+}
+
+export interface BSCAIInsight {
+  perspective_type: BSCPerspectiveType;
+  insight_type: 'strength' | 'weakness' | 'opportunity' | 'action' | 'warning';
+  title: string;
+  description: string;
+  priority: 'critical' | 'high' | 'medium' | 'low';
+  confidence: number;
+  impact_score: number;
+  recommendations: string[];
+  related_metrics?: string[];
+  related_okr_suggestions?: {
+    objective: string;
+    key_results: string[];
+  };
+  data_source: 'performance_data' | 'market_analysis' | 'historical_trends' | 'benchmark_comparison';
+}
+
+export interface BSCPerformanceAnalysis {
+  scorecard_id: string;
+  overall_health_score: number;
+  perspective_scores: Record<BSCPerspectiveType, {
+    score: number;
+    status: 'excellent' | 'good' | 'fair' | 'poor';
+    trend: 'improving' | 'stable' | 'declining';
+    at_risk_metrics: number;
+    achieved_metrics: number;
+    total_metrics: number;
+  }>;
+  balance_score: number;
+  strategic_alignment_score: number;
+  leading_indicators: {
+    perspective: BSCPerspectiveType;
+    metric_name: string;
+    current_value: number;
+    target_value: number;
+    progress: number;
+    trend: 'up' | 'down' | 'stable';
+  }[];
+  lagging_indicators: {
+    perspective: BSCPerspectiveType;
+    metric_name: string;
+    current_value: number;
+    target_value: number;
+    achievement: number;
+  }[];
+  key_findings: string[];
+  strategic_recommendations: {
+    priority: 'critical' | 'high' | 'medium' | 'low';
+    perspective: BSCPerspectiveType;
+    recommendation: string;
+    expected_impact: string;
+    effort_required: 'low' | 'medium' | 'high';
+  }[];
+}
+
+export interface BSCMetricProgress {
+  metric_id: string;
+  metric_name: string;
+  perspective_type: BSCPerspectiveType;
+  current_value: number;
+  target_value: number;
+  previous_value?: number;
+  progress_percentage: number;
+  status: BSCMetricStatus;
+  variance: number;
+  variance_percentage: number;
+  trend: 'improving' | 'stable' | 'declining';
+  projected_completion?: string;
+}
+
+export interface BSCCausalRelationship {
+  from_perspective: BSCPerspectiveType;
+  to_perspective: BSCPerspectiveType;
+  from_metric: string;
+  to_metric: string;
+  relationship_type: 'drives' | 'influences' | 'enables' | 'depends_on';
+  strength: 'strong' | 'moderate' | 'weak';
+  description: string;
+  validated: boolean;
+}
+
+export interface BSCStrategicTheme {
+  theme_name: string;
+  description: string;
+  perspectives: BSCPerspectiveType[];
+  objectives: string[];
+  metrics: string[];
+  alignment_score: number;
+  priority: 'critical' | 'high' | 'medium' | 'low';
+}
+
+export interface BSCBenchmarkComparison {
+  scorecard_id: string;
+  industry: string;
+  comparison_date: string;
+  perspective_benchmarks: Record<BSCPerspectiveType, {
+    company_score: number;
+    industry_average: number;
+    industry_top_quartile: number;
+    percentile_rank: number;
+    gap_to_average: number;
+    gap_to_top_quartile: number;
+  }>;
+  key_strengths: string[];
+  key_gaps: string[];
+  improvement_opportunities: {
+    perspective: BSCPerspectiveType;
+    area: string;
+    current_performance: number;
+    benchmark_target: number;
+    potential_gain: string;
+    recommended_actions: string[];
+  }[];
+}
