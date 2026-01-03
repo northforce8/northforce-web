@@ -518,6 +518,15 @@ export const enterpriseAPI = {
     return data;
   },
 
+  async deleteBusinessModel(id: string): Promise<void> {
+    const { error } = await supabase
+      .from('business_models')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+  },
+
   async getStrategicGoals(customerId: string): Promise<StrategicGoal[]> {
     const { data, error } = await supabase
       .from('strategic_goals')
@@ -647,6 +656,15 @@ export const enterpriseAPI = {
     return data;
   },
 
+  async deleteMethodologyTemplate(id: string): Promise<void> {
+    const { error } = await supabase
+      .from('methodology_templates')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+  },
+
   async getBestPractices(category?: string): Promise<BestPractice[]> {
     let query = supabase
       .from('best_practices')
@@ -704,6 +722,15 @@ export const enterpriseAPI = {
 
     if (error) throw error;
     return data;
+  },
+
+  async deleteBestPractice(id: string): Promise<void> {
+    const { error } = await supabase
+      .from('best_practices')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
   },
 
   async getPracticeCategories(): Promise<PracticeCategory[]> {
