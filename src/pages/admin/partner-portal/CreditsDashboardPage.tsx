@@ -133,7 +133,7 @@ const CreditsDashboardPage: React.FC = () => {
       case 'critical':
         return 'bg-red-100 text-red-800 border-red-200';
       case 'high':
-        return 'bg-orange-100 text-orange-800 border-orange-200';
+        return 'bg-amber-100 text-amber-800 border-amber-200';
       case 'medium':
         return 'bg-yellow-100 text-yellow-800 border-yellow-200';
       default:
@@ -267,7 +267,7 @@ const CreditsDashboardPage: React.FC = () => {
               onClick={() => setFilterRisk('high')}
               className={`px-3 py-1 text-sm rounded ${
                 filterRisk === 'high'
-                  ? 'bg-orange-600 text-white'
+                  ? 'bg-amber-600 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -323,11 +323,11 @@ const CreditsDashboardPage: React.FC = () => {
                     <div>
                       <div className="text-xs text-gray-500 mb-1">Burn Rate</div>
                       <div className="text-lg font-bold text-gray-900 flex items-center gap-1">
-                        <TrendingDown className="w-4 h-4 text-orange-600" />
+                        <TrendingDown className="w-4 h-4 text-amber-600" />
                         {status.burnRate.toFixed(1)}/day
                       </div>
                       <div className="text-xs text-gray-500">{status.daysRemaining} days left</div>
-                      <div className="text-xs text-orange-600 font-medium mt-1">
+                      <div className="text-xs text-amber-600 font-medium mt-1">
                         {formatCurrency(
                           creditsToMoney(
                             status.burnRate,

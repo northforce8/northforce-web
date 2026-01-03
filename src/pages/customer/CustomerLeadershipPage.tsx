@@ -18,8 +18,8 @@ export default function CustomerLeadershipPage() {
 
       <Card className="p-12 text-center">
         <Users className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">No Active Assessments</h3>
-        <p className="text-gray-600">Your consultant will launch leadership assessments when you're ready.</p>
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('customer.leadership.empty_title')}</h3>
+        <p className="text-gray-600">{t('customer.leadership.empty_desc')}</p>
       </Card>
     </div>
   );

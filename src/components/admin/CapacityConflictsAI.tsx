@@ -49,7 +49,7 @@ const CapacityConflictsAI: React.FC<CapacityConflictsAIProps> = ({ startDate, en
       case 'critical':
         return 'bg-red-100 text-red-800 border-red-300';
       case 'high':
-        return 'bg-orange-100 text-orange-800 border-orange-300';
+        return 'bg-amber-100 text-amber-800 border-amber-300';
       case 'medium':
         return 'bg-yellow-100 text-yellow-800 border-yellow-300';
       default:
@@ -61,11 +61,11 @@ const CapacityConflictsAI: React.FC<CapacityConflictsAIProps> = ({ startDate, en
     return (
       <div className="bg-white rounded-lg border border-gray-200 p-4">
         <div className="flex items-center space-x-2 mb-3">
-          <AlertTriangle className="w-5 h-5 text-orange-600 animate-pulse" />
+          <AlertTriangle className="w-5 h-5 text-amber-600 animate-pulse" />
           <h4 className="text-sm font-semibold text-gray-900">AI Conflict Detection</h4>
         </div>
         <div className="text-center py-4">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-orange-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-amber-600 mx-auto"></div>
           <p className="text-xs text-gray-500 mt-2">Scanning for conflicts...</p>
         </div>
       </div>
@@ -95,12 +95,12 @@ const CapacityConflictsAI: React.FC<CapacityConflictsAIProps> = ({ startDate, en
   const displayConflicts = showAll ? conflicts : conflicts.slice(0, 3);
 
   return (
-    <div className="bg-white rounded-lg border border-orange-200 overflow-hidden">
+    <div className="bg-white rounded-lg border border-amber-200 overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-orange-50 to-red-50 px-4 py-3 border-b border-orange-200">
+      <div className="bg-gradient-to-r from-amber-50 to-red-50 px-4 py-3 border-b border-amber-200">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <AlertTriangle className="w-5 h-5 text-orange-600" />
+            <AlertTriangle className="w-5 h-5 text-amber-600" />
             <div>
               <h4 className="text-sm font-semibold text-gray-900">
                 AI Conflict Detection
@@ -117,7 +117,7 @@ const CapacityConflictsAI: React.FC<CapacityConflictsAIProps> = ({ startDate, en
               </span>
             )}
             {highCount > 0 && (
-              <span className="px-2 py-1 bg-orange-100 text-orange-800 text-xs font-semibold rounded-full">
+              <span className="px-2 py-1 bg-amber-100 text-amber-800 text-xs font-semibold rounded-full">
                 {highCount} High
               </span>
             )}
@@ -134,7 +134,7 @@ const CapacityConflictsAI: React.FC<CapacityConflictsAIProps> = ({ startDate, en
               conflict.severity === 'critical'
                 ? 'bg-red-50 border-red-500'
                 : conflict.severity === 'high'
-                ? 'bg-orange-50 border-orange-500'
+                ? 'bg-amber-50 border-amber-500'
                 : 'bg-yellow-50 border-yellow-500'
             }`}
           >
@@ -179,7 +179,7 @@ const CapacityConflictsAI: React.FC<CapacityConflictsAIProps> = ({ startDate, en
                     className={`flex items-center justify-between p-2 rounded text-xs font-medium transition-colors ${
                       action.priority === 'critical'
                         ? 'bg-red-600 text-white hover:bg-red-700'
-                        : 'bg-orange-600 text-white hover:bg-orange-700'
+                        : 'bg-amber-600 text-white hover:bg-amber-700'
                     }`}
                   >
                     <span>{action.title}</span>
@@ -195,7 +195,7 @@ const CapacityConflictsAI: React.FC<CapacityConflictsAIProps> = ({ startDate, en
         {conflicts.length > 3 && (
           <button
             onClick={() => setShowAll(!showAll)}
-            className="w-full flex items-center justify-center space-x-2 text-xs text-orange-700 hover:text-orange-800 py-2 border-t border-gray-200"
+            className="w-full flex items-center justify-center space-x-2 text-xs text-amber-700 hover:text-amber-800 py-2 border-t border-gray-200"
           >
             {showAll ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
             <span>{showAll ? 'Show less' : `Show ${conflicts.length - 3} more conflicts`}</span>
@@ -208,7 +208,7 @@ const CapacityConflictsAI: React.FC<CapacityConflictsAIProps> = ({ startDate, en
             loadConflicts();
             onRefresh?.();
           }}
-          className="w-full mt-2 px-4 py-2 text-xs font-medium text-orange-600 hover:text-orange-700 hover:bg-orange-50 rounded-lg transition-colors"
+          className="w-full mt-2 px-4 py-2 text-xs font-medium text-amber-600 hover:text-amber-700 hover:bg-amber-50 rounded-lg transition-colors"
         >
           Refresh Analysis
         </button>

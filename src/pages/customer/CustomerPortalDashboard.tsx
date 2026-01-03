@@ -150,8 +150,8 @@ const CustomerPortalDashboard: React.FC = () => {
 
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-4">
-            <div className="bg-orange-100 rounded-lg p-3">
-              <TrendingUp className="h-6 w-6 text-orange-600" />
+            <div className="bg-amber-100 rounded-lg p-3">
+              <TrendingUp className="h-6 w-6 text-amber-600" />
             </div>
           </div>
           <p className="text-2xl font-bold text-gray-900">{stats.utilizationPercent}%</p>

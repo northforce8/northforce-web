@@ -25,7 +25,7 @@ export default function CustomerGrowthJourneyPage() {
     }
   };
 
-  if (loading) return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  if (loading) return <div className="flex items-center justify-center min-h-screen">{t('customer.growth.loading')}</div>;
 
   return (
     <div className="space-y-6">
@@ -40,8 +40,8 @@ export default function CustomerGrowthJourneyPage() {
       {plans.length === 0 ? (
         <Card className="p-12 text-center">
           <Target className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">No Growth Plan Yet</h3>
-          <p className="text-gray-600">Your consultant will set up your strategic growth plan soon.</p>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('customer.growth.empty_title')}</h3>
+          <p className="text-gray-600">{t('customer.growth.empty_desc')}</p>
         </Card>
       ) : (
         plans.map((plan) => (
@@ -49,13 +49,13 @@ export default function CustomerGrowthJourneyPage() {
             <h2 className="text-2xl font-bold mb-4">{plan.plan_name}</h2>
             {plan.vision_statement && (
               <div className="mb-4">
-                <h3 className="text-sm font-semibold text-gray-600 mb-2">Vision</h3>
+                <h3 className="text-sm font-semibold text-gray-600 mb-2">{t('customer.growth.vision')}</h3>
                 <p className="text-gray-800">{plan.vision_statement}</p>
               </div>
             )}
             <div className="mt-4">
               <div className="flex justify-between text-sm mb-2">
-                <span className="text-gray-600">Overall Progress</span>
+                <span className="text-gray-600">{t('customer.growth.overall_progress')}</span>
                 <span className="font-semibold">{plan.overall_progress}%</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-3">

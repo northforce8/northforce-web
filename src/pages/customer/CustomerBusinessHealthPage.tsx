@@ -28,7 +28,7 @@ export default function CustomerBusinessHealthPage() {
     }
   };
 
-  if (loading) return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  if (loading) return <div className="flex items-center justify-center min-h-screen">{t('customer.businessHealth.loading')}</div>;
 
   return (
     <div className="space-y-6">
@@ -43,28 +43,28 @@ export default function CustomerBusinessHealthPage() {
       {goals.length === 0 ? (
         <Card className="p-12 text-center">
           <TrendingUp className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">No Strategic Goals Yet</h3>
-          <p className="text-gray-600">Your consultant will define strategic goals with you.</p>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('customer.businessHealth.empty_title')}</h3>
+          <p className="text-gray-600">{t('customer.businessHealth.empty_desc')}</p>
         </Card>
       ) : (
         goals.map((goal) => (
           <Card key={goal.id} className="p-6">
             <h2 className="text-xl font-bold mb-2">{goal.goal_name}</h2>
-            <p className="text-sm text-gray-600 capitalize mb-4">Category: {goal.goal_category.replace('_', ' ')}</p>
+            <p className="text-sm text-gray-600 capitalize mb-4">{t('customer.businessHealth.category')}: {goal.goal_category.replace('_', ' ')}</p>
             {goal.description && (
               <p className="text-gray-700 mb-4">{goal.description}</p>
             )}
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <p className="text-sm text-gray-600">Baseline</p>
+                <p className="text-sm text-gray-600">{t('customer.businessHealth.baseline')}</p>
                 <p className="text-lg font-semibold">{goal.baseline_value || '-'} {goal.unit || ''}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Current</p>
+                <p className="text-sm text-gray-600">{t('customer.businessHealth.current')}</p>
                 <p className="text-lg font-semibold">{goal.current_value || '-'} {goal.unit || ''}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Target</p>
+                <p className="text-sm text-gray-600">{t('customer.businessHealth.target')}</p>
                 <p className="text-lg font-semibold">{goal.target_value || '-'} {goal.unit || ''}</p>
               </div>
             </div>

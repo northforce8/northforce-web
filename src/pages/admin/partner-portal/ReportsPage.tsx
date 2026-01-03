@@ -253,13 +253,13 @@ const ReportsPage: React.FC = () => {
             <div className="text-xs text-blue-700 mt-1">{safeNumber(avgMarginPercentage, 0).toFixed(1)}% avg</div>
           </div>
 
-          <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-4">
+          <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-lg p-4">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-orange-800">Total Hours</span>
-              <Calendar className="w-5 h-5 text-orange-600" />
+              <span className="text-sm font-medium text-amber-800">Total Hours</span>
+              <Calendar className="w-5 h-5 text-amber-600" />
             </div>
-            <div className="text-3xl font-bold text-orange-900">{safeNumber(totalHours, 0).toFixed(0)}</div>
-            <div className="text-xs text-orange-700 mt-1">delivered</div>
+            <div className="text-3xl font-bold text-amber-900">{safeNumber(totalHours, 0).toFixed(0)}</div>
+            <div className="text-xs text-amber-700 mt-1">delivered</div>
           </div>
 
           <div className="bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-lg p-4">

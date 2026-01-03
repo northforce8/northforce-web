@@ -59,7 +59,7 @@ const CustomerHealthAI: React.FC<CustomerHealthAIProps> = ({ customerId, onActio
       case 'critical':
         return 'bg-red-100 text-red-800 border-red-300';
       case 'high':
-        return 'bg-orange-100 text-orange-800 border-orange-300';
+        return 'bg-amber-100 text-amber-800 border-amber-300';
       case 'medium':
         return 'bg-yellow-100 text-yellow-800 border-yellow-300';
       case 'low':
@@ -89,7 +89,7 @@ const CustomerHealthAI: React.FC<CustomerHealthAIProps> = ({ customerId, onActio
       case 'critical':
         return 'bg-red-600 hover:bg-red-700 text-white';
       case 'high':
-        return 'bg-orange-600 hover:bg-orange-700 text-white';
+        return 'bg-amber-600 hover:bg-amber-700 text-white';
       case 'medium':
         return 'bg-blue-600 hover:bg-blue-700 text-white';
       case 'low':
@@ -171,7 +171,7 @@ const CustomerHealthAI: React.FC<CustomerHealthAIProps> = ({ customerId, onActio
                   : health.health_score >= 60
                   ? 'bg-yellow-500'
                   : health.health_score >= 40
-                  ? 'bg-orange-500'
+                  ? 'bg-amber-500'
                   : 'bg-red-500'
               }`}
               style={{ width: `${health.health_score}%` }}
@@ -196,7 +196,7 @@ const CustomerHealthAI: React.FC<CustomerHealthAIProps> = ({ customerId, onActio
         {health.flags.length > 0 && (
           <div>
             <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center">
-              <AlertTriangle className="w-4 h-4 mr-2 text-orange-600" />
+              <AlertTriangle className="w-4 h-4 mr-2 text-amber-600" />
               Active Risk Flags ({health.flags.length})
             </h4>
             <div className="space-y-2">
@@ -207,7 +207,7 @@ const CustomerHealthAI: React.FC<CustomerHealthAIProps> = ({ customerId, onActio
                     flag.severity === 'critical'
                       ? 'bg-red-50 border-red-500'
                       : flag.severity === 'high'
-                      ? 'bg-orange-50 border-orange-500'
+                      ? 'bg-amber-50 border-amber-500'
                       : flag.severity === 'medium'
                       ? 'bg-yellow-50 border-yellow-500'
                       : 'bg-blue-50 border-blue-500'
@@ -228,7 +228,7 @@ const CustomerHealthAI: React.FC<CustomerHealthAIProps> = ({ customerId, onActio
                       flag.severity === 'critical'
                         ? 'bg-red-200 text-red-800'
                         : flag.severity === 'high'
-                        ? 'bg-orange-200 text-orange-800'
+                        ? 'bg-amber-200 text-amber-800'
                         : flag.severity === 'medium'
                         ? 'bg-yellow-200 text-yellow-800'
                         : 'bg-blue-200 text-blue-800'
@@ -264,7 +264,7 @@ const CustomerHealthAI: React.FC<CustomerHealthAIProps> = ({ customerId, onActio
                       action.priority === 'critical'
                         ? 'bg-red-200 text-red-800'
                         : action.priority === 'high'
-                        ? 'bg-orange-200 text-orange-800'
+                        ? 'bg-amber-200 text-amber-800'
                         : action.priority === 'medium'
                         ? 'bg-blue-200 text-blue-800'
                         : 'bg-gray-200 text-gray-800'

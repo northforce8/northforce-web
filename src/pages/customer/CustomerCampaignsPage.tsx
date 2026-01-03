@@ -25,7 +25,7 @@ export default function CustomerCampaignsPage() {
     }
   };
 
-  if (loading) return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  if (loading) return <div className="flex items-center justify-center min-h-screen">{t('customer.campaigns.loading')}</div>;
 
   return (
     <div className="space-y-6">
@@ -40,8 +40,8 @@ export default function CustomerCampaignsPage() {
       {campaigns.length === 0 ? (
         <Card className="p-12 text-center">
           <Target className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">No Campaigns Yet</h3>
-          <p className="text-gray-600">Marketing campaigns will appear here when launched.</p>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('customer.campaigns.empty_title')}</h3>
+          <p className="text-gray-600">{t('customer.campaigns.empty_desc')}</p>
         </Card>
       ) : (
         campaigns.map((campaign) => (
@@ -50,15 +50,15 @@ export default function CustomerCampaignsPage() {
             <p className="text-gray-600 mb-4">{campaign.objective}</p>
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <p className="text-sm text-gray-600">Budget</p>
+                <p className="text-sm text-gray-600">{t('customer.campaigns.budget')}</p>
                 <p className="text-lg font-semibold">{campaign.budget_allocated.toLocaleString()} SEK</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Leads</p>
+                <p className="text-sm text-gray-600">{t('customer.campaigns.leads')}</p>
                 <p className="text-lg font-semibold">{campaign.leads_generated}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Status</p>
+                <p className="text-sm text-gray-600">{t('customer.campaigns.status')}</p>
                 <p className="text-lg font-semibold capitalize">{campaign.status}</p>
               </div>
             </div>

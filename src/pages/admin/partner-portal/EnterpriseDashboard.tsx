@@ -300,15 +300,15 @@ const EnterpriseDashboard: React.FC = () => {
             <p className="text-xs text-red-700">Collaboration issues</p>
           </div>
 
-          <div className="bg-orange-50 border border-orange-200 rounded-lg p-5">
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-5">
             <div className="flex items-start justify-between mb-3">
-              <div className="p-2 rounded-lg bg-orange-100">
-                <TrendingUp className="w-5 h-5 text-orange-700" />
+              <div className="p-2 rounded-lg bg-amber-100">
+                <TrendingUp className="w-5 h-5 text-amber-700" />
               </div>
             </div>
-            <p className="text-sm font-medium text-orange-800 mb-1">Critical Actions</p>
-            <p className="text-2xl font-bold text-orange-900 mb-2">{alerts.criticalRecommendations}</p>
-            <p className="text-xs text-orange-700">Need immediate action</p>
+            <p className="text-sm font-medium text-amber-800 mb-1">Critical Actions</p>
+            <p className="text-2xl font-bold text-amber-900 mb-2">{alerts.criticalRecommendations}</p>
+            <p className="text-xs text-amber-700">Need immediate action</p>
           </div>
         </div>
 
@@ -322,7 +322,7 @@ const EnterpriseDashboard: React.FC = () => {
 
               const riskColor =
                 forecast.risk_level === 'critical' ? 'bg-red-50 border-red-200' :
-                forecast.risk_level === 'high' ? 'bg-orange-50 border-orange-200' :
+                forecast.risk_level === 'high' ? 'bg-amber-50 border-amber-200' :
                 forecast.risk_level === 'medium' ? 'bg-yellow-50 border-yellow-200' :
                 'bg-green-50 border-green-200';
 
@@ -335,7 +335,7 @@ const EnterpriseDashboard: React.FC = () => {
                     </div>
                     <AlertCircle className={`w-5 h-5 ${
                       forecast.risk_level === 'critical' ? 'text-red-600' :
-                      forecast.risk_level === 'high' ? 'text-orange-600' :
+                      forecast.risk_level === 'high' ? 'text-amber-600' :
                       forecast.risk_level === 'medium' ? 'text-yellow-600' :
                       'text-green-600'
                     }`} />

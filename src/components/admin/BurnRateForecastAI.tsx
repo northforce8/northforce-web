@@ -59,7 +59,7 @@ const BurnRateForecastAI: React.FC<BurnRateForecastAIProps> = ({ customerId }) =
 
   const getDaysColor = (days: number) => {
     if (days < 5) return 'text-red-600';
-    if (days < 10) return 'text-orange-600';
+    if (days < 10) return 'text-amber-600';
     if (days < 30) return 'text-yellow-600';
     return 'text-green-600';
   };
@@ -147,7 +147,7 @@ const BurnRateForecastAI: React.FC<BurnRateForecastAIProps> = ({ customerId }) =
                     action.priority === 'critical'
                       ? 'bg-red-600 text-white hover:bg-red-700'
                       : action.priority === 'high'
-                      ? 'bg-orange-600 text-white hover:bg-orange-700'
+                      ? 'bg-amber-600 text-white hover:bg-amber-700'
                       : 'bg-blue-600 text-white hover:bg-blue-700'
                   }`}
                 >

@@ -232,13 +232,13 @@ const TimeReportingPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-4">
+            <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-lg p-4">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-orange-800">Internal Cost</span>
-                <DollarSign className="w-5 h-5 text-orange-600" />
+                <span className="text-sm font-medium text-amber-800">Internal Cost</span>
+                <DollarSign className="w-5 h-5 text-amber-600" />
               </div>
-              <div className="text-3xl font-bold text-orange-900">{(safeNumber(totalCost, 0) / 1000).toFixed(1)}k</div>
-              <div className="text-xs text-orange-700 mt-1">
+              <div className="text-3xl font-bold text-amber-900">{(safeNumber(totalCost, 0) / 1000).toFixed(1)}k</div>
+              <div className="text-xs text-amber-700 mt-1">
                 {safeDivide(totalCost, totalHours, 0).toFixed(0)} SEK/hour
               </div>
             </div>
@@ -378,7 +378,7 @@ const TimeReportingPage: React.FC = () => {
                                 </div>
                                 <div className="text-center border-l border-gray-200">
                                   <p className="text-xs text-gray-500 mb-1">Internal Cost</p>
-                                  <p className="text-sm font-semibold text-orange-600">
+                                  <p className="text-sm font-semibold text-amber-600">
                                     {internalCost.toFixed(0)} SEK
                                   </p>
                                   <p className="text-xs text-gray-400 mt-0.5">

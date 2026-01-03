@@ -834,6 +834,40 @@ const translations: Record<string, Record<Language, string>> = {
   'customer.help.welcome_text': { en: 'This help center provides guidance on using the Customer Portal effectively. Expand any section below to learn more about specific features and concepts.', sv: 'Detta hjälpcenter ger vägledning om hur du använder Kundportalen effektivt. Expandera valfritt avsnitt nedan för att lära dig mer om specifika funktioner och begrepp.' },
   'customer.help.need_support': { en: 'Need Additional Support?', sv: 'Behöver du ytterligare support?' },
   'customer.help.support_text': { en: 'If you have questions not covered in this help center, please contact your account manager directly.', sv: 'Om du har frågor som inte täcks i detta hjälpcenter, vänligen kontakta din kontoansvarige direkt.' },
+
+  // Customer Portal - Business Health
+  'customer.businessHealth.loading': { en: 'Loading...', sv: 'Laddar...' },
+  'customer.businessHealth.empty_title': { en: 'No Strategic Goals Yet', sv: 'Inga strategiska mål ännu' },
+  'customer.businessHealth.empty_desc': { en: 'Your consultant will define strategic goals with you.', sv: 'Din konsult kommer att definiera strategiska mål med dig.' },
+  'customer.businessHealth.category': { en: 'Category', sv: 'Kategori' },
+  'customer.businessHealth.baseline': { en: 'Baseline', sv: 'Baslinje' },
+  'customer.businessHealth.current': { en: 'Current', sv: 'Nuvarande' },
+  'customer.businessHealth.target': { en: 'Target', sv: 'Mål' },
+
+  // Customer Portal - Campaigns
+  'customer.campaigns.loading': { en: 'Loading...', sv: 'Laddar...' },
+  'customer.campaigns.empty_title': { en: 'No Campaigns Yet', sv: 'Inga kampanjer ännu' },
+  'customer.campaigns.empty_desc': { en: 'Marketing campaigns will appear here when launched.', sv: 'Marknadsföringskampanjer kommer att visas här när de lanseras.' },
+  'customer.campaigns.budget': { en: 'Budget', sv: 'Budget' },
+  'customer.campaigns.leads': { en: 'Leads', sv: 'Leads' },
+  'customer.campaigns.status': { en: 'Status', sv: 'Status' },
+  'customer.campaigns.description': { en: 'Description', sv: 'Beskrivning' },
+
+  // Customer Portal - Growth Journey
+  'customer.growth.loading': { en: 'Loading...', sv: 'Laddar...' },
+  'customer.growth.empty_title': { en: 'No Growth Plan Yet', sv: 'Ingen tillväxtplan ännu' },
+  'customer.growth.empty_desc': { en: 'Your consultant will set up your strategic growth plan soon.', sv: 'Din konsult kommer att sätta upp din strategiska tillväxtplan snart.' },
+  'customer.growth.vision': { en: 'Vision', sv: 'Vision' },
+  'customer.growth.overall_progress': { en: 'Overall Progress', sv: 'Övergripande framsteg' },
+  'customer.growth.objectives': { en: 'Objectives', sv: 'Mål' },
+  'customer.growth.initiatives': { en: 'Initiatives', sv: 'Initiativ' },
+
+  // Customer Portal - Leadership
+  'customer.leadership.loading': { en: 'Loading...', sv: 'Laddar...' },
+  'customer.leadership.empty_title': { en: 'No Active Assessments', sv: 'Inga aktiva utvärderingar' },
+  'customer.leadership.empty_desc': { en: 'Your consultant will launch leadership assessments when you\'re ready.', sv: 'Din konsult kommer att lansera ledarskapsanalyser när ni är redo.' },
+  'customer.leadership.competency': { en: 'Competency', sv: 'Kompetens' },
+  'customer.leadership.score': { en: 'Score', sv: 'Poäng' },
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);

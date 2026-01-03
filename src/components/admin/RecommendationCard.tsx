@@ -38,7 +38,7 @@ const RecommendationCard: React.FC<RecommendationCardProps> = ({
   const getPriorityConfig = () => {
     const configs = {
       critical: { color: 'border-red-500 bg-red-50', textColor: 'text-red-700', badgeColor: 'bg-red-100 text-red-800' },
-      high: { color: 'border-orange-500 bg-orange-50', textColor: 'text-orange-700', badgeColor: 'bg-orange-100 text-orange-800' },
+      high: { color: 'border-amber-500 bg-amber-50', textColor: 'text-amber-700', badgeColor: 'bg-amber-100 text-amber-800' },
       medium: { color: 'border-yellow-500 bg-yellow-50', textColor: 'text-yellow-700', badgeColor: 'bg-yellow-100 text-yellow-800' },
       low: { color: 'border-blue-500 bg-blue-50', textColor: 'text-blue-700', badgeColor: 'bg-blue-100 text-blue-800' },
     };
@@ -69,7 +69,7 @@ const RecommendationCard: React.FC<RecommendationCardProps> = ({
               {recommendation.business_criticality && (
                 <span className={`px-2 py-0.5 rounded text-xs font-medium ${
                   recommendation.business_criticality === 'critical' ? 'bg-red-100 text-red-800 border border-red-300' :
-                  recommendation.business_criticality === 'high' ? 'bg-orange-100 text-orange-800 border border-orange-300' :
+                  recommendation.business_criticality === 'high' ? 'bg-amber-100 text-amber-800 border border-amber-300' :
                   recommendation.business_criticality === 'medium' ? 'bg-yellow-100 text-yellow-800 border border-yellow-300' :
                   'bg-blue-100 text-blue-800 border border-blue-300'
                 }`}>
