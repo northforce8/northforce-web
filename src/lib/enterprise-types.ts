@@ -400,3 +400,70 @@ export interface MarketingCampaignWithActivities extends MarketingCampaign {
     company_name: string;
   };
 }
+
+export interface SwotAnalysis {
+  id: string;
+  customer_id?: string;
+  title: string;
+  description?: string;
+  context?: string;
+  created_by?: string;
+  status: 'draft' | 'in_progress' | 'completed' | 'archived';
+  created_at: string;
+  updated_at: string;
+}
+
+export interface SwotItem {
+  id: string;
+  swot_analysis_id: string;
+  category: 'strength' | 'weakness' | 'opportunity' | 'threat';
+  title: string;
+  description?: string;
+  impact_level?: 'low' | 'medium' | 'high' | 'critical';
+  actionable: boolean;
+  action_plan?: string;
+  created_by?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface SwotAnalysisWithItems extends SwotAnalysis {
+  items?: SwotItem[];
+  strengths?: SwotItem[];
+  weaknesses?: SwotItem[];
+  opportunities?: SwotItem[];
+  threats?: SwotItem[];
+  customer?: {
+    id: string;
+    company_name: string;
+  };
+}
+
+export interface SwotAIInsight {
+  category: 'strength' | 'weakness' | 'opportunity' | 'threat';
+  title: string;
+  description: string;
+  impact_score: number;
+  confidence: number;
+  source: 'internal_data' | 'market_analysis' | 'competitor_analysis' | 'trend_analysis';
+  reasoning: string;
+  recommended_actions: string[];
+  related_okr_suggestions?: {
+    objective: string;
+    key_results: string[];
+  };
+}
+
+export interface SwotCrossAnalysis {
+  swot_analysis_id: string;
+  so_strategies: string[];
+  wo_strategies: string[];
+  st_strategies: string[];
+  wt_strategies: string[];
+  priority_actions: {
+    action: string;
+    strategy_type: 'SO' | 'WO' | 'ST' | 'WT';
+    priority: number;
+    estimated_impact: number;
+  }[];
+}

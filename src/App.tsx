@@ -79,6 +79,7 @@ import StrategicFrameworksOverviewPage from './pages/admin/partner-portal/Strate
 import OKRPage from './pages/admin/partner-portal/OKRPage';
 import OKRDetailPage from './pages/admin/partner-portal/OKRDetailPage';
 import SWOTPage from './pages/admin/partner-portal/SWOTPage';
+import SWOTDetailPage from './pages/admin/partner-portal/SWOTDetailPage';
 import PorterPage from './pages/admin/partner-portal/PorterPage';
 import BMCPage from './pages/admin/partner-portal/BMCPage';
 import BSCPage from './pages/admin/partner-portal/BSCPage';
@@ -197,6 +198,7 @@ function App() {
           <Route path="strategic-frameworks/okr" element={<OKRPage />} />
           <Route path="strategic-frameworks/okr/:id" element={<OKRDetailPage />} />
           <Route path="strategic-frameworks/swot" element={<SWOTPage />} />
+          <Route path="strategic-frameworks/swot/:id" element={<SWOTDetailPage />} />
           <Route path="strategic-frameworks/porter" element={<PorterPage />} />
           <Route path="strategic-frameworks/bmc" element={<BMCPage />} />
           <Route path="strategic-frameworks/bsc" element={<BSCPage />} />

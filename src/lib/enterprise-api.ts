@@ -21,7 +21,10 @@ import type {
   BestPractice,
   PracticeCategory,
   GrowthPlanWithObjectives,
-  MarketingCampaignWithActivities
+  MarketingCampaignWithActivities,
+  SwotAnalysis,
+  SwotItem,
+  SwotAnalysisWithItems
 } from './enterprise-types';
 
 export const enterpriseAPI = {
@@ -829,5 +832,161 @@ export const enterpriseAPI = {
 
     if (error) throw error;
     return data || [];
+  },
+
+  async getSwotAnalyses(customerId?: string): Promise<SwotAnalysis[]> {
+    let query = supabase
+      .from('swot_analyses')
+      .select('*, customer:customers(id, company_name)')
+      .order('created_at', { ascending: false });
+
+    if (customerId) {
+      query = query.eq('customer_id', customerId);
+    }
+
+    const { data, error } = await query;
+
+    if (error) throw error;
+    return data || [];
+  },
+
+  async getSwotAnalysisById(id: string): Promise<SwotAnalysisWithItems | null> {
+    const { data, error } = await supabase
+      .from('swot_analyses')
+      .select(`
+        *,
+        customer:customers(id, company_name),
+        items:swot_items(*)
+      `)
+      .eq('id', id)
+      .maybeSingle();
+
+    if (error) throw error;
+
+    if (data && data.items) {
+      const strengths = data.items.filter((item: SwotItem) => item.category === 'strength');
+      const weaknesses = data.items.filter((item: SwotItem) => item.category === 'weakness');
+      const opportunities = data.items.filter((item: SwotItem) => item.category === 'opportunity');
+      const threats = data.items.filter((item: SwotItem) => item.category === 'threat');
+
+      return {
+        ...data,
+        strengths,
+        weaknesses,
+        opportunities,
+        threats
+      };
+    }
+
+    return data;
+  },
+
+  async createSwotAnalysis(analysis: Omit<SwotAnalysis, 'id' | 'created_at' | 'updated_at'>): Promise<SwotAnalysis> {
+    const { data, error } = await supabase
+      .from('swot_analyses')
+      .insert(analysis)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async updateSwotAnalysis(id: string, updates: Partial<SwotAnalysis>): Promise<SwotAnalysis> {
+    const { data, error } = await supabase
+      .from('swot_analyses')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async deleteSwotAnalysis(id: string): Promise<void> {
+    const { error } = await supabase
+      .from('swot_analyses')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+  },
+
+  async getSwotItems(swotAnalysisId: string): Promise<SwotItem[]> {
+    const { data, error } = await supabase
+      .from('swot_items')
+      .select('*')
+      .eq('swot_analysis_id', swotAnalysisId)
+      .order('created_at', { ascending: true });
+
+    if (error) throw error;
+    return data || [];
+  },
+
+  async getSwotItemsByCategory(swotAnalysisId: string, category: 'strength' | 'weakness' | 'opportunity' | 'threat'): Promise<SwotItem[]> {
+    const { data, error } = await supabase
+      .from('swot_items')
+      .select('*')
+      .eq('swot_analysis_id', swotAnalysisId)
+      .eq('category', category)
+      .order('impact_level', { ascending: false });
+
+    if (error) throw error;
+    return data || [];
+  },
+
+  async createSwotItem(item: Omit<SwotItem, 'id' | 'created_at' | 'updated_at'>): Promise<SwotItem> {
+    const { data, error } = await supabase
+      .from('swot_items')
+      .insert(item)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async updateSwotItem(id: string, updates: Partial<SwotItem>): Promise<SwotItem> {
+    const { data, error } = await supabase
+      .from('swot_items')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async deleteSwotItem(id: string): Promise<void> {
+    const { error } = await supabase
+      .from('swot_items')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+  },
+
+  async getSwotStatistics(swotAnalysisId: string): Promise<{
+    total_items: number;
+    strengths_count: number;
+    weaknesses_count: number;
+    opportunities_count: number;
+    threats_count: number;
+    high_impact_count: number;
+    actionable_count: number;
+  }> {
+    const items = await this.getSwotItems(swotAnalysisId);
+
+    return {
+      total_items: items.length,
+      strengths_count: items.filter(i => i.category === 'strength').length,
+      weaknesses_count: items.filter(i => i.category === 'weakness').length,
+      opportunities_count: items.filter(i => i.category === 'opportunity').length,
+      threats_count: items.filter(i => i.category === 'threat').length,
+      high_impact_count: items.filter(i => i.impact_level === 'high' || i.impact_level === 'critical').length,
+      actionable_count: items.filter(i => i.actionable).length,
+    };
   }
 };
