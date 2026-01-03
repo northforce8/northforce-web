@@ -478,8 +478,63 @@ export const partnerPortalApi = {
       return data;
     },
 
+    async checkDependencies(id: string): Promise<{
+      hasContracts: boolean;
+      hasInvoices: boolean;
+      hasProjects: boolean;
+      contractCount: number;
+      invoiceCount: number;
+      projectCount: number;
+      canDelete: boolean;
+      blockingReason?: string;
+    }> {
+      if (!supabase) throw new Error('Supabase not configured');
+
+      const [contractsResult, invoicesResult, projectsResult] = await Promise.all([
+        supabase.from('contracts').select('id', { count: 'exact', head: true }).eq('customer_id', id),
+        supabase.from('invoices').select('id', { count: 'exact', head: true }).eq('customer_id', id),
+        supabase.from('projects').select('id', { count: 'exact', head: true }).eq('customer_id', id),
+      ]);
+
+      const contractCount = contractsResult.count || 0;
+      const invoiceCount = invoicesResult.count || 0;
+      const projectCount = projectsResult.count || 0;
+
+      const hasContracts = contractCount > 0;
+      const hasInvoices = invoiceCount > 0;
+      const hasProjects = projectCount > 0;
+
+      let canDelete = true;
+      let blockingReason: string | undefined;
+
+      if (hasContracts || hasInvoices) {
+        canDelete = false;
+        const blocking = [];
+        if (hasContracts) blocking.push(`${contractCount} kontrakt`);
+        if (hasInvoices) blocking.push(`${invoiceCount} fakturor`);
+        blockingReason = `Kunden har ${blocking.join(' och ')} som måste hanteras först.`;
+      }
+
+      return {
+        hasContracts,
+        hasInvoices,
+        hasProjects,
+        contractCount,
+        invoiceCount,
+        projectCount,
+        canDelete,
+        blockingReason,
+      };
+    },
+
     async delete(id: string): Promise<void> {
       if (!supabase) throw new Error('Supabase not configured');
+
+      const dependencies = await this.checkDependencies(id);
+      if (!dependencies.canDelete) {
+        throw new Error(dependencies.blockingReason || 'Cannot delete customer with dependencies');
+      }
+
       const { error } = await supabase
         .from('customers')
         .delete()

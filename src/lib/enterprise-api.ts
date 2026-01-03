@@ -518,6 +518,40 @@ export const enterpriseAPI = {
     return data;
   },
 
+  async checkBusinessModelDependencies(id: string): Promise<{
+    hasGrowthPlans: boolean;
+    growthPlanCount: number;
+    canDelete: boolean;
+    blockingReason?: string;
+  }> {
+    const { data: model } = await supabase
+      .from('business_models')
+      .select('customer_id')
+      .eq('id', id)
+      .maybeSingle();
+
+    if (!model) {
+      return { hasGrowthPlans: false, growthPlanCount: 0, canDelete: true };
+    }
+
+    const { count } = await supabase
+      .from('growth_plans')
+      .select('id', { count: 'exact', head: true })
+      .eq('customer_id', model.customer_id);
+
+    const growthPlanCount = count || 0;
+    const hasGrowthPlans = growthPlanCount > 0;
+
+    return {
+      hasGrowthPlans,
+      growthPlanCount,
+      canDelete: true,
+      blockingReason: hasGrowthPlans
+        ? `Observera: Kunden har ${growthPlanCount} tillväxtplaner som kan påverkas.`
+        : undefined,
+    };
+  },
+
   async deleteBusinessModel(id: string): Promise<void> {
     const { error } = await supabase
       .from('business_models')
@@ -656,7 +690,36 @@ export const enterpriseAPI = {
     return data;
   },
 
+  async checkMethodologyTemplateDependencies(id: string): Promise<{
+    isUsedByProjects: boolean;
+    projectCount: number;
+    canDelete: boolean;
+    blockingReason?: string;
+  }> {
+    const { data: projects } = await supabase
+      .from('projects')
+      .select('id')
+      .eq('methodology_template_id', id);
+
+    const projectCount = projects?.length || 0;
+    const isUsedByProjects = projectCount > 0;
+
+    return {
+      isUsedByProjects,
+      projectCount,
+      canDelete: !isUsedByProjects,
+      blockingReason: isUsedByProjects
+        ? `Mallen används av ${projectCount} projekt och kan inte raderas.`
+        : undefined,
+    };
+  },
+
   async deleteMethodologyTemplate(id: string): Promise<void> {
+    const dependencies = await this.checkMethodologyTemplateDependencies(id);
+    if (!dependencies.canDelete) {
+      throw new Error(dependencies.blockingReason || 'Cannot delete template with dependencies');
+    }
+
     const { error } = await supabase
       .from('methodology_templates')
       .delete()
@@ -722,6 +785,31 @@ export const enterpriseAPI = {
 
     if (error) throw error;
     return data;
+  },
+
+  async checkBestPracticeDependencies(id: string): Promise<{
+    canDelete: boolean;
+    viewCount: number;
+    isPublished: boolean;
+    warningMessage?: string;
+  }> {
+    const { data: practice } = await supabase
+      .from('best_practices')
+      .select('view_count, is_published')
+      .eq('id', id)
+      .maybeSingle();
+
+    const viewCount = practice?.view_count || 0;
+    const isPublished = practice?.is_published || false;
+
+    return {
+      canDelete: true,
+      viewCount,
+      isPublished,
+      warningMessage: isPublished && viewCount > 0
+        ? `Denna best practice har ${viewCount} visningar och är publicerad.`
+        : undefined,
+    };
   },
 
   async deleteBestPractice(id: string): Promise<void> {
