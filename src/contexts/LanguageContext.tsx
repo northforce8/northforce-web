@@ -913,6 +913,98 @@ const translations: Record<string, Record<Language, string>> = {
   'admin.validation.email': { en: 'Please enter a valid email', sv: 'Ange en giltig e-postadress' },
   'admin.validation.phone': { en: 'Please enter a valid phone number', sv: 'Ange ett giltigt telefonnummer' },
   'admin.validation.url': { en: 'Please enter a valid URL', sv: 'Ange en giltig URL' },
+
+  // Admin Portal - Common Labels
+  'admin.label.company': { en: 'Company', sv: 'Företag' },
+  'admin.label.contact': { en: 'Contact', sv: 'Kontakt' },
+  'admin.label.email': { en: 'Email', sv: 'E-post' },
+  'admin.label.phone': { en: 'Phone', sv: 'Telefon' },
+  'admin.label.website': { en: 'Website', sv: 'Webbplats' },
+  'admin.label.industry': { en: 'Industry', sv: 'Bransch' },
+  'admin.label.country': { en: 'Country', sv: 'Land' },
+  'admin.label.created': { en: 'Created', sv: 'Skapad' },
+  'admin.label.updated': { en: 'Updated', sv: 'Uppdaterad' },
+  'admin.label.description': { en: 'Description', sv: 'Beskrivning' },
+  'admin.label.notes': { en: 'Notes', sv: 'Anteckningar' },
+  'admin.label.budget': { en: 'Budget', sv: 'Budget' },
+  'admin.label.amount': { en: 'Amount', sv: 'Belopp' },
+  'admin.label.total': { en: 'Total', sv: 'Totalt' },
+  'admin.label.subtotal': { en: 'Subtotal', sv: 'Delsumma' },
+  'admin.label.tax': { en: 'Tax', sv: 'Moms' },
+  'admin.label.discount': { en: 'Discount', sv: 'Rabatt' },
+  'admin.label.quantity': { en: 'Quantity', sv: 'Antal' },
+  'admin.label.price': { en: 'Price', sv: 'Pris' },
+  'admin.label.date': { en: 'Date', sv: 'Datum' },
+  'admin.label.due_date': { en: 'Due Date', sv: 'Förfallodatum' },
+  'admin.label.start_date': { en: 'Start Date', sv: 'Startdatum' },
+  'admin.label.end_date': { en: 'End Date', sv: 'Slutdatum' },
+  'admin.label.type': { en: 'Type', sv: 'Typ' },
+  'admin.label.priority': { en: 'Priority', sv: 'Prioritet' },
+  'admin.label.progress': { en: 'Progress', sv: 'Framsteg' },
+  'admin.label.details': { en: 'Details', sv: 'Detaljer' },
+  'admin.label.overview': { en: 'Overview', sv: 'Översikt' },
+
+  // Admin Portal - Filters
+  'admin.filter.all': { en: 'All', sv: 'Alla' },
+  'admin.filter.status': { en: 'Filter by status', sv: 'Filtrera på status' },
+  'admin.filter.type': { en: 'Filter by type', sv: 'Filtrera på typ' },
+  'admin.filter.date': { en: 'Filter by date', sv: 'Filtrera på datum' },
+  'admin.filter.search': { en: 'Search...', sv: 'Sök...' },
+  'admin.filter.clear': { en: 'Clear filters', sv: 'Rensa filter' },
+
+  // Admin Portal - Table Headers
+  'admin.table.name': { en: 'Name', sv: 'Namn' },
+  'admin.table.status': { en: 'Status', sv: 'Status' },
+  'admin.table.actions': { en: 'Actions', sv: 'Åtgärder' },
+  'admin.table.no_data': { en: 'No data to display', sv: 'Ingen data att visa' },
+
+  // Admin Portal - Password Reset
+  'admin.password.title': { en: 'Reset Password', sv: 'Återställ lösenord' },
+  'admin.password.current': { en: 'Current Password', sv: 'Nuvarande lösenord' },
+  'admin.password.new': { en: 'New Password', sv: 'Nytt lösenord' },
+  'admin.password.confirm': { en: 'Confirm Password', sv: 'Bekräfta lösenord' },
+  'admin.password.reset_button': { en: 'Reset Password', sv: 'Återställ lösenord' },
+  'admin.password.success': { en: 'Password updated successfully', sv: 'Lösenord uppdaterat' },
+  'admin.password.error': { en: 'Failed to update password', sv: 'Kunde inte uppdatera lösenord' },
+  'admin.password.mismatch': { en: 'Passwords do not match', sv: 'Lösenorden matchar inte' },
+  'admin.password.too_short': { en: 'Password must be at least 8 characters', sv: 'Lösenordet måste vara minst 8 tecken' },
+
+  // Admin Portal - Invoices
+  'admin.invoice.number': { en: 'Invoice Number', sv: 'Fakturanummer' },
+  'admin.invoice.generate': { en: 'Generate Invoice', sv: 'Generera faktura' },
+  'admin.invoice.send': { en: 'Send Invoice', sv: 'Skicka faktura' },
+  'admin.invoice.paid': { en: 'Paid', sv: 'Betald' },
+  'admin.invoice.unpaid': { en: 'Unpaid', sv: 'Obetald' },
+  'admin.invoice.overdue': { en: 'Overdue', sv: 'Försenad' },
+  'admin.invoice.items': { en: 'Invoice Items', sv: 'Fakturarader' },
+
+  // Admin Portal - Contracts
+  'admin.contract.number': { en: 'Contract Number', sv: 'Kontraktsnummer' },
+  'admin.contract.generate': { en: 'Generate Contract', sv: 'Generera kontrakt' },
+  'admin.contract.send': { en: 'Send Contract', sv: 'Skicka kontrakt' },
+  'admin.contract.signed': { en: 'Signed', sv: 'Signerad' },
+  'admin.contract.unsigned': { en: 'Unsigned', sv: 'Osignerad' },
+  'admin.contract.expired': { en: 'Expired', sv: 'Utgången' },
+
+  // Admin Portal - Credits
+  'admin.credits.balance': { en: 'Credits Balance', sv: 'Kreditsaldo' },
+  'admin.credits.used': { en: 'Credits Used', sv: 'Använda krediter' },
+  'admin.credits.remaining': { en: 'Credits Remaining', sv: 'Kvarvarande krediter' },
+  'admin.credits.forecast': { en: 'Credits Forecast', sv: 'Kreditprognos' },
+  'admin.credits.history': { en: 'Credits History', sv: 'Kredithistorik' },
+
+  // Admin Portal - Projects
+  'admin.project.new': { en: 'New Project', sv: 'Nytt projekt' },
+  'admin.project.ongoing': { en: 'Ongoing', sv: 'Pågående' },
+  'admin.project.completed': { en: 'Completed', sv: 'Slutfört' },
+  'admin.project.on_hold': { en: 'On Hold', sv: 'Pausat' },
+
+  // Admin Portal - Support
+  'admin.support.ticket': { en: 'Support Ticket', sv: 'Supportärende' },
+  'admin.support.new_ticket': { en: 'New Ticket', sv: 'Nytt ärende' },
+  'admin.support.open': { en: 'Open', sv: 'Öppet' },
+  'admin.support.closed': { en: 'Closed', sv: 'Stängt' },
+  'admin.support.resolved': { en: 'Resolved', sv: 'Löst' },
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);

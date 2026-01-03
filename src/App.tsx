@@ -37,6 +37,7 @@ import TokensPage from './pages/TokensPage';
 // Admin Pages
 import AdminLogin from './pages/admin/AdminLogin';
 import { SetupWizard } from './pages/admin/SetupWizard';
+import PasswordResetPage from './pages/admin/PasswordResetPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import LeadDetailPage from './pages/admin/LeadDetailPage';
 import AdminHealthPage from './pages/admin/AdminHealthPage';
@@ -139,6 +140,7 @@ function App() {
         <Route path={ADMIN_ROUTES.LOGIN} element={<AdminLogin />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/setup" element={<SetupWizard />} />
+        <Route path="/admin/password-reset" element={<PasswordResetPage />} />
 
         {/* Standard Admin Redirects */}
         <Route path="/admin" element={<Navigate to={ADMIN_ROUTES.LOGIN} replace />} />

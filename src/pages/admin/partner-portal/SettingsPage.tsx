@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit2, Save, X, AlertTriangle, Check, Clock, History, Info, Trash2, DollarSign, Building2, Settings as SettingsIcon } from 'lucide-react';
+import { Plus, Edit2, Save, X, AlertTriangle, Check, Clock, History, Info, Trash2, DollarSign, Building2, Settings as SettingsIcon, Lock, Shield } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { getCurrentUser } from '../../../lib/auth';
 import { PageHeader } from '../../../components/admin/PageHeader';
+import { useLanguage } from '../../../contexts/LanguageContext';
 import type { WorkType, SystemSettings, SettingsAuditLog, PlanLevel, WorkTypeUsageInfo } from '../../../lib/partner-portal-types';
 
 const SettingsPage: React.FC = () => {
+  const { t } = useLanguage();
+  const navigate = useNavigate();
   const [workTypes, setWorkTypes] = useState<WorkType[]>([]);
   const [systemSettings, setSystemSettings] = useState<SystemSettings | null>(null);
   const [originalSettings, setOriginalSettings] = useState<SystemSettings | null>(null);
@@ -255,6 +259,41 @@ const SettingsPage: React.FC = () => {
             <span className="text-green-800 font-medium">Settings saved successfully</span>
           </div>
         )}
+
+        {/* Account Security */}
+        <div className="bg-white rounded-lg shadow mb-6">
+          <div className="p-6 border-b border-gray-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                  <Shield className="h-5 w-5 text-primary-600" />
+                  Account Security
+                </h2>
+                <p className="text-sm text-gray-600 mt-1">
+                  Manage your account password and security settings
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6">
+            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+              <div className="flex items-center">
+                <Lock className="h-5 w-5 text-gray-400 mr-3" />
+                <div>
+                  <p className="text-sm font-medium text-gray-900">Password</p>
+                  <p className="text-xs text-gray-500 mt-1">Update your account password</p>
+                </div>
+              </div>
+              <button
+                onClick={() => navigate('/admin/password-reset')}
+                className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium"
+              >
+                {t('admin.password.title')}
+              </button>
+            </div>
+          </div>
+        </div>
 
         {/* Currency & Company Settings */}
         <div className="bg-white rounded-lg shadow mb-6">
