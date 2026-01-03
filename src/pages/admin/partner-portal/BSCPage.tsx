@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { PieChart, Plus } from 'lucide-react';
+import { PieChart, Plus, AlertTriangle } from 'lucide-react';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
 import { supabase } from '../../../lib/supabase';
+import { logAdminError } from '../../../lib/admin-error-logger';
 
 export default function BSCPage() {
   const [scorecards, setScorecards] = useState<any[]>([]);
   const [customers, setCustomers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({ customer_id: '', title: '', time_period: 'Q1 2026', vision: '', strategy: '' });
 
   useEffect(() => {
@@ -18,14 +20,24 @@ export default function BSCPage() {
 
   const loadData = async () => {
     try {
+      setError(null);
       const [scorecardsResult, customersResult] = await Promise.all([
         supabase.from('balanced_scorecards').select('*, customers!inner(name)').order('created_at', { ascending: false }),
         supabase.from('customers').select('id, name').eq('status', 'active').order('name')
       ]);
+
+      if (scorecardsResult.error) throw scorecardsResult.error;
+      if (customersResult.error) throw customersResult.error;
+
       setScorecards(scorecardsResult.data || []);
       setCustomers(customersResult.data || []);
-    } catch (error) {
-      console.error('Error:', error);
+    } catch (err) {
+      const errorId = logAdminError(err as Error, {
+        context: 'BSCPage.loadData',
+        action: 'Loading Balanced Scorecards'
+      });
+      console.error(`[${errorId}] Error loading data:`, err);
+      setError('Failed to load data. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -34,12 +46,20 @@ export default function BSCPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await supabase.from('balanced_scorecards').insert([formData]);
+      setError(null);
+      const { error } = await supabase.from('balanced_scorecards').insert([formData]);
+      if (error) throw error;
+
       setShowModal(false);
       setFormData({ customer_id: '', title: '', time_period: 'Q1 2026', vision: '', strategy: '' });
       await loadData();
-    } catch (error) {
-      console.error('Error:', error);
+    } catch (err) {
+      const errorId = logAdminError(err as Error, {
+        context: 'BSCPage.handleSubmit',
+        action: 'Creating Balanced Scorecard'
+      });
+      console.error(`[${errorId}] Error creating scorecard:`, err);
+      setError('Failed to create scorecard. Please try again.');
     }
   };
 
@@ -50,10 +70,26 @@ export default function BSCPage() {
     { name: 'Learning & Growth', color: 'bg-orange-100 text-orange-700' }
   ];
 
-  if (loading) return <div className="flex items-center justify-center h-64">Loading...</div>;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-gray-500">Loading Balanced Scorecards...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
+      {error && (
+        <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+          <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <p className="text-red-800 font-medium">Error</p>
+            <p className="text-red-700 text-sm mt-1">{error}</p>
+          </div>
+        </div>
+      )}
+
       <PageHeader
         title="Balanced Scorecard"
         description="Measure organizational performance across financial, customer, internal processes, and learning perspectives."
@@ -70,13 +106,29 @@ export default function BSCPage() {
       </div>
 
       <div className="space-y-4">
-        {scorecards.map((scorecard) => (
-          <Card key={scorecard.id} className="p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">{scorecard.title}</h3>
-            <p className="text-sm text-gray-600 mb-2">Customer: {scorecard.customers?.name} | {scorecard.time_period}</p>
-            <p className="text-sm text-gray-500">{scorecard.vision}</p>
+        {scorecards.length === 0 ? (
+          <Card className="p-12 text-center">
+            <PieChart className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">No Balanced Scorecards Yet</h3>
+            <p className="text-gray-600 mb-4">
+              Create your first scorecard to measure performance across all key perspectives.
+            </p>
+            <button
+              onClick={() => setShowModal(true)}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              Create First Scorecard
+            </button>
           </Card>
-        ))}
+        ) : (
+          scorecards.map((scorecard) => (
+            <Card key={scorecard.id} className="p-6 hover:shadow-lg transition-shadow">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{scorecard.title}</h3>
+              <p className="text-sm text-gray-600 mb-2">Customer: {scorecard.customers?.name} | {scorecard.time_period}</p>
+              {scorecard.vision && <p className="text-sm text-gray-500">{scorecard.vision}</p>}
+            </Card>
+          ))
+        )}
       </div>
 
       <Modal isOpen={showModal} onClose={() => setShowModal(false)} title="Create Balanced Scorecard">

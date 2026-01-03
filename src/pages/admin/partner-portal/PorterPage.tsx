@@ -1,15 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { Compass, Plus } from 'lucide-react';
+import { Compass, Plus, AlertTriangle } from 'lucide-react';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
 import { supabase } from '../../../lib/supabase';
+import { logAdminError } from '../../../lib/admin-error-logger';
+
+interface Analysis {
+  id: string;
+  customer_id: string;
+  title: string;
+  industry: string;
+  market_description: string;
+  customers?: { name: string };
+  competitive_rivalry_score?: number;
+  threat_new_entrants_score?: number;
+  threat_substitutes_score?: number;
+  supplier_power_score?: number;
+  customer_power_score?: number;
+}
 
 export default function PorterPage() {
-  const [analyses, setAnalyses] = useState<any[]>([]);
+  const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [customers, setCustomers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     customer_id: '',
     title: '',
@@ -23,28 +39,52 @@ export default function PorterPage() {
 
   const loadData = async () => {
     try {
+      setError(null);
       const [analysesResult, customersResult] = await Promise.all([
         supabase.from('porter_analyses').select('*, customers!inner(name)').order('created_at', { ascending: false }),
         supabase.from('customers').select('id, name').eq('status', 'active').order('name')
       ]);
+
+      if (analysesResult.error) throw analysesResult.error;
+      if (customersResult.error) throw customersResult.error;
+
       setAnalyses(analysesResult.data || []);
       setCustomers(customersResult.data || []);
-    } catch (error) {
-      console.error('Error:', error);
+    } catch (err) {
+      const errorId = logAdminError(err as Error, {
+        context: 'PorterPage.loadData',
+        action: 'Loading Porter analyses'
+      });
+      console.error(`[${errorId}] Error loading data:`, err);
+      setError('Failed to load data. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
+  const getForceCount = (forceType: string): number => {
+    // This would ideally count items from a related table
+    // For now, show the count of analyses
+    return analyses.length;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await supabase.from('porter_analyses').insert([formData]);
+      setError(null);
+      const { error } = await supabase.from('porter_analyses').insert([formData]);
+      if (error) throw error;
+
       setShowModal(false);
       setFormData({ customer_id: '', title: '', industry: '', market_description: '' });
       await loadData();
-    } catch (error) {
-      console.error('Error:', error);
+    } catch (err) {
+      const errorId = logAdminError(err as Error, {
+        context: 'PorterPage.handleSubmit',
+        action: 'Creating Porter analysis'
+      });
+      console.error(`[${errorId}] Error creating analysis:`, err);
+      setError('Failed to create analysis. Please try again.');
     }
   };
 
@@ -56,10 +96,26 @@ export default function PorterPage() {
     { type: 'bargaining_power_customers', label: 'Customer Power', color: 'text-green-600 bg-green-50' }
   ];
 
-  if (loading) return <div className="flex items-center justify-center h-64">Loading...</div>;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-gray-500">Loading Porter's Five Forces analyses...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
+      {error && (
+        <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+          <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <p className="text-red-800 font-medium">Error</p>
+            <p className="text-red-700 text-sm mt-1">{error}</p>
+          </div>
+        </div>
+      )}
+
       <PageHeader
         title="Porter's Five Forces"
         description="Analyze competitive forces in your industry to develop strategies that protect and enhance market position."
@@ -70,19 +126,45 @@ export default function PorterPage() {
         {forces.map((force) => (
           <Card key={force.type} className={`p-4 ${force.color}`}>
             <p className="text-xs font-medium mb-2">{force.label}</p>
-            <p className="text-2xl font-bold">{analyses.length}</p>
+            <p className="text-2xl font-bold">{getForceCount(force.type)}</p>
           </Card>
         ))}
       </div>
 
       <div className="space-y-4">
-        {analyses.map((analysis) => (
-          <Card key={analysis.id} className="p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">{analysis.title}</h3>
-            <p className="text-sm text-gray-600 mb-4">Industry: {analysis.industry}</p>
-            <p className="text-sm text-gray-500">{analysis.market_description}</p>
+        {analyses.length === 0 ? (
+          <Card className="p-12 text-center">
+            <Compass className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">No Porter's Five Forces Analyses Yet</h3>
+            <p className="text-gray-600 mb-4">
+              Create your first analysis to understand competitive forces and develop winning strategies.
+            </p>
+            <button
+              onClick={() => setShowModal(true)}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              Create First Analysis
+            </button>
           </Card>
-        ))}
+        ) : (
+          analyses.map((analysis) => (
+            <Card key={analysis.id} className="p-6 hover:shadow-lg transition-shadow">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{analysis.title}</h3>
+                  <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
+                    <span>Customer: {analysis.customers?.name}</span>
+                    <span>•</span>
+                    <span>Industry: {analysis.industry}</span>
+                  </div>
+                  {analysis.market_description && (
+                    <p className="text-sm text-gray-500">{analysis.market_description}</p>
+                  )}
+                </div>
+              </div>
+            </Card>
+          ))
+        )}
       </div>
 
       <Modal isOpen={showModal} onClose={() => setShowModal(false)} title="Create Porter's Five Forces Analysis">

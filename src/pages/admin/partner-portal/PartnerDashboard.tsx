@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Clock, Building2, FolderKanban, TrendingUp, Calendar, Plus, FileText,
-  AlertTriangle, AlertCircle, Zap, CheckCircle, Info, TrendingDown
+  AlertTriangle, AlertCircle, Zap, CheckCircle, Info, TrendingDown,
+  Target, Compass, RefreshCw, Lightbulb
 } from 'lucide-react';
 import { getCurrentUser, isAdmin } from '../../../lib/auth';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { safeNumber } from '../../../lib/data-validators';
+import { supabase } from '../../../lib/supabase';
 import type { TimeEntryWithRelations, NoteWithRelations, Partner, Customer, Recommendation } from '../../../lib/partner-portal-types';
 
 const PartnerDashboard: React.FC = () => {
@@ -29,6 +31,12 @@ const PartnerDashboard: React.FC = () => {
     action?: { label: string; link: string };
     icon: React.ReactNode;
   }>>([]);
+  const [frameworkStats, setFrameworkStats] = useState({
+    totalOKRs: 0,
+    okrsOnTrack: 0,
+    activeSWOTs: 0,
+    activeChangeInitiatives: 0,
+  });
 
   useEffect(() => {
     const loadDashboard = async () => {
@@ -62,6 +70,21 @@ const PartnerDashboard: React.FC = () => {
 
           const customers = await partnerPortalApi.customers.getAll();
           const recommendations = await partnerPortalApi.recommendations.getAll({ status: 'active' });
+
+          // Load framework data
+          const [okrsResult, swotsResult, changesResult] = await Promise.all([
+            supabase.from('okr_objectives').select('id, status', { count: 'exact' }),
+            supabase.from('swot_analyses').select('id, status', { count: 'exact' }).eq('status', 'in_progress'),
+            supabase.from('change_initiatives').select('id, status', { count: 'exact' }).eq('status', 'in_progress')
+          ]);
+
+          setFrameworkStats({
+            totalOKRs: okrsResult.count || 0,
+            okrsOnTrack: (okrsResult.data || []).filter(o => o.status === 'active').length,
+            activeSWOTs: swotsResult.count || 0,
+            activeChangeInitiatives: changesResult.count || 0,
+          });
+
           const generatedAlerts = generateAlerts(customers, recommendations);
           setAlerts(generatedAlerts);
         } else {
@@ -243,6 +266,58 @@ const PartnerDashboard: React.FC = () => {
             <p className="text-sm text-gray-600 mt-1">This Week</p>
           </div>
         </div>
+
+        {isAdminUser && (
+          <div className="mb-8">
+            <div className="bg-white rounded-lg shadow">
+              <div className="p-6 border-b border-gray-200">
+                <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                  <Target className="h-5 w-5 text-primary-600" />
+                  Strategic Frameworks Overview
+                </h2>
+                <p className="text-sm text-gray-600 mt-1">Enterprise-grade strategic tools and methodologies</p>
+              </div>
+              <div className="p-6">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <Link to="/admin/partner-portal/strategic-frameworks/okr" className="p-4 border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-md transition-all">
+                    <div className="flex items-center gap-3 mb-2">
+                      <Target className="h-5 w-5 text-blue-600" />
+                      <span className="font-semibold text-gray-900">OKRs</span>
+                    </div>
+                    <p className="text-2xl font-bold text-gray-900">{frameworkStats.totalOKRs}</p>
+                    <p className="text-xs text-gray-600 mt-1">{frameworkStats.okrsOnTrack} active</p>
+                  </Link>
+
+                  <Link to="/admin/partner-portal/strategic-frameworks/swot" className="p-4 border border-gray-200 rounded-lg hover:border-green-500 hover:shadow-md transition-all">
+                    <div className="flex items-center gap-3 mb-2">
+                      <TrendingUp className="h-5 w-5 text-green-600" />
+                      <span className="font-semibold text-gray-900">SWOT</span>
+                    </div>
+                    <p className="text-2xl font-bold text-gray-900">{frameworkStats.activeSWOTs}</p>
+                    <p className="text-xs text-gray-600 mt-1">In progress</p>
+                  </Link>
+
+                  <Link to="/admin/partner-portal/strategic-frameworks/adkar" className="p-4 border border-gray-200 rounded-lg hover:border-purple-500 hover:shadow-md transition-all">
+                    <div className="flex items-center gap-3 mb-2">
+                      <RefreshCw className="h-5 w-5 text-purple-600" />
+                      <span className="font-semibold text-gray-900">Change</span>
+                    </div>
+                    <p className="text-2xl font-bold text-gray-900">{frameworkStats.activeChangeInitiatives}</p>
+                    <p className="text-xs text-gray-600 mt-1">Initiatives</p>
+                  </Link>
+
+                  <Link to="/admin/partner-portal/strategic-frameworks" className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-all flex items-center justify-center">
+                    <div className="text-center">
+                      <Lightbulb className="h-6 w-6 text-gray-400 mx-auto mb-2" />
+                      <p className="text-sm font-medium text-gray-600">View All</p>
+                      <p className="text-xs text-gray-500">10 frameworks</p>
+                    </div>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {isAdminUser && alerts.length > 0 && (
           <div className="mb-8">

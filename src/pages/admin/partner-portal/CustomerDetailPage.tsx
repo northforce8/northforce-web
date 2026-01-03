@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
   ArrowLeft, Building2, Mail, Phone, Globe, Edit2, Save, X, Check,
   FolderKanban, Users, Coins, TrendingUp, AlertTriangle, Plus,
   Calendar, Clock, FileText, DollarSign, Activity, Target, Zap,
   TrendingDown, Sparkles, ChevronDown, ChevronUp, BarChart3,
-  AlertCircle, CheckCircle2, XCircle, Info
+  AlertCircle, CheckCircle2, XCircle, Info, Compass, RefreshCw, Lightbulb
 } from 'lucide-react';
 import { isAdmin } from '../../../lib/auth';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
@@ -16,6 +16,7 @@ import type {
 import { PlanPricingCard } from '../../../components/admin/CreditsWithMoneyDisplay';
 import { creditsToMoney, formatCurrency as formatCurrencyUtil, getPlanDetails } from '../../../lib/credits-pricing-config';
 import CustomerHealthAI from '../../../components/admin/CustomerHealthAI';
+import { supabase } from '../../../lib/supabase';
 
 interface TimelineEvent {
   id: string;
@@ -51,6 +52,12 @@ const CustomerDetailPage: React.FC = () => {
     margin: true,
     timeline: true,
     projects: true,
+    frameworks: true,
+  });
+  const [frameworks, setFrameworks] = useState({
+    okrs: [] as any[],
+    swots: [] as any[],
+    changeInitiatives: [] as any[],
   });
 
   const [editingField, setEditingField] = useState<string | null>(null);
@@ -129,6 +136,19 @@ const CustomerDetailPage: React.FC = () => {
       setTimeEntries(timeData);
       setTransactions(transactionsData);
       setNotes(notesData.filter(n => n.customer_id === customerId));
+
+      // Load Strategic Frameworks for this customer
+      const [okrsResult, swotsResult, changesResult] = await Promise.all([
+        supabase.from('okr_objectives').select('id, title, status, progress_percentage, time_period').eq('customer_id', customerId).order('created_at', { ascending: false }).limit(5),
+        supabase.from('swot_analyses').select('id, title, status, context').eq('customer_id', customerId).order('created_at', { ascending: false }).limit(5),
+        supabase.from('change_initiatives').select('id, title, status, overall_progress, change_type').eq('customer_id', customerId).order('created_at', { ascending: false }).limit(5)
+      ]);
+
+      setFrameworks({
+        okrs: okrsResult.data || [],
+        swots: swotsResult.data || [],
+        changeInitiatives: changesResult.data || [],
+      });
     } catch (error) {
       console.error('Error loading customer details:', error);
       setError('Failed to load customer details. Please try again.');
@@ -945,6 +965,173 @@ const CustomerDetailPage: React.FC = () => {
           </div>
 
           <div className="lg:col-span-2 space-y-6">
+            {/* Strategic Frameworks Section */}
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+              <div
+                className="p-6 border-b border-gray-200 flex items-center justify-between cursor-pointer hover:bg-gray-50 transition-colors"
+                onClick={() => toggleSection('frameworks')}
+              >
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                  <Target className="h-5 w-5 text-primary-600" />
+                  Strategic Frameworks ({(frameworks.okrs.length + frameworks.swots.length + frameworks.changeInitiatives.length)})
+                </h3>
+                {expandedSections.frameworks ? (
+                  <ChevronUp className="h-5 w-5 text-gray-400" />
+                ) : (
+                  <ChevronDown className="h-5 w-5 text-gray-400" />
+                )}
+              </div>
+
+              {expandedSections.frameworks && (
+                <div className="p-6">
+                  {(frameworks.okrs.length + frameworks.swots.length + frameworks.changeInitiatives.length) === 0 ? (
+                    <div className="text-center py-8">
+                      <Target className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+                      <p className="text-gray-600 mb-2">No strategic frameworks yet</p>
+                      <p className="text-sm text-gray-500 mb-4">
+                        Create OKRs, SWOT analyses, or change initiatives to drive strategic growth
+                      </p>
+                      <Link
+                        to="/admin/partner-portal/strategic-frameworks"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 text-sm transition-colors"
+                      >
+                        <Lightbulb className="h-4 w-4" />
+                        Explore Frameworks
+                      </Link>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {/* OKRs */}
+                      {frameworks.okrs.length > 0 && (
+                        <div>
+                          <div className="flex items-center justify-between mb-3">
+                            <h4 className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                              <Target className="h-4 w-4 text-blue-600" />
+                              OKRs ({frameworks.okrs.length})
+                            </h4>
+                            <Link
+                              to="/admin/partner-portal/strategic-frameworks/okr"
+                              className="text-xs text-primary-600 hover:text-primary-700 font-medium"
+                            >
+                              View All →
+                            </Link>
+                          </div>
+                          <div className="space-y-2">
+                            {frameworks.okrs.map((okr) => (
+                              <div key={okr.id} className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                                <div className="flex items-center justify-between mb-2">
+                                  <p className="font-medium text-gray-900 text-sm">{okr.title}</p>
+                                  <span className={`px-2 py-0.5 text-xs rounded font-medium ${
+                                    okr.status === 'active' ? 'bg-green-100 text-green-700' :
+                                    okr.status === 'completed' ? 'bg-blue-100 text-blue-700' :
+                                    'bg-gray-100 text-gray-700'
+                                  }`}>
+                                    {okr.status}
+                                  </span>
+                                </div>
+                                <div className="flex items-center justify-between text-xs">
+                                  <span className="text-gray-600">{okr.time_period}</span>
+                                  <span className="text-gray-900 font-semibold">{okr.progress_percentage || 0}% Complete</span>
+                                </div>
+                                <div className="mt-2 w-full bg-gray-200 rounded-full h-1.5">
+                                  <div className="bg-blue-600 h-1.5 rounded-full" style={{ width: `${okr.progress_percentage || 0}%` }} />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* SWOT Analyses */}
+                      {frameworks.swots.length > 0 && (
+                        <div>
+                          <div className="flex items-center justify-between mb-3">
+                            <h4 className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                              <TrendingUp className="h-4 w-4 text-green-600" />
+                              SWOT Analyses ({frameworks.swots.length})
+                            </h4>
+                            <Link
+                              to="/admin/partner-portal/strategic-frameworks/swot"
+                              className="text-xs text-primary-600 hover:text-primary-700 font-medium"
+                            >
+                              View All →
+                            </Link>
+                          </div>
+                          <div className="space-y-2">
+                            {frameworks.swots.map((swot) => (
+                              <div key={swot.id} className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                                <div className="flex items-center justify-between">
+                                  <p className="font-medium text-gray-900 text-sm">{swot.title}</p>
+                                  <span className={`px-2 py-0.5 text-xs rounded font-medium ${
+                                    swot.status === 'in_progress' ? 'bg-yellow-100 text-yellow-700' :
+                                    swot.status === 'completed' ? 'bg-green-100 text-green-700' :
+                                    'bg-gray-100 text-gray-700'
+                                  }`}>
+                                    {swot.status}
+                                  </span>
+                                </div>
+                                {swot.context && (
+                                  <p className="text-xs text-gray-600 mt-1 line-clamp-1">{swot.context}</p>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Change Initiatives */}
+                      {frameworks.changeInitiatives.length > 0 && (
+                        <div>
+                          <div className="flex items-center justify-between mb-3">
+                            <h4 className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                              <RefreshCw className="h-4 w-4 text-purple-600" />
+                              Change Initiatives ({frameworks.changeInitiatives.length})
+                            </h4>
+                            <Link
+                              to="/admin/partner-portal/strategic-frameworks/adkar"
+                              className="text-xs text-primary-600 hover:text-primary-700 font-medium"
+                            >
+                              View All →
+                            </Link>
+                          </div>
+                          <div className="space-y-2">
+                            {frameworks.changeInitiatives.map((initiative) => (
+                              <div key={initiative.id} className="p-3 bg-purple-50 border border-purple-200 rounded-lg">
+                                <div className="flex items-center justify-between mb-2">
+                                  <p className="font-medium text-gray-900 text-sm">{initiative.title}</p>
+                                  <span className={`px-2 py-0.5 text-xs rounded font-medium ${
+                                    initiative.status === 'in_progress' ? 'bg-blue-100 text-blue-700' :
+                                    initiative.status === 'completed' ? 'bg-green-100 text-green-700' :
+                                    'bg-gray-100 text-gray-700'
+                                  }`}>
+                                    {initiative.status}
+                                  </span>
+                                </div>
+                                <div className="flex items-center justify-between text-xs">
+                                  <span className="text-gray-600">{initiative.change_type}</span>
+                                  <span className="text-gray-900 font-semibold">{initiative.overall_progress || 0}% Complete</span>
+                                </div>
+                                <div className="mt-2 w-full bg-gray-200 rounded-full h-1.5">
+                                  <div className="bg-purple-600 h-1.5 rounded-full" style={{ width: `${initiative.overall_progress || 0}%` }} />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      <Link
+                        to="/admin/partner-portal/strategic-frameworks"
+                        className="block w-full py-3 text-center text-sm text-primary-600 hover:text-primary-700 hover:bg-primary-50 rounded-lg transition-colors font-medium border-2 border-dashed border-gray-300 hover:border-primary-300"
+                      >
+                        Explore All 10 Strategic Frameworks →
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
             <div className="bg-white rounded-lg shadow-sm border border-gray-200">
               <div className="p-6 border-b border-gray-200 flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
