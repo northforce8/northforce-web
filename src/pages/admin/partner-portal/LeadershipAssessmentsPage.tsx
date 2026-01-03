@@ -3,7 +3,6 @@ import { Users, Plus, Search } from 'lucide-react';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
-import InfoIcon from '../../../components/admin/InfoIcon';
 import { enterpriseAPI } from '../../../lib/enterprise-api';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { useLanguage } from '../../../contexts/LanguageContext';
@@ -116,10 +115,7 @@ export default function LeadershipAssessmentsPage() {
 
       <Card className="p-6">
         <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <h2 className="text-xl font-semibold">All Assessments</h2>
-            <InfoIcon helpId="leadership_assessments" />
-          </div>
+          <h2 className="text-xl font-semibold">All Assessments</h2>
         </div>
 
         {assessments.length === 0 ? (

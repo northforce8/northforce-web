@@ -4,7 +4,6 @@ import { TrendingUp, Plus, Search, Calendar, Target, CheckCircle2, Circle, Alert
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { StatusIndicator } from '../../../components/admin/StatusIndicator';
-import InfoIcon from '../../../components/admin/InfoIcon';
 import { Modal } from '../../../components/admin/ui/Modal';
 import { enterpriseAPI } from '../../../lib/enterprise-api';
 import { useLanguage } from '../../../contexts/LanguageContext';
@@ -216,10 +215,7 @@ export default function GrowthPlansPage() {
 
       <Card className="p-6">
         <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <h2 className="text-xl font-semibold">{t('growth.plans.allPlans', 'All Growth Plans')}</h2>
-            <InfoIcon helpId="growth_plans" />
-          </div>
+          <h2 className="text-xl font-semibold">{t('growth.plans.allPlans', 'All Growth Plans')}</h2>
 
           <div className="flex items-center gap-4">
             <div className="relative">
