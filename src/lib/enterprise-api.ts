@@ -25,7 +25,11 @@ import type {
   MarketingCampaignWithActivities,
   SwotAnalysis,
   SwotItem,
-  SwotAnalysisWithItems
+  SwotAnalysisWithItems,
+  PorterAnalysis,
+  PorterForce,
+  PorterAnalysisWithForces,
+  PorterForceType
 } from './enterprise-types';
 
 export const enterpriseAPI = {
@@ -1179,6 +1183,241 @@ export const enterpriseAPI = {
       completion_percentage: Math.round((completedBlocks / 9) * 100),
       total_items: totalItems,
       items_per_block: itemsPerBlock
+    };
+  },
+
+  async getPorterAnalyses(customerId?: string): Promise<PorterAnalysis[]> {
+    let query = supabase
+      .from('porter_analyses')
+      .select('*, customer:customers(id, company_name)')
+      .order('created_at', { ascending: false });
+
+    if (customerId) {
+      query = query.eq('customer_id', customerId);
+    }
+
+    const { data, error } = await query;
+
+    if (error) throw error;
+    return data || [];
+  },
+
+  async getPorterAnalysisById(id: string): Promise<PorterAnalysisWithForces | null> {
+    const { data: analysis, error: analysisError } = await supabase
+      .from('porter_analyses')
+      .select('*, customer:customers(id, company_name)')
+      .eq('id', id)
+      .maybeSingle();
+
+    if (analysisError) throw analysisError;
+    if (!analysis) return null;
+
+    const { data: forces, error: forcesError } = await supabase
+      .from('porter_forces')
+      .select('*')
+      .eq('porter_analysis_id', id)
+      .order('force_type');
+
+    if (forcesError) throw forcesError;
+
+    return {
+      ...analysis,
+      forces: forces || []
+    };
+  },
+
+  async createPorterAnalysis(
+    analysis: Omit<PorterAnalysis, 'id' | 'created_at' | 'updated_at'>
+  ): Promise<PorterAnalysis> {
+    const { data, error } = await supabase
+      .from('porter_analyses')
+      .insert(analysis)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async updatePorterAnalysis(
+    id: string,
+    updates: Partial<PorterAnalysis>
+  ): Promise<PorterAnalysis> {
+    const { data, error } = await supabase
+      .from('porter_analyses')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async deletePorterAnalysis(id: string): Promise<void> {
+    await supabase
+      .from('porter_forces')
+      .delete()
+      .eq('porter_analysis_id', id);
+
+    const { error } = await supabase
+      .from('porter_analyses')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+  },
+
+  async getPorterForces(analysisId: string): Promise<PorterForce[]> {
+    const { data, error } = await supabase
+      .from('porter_forces')
+      .select('*')
+      .eq('porter_analysis_id', analysisId)
+      .order('force_type');
+
+    if (error) throw error;
+    return data || [];
+  },
+
+  async getPorterForceById(id: string): Promise<PorterForce | null> {
+    const { data, error } = await supabase
+      .from('porter_forces')
+      .select('*')
+      .eq('id', id)
+      .maybeSingle();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async getPorterForceByType(
+    analysisId: string,
+    forceType: PorterForceType
+  ): Promise<PorterForce | null> {
+    const { data, error } = await supabase
+      .from('porter_forces')
+      .select('*')
+      .eq('porter_analysis_id', analysisId)
+      .eq('force_type', forceType)
+      .maybeSingle();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async createPorterForce(
+    force: Omit<PorterForce, 'id' | 'created_at' | 'updated_at'>
+  ): Promise<PorterForce> {
+    const { data, error } = await supabase
+      .from('porter_forces')
+      .insert(force)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async updatePorterForce(
+    id: string,
+    updates: Partial<PorterForce>
+  ): Promise<PorterForce> {
+    const { data, error } = await supabase
+      .from('porter_forces')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async deletePorterForce(id: string): Promise<void> {
+    const { error } = await supabase
+      .from('porter_forces')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+  },
+
+  async upsertPorterForce(
+    analysisId: string,
+    forceType: PorterForceType,
+    forceData: Partial<PorterForce>
+  ): Promise<PorterForce> {
+    const existing = await this.getPorterForceByType(analysisId, forceType);
+
+    if (existing) {
+      return await this.updatePorterForce(existing.id, forceData);
+    } else {
+      return await this.createPorterForce({
+        porter_analysis_id: analysisId,
+        force_type: forceType,
+        intensity_rating: forceData.intensity_rating || 5,
+        description: forceData.description,
+        key_factors: forceData.key_factors || [],
+        strategic_implications: forceData.strategic_implications
+      });
+    }
+  },
+
+  async calculateOverallAttractiveness(analysisId: string): Promise<number> {
+    const forces = await this.getPorterForces(analysisId);
+
+    if (forces.length === 0) return 50;
+
+    const totalIntensity = forces.reduce((sum, force) => sum + force.intensity_rating, 0);
+    const averageIntensity = totalIntensity / forces.length;
+
+    const attractiveness = 100 - (averageIntensity * 10);
+
+    await this.updatePorterAnalysis(analysisId, {
+      overall_attractiveness: Math.round(attractiveness)
+    });
+
+    return Math.round(attractiveness);
+  },
+
+  async getPorterAnalysisStatistics(analysisId: string): Promise<{
+    total_forces: number;
+    completed_forces: number;
+    average_intensity: number;
+    highest_threat: { force_type: PorterForceType; intensity: number } | null;
+    lowest_threat: { force_type: PorterForceType; intensity: number } | null;
+    overall_market_attractiveness: number;
+  }> {
+    const forces = await this.getPorterForces(analysisId);
+
+    if (forces.length === 0) {
+      return {
+        total_forces: 5,
+        completed_forces: 0,
+        average_intensity: 0,
+        highest_threat: null,
+        lowest_threat: null,
+        overall_market_attractiveness: 50
+      };
+    }
+
+    const completedForces = forces.filter(f => f.description && f.key_factors.length > 0);
+    const totalIntensity = forces.reduce((sum, f) => sum + f.intensity_rating, 0);
+    const avgIntensity = totalIntensity / forces.length;
+
+    const sortedByIntensity = [...forces].sort((a, b) => b.intensity_rating - a.intensity_rating);
+    const highest = sortedByIntensity[0];
+    const lowest = sortedByIntensity[sortedByIntensity.length - 1];
+
+    const attractiveness = 100 - (avgIntensity * 10);
+
+    return {
+      total_forces: 5,
+      completed_forces: completedForces.length,
+      average_intensity: Math.round(avgIntensity * 10) / 10,
+      highest_threat: { force_type: highest.force_type, intensity: highest.intensity_rating },
+      lowest_threat: { force_type: lowest.force_type, intensity: lowest.intensity_rating },
+      overall_market_attractiveness: Math.round(attractiveness)
     };
   }
 };

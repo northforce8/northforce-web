@@ -534,3 +534,106 @@ export interface BMCComparison {
   improvement_score: number;
   analysis: string;
 }
+
+export type PorterForceType =
+  | 'competitive_rivalry'
+  | 'threat_of_new_entrants'
+  | 'threat_of_substitutes'
+  | 'bargaining_power_of_buyers'
+  | 'bargaining_power_of_suppliers';
+
+export interface PorterAnalysis {
+  id: string;
+  customer_id?: string;
+  title: string;
+  industry: string;
+  market_description?: string;
+  overall_attractiveness: number;
+  created_by?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface PorterForce {
+  id: string;
+  porter_analysis_id: string;
+  force_type: PorterForceType;
+  intensity_rating: number;
+  description?: string;
+  key_factors: string[];
+  strategic_implications?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface PorterAnalysisWithForces extends PorterAnalysis {
+  forces: PorterForce[];
+  customer?: {
+    id: string;
+    company_name: string;
+  };
+}
+
+export interface PorterForceDetail {
+  force_type: PorterForceType;
+  name: string;
+  description: string;
+  intensity_rating: number;
+  key_factors: string[];
+  strategic_implications: string;
+  threats: string[];
+  opportunities: string[];
+  recommendations: string[];
+}
+
+export interface PorterAIInsight {
+  force_type: PorterForceType;
+  insight_type: 'opportunity' | 'threat' | 'strategic' | 'competitive';
+  title: string;
+  description: string;
+  intensity_impact: number;
+  confidence: number;
+  data_source: 'market_analysis' | 'competitor_analysis' | 'industry_trends' | 'customer_data';
+  recommendations: string[];
+  related_okr_suggestions?: {
+    objective: string;
+    key_results: string[];
+  };
+  related_swot_elements?: string[];
+  related_bmc_blocks?: string[];
+}
+
+export interface PorterAnalysisResult {
+  analysis_id: string;
+  overall_attractiveness: number;
+  market_position_score: number;
+  competitive_intensity_score: number;
+  entry_barrier_score: number;
+  customer_power_score: number;
+  supplier_power_score: number;
+  forces_summary: {
+    force_type: PorterForceType;
+    intensity: number;
+    impact: 'high' | 'medium' | 'low';
+    key_insights: string[];
+  }[];
+  strategic_recommendations: {
+    priority: 'high' | 'medium' | 'low';
+    category: string;
+    recommendation: string;
+    expected_impact: string;
+    force_types: PorterForceType[];
+  }[];
+  competitive_position: 'strong' | 'moderate' | 'weak';
+  market_attractiveness: 'high' | 'medium' | 'low';
+}
+
+export interface PorterForceComparison {
+  force_type: PorterForceType;
+  current_intensity: number;
+  previous_intensity?: number;
+  trend: 'increasing' | 'stable' | 'decreasing';
+  factors_added: string[];
+  factors_removed: string[];
+  impact_change: string;
+}
