@@ -77,6 +77,7 @@ import MethodologyTemplatesPage from './pages/admin/partner-portal/MethodologyTe
 // Strategic Frameworks Pages
 import StrategicFrameworksOverviewPage from './pages/admin/partner-portal/StrategicFrameworksOverviewPage';
 import OKRPage from './pages/admin/partner-portal/OKRPage';
+import OKRDetailPage from './pages/admin/partner-portal/OKRDetailPage';
 import SWOTPage from './pages/admin/partner-portal/SWOTPage';
 import PorterPage from './pages/admin/partner-portal/PorterPage';
 import BMCPage from './pages/admin/partner-portal/BMCPage';
@@ -194,6 +195,7 @@ function App() {
           {/* Strategic Frameworks */}
           <Route path="strategic-frameworks" element={<StrategicFrameworksOverviewPage />} />
           <Route path="strategic-frameworks/okr" element={<OKRPage />} />
+          <Route path="strategic-frameworks/okr/:id" element={<OKRDetailPage />} />
           <Route path="strategic-frameworks/swot" element={<SWOTPage />} />
           <Route path="strategic-frameworks/porter" element={<PorterPage />} />
           <Route path="strategic-frameworks/bmc" element={<BMCPage />} />

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Target, Plus, TrendingUp, AlertTriangle, CheckCircle2, Edit2, Trash2, Search } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Target, Plus, TrendingUp, AlertTriangle, CheckCircle2, Edit2, Trash2, Search, ExternalLink, Eye } from 'lucide-react';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
@@ -32,6 +33,7 @@ interface KeyResult {
 }
 
 export default function OKRPage() {
+  const navigate = useNavigate();
   const [objectives, setObjectives] = useState<Objective[]>([]);
   const [customers, setCustomers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -358,6 +360,14 @@ export default function OKRPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => navigate(`/admin/partner-portal/okr/${objective.id}`)}
+                      className="flex items-center gap-2 px-3 py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                      title="View details and AI insights"
+                    >
+                      <Eye className="w-4 h-4" />
+                      <span className="text-sm font-medium">View Details</span>
+                    </button>
                     <button
                       onClick={() => {
                         setSelectedObjective(objective);
