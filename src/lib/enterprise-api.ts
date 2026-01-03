@@ -14,6 +14,7 @@ import type {
   CampaignActivity,
   CampaignResult,
   BusinessModel,
+  BusinessModelWithDetails,
   StrategicGoal,
   GoalMetric,
   FinancialSnapshot,
@@ -475,52 +476,6 @@ export const enterpriseAPI = {
     return data;
   },
 
-  async getBusinessModels(customerId: string): Promise<BusinessModel[]> {
-    const { data, error } = await supabase
-      .from('business_models')
-      .select('*')
-      .eq('customer_id', customerId)
-      .order('version', { ascending: false });
-
-    if (error) throw error;
-    return data || [];
-  },
-
-  async getCurrentBusinessModel(customerId: string): Promise<BusinessModel | null> {
-    const { data, error } = await supabase
-      .from('business_models')
-      .select('*')
-      .eq('customer_id', customerId)
-      .eq('is_current', true)
-      .maybeSingle();
-
-    if (error) throw error;
-    return data;
-  },
-
-  async createBusinessModel(model: Omit<BusinessModel, 'id' | 'created_at' | 'updated_at'>): Promise<BusinessModel> {
-    const { data, error } = await supabase
-      .from('business_models')
-      .insert(model)
-      .select()
-      .single();
-
-    if (error) throw error;
-    return data;
-  },
-
-  async updateBusinessModel(id: string, updates: Partial<BusinessModel>): Promise<BusinessModel> {
-    const { data, error } = await supabase
-      .from('business_models')
-      .update(updates)
-      .eq('id', id)
-      .select()
-      .single();
-
-    if (error) throw error;
-    return data;
-  },
-
   async checkBusinessModelDependencies(id: string): Promise<{
     hasGrowthPlans: boolean;
     growthPlanCount: number;
@@ -553,15 +508,6 @@ export const enterpriseAPI = {
         ? `Observera: Kunden har ${growthPlanCount} tillväxtplaner som kan påverkas.`
         : undefined,
     };
-  },
-
-  async deleteBusinessModel(id: string): Promise<void> {
-    const { error } = await supabase
-      .from('business_models')
-      .delete()
-      .eq('id', id);
-
-    if (error) throw error;
   },
 
   async getStrategicGoals(customerId: string): Promise<StrategicGoal[]> {
@@ -987,6 +933,252 @@ export const enterpriseAPI = {
       threats_count: items.filter(i => i.category === 'threat').length,
       high_impact_count: items.filter(i => i.impact_level === 'high' || i.impact_level === 'critical').length,
       actionable_count: items.filter(i => i.actionable).length,
+    };
+  },
+
+  async getBusinessModels(customerId?: string): Promise<BusinessModel[]> {
+    let query = supabase
+      .from('business_models')
+      .select('*, customer:customers(id, company_name)')
+      .order('created_at', { ascending: false });
+
+    if (customerId) {
+      query = query.eq('customer_id', customerId);
+    }
+
+    const { data, error } = await query;
+
+    if (error) throw error;
+    return data || [];
+  },
+
+  async getBusinessModelById(id: string): Promise<BusinessModelWithDetails | null> {
+    const { data, error } = await supabase
+      .from('business_models')
+      .select('*, customer:customers(id, company_name)')
+      .eq('id', id)
+      .maybeSingle();
+
+    if (error) throw error;
+
+    if (data) {
+      const { data: previousVersions } = await supabase
+        .from('business_models')
+        .select('*')
+        .eq('customer_id', data.customer_id)
+        .neq('id', id)
+        .order('version', { ascending: false })
+        .limit(5);
+
+      return {
+        ...data,
+        previous_versions: previousVersions || []
+      };
+    }
+
+    return data;
+  },
+
+  async getCurrentBusinessModel(customerId: string): Promise<BusinessModel | null> {
+    const { data, error } = await supabase
+      .from('business_models')
+      .select('*')
+      .eq('customer_id', customerId)
+      .eq('is_current', true)
+      .maybeSingle();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async createBusinessModel(model: Omit<BusinessModel, 'id' | 'created_at' | 'updated_at'>): Promise<BusinessModel> {
+    if (model.is_current) {
+      await supabase
+        .from('business_models')
+        .update({ is_current: false })
+        .eq('customer_id', model.customer_id);
+    }
+
+    const { data, error } = await supabase
+      .from('business_models')
+      .insert(model)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async updateBusinessModel(id: string, updates: Partial<BusinessModel>): Promise<BusinessModel> {
+    if (updates.is_current) {
+      const model = await this.getBusinessModelById(id);
+      if (model) {
+        await supabase
+          .from('business_models')
+          .update({ is_current: false })
+          .eq('customer_id', model.customer_id)
+          .neq('id', id);
+      }
+    }
+
+    const { data, error } = await supabase
+      .from('business_models')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async deleteBusinessModel(id: string): Promise<void> {
+    const { error } = await supabase
+      .from('business_models')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+  },
+
+  async createBusinessModelVersion(modelId: string): Promise<BusinessModel> {
+    const original = await this.getBusinessModelById(modelId);
+    if (!original) throw new Error('Business model not found');
+
+    const newVersion: Omit<BusinessModel, 'id' | 'created_at' | 'updated_at'> = {
+      customer_id: original.customer_id,
+      model_name: `${original.model_name} (v${original.version + 1})`,
+      value_proposition: original.value_proposition,
+      customer_segments: original.customer_segments,
+      channels: original.channels,
+      customer_relationships: original.customer_relationships,
+      revenue_streams: original.revenue_streams,
+      key_resources: original.key_resources,
+      key_activities: original.key_activities,
+      key_partnerships: original.key_partnerships,
+      cost_structure: original.cost_structure,
+      competitive_advantage: original.competitive_advantage,
+      version: original.version + 1,
+      is_current: false,
+      created_by: original.created_by
+    };
+
+    return await this.createBusinessModel(newVersion);
+  },
+
+  async compareBusinessModels(currentId: string, previousId: string): Promise<{
+    added: Record<string, string[]>;
+    removed: Record<string, string[]>;
+    modified: Record<string, { before: string[]; after: string[] }>;
+  }> {
+    const [current, previous] = await Promise.all([
+      this.getBusinessModelById(currentId),
+      this.getBusinessModelById(previousId)
+    ]);
+
+    if (!current || !previous) {
+      throw new Error('Models not found');
+    }
+
+    const buildingBlocks = [
+      'customer_segments',
+      'channels',
+      'customer_relationships',
+      'revenue_streams',
+      'key_resources',
+      'key_activities',
+      'key_partnerships',
+      'cost_structure'
+    ] as const;
+
+    const result: {
+      added: Record<string, string[]>;
+      removed: Record<string, string[]>;
+      modified: Record<string, { before: string[]; after: string[] }>;
+    } = {
+      added: {},
+      removed: {},
+      modified: {}
+    };
+
+    for (const block of buildingBlocks) {
+      const currentItems = current[block] || [];
+      const previousItems = previous[block] || [];
+
+      const added = currentItems.filter(item => !previousItems.includes(item));
+      const removed = previousItems.filter(item => !currentItems.includes(item));
+
+      if (added.length > 0) {
+        result.added[block] = added;
+      }
+
+      if (removed.length > 0) {
+        result.removed[block] = removed;
+      }
+
+      if (added.length > 0 || removed.length > 0) {
+        result.modified[block] = {
+          before: previousItems,
+          after: currentItems
+        };
+      }
+    }
+
+    if (current.value_proposition !== previous.value_proposition) {
+      result.modified['value_proposition'] = {
+        before: [previous.value_proposition || ''],
+        after: [current.value_proposition || '']
+      };
+    }
+
+    return result;
+  },
+
+  async getBusinessModelStatistics(modelId: string): Promise<{
+    total_building_blocks: number;
+    completed_blocks: number;
+    completion_percentage: number;
+    total_items: number;
+    items_per_block: Record<string, number>;
+  }> {
+    const model = await this.getBusinessModelById(modelId);
+    if (!model) throw new Error('Business model not found');
+
+    const buildingBlocks = [
+      'customer_segments',
+      'channels',
+      'customer_relationships',
+      'revenue_streams',
+      'key_resources',
+      'key_activities',
+      'key_partnerships',
+      'cost_structure'
+    ] as const;
+
+    let completedBlocks = 0;
+    let totalItems = 0;
+    const itemsPerBlock: Record<string, number> = {};
+
+    if (model.value_proposition && model.value_proposition.length > 0) {
+      completedBlocks++;
+    }
+
+    for (const block of buildingBlocks) {
+      const items = model[block] || [];
+      itemsPerBlock[block] = items.length;
+      totalItems += items.length;
+
+      if (items.length > 0) {
+        completedBlocks++;
+      }
+    }
+
+    return {
+      total_building_blocks: 9,
+      completed_blocks: completedBlocks,
+      completion_percentage: Math.round((completedBlocks / 9) * 100),
+      total_items: totalItems,
+      items_per_block: itemsPerBlock
     };
   }
 };

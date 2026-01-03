@@ -467,3 +467,70 @@ export interface SwotCrossAnalysis {
     estimated_impact: number;
   }[];
 }
+
+export interface BusinessModelWithDetails extends BusinessModel {
+  customer?: {
+    id: string;
+    company_name: string;
+  };
+  previous_versions?: BusinessModel[];
+}
+
+export interface BMCBuildingBlock {
+  id: string;
+  type: 'value_proposition' | 'customer_segments' | 'channels' | 'customer_relationships' |
+        'revenue_streams' | 'key_resources' | 'key_activities' | 'key_partnerships' | 'cost_structure';
+  title: string;
+  description?: string;
+  items: string[];
+  impact_score?: number;
+  confidence?: number;
+  recommendations?: string[];
+}
+
+export interface BMCAIInsight {
+  building_block: 'value_proposition' | 'customer_segments' | 'channels' | 'customer_relationships' |
+                   'revenue_streams' | 'key_resources' | 'key_activities' | 'key_partnerships' | 'cost_structure';
+  insight_type: 'opportunity' | 'risk' | 'optimization' | 'trend';
+  title: string;
+  description: string;
+  impact_score: number;
+  confidence: number;
+  data_source: 'market_analysis' | 'competitor_analysis' | 'customer_data' | 'financial_data' | 'industry_trends';
+  recommendations: string[];
+  related_okr_suggestions?: {
+    objective: string;
+    key_results: string[];
+  };
+  related_swot_elements?: string[];
+}
+
+export interface BMCAnalysis {
+  business_model_id: string;
+  overall_health_score: number;
+  strengths: string[];
+  weaknesses: string[];
+  opportunities: string[];
+  threats: string[];
+  strategic_fit_score: number;
+  market_viability_score: number;
+  execution_readiness_score: number;
+  recommendations: {
+    priority: 'high' | 'medium' | 'low';
+    category: string;
+    recommendation: string;
+    expected_impact: string;
+  }[];
+}
+
+export interface BMCComparison {
+  current_model: BusinessModel;
+  previous_model?: BusinessModel;
+  changes: {
+    building_block: string;
+    change_type: 'added' | 'removed' | 'modified';
+    details: string;
+  }[];
+  improvement_score: number;
+  analysis: string;
+}
