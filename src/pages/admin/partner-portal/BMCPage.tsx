@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Plus, Edit2, Trash2, AlertTriangle } from 'lucide-react';
+import { Layout, Plus, Edit2, Trash2, AlertTriangle, Search } from 'lucide-react';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
@@ -13,6 +13,7 @@ export default function BMCPage() {
   const [showModal, setShowModal] = useState(false);
   const [selectedCanvas, setSelectedCanvas] = useState<any | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const [formData, setFormData] = useState({ customer_id: '', title: '', version: 1 });
 
   useEffect(() => {
@@ -96,6 +97,15 @@ export default function BMCPage() {
     'Revenue Streams', 'Key Resources', 'Key Activities', 'Key Partnerships', 'Cost Structure'
   ];
 
+  const filteredCanvases = canvases.filter(canvas => {
+    if (!searchQuery) return true;
+    const search = searchQuery.toLowerCase();
+    return (
+      canvas.title?.toLowerCase().includes(search) ||
+      canvas.customers?.name?.toLowerCase().includes(search)
+    );
+  });
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -129,6 +139,19 @@ export default function BMCPage() {
         }}
       />
 
+      <div className="mb-6">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+      </div>
+
       <div className="grid grid-cols-3 gap-4">
         {blocks.slice(0, 3).map((block) => (
           <Card key={block} className="p-4 bg-blue-50">
@@ -138,22 +161,32 @@ export default function BMCPage() {
       </div>
 
       <div className="space-y-4">
-        {canvases.length === 0 ? (
-          <Card className="p-12 text-center">
-            <Layout className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No Business Model Canvases Yet</h3>
-            <p className="text-gray-600 mb-4">
-              Create your first canvas to design and iterate your business model across nine building blocks.
-            </p>
-            <button
-              onClick={() => setShowModal(true)}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-            >
-              Create First Canvas
-            </button>
-          </Card>
+        {filteredCanvases.length === 0 ? (
+          searchQuery ? (
+            <Card className="p-12 text-center">
+              <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Results Found</h3>
+              <p className="text-gray-600 mb-4">
+                No items match "{searchQuery}". Try a different search term.
+              </p>
+            </Card>
+          ) : (
+            <Card className="p-12 text-center">
+              <Layout className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Business Model Canvases Yet</h3>
+              <p className="text-gray-600 mb-4">
+                Create your first canvas to design and iterate your business model across nine building blocks.
+              </p>
+              <button
+                onClick={() => setShowModal(true)}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Create First Canvas
+              </button>
+            </Card>
+          )
         ) : (
-          canvases.map((canvas) => (
+          filteredCanvases.map((canvas) => (
             <Card key={canvas.id} className="p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-center justify-between">
                 <div className="flex-1">

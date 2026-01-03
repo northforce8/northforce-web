@@ -115,7 +115,7 @@ const CustomerPortalDashboard: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="bg-blue-100 rounded-lg p-3">
               <Activity className="h-6 w-6 text-blue-600" />
@@ -125,7 +125,7 @@ const CustomerPortalDashboard: React.FC = () => {
           <p className="text-sm text-gray-600 mt-1">{t('customer.dashboard.active_projects')}</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="bg-green-100 rounded-lg p-3">
               <CheckCircle2 className="h-6 w-6 text-green-600" />
@@ -135,7 +135,7 @@ const CustomerPortalDashboard: React.FC = () => {
           <p className="text-sm text-gray-600 mt-1">{t('customer.dashboard.completed_deliveries')}</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="bg-purple-100 rounded-lg p-3">
               <Clock className="h-6 w-6 text-purple-600" />
@@ -148,7 +148,7 @@ const CustomerPortalDashboard: React.FC = () => {
           <p className="text-sm text-gray-600 mt-1">{t('customer.dashboard.capacity_remaining')}</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="bg-orange-100 rounded-lg p-3">
               <TrendingUp className="h-6 w-6 text-orange-600" />
@@ -160,7 +160,7 @@ const CustomerPortalDashboard: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
             {t('customer.dashboard.recent_activity')}
           </h2>
@@ -193,7 +193,7 @@ const CustomerPortalDashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
             {t('customer.dashboard.capacity_overview')}
           </h2>

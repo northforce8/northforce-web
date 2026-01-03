@@ -5,6 +5,7 @@ import { isAdminAuthenticated } from '../../lib/auth';
 import { getAllSubmissions, getLeadClassification } from '../../lib/supabase';
 import type { ContactSubmission, BookingSubmission, NewsletterSubmission, LeadStatus, LeadType } from '../../lib/supabase';
 import { buildLeadDetailRoute } from '../../lib/admin-routes';
+import { PageHeader } from '../../components/admin/PageHeader';
 
 type AllSubmissions = {
   contact: ContactSubmission[];
@@ -189,12 +190,10 @@ const AdminDashboard = () => {
   return (
     <div>
       <div className="p-6 max-w-7xl mx-auto">
-        <div className="mb-8">
-          <div className="mb-2">
-            <h1 className="text-3xl font-bold text-gray-900">Lead Management</h1>
-          </div>
-          <p className="text-gray-600 mt-1">Enterprise-grade lead management with AI classification and customer linking</p>
-        </div>
+        <PageHeader
+          title="Lead Management"
+          description="Enterprise-grade lead management with AI classification and customer linking"
+        />
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">

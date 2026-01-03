@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PieChart, Plus, AlertTriangle, Edit2, Trash2 } from 'lucide-react';
+import { PieChart, Plus, AlertTriangle, Edit2, Trash2, Search } from 'lucide-react';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
@@ -13,6 +13,7 @@ export default function BSCPage() {
   const [showModal, setShowModal] = useState(false);
   const [selectedScorecard, setSelectedScorecard] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const [formData, setFormData] = useState({ customer_id: '', title: '', time_period: 'Q1 2026', vision: '', strategy: '' });
 
   useEffect(() => {
@@ -103,6 +104,17 @@ export default function BSCPage() {
     { name: 'Learning & Growth', color: 'bg-orange-100 text-orange-700' }
   ];
 
+  const filteredScorecards = scorecards.filter(scorecard => {
+    if (!searchQuery) return true;
+    const search = searchQuery.toLowerCase();
+    return (
+      scorecard.title?.toLowerCase().includes(search) ||
+      scorecard.customers?.name?.toLowerCase().includes(search) ||
+      scorecard.vision?.toLowerCase().includes(search) ||
+      scorecard.strategy?.toLowerCase().includes(search)
+    );
+  });
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -136,6 +148,19 @@ export default function BSCPage() {
         }}
       />
 
+      <div className="mb-6">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+      </div>
+
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {perspectives.map((p) => (
           <Card key={p.name} className={`p-4 ${p.color}`}>
@@ -146,22 +171,32 @@ export default function BSCPage() {
       </div>
 
       <div className="space-y-4">
-        {scorecards.length === 0 ? (
-          <Card className="p-12 text-center">
-            <PieChart className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No Balanced Scorecards Yet</h3>
-            <p className="text-gray-600 mb-4">
-              Create your first scorecard to measure performance across all key perspectives.
-            </p>
-            <button
-              onClick={() => setShowModal(true)}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-            >
-              Create First Scorecard
-            </button>
-          </Card>
+        {filteredScorecards.length === 0 ? (
+          searchQuery ? (
+            <Card className="p-12 text-center">
+              <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Results Found</h3>
+              <p className="text-gray-600 mb-4">
+                No items match "{searchQuery}". Try a different search term.
+              </p>
+            </Card>
+          ) : (
+            <Card className="p-12 text-center">
+              <PieChart className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Balanced Scorecards Yet</h3>
+              <p className="text-gray-600 mb-4">
+                Create your first scorecard to measure performance across all key perspectives.
+              </p>
+              <button
+                onClick={() => setShowModal(true)}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Create First Scorecard
+              </button>
+            </Card>
+          )
         ) : (
-          scorecards.map((scorecard) => (
+          filteredScorecards.map((scorecard) => (
             <Card key={scorecard.id} className="p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start justify-between">
                 <div className="flex-1">

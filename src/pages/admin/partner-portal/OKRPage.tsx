@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Target, Plus, TrendingUp, AlertTriangle, CheckCircle2, Edit2, Trash2 } from 'lucide-react';
+import { Target, Plus, TrendingUp, AlertTriangle, CheckCircle2, Edit2, Trash2, Search } from 'lucide-react';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
@@ -37,6 +37,7 @@ export default function OKRPage() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [selectedObjective, setSelectedObjective] = useState<Objective | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const [formData, setFormData] = useState({
     customer_id: '',
     title: '',
@@ -195,6 +196,17 @@ export default function OKRPage() {
     return Math.round(totalProgress / keyResults.length);
   };
 
+  const filteredObjectives = objectives.filter(objective => {
+    if (!searchQuery) return true;
+    const search = searchQuery.toLowerCase();
+    return (
+      objective.title?.toLowerCase().includes(search) ||
+      objective.customer_name?.toLowerCase().includes(search) ||
+      objective.description?.toLowerCase().includes(search) ||
+      objective.time_period?.toLowerCase().includes(search)
+    );
+  });
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -217,6 +229,19 @@ export default function OKRPage() {
           icon: Plus
         }}
       />
+
+      <div className="mb-6">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
         <Card className="p-6">
@@ -284,20 +309,30 @@ export default function OKRPage() {
       </div>
 
       <div className="space-y-4">
-        {objectives.length === 0 ? (
-          <Card className="p-12 text-center">
-            <Target className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No Objectives Yet</h3>
-            <p className="text-gray-600 mb-4">Create your first OKR to start tracking goals and key results.</p>
-            <button
-              onClick={() => setShowModal(true)}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-            >
-              Create First Objective
-            </button>
-          </Card>
+        {filteredObjectives.length === 0 ? (
+          searchQuery ? (
+            <Card className="p-12 text-center">
+              <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Results Found</h3>
+              <p className="text-gray-600 mb-4">
+                No items match "{searchQuery}". Try a different search term.
+              </p>
+            </Card>
+          ) : (
+            <Card className="p-12 text-center">
+              <Target className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Objectives Yet</h3>
+              <p className="text-gray-600 mb-4">Create your first OKR to start tracking goals and key results.</p>
+              <button
+                onClick={() => setShowModal(true)}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Create First Objective
+              </button>
+            </Card>
+          )
         ) : (
-          objectives.map((objective) => {
+          filteredObjectives.map((objective) => {
             const overallProgress = calculateOverallProgress(objective.key_results || []);
             return (
               <Card key={objective.id} className="p-6 hover:shadow-lg transition-shadow">

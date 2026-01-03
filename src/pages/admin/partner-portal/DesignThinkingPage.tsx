@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Lightbulb, Plus, Edit2, Trash2, AlertTriangle } from 'lucide-react';
+import { Lightbulb, Plus, Edit2, Trash2, AlertTriangle, Search } from 'lucide-react';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
@@ -13,6 +13,7 @@ export default function DesignThinkingPage() {
   const [showModal, setShowModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState<any | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const [formData, setFormData] = useState({
     customer_id: '',
     project_name: '',
@@ -111,6 +112,16 @@ export default function DesignThinkingPage() {
     { name: 'Test', color: 'bg-pink-100 text-pink-700' }
   ];
 
+  const filteredProjects = projects.filter(project => {
+    if (!searchQuery) return true;
+    const search = searchQuery.toLowerCase();
+    return (
+      project.project_name?.toLowerCase().includes(search) ||
+      project.customers?.name?.toLowerCase().includes(search) ||
+      project.challenge_statement?.toLowerCase().includes(search)
+    );
+  });
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -144,6 +155,19 @@ export default function DesignThinkingPage() {
         }}
       />
 
+      <div className="mb-6">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+      </div>
+
       <div className="grid grid-cols-5 gap-4">
         {phases.map((phase) => (
           <Card key={phase.name} className={`p-4 ${phase.color}`}>
@@ -156,22 +180,32 @@ export default function DesignThinkingPage() {
       </div>
 
       <div className="space-y-4">
-        {projects.length === 0 ? (
-          <Card className="p-12 text-center">
-            <Lightbulb className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No Design Thinking Projects Yet</h3>
-            <p className="text-gray-600 mb-4">
-              Create your first project to use empathy, ideation, and prototyping for user-centered solutions.
-            </p>
-            <button
-              onClick={() => setShowModal(true)}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-            >
-              Create First Project
-            </button>
-          </Card>
+        {filteredProjects.length === 0 ? (
+          searchQuery ? (
+            <Card className="p-12 text-center">
+              <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Results Found</h3>
+              <p className="text-gray-600 mb-4">
+                No items match "{searchQuery}". Try a different search term.
+              </p>
+            </Card>
+          ) : (
+            <Card className="p-12 text-center">
+              <Lightbulb className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Design Thinking Projects Yet</h3>
+              <p className="text-gray-600 mb-4">
+                Create your first project to use empathy, ideation, and prototyping for user-centered solutions.
+              </p>
+              <button
+                onClick={() => setShowModal(true)}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Create First Project
+              </button>
+            </Card>
+          )
         ) : (
-          projects.map((project) => (
+          filteredProjects.map((project) => (
             <Card key={project.id} className="p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-center justify-between">
                 <div className="flex-1">

@@ -105,7 +105,7 @@ const CustomerActivityPage: React.FC = () => {
         <p className="text-gray-500 mt-2">{t('customer.activity.subtitle')}</p>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 mb-6 p-4">
+      <div className="bg-white rounded-lg border border-gray-200 mb-6 p-4">
         <div className="flex items-center gap-4">
           <span className="text-sm font-medium text-gray-700">{t('customer.activity.filter')}:</span>
           <div className="flex gap-2">
@@ -126,7 +126,7 @@ const CustomerActivityPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+      <div className="bg-white rounded-lg border border-gray-200">
         {timeEntries.length > 0 ? (
           <div className="divide-y divide-gray-200">
             {timeEntries.map((entry) => (

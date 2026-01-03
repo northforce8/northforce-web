@@ -12,7 +12,7 @@ const CustomerDocumentsPage: React.FC = () => {
         <p className="text-gray-500 mt-2">{t('customer.documents.subtitle')}</p>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12">
+      <div className="bg-white rounded-lg border border-gray-200 p-12">
         <div className="text-center">
           <div className="bg-gray-100 rounded-full p-6 w-20 h-20 mx-auto mb-4 flex items-center justify-center">
             <FileText className="h-10 w-10 text-gray-400" />

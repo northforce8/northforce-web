@@ -13,6 +13,8 @@ import {
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { safeNumber } from '../../../lib/data-validators';
 import ReportsInsightsAI from '../../../components/admin/ReportsInsightsAI';
+import { PageHeader } from '../../../components/admin/PageHeader';
+import { Card } from '../../../components/admin/ui/Card';
 import type {
   MarginAnalysis,
   PartnerPerformance,
@@ -175,17 +177,17 @@ const ReportsPage: React.FC = () => {
   return (
     <div>
       <div className="p-6 max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">Reports & Analytics</h1>
-          <p className="text-sm text-gray-500 mt-1">Comprehensive business intelligence and data exports</p>
-        </div>
+        <PageHeader
+          title="Reports & Analytics"
+          description="Comprehensive business intelligence and data exports"
+        />
 
         {/* AI Intelligence - Top Actionable Insights */}
         <div className="mb-6">
           <ReportsInsightsAI />
         </div>
 
-        <div className="bg-white rounded-lg shadow mb-6 p-6">
+        <Card className="mb-6 p-6">
           <div className="flex items-center gap-2 mb-4">
             <Filter className="w-5 h-5 text-gray-600" />
             <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
@@ -230,7 +232,7 @@ const ReportsPage: React.FC = () => {
               </select>
             </div>
           </div>
-        </div>
+        </Card>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4">

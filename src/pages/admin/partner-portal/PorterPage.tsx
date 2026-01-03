@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Compass, Plus, AlertTriangle, Edit2, Trash2 } from 'lucide-react';
+import { Compass, Plus, AlertTriangle, Edit2, Trash2, Search } from 'lucide-react';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
@@ -27,6 +27,7 @@ export default function PorterPage() {
   const [showModal, setShowModal] = useState(false);
   const [selectedAnalysis, setSelectedAnalysis] = useState<Analysis | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const [formData, setFormData] = useState({
     customer_id: '',
     title: '',
@@ -125,6 +126,17 @@ export default function PorterPage() {
     { type: 'bargaining_power_customers', label: 'Customer Power', color: 'text-green-600 bg-green-50' }
   ];
 
+  const filteredAnalyses = analyses.filter(analysis => {
+    if (!searchQuery) return true;
+    const search = searchQuery.toLowerCase();
+    return (
+      analysis.title?.toLowerCase().includes(search) ||
+      analysis.customers?.name?.toLowerCase().includes(search) ||
+      analysis.industry?.toLowerCase().includes(search) ||
+      analysis.market_description?.toLowerCase().includes(search)
+    );
+  });
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -158,6 +170,19 @@ export default function PorterPage() {
         }}
       />
 
+      <div className="mb-6">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
         {forces.map((force) => (
           <Card key={force.type} className={`p-4 ${force.color}`}>
@@ -168,22 +193,32 @@ export default function PorterPage() {
       </div>
 
       <div className="space-y-4">
-        {analyses.length === 0 ? (
-          <Card className="p-12 text-center">
-            <Compass className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No Porter's Five Forces Analyses Yet</h3>
-            <p className="text-gray-600 mb-4">
-              Create your first analysis to understand competitive forces and develop winning strategies.
-            </p>
-            <button
-              onClick={() => setShowModal(true)}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-            >
-              Create First Analysis
-            </button>
-          </Card>
+        {filteredAnalyses.length === 0 ? (
+          searchQuery ? (
+            <Card className="p-12 text-center">
+              <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Results Found</h3>
+              <p className="text-gray-600 mb-4">
+                No items match "{searchQuery}". Try a different search term.
+              </p>
+            </Card>
+          ) : (
+            <Card className="p-12 text-center">
+              <Compass className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Porter's Five Forces Analyses Yet</h3>
+              <p className="text-gray-600 mb-4">
+                Create your first analysis to understand competitive forces and develop winning strategies.
+              </p>
+              <button
+                onClick={() => setShowModal(true)}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Create First Analysis
+              </button>
+            </Card>
+          )
         ) : (
-          analyses.map((analysis) => (
+          filteredAnalyses.map((analysis) => (
             <Card key={analysis.id} className="p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start justify-between">
                 <div className="flex-1">

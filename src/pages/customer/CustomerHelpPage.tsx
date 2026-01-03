@@ -205,7 +205,7 @@ const CustomerHelpPage: React.FC = () => {
         <p className="text-gray-500 mt-2">{t('customer.help.subtitle')}</p>
       </div>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-8">
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
         <h2 className="text-lg font-semibold text-gray-900 mb-2">
           {t('customer.help.welcome_title')}
         </h2>
@@ -220,7 +220,7 @@ const CustomerHelpPage: React.FC = () => {
           const isExpanded = expandedSections.has(section.id);
 
           return (
-            <div key={section.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+            <div key={section.id} className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow">
               <button
                 onClick={() => toggleSection(section.id)}
                 className="w-full flex items-center justify-between p-6 hover:bg-gray-50 transition-colors"
@@ -267,7 +267,7 @@ const CustomerHelpPage: React.FC = () => {
         })}
       </div>
 
-      <div className="mt-8 bg-gray-50 rounded-xl p-6 border border-gray-200">
+      <div className="mt-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
         <h3 className="text-sm font-semibold text-gray-900 mb-2">
           {t('customer.help.need_support')}
         </h3>

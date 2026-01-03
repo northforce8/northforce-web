@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TrendingUp, Plus, Edit2, Trash2, AlertTriangle } from 'lucide-react';
+import { TrendingUp, Plus, Edit2, Trash2, AlertTriangle, Search } from 'lucide-react';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
@@ -32,6 +32,7 @@ export default function SWOTPage() {
   const [showModal, setShowModal] = useState(false);
   const [selectedAnalysis, setSelectedAnalysis] = useState<SWOTAnalysis | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const [formData, setFormData] = useState({
     customer_id: '',
     title: '',
@@ -158,6 +159,17 @@ export default function SWOTPage() {
     return items.filter(i => i.category === category).length;
   };
 
+  const filteredAnalyses = analyses.filter(analysis => {
+    if (!searchQuery) return true;
+    const search = searchQuery.toLowerCase();
+    return (
+      analysis.title?.toLowerCase().includes(search) ||
+      analysis.customer_name?.toLowerCase().includes(search) ||
+      analysis.description?.toLowerCase().includes(search) ||
+      analysis.context?.toLowerCase().includes(search)
+    );
+  });
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -191,6 +203,19 @@ export default function SWOTPage() {
         }}
       />
 
+      <div className="mb-6">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {['strength', 'weakness', 'opportunity', 'threat'].map((category) => (
           <Card key={category} className="p-6">
@@ -203,22 +228,32 @@ export default function SWOTPage() {
       </div>
 
       <div className="space-y-4">
-        {analyses.length === 0 ? (
-          <Card className="p-12 text-center">
-            <TrendingUp className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No SWOT Analyses Yet</h3>
-            <p className="text-gray-600 mb-4">
-              Create your first SWOT analysis to assess strengths, weaknesses, opportunities, and threats.
-            </p>
-            <button
-              onClick={() => setShowModal(true)}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-            >
-              Create First Analysis
-            </button>
-          </Card>
+        {filteredAnalyses.length === 0 ? (
+          searchQuery ? (
+            <Card className="p-12 text-center">
+              <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Results Found</h3>
+              <p className="text-gray-600 mb-4">
+                No items match "{searchQuery}". Try a different search term.
+              </p>
+            </Card>
+          ) : (
+            <Card className="p-12 text-center">
+              <TrendingUp className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No SWOT Analyses Yet</h3>
+              <p className="text-gray-600 mb-4">
+                Create your first SWOT analysis to assess strengths, weaknesses, opportunities, and threats.
+              </p>
+              <button
+                onClick={() => setShowModal(true)}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Create First Analysis
+              </button>
+            </Card>
+          )
         ) : (
-          analyses.map((analysis) => (
+          filteredAnalyses.map((analysis) => (
             <Card key={analysis.id} className="p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">

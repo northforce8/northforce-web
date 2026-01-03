@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FlaskConical, Plus, Edit2, Trash2, AlertTriangle } from 'lucide-react';
+import { FlaskConical, Plus, Edit2, Trash2, AlertTriangle, Search } from 'lucide-react';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
@@ -13,6 +13,7 @@ export default function LeanStartupPage() {
   const [showModal, setShowModal] = useState(false);
   const [selectedExperiment, setSelectedExperiment] = useState<any | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const [formData, setFormData] = useState({
     customer_id: '',
     experiment_name: '',
@@ -105,6 +106,16 @@ export default function LeanStartupPage() {
     }
   };
 
+  const filteredExperiments = experiments.filter(experiment => {
+    if (!searchQuery) return true;
+    const search = searchQuery.toLowerCase();
+    return (
+      experiment.experiment_name?.toLowerCase().includes(search) ||
+      experiment.customers?.name?.toLowerCase().includes(search) ||
+      experiment.problem_statement?.toLowerCase().includes(search)
+    );
+  });
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -138,6 +149,19 @@ export default function LeanStartupPage() {
         }}
       />
 
+      <div className="mb-6">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {['planning', 'running', 'completed', 'pivoted'].map((status) => (
           <Card key={status} className="p-6">
@@ -150,22 +174,32 @@ export default function LeanStartupPage() {
       </div>
 
       <div className="space-y-4">
-        {experiments.length === 0 ? (
-          <Card className="p-12 text-center">
-            <FlaskConical className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No Lean Experiments Yet</h3>
-            <p className="text-gray-600 mb-4">
-              Create your first experiment to test MVPs and hypotheses through iterative learning.
-            </p>
-            <button
-              onClick={() => setShowModal(true)}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-            >
-              Create First Experiment
-            </button>
-          </Card>
+        {filteredExperiments.length === 0 ? (
+          searchQuery ? (
+            <Card className="p-12 text-center">
+              <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Results Found</h3>
+              <p className="text-gray-600 mb-4">
+                No items match "{searchQuery}". Try a different search term.
+              </p>
+            </Card>
+          ) : (
+            <Card className="p-12 text-center">
+              <FlaskConical className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Lean Experiments Yet</h3>
+              <p className="text-gray-600 mb-4">
+                Create your first experiment to test MVPs and hypotheses through iterative learning.
+              </p>
+              <button
+                onClick={() => setShowModal(true)}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Create First Experiment
+              </button>
+            </Card>
+          )
         ) : (
-          experiments.map((experiment) => (
+          filteredExperiments.map((experiment) => (
             <Card key={experiment.id} className="p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-center justify-between">
                 <div className="flex-1">
