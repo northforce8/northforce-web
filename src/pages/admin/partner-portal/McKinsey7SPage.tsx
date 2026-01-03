@@ -1,293 +1,432 @@
-import React, { useState, useEffect } from 'react';
-import { Network, Plus, Edit2, Trash2, AlertTriangle, Search } from 'lucide-react';
-import { PageHeader } from '../../../components/admin/PageHeader';
-import { Card } from '../../../components/admin/ui/Card';
-import { Modal } from '../../../components/admin/ui/Modal';
+import { useEffect, useState } from 'react';
+import { Plus, TrendingUp, AlertTriangle, Target, Network, Settings, Heart, Award, Users, UserCheck, Lightbulb } from 'lucide-react';
 import { supabase } from '../../../lib/supabase';
-import { logAdminError } from '../../../lib/admin-error-logger';
+import type {
+  McKinsey7SAssessment,
+  McKinsey7SElement,
+} from '../../../lib/mckinsey-types';
+import { generateMcKinsey7SInsights } from '../../../lib/mckinsey-ai-service';
+
+const ELEMENT_ICONS = {
+  strategy: Target,
+  structure: Network,
+  systems: Settings,
+  shared_values: Heart,
+  skills: Award,
+  style: Users,
+  staff: UserCheck,
+};
 
 export default function McKinsey7SPage() {
-  const [assessments, setAssessments] = useState<any[]>([]);
-  const [customers, setCustomers] = useState<any[]>([]);
+  const [assessments, setAssessments] = useState<McKinsey7SAssessment[]>([]);
+  const [selectedAssessment, setSelectedAssessment] = useState<McKinsey7SAssessment | null>(null);
+  const [elements, setElements] = useState<McKinsey7SElement[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
-  const [selectedAssessment, setSelectedAssessment] = useState<any | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [formData, setFormData] = useState({
-    customer_id: '',
-    title: '',
-    assessment_date: new Date().toISOString().split('T')[0],
-    key_findings: ''
-  });
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [customers, setCustomers] = useState<any[]>([]);
+  const [aiInsights, setAiInsights] = useState<any>(null);
+  const [generatingInsights, setGeneratingInsights] = useState(false);
 
   useEffect(() => {
-    loadData();
+    loadAssessments();
+    loadCustomers();
   }, []);
 
-  const loadData = async () => {
+  useEffect(() => {
+    if (selectedAssessment) {
+      loadElements();
+    }
+  }, [selectedAssessment]);
+
+  const loadCustomers = async () => {
     try {
-      setError(null);
-      const [assessmentsResult, customersResult] = await Promise.all([
-        supabase.from('mckinsey_7s_assessments').select('*, customers!inner(name)').order('created_at', { ascending: false }),
-        supabase.from('customers').select('id, name').eq('status', 'active').order('name')
-      ]);
+      const { data, error } = await supabase
+        .from('customers')
+        .select('id, company_name')
+        .eq('status', 'active')
+        .order('company_name');
 
-      if (assessmentsResult.error) throw assessmentsResult.error;
-      if (customersResult.error) throw customersResult.error;
+      if (error) throw error;
+      setCustomers(data || []);
+    } catch (error) {
+      console.error('Error loading customers:', error);
+    }
+  };
 
-      setAssessments(assessmentsResult.data || []);
-      setCustomers(customersResult.data || []);
-    } catch (err) {
-      const errorId = logAdminError(err as Error, {
-        context: 'McKinsey7SPage.loadData',
-        action: 'Loading McKinsey 7S assessments'
-      });
-      console.error(`[${errorId}] Error loading data:`, err);
-      setError('Failed to load data. Please try again.');
+  const loadAssessments = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('mckinsey_7s_assessments')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setAssessments(data || []);
+      if (data && data.length > 0 && !selectedAssessment) {
+        setSelectedAssessment(data[0]);
+      }
+    } catch (error) {
+      console.error('Error loading assessments:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      setError(null);
-      if (selectedAssessment) {
-        const { error } = await supabase
-          .from('mckinsey_7s_assessments')
-          .update(formData)
-          .eq('id', selectedAssessment.id);
-        if (error) throw error;
-      } else {
-        const { error } = await supabase.from('mckinsey_7s_assessments').insert([formData]);
-        if (error) throw error;
-      }
-      setShowModal(false);
-      setSelectedAssessment(null);
-      setFormData({
-        customer_id: '',
-        title: '',
-        assessment_date: new Date().toISOString().split('T')[0],
-        key_findings: ''
-      });
-      await loadData();
-    } catch (err) {
-      const errorId = logAdminError(err as Error, {
-        context: 'McKinsey7SPage.handleSubmit',
-        action: selectedAssessment ? 'Updating McKinsey 7S assessment' : 'Creating McKinsey 7S assessment'
-      });
-      console.error(`[${errorId}] Error saving assessment:`, err);
-      setError('Failed to save assessment. Please try again.');
-    }
-  };
+  const loadElements = async () => {
+    if (!selectedAssessment) return;
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this assessment? This action cannot be undone.')) {
-      return;
-    }
     try {
-      setError(null);
-      const { error } = await supabase.from('mckinsey_7s_assessments').delete().eq('id', id);
+      const { data, error } = await supabase
+        .from('mckinsey_7s_elements')
+        .select('*')
+        .eq('assessment_id', selectedAssessment.id)
+        .order('element_type');
+
       if (error) throw error;
-      await loadData();
-    } catch (err) {
-      const errorId = logAdminError(err as Error, {
-        context: 'McKinsey7SPage.handleDelete',
-        action: 'Deleting McKinsey 7S assessment'
-      });
-      console.error(`[${errorId}] Error deleting assessment:`, err);
-      setError('Failed to delete assessment. Please try again.');
+      setElements(data || []);
+    } catch (error) {
+      console.error('Error loading elements:', error);
     }
   };
 
-  const elements = ['Strategy', 'Structure', 'Systems', 'Shared Values', 'Skills', 'Style', 'Staff'];
+  const handleCreateAssessment = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
 
-  const filteredAssessments = assessments.filter(assessment => {
-    if (!searchQuery) return true;
-    const search = searchQuery.toLowerCase();
-    return (
-      assessment.title?.toLowerCase().includes(search) ||
-      assessment.customers?.name?.toLowerCase().includes(search) ||
-      assessment.key_findings?.toLowerCase().includes(search)
-    );
-  });
+    try {
+      const { data, error } = await supabase
+        .from('mckinsey_7s_assessments')
+        .insert([
+          {
+            customer_id: formData.get('customer_id') as string,
+            title: formData.get('title') as string,
+            description: formData.get('description') as string,
+            status: 'active',
+          },
+        ])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setAssessments([data, ...assessments]);
+      setSelectedAssessment(data);
+      setShowCreateModal(false);
+    } catch (error) {
+      console.error('Error creating assessment:', error);
+    }
+  };
+
+  const handleGenerateInsights = async () => {
+    if (!selectedAssessment || elements.length === 0) return;
+
+    setGeneratingInsights(true);
+    try {
+      const insights = await generateMcKinsey7SInsights(selectedAssessment, elements);
+      setAiInsights(insights);
+
+      await supabase
+        .from('mckinsey_7s_assessments')
+        .update({
+          ai_overall_analysis: insights.overall_assessment,
+          ai_recommendations: insights.strategic_priorities.join('\n'),
+          ai_risk_areas: insights.risk_areas.join('\n'),
+          ai_last_analyzed: new Date().toISOString(),
+        })
+        .eq('id', selectedAssessment.id);
+
+      await loadAssessments();
+    } catch (error) {
+      console.error('Error generating insights:', error);
+    } finally {
+      setGeneratingInsights(false);
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    const colors = {
+      aligned: 'bg-green-100 text-green-800',
+      partially_aligned: 'bg-yellow-100 text-yellow-800',
+      needs_attention: 'bg-orange-100 text-orange-800',
+      critical: 'bg-red-100 text-red-800',
+    };
+    return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-800';
+  };
+
+  const getScoreColor = (score: number) => {
+    if (score >= 75) return 'text-green-600';
+    if (score >= 50) return 'text-yellow-600';
+    if (score >= 25) return 'text-orange-600';
+    return 'text-red-600';
+  };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-500">Loading McKinsey 7S Assessments...</div>
+        <div className="text-gray-500">Loading McKinsey 7S assessments...</div>
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      {error && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
-          <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
-          <div className="flex-1">
-            <p className="text-red-800 font-medium">Error</p>
-            <p className="text-red-700 text-sm mt-1">{error}</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">McKinsey 7S Framework</h1>
+          <p className="mt-1 text-sm text-gray-500">
+            Analyze organizational alignment across seven interdependent elements
+          </p>
+        </div>
+        <button
+          onClick={() => setShowCreateModal(true)}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+        >
+          <Plus className="w-4 h-4" />
+          New Assessment
+        </button>
+      </div>
+
+      {assessments.length === 0 ? (
+        <div className="bg-white rounded-lg shadow p-12 text-center">
+          <Target className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-gray-900 mb-2">No Assessments Yet</h3>
+          <p className="text-gray-500 mb-4">
+            Create your first McKinsey 7S assessment to analyze organizational alignment
+          </p>
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 inline-flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            Create Assessment
+          </button>
+        </div>
+      ) : (
+        <>
+          {assessments.length > 1 && (
+            <div className="bg-white rounded-lg shadow p-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Select Assessment
+              </label>
+              <select
+                value={selectedAssessment?.id || ''}
+                onChange={(e) => {
+                  const assessment = assessments.find((a) => a.id === e.target.value);
+                  setSelectedAssessment(assessment || null);
+                }}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                {assessments.map((assessment) => (
+                  <option key={assessment.id} value={assessment.id}>
+                    {assessment.title} - {new Date(assessment.assessment_date).toLocaleDateString()}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {selectedAssessment && (
+            <>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="bg-white rounded-lg shadow p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-3 bg-blue-100 rounded-lg">
+                      <TrendingUp className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">Overall Alignment</p>
+                      <p className={`text-2xl font-bold ${getScoreColor(selectedAssessment.overall_alignment_score || 0)}`}>
+                        {selectedAssessment.overall_alignment_score || 0}%
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-600">
+                    Average alignment across all seven elements
+                  </p>
+                </div>
+
+                <div className="bg-white rounded-lg shadow p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-3 bg-purple-100 rounded-lg">
+                      <Settings className="w-6 h-6 text-purple-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">Hard Elements</p>
+                      <p className={`text-2xl font-bold ${getScoreColor(selectedAssessment.hard_elements_score || 0)}`}>
+                        {selectedAssessment.hard_elements_score || 0}%
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-600">
+                    Strategy, Structure, Systems
+                  </p>
+                </div>
+
+                <div className="bg-white rounded-lg shadow p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-3 bg-pink-100 rounded-lg">
+                      <Heart className="w-6 h-6 text-pink-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">Soft Elements</p>
+                      <p className={`text-2xl font-bold ${getScoreColor(selectedAssessment.soft_elements_score || 0)}`}>
+                        {selectedAssessment.soft_elements_score || 0}%
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-600">
+                    Shared Values, Skills, Style, Staff
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-lg font-semibold text-gray-900">The 7S Elements</h2>
+                  <button
+                    onClick={handleGenerateInsights}
+                    disabled={generatingInsights || elements.length === 0}
+                    className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 flex items-center gap-2"
+                  >
+                    <Lightbulb className="w-4 h-4" />
+                    {generatingInsights ? 'Generating...' : 'Generate AI Insights'}
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {elements.map((element) => {
+                    const Icon = ELEMENT_ICONS[element.element_type as keyof typeof ELEMENT_ICONS];
+                    return (
+                      <div
+                        key={element.id}
+                        className="border border-gray-200 rounded-lg p-4 hover:border-blue-500 hover:shadow-md transition-all"
+                      >
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="flex items-center gap-2">
+                            <Icon className="w-5 h-5 text-gray-600" />
+                            <h3 className="font-medium text-gray-900 capitalize">
+                              {element.element_type.replace('_', ' ')}
+                            </h3>
+                          </div>
+                          <span className={`px-2 py-1 rounded text-xs font-medium ${getStatusColor(element.status)}`}>
+                            {element.status.replace('_', ' ')}
+                          </span>
+                        </div>
+
+                        <div className="mb-3">
+                          <div className="flex items-center justify-between text-sm mb-1">
+                            <span className="text-gray-500">Alignment</span>
+                            <span className={`font-semibold ${getScoreColor(element.alignment_score || 0)}`}>
+                              {element.alignment_score || 0}%
+                            </span>
+                          </div>
+                          <div className="w-full bg-gray-200 rounded-full h-2">
+                            <div
+                              className={`h-2 rounded-full transition-all ${
+                                (element.alignment_score || 0) >= 75
+                                  ? 'bg-green-500'
+                                  : (element.alignment_score || 0) >= 50
+                                  ? 'bg-yellow-500'
+                                  : (element.alignment_score || 0) >= 25
+                                  ? 'bg-orange-500'
+                                  : 'bg-red-500'
+                              }`}
+                              style={{ width: `${element.alignment_score || 0}%` }}
+                            />
+                          </div>
+                        </div>
+
+                        <p className="text-xs text-gray-600 line-clamp-2">
+                          {element.current_state || 'No description yet'}
+                        </p>
+
+                        {element.improvement_priority !== 'low' && (
+                          <div className="mt-3 pt-3 border-t border-gray-100">
+                            <span className={`inline-flex items-center gap-1 text-xs ${
+                              element.improvement_priority === 'critical' ? 'text-red-600' : 'text-orange-600'
+                            }`}>
+                              <AlertTriangle className="w-3 h-3" />
+                              {element.improvement_priority} priority
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </>
+          )}
+        </>
+      )}
+
+      {showCreateModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg max-w-md w-full p-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Create McKinsey 7S Assessment</h2>
+            <form onSubmit={handleCreateAssessment} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Customer
+                </label>
+                <select
+                  name="customer_id"
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">Select Customer</option>
+                  {customers.map((customer) => (
+                    <option key={customer.id} value={customer.id}>
+                      {customer.company_name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Assessment Title
+                </label>
+                <input
+                  type="text"
+                  name="title"
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Q1 2024 Organizational Assessment"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Description
+                </label>
+                <textarea
+                  name="description"
+                  rows={3}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Comprehensive assessment of organizational alignment..."
+                />
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowCreateModal(false)}
+                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                >
+                  Create Assessment
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
-
-      <PageHeader
-        title="McKinsey 7S Framework"
-        description="Align seven organizational elements - Strategy, Structure, Systems, Shared Values, Skills, Style, and Staff."
-        action={{
-          label: 'Create Assessment',
-          onClick: () => {
-            setSelectedAssessment(null);
-            setShowModal(true);
-          },
-          icon: Plus
-        }}
-      />
-
-      <div className="mb-6">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-7 gap-2">
-        {elements.map((element) => (
-          <Card key={element} className="p-3 bg-pink-50">
-            <p className="text-xs font-medium text-pink-900 text-center">{element}</p>
-          </Card>
-        ))}
-      </div>
-
-      <div className="space-y-4">
-        {filteredAssessments.length === 0 ? (
-          searchQuery ? (
-            <Card className="p-12 text-center">
-              <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Results Found</h3>
-              <p className="text-gray-600 mb-4">
-                No items match "{searchQuery}". Try a different search term.
-              </p>
-            </Card>
-          ) : (
-            <Card className="p-12 text-center">
-              <Network className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No McKinsey 7S Assessments Yet</h3>
-              <p className="text-gray-600 mb-4">
-                Create your first assessment to align organizational elements for maximum effectiveness.
-              </p>
-              <button
-                onClick={() => setShowModal(true)}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-              >
-                Create First Assessment
-              </button>
-            </Card>
-          )
-        ) : (
-          filteredAssessments.map((assessment) => (
-            <Card key={assessment.id} className="p-6 hover:shadow-lg transition-shadow">
-              <div className="flex items-center justify-between">
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{assessment.title}</h3>
-                  <p className="text-sm text-gray-600 mb-2">
-                    Customer: {assessment.customers?.name} | Date: {assessment.assessment_date}
-                  </p>
-                  <p className="text-sm text-gray-500">{assessment.key_findings}</p>
-                </div>
-                <div className="flex items-center gap-4">
-                  {assessment.overall_alignment_score && (
-                    <div className="text-center">
-                      <p className="text-sm text-gray-600">Alignment</p>
-                      <p className="text-3xl font-bold text-pink-600">{assessment.overall_alignment_score}/10</p>
-                    </div>
-                  )}
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => {
-                        setSelectedAssessment(assessment);
-                        setFormData({
-                          customer_id: assessment.customer_id,
-                          title: assessment.title,
-                          assessment_date: assessment.assessment_date,
-                          key_findings: assessment.key_findings
-                        });
-                        setShowModal(true);
-                      }}
-                      className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                      title="Edit assessment"
-                    >
-                      <Edit2 className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(assessment.id)}
-                      className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                      title="Delete assessment"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          ))
-        )}
-      </div>
-
-      <Modal
-        isOpen={showModal}
-        onClose={() => {
-          setShowModal(false);
-          setSelectedAssessment(null);
-        }}
-        title={selectedAssessment ? 'Edit McKinsey 7S Assessment' : 'Create McKinsey 7S Assessment'}
-      >
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Customer</label>
-            <select value={formData.customer_id} onChange={(e) => setFormData({ ...formData, customer_id: e.target.value })} className="w-full px-3 py-2 border rounded-lg" required>
-              <option value="">Select Customer</option>
-              {customers.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
-            <input type="text" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} className="w-full px-3 py-2 border rounded-lg" required />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Assessment Date</label>
-            <input type="date" value={formData.assessment_date} onChange={(e) => setFormData({ ...formData, assessment_date: e.target.value })} className="w-full px-3 py-2 border rounded-lg" required />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Key Findings</label>
-            <textarea value={formData.key_findings} onChange={(e) => setFormData({ ...formData, key_findings: e.target.value })} className="w-full px-3 py-2 border rounded-lg" rows={3} />
-          </div>
-          <div className="flex justify-end gap-3 pt-4">
-            <button
-              type="button"
-              onClick={() => {
-                setShowModal(false);
-                setSelectedAssessment(null);
-              }}
-              className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
-            >
-              Cancel
-            </button>
-            <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-              {selectedAssessment ? 'Update' : 'Create'} Assessment
-            </button>
-          </div>
-        </form>
-      </Modal>
     </div>
   );
 }
