@@ -868,6 +868,51 @@ const translations: Record<string, Record<Language, string>> = {
   'customer.leadership.empty_desc': { en: 'Your consultant will launch leadership assessments when you\'re ready.', sv: 'Din konsult kommer att lansera ledarskapsanalyser när ni är redo.' },
   'customer.leadership.competency': { en: 'Competency', sv: 'Kompetens' },
   'customer.leadership.score': { en: 'Score', sv: 'Poäng' },
+
+  // Admin Portal - Error Messages
+  'admin.error.load_failed': { en: 'Failed to load data. Please try again.', sv: 'Kunde inte ladda data. Försök igen.' },
+  'admin.error.save_failed': { en: 'Failed to save. Please try again.', sv: 'Kunde inte spara. Försök igen.' },
+  'admin.error.delete_failed': { en: 'Failed to delete. Please try again.', sv: 'Kunde inte radera. Försök igen.' },
+  'admin.error.update_failed': { en: 'Failed to update. Please try again.', sv: 'Kunde inte uppdatera. Försök igen.' },
+  'admin.error.generic': { en: 'An error occurred. Please try again.', sv: 'Ett fel uppstod. Försök igen.' },
+
+  // Admin Portal - Success Messages
+  'admin.success.saved': { en: 'Saved successfully', sv: 'Sparat' },
+  'admin.success.deleted': { en: 'Deleted successfully', sv: 'Raderat' },
+  'admin.success.updated': { en: 'Updated successfully', sv: 'Uppdaterat' },
+  'admin.success.created': { en: 'Created successfully', sv: 'Skapat' },
+
+  // Admin Portal - Confirmation Dialogs
+  'admin.confirm.title': { en: 'Are you sure?', sv: 'Är du säker?' },
+  'admin.confirm.delete': { en: 'Are you sure you want to delete this item?', sv: 'Är du säker på att du vill radera detta?' },
+  'admin.confirm.delete_warning': { en: 'This action cannot be undone.', sv: 'Denna åtgärd kan inte ångras.' },
+  'admin.confirm.delete_customer': { en: 'Delete customer', sv: 'Radera kund' },
+  'admin.confirm.delete_customer_warning': { en: 'This will also delete all associated projects and data.', sv: 'Detta kommer även att radera alla associerade projekt och data.' },
+  'admin.confirm.delete_project': { en: 'Delete project', sv: 'Radera projekt' },
+  'admin.confirm.delete_partner': { en: 'Delete partner', sv: 'Radera partner' },
+  'admin.confirm.change_status': { en: 'Change status to', sv: 'Ändra status till' },
+  'admin.confirm.yes': { en: 'Yes', sv: 'Ja' },
+  'admin.confirm.no': { en: 'No', sv: 'Nej' },
+  'admin.confirm.cancel': { en: 'Cancel', sv: 'Avbryt' },
+  'admin.confirm.delete_framework': { en: 'Are you sure you want to delete this item? This action cannot be undone.', sv: 'Är du säker på att du vill radera detta? Denna åtgärd kan inte ångras.' },
+
+  // Admin Portal - Actions
+  'admin.action.save': { en: 'Save', sv: 'Spara' },
+  'admin.action.delete': { en: 'Delete', sv: 'Radera' },
+  'admin.action.edit': { en: 'Edit', sv: 'Redigera' },
+  'admin.action.cancel': { en: 'Cancel', sv: 'Avbryt' },
+  'admin.action.create': { en: 'Create', sv: 'Skapa' },
+  'admin.action.update': { en: 'Update', sv: 'Uppdatera' },
+  'admin.action.view': { en: 'View', sv: 'Visa' },
+  'admin.action.search': { en: 'Search', sv: 'Sök' },
+  'admin.action.filter': { en: 'Filter', sv: 'Filtrera' },
+  'admin.action.export': { en: 'Export', sv: 'Exportera' },
+
+  // Admin Portal - Validation
+  'admin.validation.required': { en: 'This field is required', sv: 'Detta fält är obligatoriskt' },
+  'admin.validation.email': { en: 'Please enter a valid email', sv: 'Ange en giltig e-postadress' },
+  'admin.validation.phone': { en: 'Please enter a valid phone number', sv: 'Ange ett giltigt telefonnummer' },
+  'admin.validation.url': { en: 'Please enter a valid URL', sv: 'Ange en giltig URL' },
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);

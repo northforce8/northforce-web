@@ -6,8 +6,10 @@ import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { safeNumber } from '../../../lib/data-validators';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import type { Customer } from '../../../lib/partner-portal-types';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 const CustomersPage: React.FC = () => {
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -53,7 +55,7 @@ const CustomersPage: React.FC = () => {
       setCustomers(data);
     } catch (error) {
       console.error('Error loading customers:', error);
-      setError('Failed to load customers. Please try again.');
+      setError(t('admin.error.load_failed'));
     } finally {
       setLoading(false);
     }
@@ -121,7 +123,7 @@ const CustomersPage: React.FC = () => {
       await loadData();
     } catch (error) {
       console.error('Error deleting customer:', error);
-      setError('Failed to delete customer. Please try again.');
+      setError(t('admin.error.delete_failed'));
     }
   };
 
@@ -144,7 +146,7 @@ const CustomersPage: React.FC = () => {
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading customers...</p>
+            <p className="text-gray-600">{t('admin.loading.customers')}</p>
           </div>
         </div>
       </div>

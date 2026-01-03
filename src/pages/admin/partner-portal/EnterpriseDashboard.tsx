@@ -267,7 +267,7 @@ const EnterpriseDashboard: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-5">
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
             <div className="flex items-start justify-between mb-3">
               <div className="p-2 rounded-lg bg-yellow-100">
                 <AlertTriangle className="w-5 h-5 text-yellow-700" />
@@ -278,7 +278,7 @@ const EnterpriseDashboard: React.FC = () => {
             <p className="text-xs text-yellow-700">Delivery issues</p>
           </div>
 
-          <div className="bg-red-50 border border-red-200 rounded-lg p-5">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-6">
             <div className="flex items-start justify-between mb-3">
               <div className="p-2 rounded-lg bg-red-100">
                 <Coins className="w-5 h-5 text-red-700" />
@@ -289,7 +289,7 @@ const EnterpriseDashboard: React.FC = () => {
             <p className="text-xs text-red-700">Below 20% threshold</p>
           </div>
 
-          <div className="bg-red-50 border border-red-200 rounded-lg p-5">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-6">
             <div className="flex items-start justify-between mb-3">
               <div className="p-2 rounded-lg bg-red-100">
                 <AlertTriangle className="w-5 h-5 text-red-700" />
@@ -300,7 +300,7 @@ const EnterpriseDashboard: React.FC = () => {
             <p className="text-xs text-red-700">Collaboration issues</p>
           </div>
 
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-5">
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-6">
             <div className="flex items-start justify-between mb-3">
               <div className="p-2 rounded-lg bg-amber-100">
                 <TrendingUp className="w-5 h-5 text-amber-700" />
