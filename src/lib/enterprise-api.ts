@@ -36,7 +36,16 @@ import type {
   BSCPerspectiveWithMetrics,
   BalancedScorecardWithDetails,
   BSCPerspectiveType,
-  BSCMetricStatus
+  BSCMetricStatus,
+  ChangeInitiative,
+  ADKARAssessment,
+  ADKARAction,
+  ADKARAssessmentWithActions,
+  ChangeInitiativeWithDetails,
+  ADKARStage,
+  ChangeInitiativeStatus,
+  ADKARActionStatus,
+  CompletionStatus
 } from './enterprise-types';
 
 export const enterpriseAPI = {
@@ -1809,5 +1818,394 @@ export const enterpriseAPI = {
         target: perspectiveData.target
       });
     }
+  },
+
+  async getChangeInitiatives(customerId?: string): Promise<ChangeInitiative[]> {
+    let query = supabase
+      .from('change_initiatives')
+      .select('*, customer:customers(id, company_name)')
+      .order('created_at', { ascending: false });
+
+    if (customerId) {
+      query = query.eq('customer_id', customerId);
+    }
+
+    const { data, error } = await query;
+
+    if (error) throw error;
+    return data || [];
+  },
+
+  async getChangeInitiativeById(id: string): Promise<ChangeInitiativeWithDetails | null> {
+    const { data: initiative, error: initiativeError } = await supabase
+      .from('change_initiatives')
+      .select('*, customer:customers(id, company_name)')
+      .eq('id', id)
+      .maybeSingle();
+
+    if (initiativeError) throw initiativeError;
+    if (!initiative) return null;
+
+    const { data: assessments, error: assessmentsError } = await supabase
+      .from('adkar_assessments')
+      .select('*')
+      .eq('initiative_id', id)
+      .order('stage');
+
+    if (assessmentsError) throw assessmentsError;
+
+    const assessmentsWithActions: ADKARAssessmentWithActions[] = [];
+
+    for (const assessment of assessments || []) {
+      const { data: actions, error: actionsError } = await supabase
+        .from('adkar_actions')
+        .select('*')
+        .eq('assessment_id', assessment.id)
+        .order('created_at');
+
+      if (actionsError) throw actionsError;
+
+      assessmentsWithActions.push({
+        ...assessment,
+        actions: actions || []
+      });
+    }
+
+    return {
+      ...initiative,
+      assessments: assessmentsWithActions
+    };
+  },
+
+  async createChangeInitiative(
+    initiative: Omit<ChangeInitiative, 'id' | 'created_at' | 'updated_at'>
+  ): Promise<ChangeInitiative> {
+    const { data, error } = await supabase
+      .from('change_initiatives')
+      .insert(initiative)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async updateChangeInitiative(
+    id: string,
+    updates: Partial<ChangeInitiative>
+  ): Promise<ChangeInitiative> {
+    const { data, error } = await supabase
+      .from('change_initiatives')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async deleteChangeInitiative(id: string): Promise<void> {
+    const assessments = await this.getADKARAssessments(id);
+
+    for (const assessment of assessments) {
+      await supabase
+        .from('adkar_actions')
+        .delete()
+        .eq('assessment_id', assessment.id);
+    }
+
+    await supabase
+      .from('adkar_assessments')
+      .delete()
+      .eq('initiative_id', id);
+
+    const { error } = await supabase
+      .from('change_initiatives')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+  },
+
+  async getADKARAssessments(initiativeId: string): Promise<ADKARAssessment[]> {
+    const { data, error } = await supabase
+      .from('adkar_assessments')
+      .select('*')
+      .eq('initiative_id', initiativeId)
+      .order('stage');
+
+    if (error) throw error;
+    return data || [];
+  },
+
+  async getADKARAssessmentById(id: string): Promise<ADKARAssessmentWithActions | null> {
+    const { data: assessment, error: assessmentError } = await supabase
+      .from('adkar_assessments')
+      .select('*')
+      .eq('id', id)
+      .maybeSingle();
+
+    if (assessmentError) throw assessmentError;
+    if (!assessment) return null;
+
+    const { data: actions, error: actionsError } = await supabase
+      .from('adkar_actions')
+      .select('*')
+      .eq('assessment_id', id)
+      .order('created_at');
+
+    if (actionsError) throw actionsError;
+
+    return {
+      ...assessment,
+      actions: actions || []
+    };
+  },
+
+  async getADKARAssessmentByStage(
+    initiativeId: string,
+    stage: ADKARStage
+  ): Promise<ADKARAssessmentWithActions | null> {
+    const { data: assessment, error: assessmentError } = await supabase
+      .from('adkar_assessments')
+      .select('*')
+      .eq('initiative_id', initiativeId)
+      .eq('stage', stage)
+      .maybeSingle();
+
+    if (assessmentError) throw assessmentError;
+    if (!assessment) return null;
+
+    const { data: actions, error: actionsError } = await supabase
+      .from('adkar_actions')
+      .select('*')
+      .eq('assessment_id', assessment.id)
+      .order('created_at');
+
+    if (actionsError) throw actionsError;
+
+    return {
+      ...assessment,
+      actions: actions || []
+    };
+  },
+
+  async createADKARAssessment(
+    assessment: Omit<ADKARAssessment, 'id' | 'created_at'>
+  ): Promise<ADKARAssessment> {
+    const { data, error } = await supabase
+      .from('adkar_assessments')
+      .insert(assessment)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async updateADKARAssessment(
+    id: string,
+    updates: Partial<ADKARAssessment>
+  ): Promise<ADKARAssessment> {
+    const { data, error } = await supabase
+      .from('adkar_assessments')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async deleteADKARAssessment(id: string): Promise<void> {
+    await supabase
+      .from('adkar_actions')
+      .delete()
+      .eq('assessment_id', id);
+
+    const { error } = await supabase
+      .from('adkar_assessments')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+  },
+
+  async upsertADKARAssessment(
+    initiativeId: string,
+    stage: ADKARStage,
+    assessmentData: Partial<ADKARAssessment>
+  ): Promise<ADKARAssessment> {
+    const existing = await this.getADKARAssessmentByStage(initiativeId, stage);
+
+    if (existing) {
+      return await this.updateADKARAssessment(existing.id, assessmentData);
+    } else {
+      return await this.createADKARAssessment({
+        initiative_id: initiativeId,
+        stage,
+        score: assessmentData.score,
+        assessment_notes: assessmentData.assessment_notes,
+        barriers: assessmentData.barriers,
+        actions_required: assessmentData.actions_required,
+        completion_status: assessmentData.completion_status || 'not_started',
+        assessed_by: assessmentData.assessed_by,
+        assessed_at: assessmentData.assessed_at
+      });
+    }
+  },
+
+  async getADKARActions(assessmentId: string): Promise<ADKARAction[]> {
+    const { data, error } = await supabase
+      .from('adkar_actions')
+      .select('*')
+      .eq('assessment_id', assessmentId)
+      .order('created_at');
+
+    if (error) throw error;
+    return data || [];
+  },
+
+  async getADKARActionById(id: string): Promise<ADKARAction | null> {
+    const { data, error } = await supabase
+      .from('adkar_actions')
+      .select('*')
+      .eq('id', id)
+      .maybeSingle();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async createADKARAction(
+    action: Omit<ADKARAction, 'id' | 'created_at' | 'updated_at'>
+  ): Promise<ADKARAction> {
+    const { data, error } = await supabase
+      .from('adkar_actions')
+      .insert(action)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async updateADKARAction(
+    id: string,
+    updates: Partial<ADKARAction>
+  ): Promise<ADKARAction> {
+    const { data, error } = await supabase
+      .from('adkar_actions')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async deleteADKARAction(id: string): Promise<void> {
+    const { error } = await supabase
+      .from('adkar_actions')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+  },
+
+  async updateADKARActionStatus(
+    id: string,
+    status: ADKARActionStatus
+  ): Promise<ADKARAction> {
+    return await this.updateADKARAction(id, { status });
+  },
+
+  async getChangeInitiativeStatistics(initiativeId: string): Promise<{
+    total_stages: number;
+    stages_by_status: Record<CompletionStatus, number>;
+    overall_score: number;
+    total_actions: number;
+    actions_by_status: Record<ADKARActionStatus, number>;
+    completion_percentage: number;
+    bottleneck_stage?: ADKARStage;
+    strongest_stage?: ADKARStage;
+  }> {
+    const assessments = await this.getADKARAssessments(initiativeId);
+
+    const statusCounts: Record<CompletionStatus, number> = {
+      not_started: 0,
+      in_progress: 0,
+      completed: 0,
+      needs_attention: 0
+    };
+
+    const actionStatusCounts: Record<ADKARActionStatus, number> = {
+      not_started: 0,
+      in_progress: 0,
+      completed: 0,
+      blocked: 0
+    };
+
+    let totalScore = 0;
+    let totalActions = 0;
+    let lowestScore = 100;
+    let highestScore = 0;
+    let bottleneckStage: ADKARStage | undefined;
+    let strongestStage: ADKARStage | undefined;
+
+    for (const assessment of assessments) {
+      if (assessment.completion_status) {
+        statusCounts[assessment.completion_status]++;
+      }
+
+      const score = assessment.score || 0;
+      totalScore += score;
+
+      if (score < lowestScore) {
+        lowestScore = score;
+        bottleneckStage = assessment.stage;
+      }
+
+      if (score > highestScore) {
+        highestScore = score;
+        strongestStage = assessment.stage;
+      }
+
+      const actions = await this.getADKARActions(assessment.id);
+      totalActions += actions.length;
+
+      for (const action of actions) {
+        if (action.status) {
+          actionStatusCounts[action.status]++;
+        }
+      }
+    }
+
+    const averageScore = assessments.length > 0 ? totalScore / assessments.length : 0;
+    const completionPercentage = assessments.length > 0
+      ? (statusCounts.completed / assessments.length) * 100
+      : 0;
+
+    return {
+      total_stages: 5,
+      stages_by_status: statusCounts,
+      overall_score: Math.round(averageScore),
+      total_actions: totalActions,
+      actions_by_status: actionStatusCounts,
+      completion_percentage: Math.round(completionPercentage),
+      bottleneck_stage: bottleneckStage,
+      strongest_stage: strongestStage
+    };
+  },
+
+  async updateChangeInitiativeProgress(initiativeId: string): Promise<ChangeInitiative> {
+    const stats = await this.getChangeInitiativeStatistics(initiativeId);
+
+    return await this.updateChangeInitiative(initiativeId, {
+      overall_progress: stats.completion_percentage
+    });
   }
 };

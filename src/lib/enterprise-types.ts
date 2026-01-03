@@ -813,3 +813,287 @@ export interface BSCBenchmarkComparison {
     recommended_actions: string[];
   }[];
 }
+
+export type ADKARStage =
+  | 'awareness'
+  | 'desire'
+  | 'knowledge'
+  | 'ability'
+  | 'reinforcement';
+
+export type ChangeInitiativeStatus =
+  | 'planning'
+  | 'in_progress'
+  | 'on_hold'
+  | 'completed'
+  | 'cancelled';
+
+export type ADKARActionStatus =
+  | 'not_started'
+  | 'in_progress'
+  | 'completed'
+  | 'blocked';
+
+export type ImpactLevel =
+  | 'critical'
+  | 'high'
+  | 'medium'
+  | 'low';
+
+export type CompletionStatus =
+  | 'not_started'
+  | 'in_progress'
+  | 'completed'
+  | 'needs_attention';
+
+export interface ChangeInitiative {
+  id: string;
+  customer_id?: string;
+  title: string;
+  description?: string;
+  change_type?: string;
+  scope?: string;
+  start_date?: string;
+  target_completion_date?: string;
+  status: ChangeInitiativeStatus;
+  overall_progress?: number;
+  created_by?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ADKARAssessment {
+  id: string;
+  initiative_id: string;
+  stage: ADKARStage;
+  score?: number;
+  assessment_notes?: string;
+  barriers?: string[];
+  actions_required?: string[];
+  completion_status?: CompletionStatus;
+  assessed_by?: string;
+  assessed_at?: string;
+  created_at: string;
+}
+
+export interface ADKARAction {
+  id: string;
+  assessment_id: string;
+  action_title: string;
+  description?: string;
+  owner_id?: string;
+  due_date?: string;
+  status?: ADKARActionStatus;
+  impact_level?: ImpactLevel;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ADKARAssessmentWithActions extends ADKARAssessment {
+  actions: ADKARAction[];
+}
+
+export interface ChangeInitiativeWithDetails extends ChangeInitiative {
+  assessments: ADKARAssessmentWithActions[];
+  customer?: {
+    id: string;
+    company_name: string;
+  };
+}
+
+export interface ADKARAIInsight {
+  stage: ADKARStage;
+  insight_type: 'strength' | 'weakness' | 'barrier' | 'action' | 'warning' | 'opportunity';
+  title: string;
+  description: string;
+  priority: 'critical' | 'high' | 'medium' | 'low';
+  confidence: number;
+  impact_score: number;
+  recommendations: string[];
+  suggested_actions: {
+    title: string;
+    description: string;
+    priority: ImpactLevel;
+    estimated_effort: 'low' | 'medium' | 'high';
+    expected_impact: string;
+  }[];
+  barriers_identified?: string[];
+  success_factors?: string[];
+  related_okr_suggestions?: {
+    objective: string;
+    key_results: string[];
+  };
+}
+
+export interface ADKARReadinessAnalysis {
+  initiative_id: string;
+  overall_readiness_score: number;
+  readiness_level: 'low' | 'medium' | 'high' | 'very_high';
+  stage_scores: Record<ADKARStage, {
+    score: number;
+    status: 'critical' | 'needs_work' | 'good' | 'excellent';
+    completion_percentage: number;
+    barriers_count: number;
+    actions_count: number;
+    completed_actions: number;
+  }>;
+  bottleneck_stage?: ADKARStage;
+  strongest_stage?: ADKARStage;
+  critical_barriers: {
+    stage: ADKARStage;
+    barrier: string;
+    impact: ImpactLevel;
+    mitigation_suggestions: string[];
+  }[];
+  key_findings: string[];
+  risk_assessment: {
+    overall_risk: 'low' | 'medium' | 'high' | 'critical';
+    risk_factors: {
+      factor: string;
+      severity: ImpactLevel;
+      mitigation: string;
+    }[];
+  };
+  recommended_next_steps: {
+    priority: number;
+    stage: ADKARStage;
+    action: string;
+    rationale: string;
+    estimated_timeline: string;
+  }[];
+}
+
+export interface ADKARStageProgress {
+  stage: ADKARStage;
+  stage_name: string;
+  score: number;
+  completion_percentage: number;
+  status: CompletionStatus;
+  barriers: string[];
+  actions_total: number;
+  actions_completed: number;
+  actions_in_progress: number;
+  actions_not_started: number;
+  estimated_completion_date?: string;
+  days_until_completion?: number;
+  is_on_track: boolean;
+  blockers: {
+    description: string;
+    severity: ImpactLevel;
+    resolution_status: 'open' | 'in_progress' | 'resolved';
+  }[];
+}
+
+export interface ADKARChangeImpactAnalysis {
+  initiative_id: string;
+  affected_stakeholders: {
+    group: string;
+    size: number;
+    impact_level: ImpactLevel;
+    readiness_score: number;
+    key_concerns: string[];
+    engagement_strategy: string;
+  }[];
+  organizational_impact: {
+    area: string;
+    impact_type: 'process' | 'structure' | 'culture' | 'technology' | 'skills';
+    impact_magnitude: 'minor' | 'moderate' | 'major' | 'transformative';
+    description: string;
+    mitigation_required: boolean;
+  }[];
+  resistance_forecast: {
+    level: 'low' | 'medium' | 'high' | 'critical';
+    sources: string[];
+    strategies: string[];
+  };
+  success_probability: number;
+  timeline_feasibility: 'realistic' | 'tight' | 'unrealistic';
+}
+
+export interface ADKARBestPractice {
+  stage: ADKARStage;
+  practice_title: string;
+  description: string;
+  category: 'communication' | 'training' | 'coaching' | 'reinforcement' | 'leadership';
+  implementation_steps: string[];
+  expected_outcomes: string[];
+  estimated_effort: 'low' | 'medium' | 'high';
+  success_rate: number;
+  industry_examples?: string[];
+}
+
+export interface ADKARBarrierAnalysis {
+  initiative_id: string;
+  stage: ADKARStage;
+  barrier_type: 'cultural' | 'structural' | 'technical' | 'skill_based' | 'motivational' | 'resource';
+  description: string;
+  severity: ImpactLevel;
+  affected_stakeholders: string[];
+  root_causes: string[];
+  mitigation_strategies: {
+    strategy: string;
+    effectiveness: 'low' | 'medium' | 'high';
+    timeframe: string;
+    resources_required: string[];
+  }[];
+  related_barriers?: string[];
+}
+
+export interface ADKARCommunicationPlan {
+  initiative_id: string;
+  stage: ADKARStage;
+  messages: {
+    audience: string;
+    key_message: string;
+    delivery_method: string;
+    frequency: string;
+    messenger: string;
+    timing: string;
+  }[];
+  communication_objectives: string[];
+  feedback_mechanisms: string[];
+  success_metrics: string[];
+}
+
+export interface ADKARTrainingPlan {
+  initiative_id: string;
+  stage: 'knowledge' | 'ability';
+  training_modules: {
+    module_name: string;
+    objectives: string[];
+    target_audience: string;
+    delivery_method: 'classroom' | 'online' | 'hands_on' | 'coaching' | 'hybrid';
+    duration: string;
+    prerequisites?: string[];
+    success_criteria: string[];
+  }[];
+  skill_gaps: {
+    skill: string;
+    current_level: 'none' | 'basic' | 'intermediate' | 'advanced';
+    required_level: 'basic' | 'intermediate' | 'advanced' | 'expert';
+    training_path: string[];
+  }[];
+  assessment_methods: string[];
+}
+
+export interface ADKARReinforcementStrategy {
+  initiative_id: string;
+  reinforcement_mechanisms: {
+    mechanism_type: 'recognition' | 'reward' | 'accountability' | 'measurement' | 'feedback';
+    description: string;
+    frequency: string;
+    responsibility: string;
+    success_indicators: string[];
+  }[];
+  sustainability_plan: {
+    action: string;
+    timeline: string;
+    ownership: string;
+    monitoring_method: string;
+  }[];
+  regression_risk_mitigation: {
+    risk: string;
+    likelihood: 'low' | 'medium' | 'high';
+    mitigation: string;
+  }[];
+}
