@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PieChart, Plus, AlertTriangle } from 'lucide-react';
+import { PieChart, Plus, AlertTriangle, Edit2, Trash2 } from 'lucide-react';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
@@ -11,6 +11,7 @@ export default function BSCPage() {
   const [customers, setCustomers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [selectedScorecard, setSelectedScorecard] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({ customer_id: '', title: '', time_period: 'Q1 2026', vision: '', strategy: '' });
 
@@ -47,19 +48,51 @@ export default function BSCPage() {
     e.preventDefault();
     try {
       setError(null);
-      const { error } = await supabase.from('balanced_scorecards').insert([formData]);
-      if (error) throw error;
+      if (selectedScorecard) {
+        const { error } = await supabase
+          .from('balanced_scorecards')
+          .update(formData)
+          .eq('id', selectedScorecard.id);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.from('balanced_scorecards').insert([formData]);
+        if (error) throw error;
+      }
 
       setShowModal(false);
+      setSelectedScorecard(null);
       setFormData({ customer_id: '', title: '', time_period: 'Q1 2026', vision: '', strategy: '' });
       await loadData();
     } catch (err) {
       const errorId = logAdminError(err as Error, {
         context: 'BSCPage.handleSubmit',
-        action: 'Creating Balanced Scorecard'
+        action: selectedScorecard ? 'Updating Balanced Scorecard' : 'Creating Balanced Scorecard'
       });
-      console.error(`[${errorId}] Error creating scorecard:`, err);
-      setError('Failed to create scorecard. Please try again.');
+      console.error(`[${errorId}] Error saving scorecard:`, err);
+      setError('Failed to save scorecard. Please try again.');
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this Balanced Scorecard? This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      setError(null);
+      const { error } = await supabase
+        .from('balanced_scorecards')
+        .delete()
+        .eq('id', id);
+      if (error) throw error;
+      await loadData();
+    } catch (err) {
+      const errorId = logAdminError(err as Error, {
+        context: 'BSCPage.handleDelete',
+        action: 'Deleting Balanced Scorecard'
+      });
+      console.error(`[${errorId}] Error deleting scorecard:`, err);
+      setError('Failed to delete scorecard. Please try again.');
     }
   };
 
@@ -93,7 +126,14 @@ export default function BSCPage() {
       <PageHeader
         title="Balanced Scorecard"
         description="Measure organizational performance across financial, customer, internal processes, and learning perspectives."
-        action={{ label: 'Create Scorecard', onClick: () => setShowModal(true), icon: Plus }}
+        action={{
+          label: 'Create Scorecard',
+          onClick: () => {
+            setSelectedScorecard(null);
+            setShowModal(true);
+          },
+          icon: Plus
+        }}
       />
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -123,15 +163,52 @@ export default function BSCPage() {
         ) : (
           scorecards.map((scorecard) => (
             <Card key={scorecard.id} className="p-6 hover:shadow-lg transition-shadow">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">{scorecard.title}</h3>
-              <p className="text-sm text-gray-600 mb-2">Customer: {scorecard.customers?.name} | {scorecard.time_period}</p>
-              {scorecard.vision && <p className="text-sm text-gray-500">{scorecard.vision}</p>}
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{scorecard.title}</h3>
+                  <p className="text-sm text-gray-600 mb-2">Customer: {scorecard.customers?.name} | {scorecard.time_period}</p>
+                  {scorecard.vision && <p className="text-sm text-gray-500">{scorecard.vision}</p>}
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => {
+                      setSelectedScorecard(scorecard);
+                      setFormData({
+                        customer_id: scorecard.customer_id,
+                        title: scorecard.title,
+                        time_period: scorecard.time_period,
+                        vision: scorecard.vision || '',
+                        strategy: scorecard.strategy || ''
+                      });
+                      setShowModal(true);
+                    }}
+                    className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                    title="Edit scorecard"
+                  >
+                    <Edit2 className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(scorecard.id)}
+                    className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    title="Delete scorecard"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
             </Card>
           ))
         )}
       </div>
 
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)} title="Create Balanced Scorecard">
+      <Modal
+        isOpen={showModal}
+        onClose={() => {
+          setShowModal(false);
+          setSelectedScorecard(null);
+        }}
+        title={selectedScorecard ? 'Edit Balanced Scorecard' : 'Create Balanced Scorecard'}
+      >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Customer</label>
@@ -157,8 +234,19 @@ export default function BSCPage() {
             <textarea value={formData.strategy} onChange={(e) => setFormData({ ...formData, strategy: e.target.value })} className="w-full px-3 py-2 border rounded-lg" rows={2} />
           </div>
           <div className="flex justify-end gap-3 pt-4">
-            <button type="button" onClick={() => setShowModal(false)} className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">Cancel</button>
-            <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Create</button>
+            <button
+              type="button"
+              onClick={() => {
+                setShowModal(false);
+                setSelectedScorecard(null);
+              }}
+              className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+            >
+              Cancel
+            </button>
+            <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+              {selectedScorecard ? 'Update' : 'Create'}
+            </button>
           </div>
         </form>
       </Modal>

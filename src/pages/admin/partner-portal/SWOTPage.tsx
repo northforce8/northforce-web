@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { TrendingUp, Plus, ChevronRight } from 'lucide-react';
+import { TrendingUp, Plus, Edit2, Trash2, AlertTriangle } from 'lucide-react';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
 import { supabase } from '../../../lib/supabase';
+import { logAdminError } from '../../../lib/admin-error-logger';
 
 interface SWOTAnalysis {
   id: string;
@@ -29,6 +30,8 @@ export default function SWOTPage() {
   const [customers, setCustomers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [selectedAnalysis, setSelectedAnalysis] = useState<SWOTAnalysis | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     customer_id: '',
     title: '',
@@ -43,6 +46,7 @@ export default function SWOTPage() {
 
   const loadData = async () => {
     try {
+      setError(null);
       const [analysesResult, customersResult] = await Promise.all([
         supabase
           .from('swot_analyses')
@@ -54,6 +58,9 @@ export default function SWOTPage() {
           .eq('status', 'active')
           .order('name')
       ]);
+
+      if (analysesResult.error) throw analysesResult.error;
+      if (customersResult.error) throw customersResult.error;
 
       const analysesWithItems = await Promise.all(
         (analysesResult.data || []).map(async (analysis) => {
@@ -72,8 +79,13 @@ export default function SWOTPage() {
 
       setAnalyses(analysesWithItems);
       setCustomers(customersResult.data || []);
-    } catch (error) {
-      console.error('Error loading data:', error);
+    } catch (err) {
+      const errorId = logAdminError(err as Error, {
+        context: 'SWOTPage.loadData',
+        action: 'Loading SWOT analyses'
+      });
+      console.error(`[${errorId}] Error loading data:`, err);
+      setError('Failed to load data. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -82,15 +94,53 @@ export default function SWOTPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const { error } = await supabase
-        .from('swot_analyses')
-        .insert([formData]);
-      if (error) throw error;
+      setError(null);
+      if (selectedAnalysis) {
+        const { error } = await supabase
+          .from('swot_analyses')
+          .update(formData)
+          .eq('id', selectedAnalysis.id);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from('swot_analyses')
+          .insert([formData]);
+        if (error) throw error;
+      }
       setShowModal(false);
+      setSelectedAnalysis(null);
       setFormData({ customer_id: '', title: '', description: '', context: '', status: 'in_progress' });
       await loadData();
-    } catch (error) {
-      console.error('Error creating analysis:', error);
+    } catch (err) {
+      const errorId = logAdminError(err as Error, {
+        context: 'SWOTPage.handleSubmit',
+        action: selectedAnalysis ? 'Updating SWOT analysis' : 'Creating SWOT analysis'
+      });
+      console.error(`[${errorId}] Error saving analysis:`, err);
+      setError('Failed to save analysis. Please try again.');
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this SWOT analysis? This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      setError(null);
+      const { error } = await supabase
+        .from('swot_analyses')
+        .delete()
+        .eq('id', id);
+      if (error) throw error;
+      await loadData();
+    } catch (err) {
+      const errorId = logAdminError(err as Error, {
+        context: 'SWOTPage.handleDelete',
+        action: 'Deleting SWOT analysis'
+      });
+      console.error(`[${errorId}] Error deleting analysis:`, err);
+      setError('Failed to delete analysis. Please try again.');
     }
   };
 
@@ -109,17 +159,34 @@ export default function SWOTPage() {
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center h-64">Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-gray-500">Loading SWOT analyses...</div>
+      </div>
+    );
   }
 
   return (
     <div className="space-y-6">
+      {error && (
+        <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+          <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <p className="text-red-800 font-medium">Error</p>
+            <p className="text-red-700 text-sm mt-1">{error}</p>
+          </div>
+        </div>
+      )}
+
       <PageHeader
         title="SWOT Analysis"
         description="Assess internal strengths and weaknesses, external opportunities and threats to inform strategic decisions."
         action={{
           label: 'Create SWOT Analysis',
-          onClick: () => setShowModal(true),
+          onClick: () => {
+            setSelectedAnalysis(null);
+            setShowModal(true);
+          },
           icon: Plus
         }}
       />
@@ -136,34 +203,82 @@ export default function SWOTPage() {
       </div>
 
       <div className="space-y-4">
-        {analyses.map((analysis) => (
-          <Card key={analysis.id} className="p-6">
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">{analysis.title}</h3>
-                <p className="text-sm text-gray-600 mb-2">{analysis.description}</p>
-                <div className="flex items-center gap-4 text-xs text-gray-500">
-                  <span>Customer: {analysis.customer_name}</span>
-                  <span>•</span>
-                  <span>Context: {analysis.context}</span>
+        {analyses.length === 0 ? (
+          <Card className="p-12 text-center">
+            <TrendingUp className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">No SWOT Analyses Yet</h3>
+            <p className="text-gray-600 mb-4">
+              Create your first SWOT analysis to assess strengths, weaknesses, opportunities, and threats.
+            </p>
+            <button
+              onClick={() => setShowModal(true)}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              Create First Analysis
+            </button>
+          </Card>
+        ) : (
+          analyses.map((analysis) => (
+            <Card key={analysis.id} className="p-6 hover:shadow-lg transition-shadow">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{analysis.title}</h3>
+                  <p className="text-sm text-gray-600 mb-2">{analysis.description}</p>
+                  <div className="flex items-center gap-4 text-xs text-gray-500">
+                    <span>Customer: {analysis.customer_name}</span>
+                    <span>•</span>
+                    <span>Context: {analysis.context}</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => {
+                      setSelectedAnalysis(analysis);
+                      setFormData({
+                        customer_id: analysis.customer_id,
+                        title: analysis.title,
+                        description: analysis.description || '',
+                        context: analysis.context || '',
+                        status: analysis.status as any
+                      });
+                      setShowModal(true);
+                    }}
+                    className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                    title="Edit analysis"
+                  >
+                    <Edit2 className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(analysis.id)}
+                    className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    title="Delete analysis"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
                 </div>
               </div>
-              <ChevronRight className="w-5 h-5 text-gray-400" />
-            </div>
 
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              {['strength', 'weakness', 'opportunity', 'threat'].map((category) => (
-                <div key={category} className={`p-3 rounded-lg ${getCategoryColor(category)}`}>
-                  <p className="text-xs font-medium uppercase mb-1">{category}s</p>
-                  <p className="text-2xl font-bold">{getCategoryCount(analysis.items, category)}</p>
-                </div>
-              ))}
-            </div>
-          </Card>
-        ))}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                {['strength', 'weakness', 'opportunity', 'threat'].map((category) => (
+                  <div key={category} className={`p-3 rounded-lg ${getCategoryColor(category)}`}>
+                    <p className="text-xs font-medium uppercase mb-1">{category}s</p>
+                    <p className="text-2xl font-bold">{getCategoryCount(analysis.items, category)}</p>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          ))
+        )}
       </div>
 
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)} title="Create SWOT Analysis">
+      <Modal
+        isOpen={showModal}
+        onClose={() => {
+          setShowModal(false);
+          setSelectedAnalysis(null);
+        }}
+        title={selectedAnalysis ? 'Edit SWOT Analysis' : 'Create SWOT Analysis'}
+      >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Customer</label>
@@ -215,7 +330,10 @@ export default function SWOTPage() {
           <div className="flex justify-end gap-3 pt-4">
             <button
               type="button"
-              onClick={() => setShowModal(false)}
+              onClick={() => {
+                setShowModal(false);
+                setSelectedAnalysis(null);
+              }}
               className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
             >
               Cancel
@@ -224,7 +342,7 @@ export default function SWOTPage() {
               type="submit"
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
             >
-              Create Analysis
+              {selectedAnalysis ? 'Update' : 'Create'} Analysis
             </button>
           </div>
         </form>

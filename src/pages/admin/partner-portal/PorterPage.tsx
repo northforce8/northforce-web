@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Compass, Plus, AlertTriangle } from 'lucide-react';
+import { Compass, Plus, AlertTriangle, Edit2, Trash2 } from 'lucide-react';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
@@ -25,6 +25,7 @@ export default function PorterPage() {
   const [customers, setCustomers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [selectedAnalysis, setSelectedAnalysis] = useState<Analysis | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     customer_id: '',
@@ -72,19 +73,47 @@ export default function PorterPage() {
     e.preventDefault();
     try {
       setError(null);
-      const { error } = await supabase.from('porter_analyses').insert([formData]);
-      if (error) throw error;
+      if (selectedAnalysis) {
+        const { error } = await supabase
+          .from('porter_analyses')
+          .update(formData)
+          .eq('id', selectedAnalysis.id);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.from('porter_analyses').insert([formData]);
+        if (error) throw error;
+      }
 
       setShowModal(false);
+      setSelectedAnalysis(null);
       setFormData({ customer_id: '', title: '', industry: '', market_description: '' });
       await loadData();
     } catch (err) {
       const errorId = logAdminError(err as Error, {
         context: 'PorterPage.handleSubmit',
-        action: 'Creating Porter analysis'
+        action: selectedAnalysis ? 'Updating Porter analysis' : 'Creating Porter analysis'
       });
-      console.error(`[${errorId}] Error creating analysis:`, err);
-      setError('Failed to create analysis. Please try again.');
+      console.error(`[${errorId}] Error saving analysis:`, err);
+      setError('Failed to save analysis. Please try again.');
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this analysis? This action cannot be undone.')) {
+      return;
+    }
+    try {
+      setError(null);
+      const { error } = await supabase.from('porter_analyses').delete().eq('id', id);
+      if (error) throw error;
+      await loadData();
+    } catch (err) {
+      const errorId = logAdminError(err as Error, {
+        context: 'PorterPage.handleDelete',
+        action: 'Deleting Porter analysis'
+      });
+      console.error(`[${errorId}] Error deleting analysis:`, err);
+      setError('Failed to delete analysis. Please try again.');
     }
   };
 
@@ -119,7 +148,14 @@ export default function PorterPage() {
       <PageHeader
         title="Porter's Five Forces"
         description="Analyze competitive forces in your industry to develop strategies that protect and enhance market position."
-        action={{ label: 'Create Analysis', onClick: () => setShowModal(true), icon: Plus }}
+        action={{
+          label: 'Create Analysis',
+          onClick: () => {
+            setSelectedAnalysis(null);
+            setShowModal(true);
+          },
+          icon: Plus
+        }}
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
@@ -161,13 +197,45 @@ export default function PorterPage() {
                     <p className="text-sm text-gray-500">{analysis.market_description}</p>
                   )}
                 </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => {
+                      setSelectedAnalysis(analysis);
+                      setFormData({
+                        customer_id: analysis.customer_id,
+                        title: analysis.title,
+                        industry: analysis.industry,
+                        market_description: analysis.market_description
+                      });
+                      setShowModal(true);
+                    }}
+                    className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                    title="Edit analysis"
+                  >
+                    <Edit2 className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(analysis.id)}
+                    className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    title="Delete analysis"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
             </Card>
           ))
         )}
       </div>
 
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)} title="Create Porter's Five Forces Analysis">
+      <Modal
+        isOpen={showModal}
+        onClose={() => {
+          setShowModal(false);
+          setSelectedAnalysis(null);
+        }}
+        title={selectedAnalysis ? "Edit Porter's Five Forces Analysis" : "Create Porter's Five Forces Analysis"}
+      >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Customer</label>
@@ -189,8 +257,19 @@ export default function PorterPage() {
             <textarea value={formData.market_description} onChange={(e) => setFormData({ ...formData, market_description: e.target.value })} className="w-full px-3 py-2 border rounded-lg" rows={3} />
           </div>
           <div className="flex justify-end gap-3 pt-4">
-            <button type="button" onClick={() => setShowModal(false)} className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">Cancel</button>
-            <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Create</button>
+            <button
+              type="button"
+              onClick={() => {
+                setShowModal(false);
+                setSelectedAnalysis(null);
+              }}
+              className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+            >
+              Cancel
+            </button>
+            <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+              {selectedAnalysis ? 'Update' : 'Create'} Analysis
+            </button>
           </div>
         </form>
       </Modal>

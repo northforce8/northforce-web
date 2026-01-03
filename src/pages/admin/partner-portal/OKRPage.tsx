@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Target, Plus, TrendingUp, AlertTriangle, CheckCircle2, ChevronRight } from 'lucide-react';
+import { Target, Plus, TrendingUp, AlertTriangle, CheckCircle2, Edit2, Trash2 } from 'lucide-react';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
@@ -126,8 +126,33 @@ export default function OKRPage() {
         status: 'active'
       });
       await loadData();
-    } catch (error) {
-      console.error('Error saving objective:', error);
+    } catch (err) {
+      const errorId = logAdminError(err as Error, {
+        context: 'OKRPage.handleSubmit',
+        action: selectedObjective ? 'Updating OKR objective' : 'Creating OKR objective'
+      });
+      console.error(`[${errorId}] Error saving objective:`, err);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this OKR objective? This will also delete all associated key results. This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('okr_objectives')
+        .delete()
+        .eq('id', id);
+      if (error) throw error;
+      await loadData();
+    } catch (err) {
+      const errorId = logAdminError(err as Error, {
+        context: 'OKRPage.handleDelete',
+        action: 'Deleting OKR objective'
+      });
+      console.error(`[${errorId}] Error deleting objective:`, err);
     }
   };
 
@@ -297,24 +322,34 @@ export default function OKRPage() {
                       <span>{objective.start_date} - {objective.end_date}</span>
                     </div>
                   </div>
-                  <button
-                    onClick={() => {
-                      setSelectedObjective(objective);
-                      setFormData({
-                        customer_id: objective.customer_id,
-                        title: objective.title,
-                        description: objective.description || '',
-                        time_period: objective.time_period,
-                        start_date: objective.start_date,
-                        end_date: objective.end_date,
-                        status: objective.status
-                      });
-                      setShowModal(true);
-                    }}
-                    className="text-gray-400 hover:text-gray-600"
-                  >
-                    <ChevronRight className="w-5 h-5" />
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => {
+                        setSelectedObjective(objective);
+                        setFormData({
+                          customer_id: objective.customer_id,
+                          title: objective.title,
+                          description: objective.description || '',
+                          time_period: objective.time_period,
+                          start_date: objective.start_date,
+                          end_date: objective.end_date,
+                          status: objective.status
+                        });
+                        setShowModal(true);
+                      }}
+                      className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                      title="Edit objective"
+                    >
+                      <Edit2 className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(objective.id)}
+                      className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                      title="Delete objective"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
 
                 <div className="mb-4">

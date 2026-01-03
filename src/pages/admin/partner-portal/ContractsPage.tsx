@@ -8,6 +8,7 @@ import { PageHeader } from '../../../components/admin/PageHeader';
 import { useToast } from '../../../contexts/ToastContext';
 import { logAdminError } from '../../../lib/admin-error-logger';
 import { safeString } from '../../../lib/data-validators';
+import { Modal } from '../../../components/admin/ui/Modal';
 
 export default function ContractsPage() {
   const [contracts, setContracts] = useState<any[]>([]);
@@ -302,10 +303,8 @@ function CreateContractModal({ customers, templates, onClose, onSuccess }: any) 
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">Create Contract</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <Modal isOpen={true} onClose={onClose} title="Create Contract">
+      <form onSubmit={handleSubmit} className="space-y-4">
           <div className="flex gap-4 mb-4">
             <button
               type="button"
@@ -424,24 +423,23 @@ function CreateContractModal({ customers, templates, onClose, onSuccess }: any) 
             />
           </div>
 
-          <div className="flex gap-3 justify-end pt-4 border-t border-gray-200">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={saving}
-              className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 disabled:opacity-50"
-            >
-              {saving ? 'Creating...' : 'Create Contract'}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <div className="flex gap-3 justify-end pt-4 border-t border-gray-200 mt-4">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={saving}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+          >
+            {saving ? 'Creating...' : 'Create Contract'}
+          </button>
+        </div>
+      </form>
+    </Modal>
   );
 }

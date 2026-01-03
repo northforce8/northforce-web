@@ -8,6 +8,7 @@ import { useToast } from '../../../contexts/ToastContext';
 import { logAdminError } from '../../../lib/admin-error-logger';
 import { safeString, safeNumber } from '../../../lib/data-validators';
 import { PageHeader } from '../../../components/admin/PageHeader';
+import { Modal } from '../../../components/admin/ui/Modal';
 
 export default function InvoicesPage() {
   const [invoices, setInvoices] = useState<any[]>([]);
@@ -77,29 +78,24 @@ export default function InvoicesPage() {
 
   return (
     <div className="max-w-7xl mx-auto p-6">
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Invoices</h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Manage customer invoices and billing
-          </p>
-        </div>
-        <div className="flex gap-3">
-          <button
-            onClick={() => setShowGenerateModal(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium"
-          >
-            <DollarSign className="h-5 w-5" />
-            Generate from Time
-          </button>
-          <button
-            onClick={() => setShowCreateModal(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"
-          >
-            <Plus className="h-5 w-5" />
-            Create Invoice
-          </button>
-        </div>
+      <PageHeader
+        title="Invoices"
+        description="Manage customer invoices and billing"
+        action={{
+          label: 'Create Invoice',
+          onClick: () => setShowCreateModal(true),
+          icon: Plus
+        }}
+      />
+
+      <div className="mb-6">
+        <button
+          onClick={() => setShowGenerateModal(true)}
+          className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+        >
+          <DollarSign className="h-5 w-5" />
+          Generate from Time
+        </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
@@ -333,10 +329,8 @@ function CreateInvoiceModal({ customers, onClose, onSuccess }: any) {
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-md w-full p-6">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">Create Invoice</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <Modal isOpen={true} onClose={onClose} title="Create Invoice">
+      <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Customer</label>
             <select
@@ -392,25 +386,24 @@ function CreateInvoiceModal({ customers, onClose, onSuccess }: any) {
               rows={3}
             />
           </div>
-          <div className="flex gap-3 justify-end pt-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={saving}
-              className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 disabled:opacity-50"
-            >
-              {saving ? 'Creating...' : 'Create'}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <div className="flex gap-3 justify-end pt-4">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={saving}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+          >
+            {saving ? 'Creating...' : 'Create'}
+          </button>
+        </div>
+      </form>
+    </Modal>
   );
 }
 
@@ -442,10 +435,8 @@ function GenerateInvoiceModal({ customers, onClose, onSuccess }: any) {
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-md w-full p-6">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">Generate Invoice from Time Entries</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <Modal isOpen={true} onClose={onClose} title="Generate Invoice from Time Entries">
+      <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Customer</label>
             <select
@@ -511,24 +502,23 @@ function GenerateInvoiceModal({ customers, onClose, onSuccess }: any) {
               rows={3}
             />
           </div>
-          <div className="flex gap-3 justify-end pt-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={saving}
-              className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 disabled:opacity-50"
-            >
-              {saving ? 'Generating...' : 'Generate'}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <div className="flex gap-3 justify-end pt-4">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={saving}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+          >
+            {saving ? 'Generating...' : 'Generate'}
+          </button>
+        </div>
+      </form>
+    </Modal>
   );
 }
