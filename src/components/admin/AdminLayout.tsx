@@ -31,7 +31,9 @@ import {
   ListChecks,
   Target,
   Briefcase,
-  Lightbulb
+  Lightbulb,
+  ChevronRight,
+  ChevronDown
 } from 'lucide-react';
 import { getCurrentUser, signOut } from '../../lib/auth';
 import type { AdminUser } from '../../lib/auth';
@@ -42,6 +44,7 @@ import { useLanguage } from '../../contexts/LanguageContext';
 const AdminLayout: React.FC = () => {
   const [user, setUser] = useState<AdminUser | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { language, setLanguage, t } = useLanguage();
@@ -76,6 +79,44 @@ const AdminLayout: React.FC = () => {
       return false;
     }
     return location.pathname.startsWith(path);
+  };
+
+  const isGroupActive = (group: AdminNavGroup) => {
+    return group.items.some(item => isActive(item.path));
+  };
+
+  useEffect(() => {
+    if (!user) return;
+
+    const filteredGroups = ADMIN_NAVIGATION_GROUPED
+      .map(group => ({
+        ...group,
+        items: group.items.filter(item => item.roles.includes(user.role))
+      }))
+      .filter(group => group.roles.includes(user.role) && group.items.length > 0);
+
+    const activeGroup = filteredGroups.find(group => isGroupActive(group));
+
+    if (activeGroup) {
+      const savedExpandedGroup = localStorage.getItem('admin-expanded-group');
+
+      if (savedExpandedGroup && filteredGroups.some(g => g.label === savedExpandedGroup)) {
+        setExpandedGroup(savedExpandedGroup);
+      } else if (!expandedGroup || !filteredGroups.some(g => g.label === expandedGroup)) {
+        setExpandedGroup(activeGroup.label);
+        localStorage.setItem('admin-expanded-group', activeGroup.label);
+      }
+    }
+  }, [location.pathname, user]);
+
+  const toggleGroup = (groupLabel: string) => {
+    const newExpandedGroup = expandedGroup === groupLabel ? null : groupLabel;
+    setExpandedGroup(newExpandedGroup);
+    if (newExpandedGroup) {
+      localStorage.setItem('admin-expanded-group', newExpandedGroup);
+    } else {
+      localStorage.removeItem('admin-expanded-group');
+    }
   };
 
   const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -152,47 +193,69 @@ const AdminLayout: React.FC = () => {
             <nav className="px-3">
               {filteredNavGroups.map((group, groupIndex) => {
                 const groupKey = `admin.nav.${group.label.toLowerCase().replace(/\s+/g, '_').replace(/&/g, '').replace(/__+/g, '_')}`;
+                const isExpanded = expandedGroup === group.label;
+                const isGroupHighlighted = isGroupActive(group);
+
                 return (
-                <div key={group.label} className={groupIndex === 0 ? '' : 'mt-6 pt-6 border-t border-gray-200'}>
-                  <div className="px-3 mb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                    {t(groupKey)}
-                  </div>
-                  <div className="space-y-1">
-                    {group.items.map((item) => {
-                      const Icon = iconMap[item.path] || FileText;
-                      const labelKey = `admin.nav.${item.label.toLowerCase().replace(/\s+/g, '_').replace(/&/g, '').replace(/__+/g, '_')}`;
-                      const translatedLabel = t(labelKey) !== labelKey ? t(labelKey) : item.label;
+                <div key={group.label} className={groupIndex === 0 ? '' : 'mt-4'}>
+                  <button
+                    onClick={() => toggleGroup(group.label)}
+                    className={`w-full flex items-center justify-between px-3 py-2 text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors ${
+                      isGroupHighlighted
+                        ? 'text-primary-700 bg-primary-50'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                    }`}
+                  >
+                    <span>{t(groupKey)}</span>
+                    {isExpanded ? (
+                      <ChevronDown className="h-4 w-4 transition-transform duration-200" />
+                    ) : (
+                      <ChevronRight className="h-4 w-4 transition-transform duration-200" />
+                    )}
+                  </button>
 
-                      if (item.external) {
+                  <div
+                    className={`overflow-hidden transition-all duration-200 ease-in-out ${
+                      isExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
+                    }`}
+                  >
+                    <div className="mt-1 space-y-1 pl-2">
+                      {group.items.map((item) => {
+                        const Icon = iconMap[item.path] || FileText;
+                        const labelKey = `admin.nav.${item.label.toLowerCase().replace(/\s+/g, '_').replace(/&/g, '').replace(/__+/g, '_')}`;
+                        const translatedLabel = t(labelKey) !== labelKey ? t(labelKey) : item.label;
+
+                        if (item.external) {
+                          return (
+                            <a
+                              key={item.path}
+                              href={item.path}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors text-gray-700 hover:bg-gray-50"
+                            >
+                              <Icon className="h-4 w-4 mr-3 flex-shrink-0" />
+                              <span className="truncate">{translatedLabel}</span>
+                            </a>
+                          );
+                        }
+
                         return (
-                          <a
+                          <Link
                             key={item.path}
-                            href={item.path}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors text-gray-700 hover:bg-gray-50"
+                            to={item.path}
+                            className={`flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                              isActive(item.path)
+                                ? 'bg-primary-100 text-primary-700'
+                                : 'text-gray-700 hover:bg-gray-50'
+                            }`}
                           >
-                            <Icon className="h-5 w-5 mr-3" />
-                            {translatedLabel}
-                          </a>
+                            <Icon className="h-4 w-4 mr-3 flex-shrink-0" />
+                            <span className="truncate">{translatedLabel}</span>
+                          </Link>
                         );
-                      }
-
-                      return (
-                        <Link
-                          key={item.path}
-                          to={item.path}
-                          className={`flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
-                            isActive(item.path)
-                              ? 'bg-primary-50 text-primary-700'
-                              : 'text-gray-700 hover:bg-gray-50'
-                          }`}
-                        >
-                          <Icon className="h-5 w-5 mr-3" />
-                          {translatedLabel}
-                        </Link>
-                      );
-                    })}
+                      })}
+                    </div>
                   </div>
                 </div>
               )})}
