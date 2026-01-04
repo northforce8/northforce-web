@@ -272,6 +272,15 @@ export const enterpriseAPI = {
     return data;
   },
 
+  async deleteLeadershipAssessment(id: string): Promise<void> {
+    const { error } = await supabase
+      .from('leadership_assessments')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+  },
+
   async createAssessmentParticipant(participant: Omit<AssessmentParticipant, 'id' | 'created_at' | 'updated_at'>): Promise<AssessmentParticipant> {
     const { data, error } = await supabase
       .from('assessment_participants')

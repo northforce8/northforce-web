@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Users, Plus, Search } from 'lucide-react';
+import { Users, Plus, Search, Edit2, Trash2, AlertTriangle, RefreshCw, CheckCircle } from 'lucide-react';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
 import { enterpriseAPI } from '../../../lib/enterprise-api';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { useLanguage } from '../../../contexts/LanguageContext';
+import { logAdminError } from '../../../lib/admin-error-logger';
 import type { LeadershipAssessment } from '../../../lib/enterprise-types';
 
 export default function LeadershipAssessmentsPage() {
@@ -13,7 +14,12 @@ export default function LeadershipAssessmentsPage() {
   const [assessments, setAssessments] = useState<LeadershipAssessment[]>([]);
   const [customers, setCustomers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [selectedAssessment, setSelectedAssessment] = useState<LeadershipAssessment | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
   const [formData, setFormData] = useState({
     customer_id: '',
     assessment_name: '',
@@ -28,9 +34,17 @@ export default function LeadershipAssessmentsPage() {
     loadData();
   }, []);
 
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => setSuccess(null), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [success]);
+
   const loadData = async () => {
     try {
       setLoading(true);
+      setError(null);
       const [assessmentsData, customersData] = await Promise.all([
         enterpriseAPI.getLeadershipAssessments(),
         partnerPortalApi.getCustomers()
@@ -38,55 +52,163 @@ export default function LeadershipAssessmentsPage() {
       setAssessments(assessmentsData);
       setCustomers(customersData);
     } catch (err) {
-      console.error('Error loading data:', err);
+      const errorId = logAdminError(err as Error, {
+        context: 'LeadershipAssessmentsPage.loadData',
+        action: 'Loading assessments and customers'
+      });
+      console.error(`[${errorId}] Error loading data:`, err);
+      setError('Failed to load assessments. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
+  const resetForm = () => {
+    setFormData({
+      customer_id: '',
+      assessment_name: '',
+      description: '',
+      assessment_type: '360',
+      launch_date: new Date().toISOString().split('T')[0],
+      due_date: '',
+      status: 'draft'
+    });
+    setSelectedAssessment(null);
+  };
+
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setError(null);
       await enterpriseAPI.createLeadershipAssessment({
         ...formData,
         participants_count: 0,
         completed_count: 0
       });
       setShowCreateModal(false);
-      setFormData({
-        customer_id: '',
-        assessment_name: '',
-        description: '',
-        assessment_type: '360',
-        launch_date: new Date().toISOString().split('T')[0],
-        due_date: '',
-        status: 'draft'
-      });
+      resetForm();
+      setSuccess('Leadership assessment created successfully!');
       await loadData();
     } catch (err) {
-      console.error('Error creating assessment:', err);
+      const errorId = logAdminError(err as Error, {
+        context: 'LeadershipAssessmentsPage.handleCreate',
+        action: 'Creating leadership assessment'
+      });
+      console.error(`[${errorId}] Error creating assessment:`, err);
+      setError('Failed to create assessment. Please try again.');
     }
   };
 
+  const handleUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedAssessment) return;
+
+    try {
+      setError(null);
+      await enterpriseAPI.updateLeadershipAssessment(selectedAssessment.id, formData);
+      setShowCreateModal(false);
+      resetForm();
+      setSuccess('Leadership assessment updated successfully!');
+      await loadData();
+    } catch (err) {
+      const errorId = logAdminError(err as Error, {
+        context: 'LeadershipAssessmentsPage.handleUpdate',
+        action: 'Updating leadership assessment'
+      });
+      console.error(`[${errorId}] Error updating assessment:`, err);
+      setError('Failed to update assessment. Please try again.');
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this assessment? This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      setError(null);
+      await enterpriseAPI.deleteLeadershipAssessment(id);
+      setSuccess('Leadership assessment deleted successfully!');
+      await loadData();
+    } catch (err) {
+      const errorId = logAdminError(err as Error, {
+        context: 'LeadershipAssessmentsPage.handleDelete',
+        action: 'Deleting leadership assessment'
+      });
+      console.error(`[${errorId}] Error deleting assessment:`, err);
+      setError('Failed to delete assessment. Please try again.');
+    }
+  };
+
+  const handleEdit = (assessment: LeadershipAssessment) => {
+    setSelectedAssessment(assessment);
+    setFormData({
+      customer_id: assessment.customer_id,
+      assessment_name: assessment.assessment_name,
+      description: assessment.description || '',
+      assessment_type: assessment.assessment_type,
+      launch_date: assessment.launch_date,
+      due_date: assessment.due_date || '',
+      status: assessment.status
+    });
+    setShowCreateModal(true);
+  };
+
+  const filteredAssessments = assessments.filter(assessment => {
+    const matchesSearch = !searchQuery ||
+      assessment.assessment_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      assessment.description?.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesStatus = statusFilter === 'all' || assessment.status === statusFilter;
+
+    return matchesSearch && matchesStatus;
+  });
+
   if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="flex items-center gap-3">
+          <RefreshCw className="h-5 w-5 text-primary-600 animate-spin" />
+          <span className="text-gray-600">Loading assessments...</span>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="space-y-6">
+      {error && (
+        <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+          <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <p className="text-red-800 font-medium">Error</p>
+            <p className="text-red-700 text-sm mt-1">{error}</p>
+          </div>
+        </div>
+      )}
+
+      {success && (
+        <div className="p-4 bg-green-50 border border-green-200 rounded-lg flex items-start gap-3">
+          <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <p className="text-green-800 font-medium">Success</p>
+            <p className="text-green-700 text-sm mt-1">{success}</p>
+          </div>
+        </div>
+      )}
+
       <PageHeader
         title={t('leadership.assessments.title', 'Leadership Assessments')}
-        subtitle={t('leadership.assessments.subtitle', '360-degree leadership development')}
-        icon={<Users className="w-8 h-8" />}
-      >
-        <button
-          onClick={() => setShowCreateModal(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-        >
-          <Plus className="w-5 h-5" />
-          {t('leadership.assessments.create', 'Launch Assessment')}
-        </button>
-      </PageHeader>
+        description={t('leadership.assessments.subtitle', 'Comprehensive 360-degree leadership development and evaluation')}
+        action={{
+          label: t('leadership.assessments.create', 'Launch Assessment'),
+          onClick: () => {
+            resetForm();
+            setShowCreateModal(true);
+          },
+          icon: Plus
+        }}
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card className="p-6">
@@ -114,34 +236,104 @@ export default function LeadershipAssessmentsPage() {
       </div>
 
       <Card className="p-6">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
           <h2 className="text-xl font-semibold">All Assessments</h2>
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <div className="relative flex-1 sm:flex-initial">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search assessments..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full sm:w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              />
+            </div>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            >
+              <option value="all">All Status</option>
+              <option value="draft">Draft</option>
+              <option value="active">Active</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
         </div>
 
-        {assessments.length === 0 ? (
+        {filteredAssessments.length === 0 ? (
           <div className="text-center py-12">
             <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-500">No assessments yet. Launch your first 360-degree assessment.</p>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              {searchQuery || statusFilter !== 'all' ? 'No assessments found' : 'No assessments yet'}
+            </h3>
+            <p className="text-gray-500 mb-4">
+              {searchQuery || statusFilter !== 'all'
+                ? 'Try adjusting your search or filters.'
+                : 'Launch your first 360-degree leadership assessment to get started.'}
+            </p>
+            {!searchQuery && statusFilter === 'all' && (
+              <button
+                onClick={() => {
+                  resetForm();
+                  setShowCreateModal(true);
+                }}
+                className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+              >
+                Launch First Assessment
+              </button>
+            )}
           </div>
         ) : (
           <div className="space-y-4">
-            {assessments.map((assessment) => (
-              <div key={assessment.id} className="border border-gray-200 rounded-lg p-6 hover:border-blue-300 hover:shadow-md transition-all">
+            {filteredAssessments.map((assessment) => (
+              <div key={assessment.id} className="border border-gray-200 rounded-lg p-6 hover:border-primary-300 hover:shadow-md transition-all">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold">{assessment.assessment_name}</h3>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="text-lg font-semibold">{assessment.assessment_name}</h3>
+                      <span className={`px-3 py-1 text-xs font-medium rounded-full ${
+                        assessment.status === 'active' ? 'bg-green-100 text-green-700' :
+                        assessment.status === 'completed' ? 'bg-blue-100 text-blue-700' :
+                        assessment.status === 'cancelled' ? 'bg-red-100 text-red-700' :
+                        'bg-gray-100 text-gray-700'
+                      }`}>
+                        {assessment.status.charAt(0).toUpperCase() + assessment.status.slice(1)}
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-600 mb-2">
                       {(assessment as any).customer?.company_name || 'Unknown Customer'}
                     </p>
                     {assessment.description && (
-                      <p className="text-sm text-gray-700 mt-2">{assessment.description}</p>
+                      <p className="text-sm text-gray-700 mb-3">{assessment.description}</p>
                     )}
-                    <div className="flex items-center gap-4 mt-3 text-sm">
-                      <span>Type: <strong>{assessment.assessment_type}</strong></span>
-                      <span>Participants: <strong>{assessment.participants_count}</strong></span>
-                      <span>Completed: <strong>{assessment.completed_count}</strong></span>
-                      <span className="capitalize">Status: <strong>{assessment.status}</strong></span>
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
+                      <span><strong>Type:</strong> {assessment.assessment_type}</span>
+                      <span><strong>Participants:</strong> {assessment.participants_count}</span>
+                      <span><strong>Completed:</strong> {assessment.completed_count}</span>
+                      <span><strong>Launch Date:</strong> {new Date(assessment.launch_date).toLocaleDateString()}</span>
+                      {assessment.due_date && (
+                        <span><strong>Due Date:</strong> {new Date(assessment.due_date).toLocaleDateString()}</span>
+                      )}
                     </div>
+                  </div>
+                  <div className="flex items-center gap-2 ml-4">
+                    <button
+                      onClick={() => handleEdit(assessment)}
+                      className="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
+                      title="Edit assessment"
+                    >
+                      <Edit2 className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(assessment.id)}
+                      className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                      title="Delete assessment"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
               </div>
@@ -151,17 +343,24 @@ export default function LeadershipAssessmentsPage() {
       </Card>
 
       {showCreateModal && (
-        <Modal isOpen={showCreateModal} onClose={() => setShowCreateModal(false)} title="Launch New Assessment">
-          <form onSubmit={handleCreate} className="space-y-4">
+        <Modal
+          isOpen={showCreateModal}
+          onClose={() => {
+            setShowCreateModal(false);
+            resetForm();
+          }}
+          title={selectedAssessment ? 'Edit Assessment' : 'Launch New Assessment'}
+        >
+          <form onSubmit={selectedAssessment ? handleUpdate : handleCreate} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Customer *</label>
               <select
                 required
                 value={formData.customer_id}
                 onChange={(e) => setFormData({ ...formData, customer_id: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               >
-                <option value="">Select...</option>
+                <option value="">Select Customer...</option>
                 {customers.map((c) => (
                   <option key={c.id} value={c.id}>{c.company_name}</option>
                 ))}
@@ -176,7 +375,18 @@ export default function LeadershipAssessmentsPage() {
                 value={formData.assessment_name}
                 onChange={(e) => setFormData({ ...formData, assessment_name: e.target.value })}
                 placeholder="e.g., Q1 2024 Leadership Assessment"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+              <textarea
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                rows={3}
+                placeholder="Brief description of assessment objectives..."
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               />
             </div>
 
@@ -185,7 +395,7 @@ export default function LeadershipAssessmentsPage() {
               <select
                 value={formData.assessment_type}
                 onChange={(e) => setFormData({ ...formData, assessment_type: e.target.value as any })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               >
                 <option value="self">Self Assessment</option>
                 <option value="180">180° (Self + Manager)</option>
@@ -194,16 +404,56 @@ export default function LeadershipAssessmentsPage() {
               </select>
             </div>
 
-            <div className="flex justify-end gap-3 pt-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Launch Date *</label>
+                <input
+                  type="date"
+                  required
+                  value={formData.launch_date}
+                  onChange={(e) => setFormData({ ...formData, launch_date: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
+                <input
+                  type="date"
+                  value={formData.due_date}
+                  onChange={(e) => setFormData({ ...formData, due_date: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+              <select
+                value={formData.status}
+                onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+              >
+                <option value="draft">Draft</option>
+                <option value="active">Active</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+
+            <div className="flex justify-end gap-3 pt-4 border-t">
               <button
                 type="button"
-                onClick={() => setShowCreateModal(false)}
+                onClick={() => {
+                  setShowCreateModal(false);
+                  resetForm();
+                }}
                 className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
               >
                 Cancel
               </button>
-              <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                Launch Assessment
+              <button type="submit" className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700">
+                {selectedAssessment ? 'Update Assessment' : 'Launch Assessment'}
               </button>
             </div>
           </form>

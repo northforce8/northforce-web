@@ -110,6 +110,14 @@ export default function ADKARPage() {
 
   const stages = ['Awareness', 'Desire', 'Knowledge', 'Ability', 'Reinforcement'];
 
+  const stageGradients = [
+    'bg-gradient-to-br from-blue-400 to-blue-500',
+    'bg-gradient-to-br from-blue-500 to-blue-600',
+    'bg-gradient-to-br from-blue-600 to-blue-700',
+    'bg-gradient-to-br from-indigo-500 to-indigo-600',
+    'bg-gradient-to-br from-indigo-600 to-indigo-700'
+  ];
+
   const filteredInitiatives = initiatives.filter(initiative => {
     if (!searchQuery) return true;
     const search = searchQuery.toLowerCase();
@@ -122,8 +130,11 @@ export default function ADKARPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-gray-500">Loading Change Initiatives...</div>
+      <div className="flex items-center justify-center h-screen">
+        <div className="flex items-center gap-3">
+          <RefreshCw className="h-5 w-5 text-primary-600 animate-spin" />
+          <span className="text-gray-600">Loading Change Initiatives...</span>
+        </div>
       </div>
     );
   }
@@ -158,19 +169,19 @@ export default function ADKARPage() {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Search initiatives..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {stages.map((stage, idx) => (
-          <Card key={stage} className={`p-4 bg-gradient-to-br from-blue-${idx + 4}00 to-blue-${idx + 5}00`}>
-            <p className="text-xs font-medium text-blue-900 mb-2">{stage}</p>
-            <p className="text-2xl font-bold text-blue-900">{initiatives.length}</p>
+          <Card key={stage} className={`p-4 ${stageGradients[idx]}`}>
+            <p className="text-xs font-medium text-white mb-2">{stage}</p>
+            <p className="text-2xl font-bold text-white">{initiatives.length}</p>
           </Card>
         ))}
       </div>
