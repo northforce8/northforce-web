@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Target, Plus, Search, Edit2, Trash2, AlertTriangle, RefreshCw, CheckCircle, TrendingUp } from 'lucide-react';
+import { Target, Plus, Search, Edit2, Trash2, AlertTriangle, RefreshCw, CheckCircle, TrendingUp, Users } from 'lucide-react';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
