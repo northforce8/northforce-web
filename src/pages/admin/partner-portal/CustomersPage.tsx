@@ -58,10 +58,10 @@ const CustomersPage: React.FC = () => {
       console.error('Error loading customers:', error);
       const errorMsg = error instanceof Error ? error.message : String(error);
       if (errorMsg.includes('RLS') || errorMsg.includes('Auth')) {
-        setError('Access denied or session expired. Please log in again.');
+        setError('Åtkomst nekad eller session utgången. Logga in igen.');
         setTimeout(() => window.location.href = '/admin/login', 2000);
       } else {
-        setError(t('admin.error.load_failed'));
+        setError('Kunde inte ladda kunder. Försök igen.');
       }
     } finally {
       setLoading(false);
@@ -87,11 +87,11 @@ const CustomersPage: React.FC = () => {
         contact_phone: '',
         status: 'active',
       });
-      setSuccess('Customer created successfully');
+      setSuccess('Kund skapad');
       await loadData();
     } catch (error) {
       console.error('Error creating customer:', error);
-      setError('Failed to create customer. Please try again.');
+      setError('Kunde inte skapa kund. Försök igen.');
     } finally {
       setSubmitting(false);
     }
@@ -108,25 +108,25 @@ const CustomersPage: React.FC = () => {
       await partnerPortalApi.customers.update(editingCustomer.id, editingCustomer);
       setShowEditModal(false);
       setEditingCustomer(null);
-      setSuccess('Customer updated successfully');
+      setSuccess('Kund uppdaterad');
       await loadData();
     } catch (error) {
       console.error('Error updating customer:', error);
-      setError('Failed to update customer. Please try again.');
+      setError('Kunde inte uppdatera kund. Försök igen.');
     } finally {
       setSubmitting(false);
     }
   };
 
   const handleDeleteCustomer = async (id: string, name: string) => {
-    if (!confirm(`Are you sure you want to delete "${name}"? This will also delete all associated projects and data. This action cannot be undone.`)) {
+    if (!confirm(`Är du säker på att du vill radera "${name}"? Detta raderar även alla associerade projekt och data. Åtgärden kan inte ångras.`)) {
       return;
     }
 
     setError(null);
     try {
       await partnerPortalApi.customers.delete(id);
-      setSuccess('Customer deleted successfully');
+      setSuccess('Kund raderad');
       await loadData();
     } catch (error) {
       console.error('Error deleting customer:', error);
@@ -193,7 +193,7 @@ const CustomersPage: React.FC = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search customers..."
+                placeholder="Sök kunder..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
@@ -206,11 +206,11 @@ const CustomersPage: React.FC = () => {
                 onChange={(e) => setFilterStatus(e.target.value)}
                 className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
               >
-                <option value="all">All Statuses</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-                <option value="pending">Pending</option>
-                <option value="churned">Churned</option>
+                <option value="all">Alla statusar</option>
+                <option value="active">Aktiv</option>
+                <option value="inactive">Inaktiv</option>
+                <option value="pending">Väntande</option>
+                <option value="churned">Avslutad</option>
               </select>
             </div>
           </div>
@@ -219,13 +219,13 @@ const CustomersPage: React.FC = () => {
             {filteredCustomers.length === 0 ? (
               <div className="text-center py-12">
                 <Building2 className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-500 mb-2">No customers found</p>
+                <p className="text-gray-500 mb-2">Inga kunder hittades</p>
                 {isAdminUser && (
                   <button
                     onClick={() => setShowCreateModal(true)}
                     className="text-primary-600 hover:text-primary-800 text-sm font-medium"
                   >
-                    Create your first customer
+                    Skapa din första kund
                   </button>
                 )}
               </div>
@@ -233,17 +233,17 @@ const CustomersPage: React.FC = () => {
               <table className="w-full">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Company</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Industry</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Företag</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Bransch</th>
                     {isAdminUser && (
                       <>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Credits</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Krediter</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">MRR</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Risk</th>
                       </>
                     )}
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Åtgärder</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -299,7 +299,7 @@ const CustomersPage: React.FC = () => {
                                 {customer.overdelivery_risk_level}
                               </span>
                             ) : (
-                              <span className="text-xs text-gray-500">Low</span>
+                              <span className="text-xs text-gray-500">Låg</span>
                             )}
                           </td>
                         </>
@@ -320,7 +320,7 @@ const CustomersPage: React.FC = () => {
                             className="text-primary-600 hover:text-primary-900 text-sm font-medium flex items-center gap-1"
                             title="View details"
                           >
-                            View Details
+                            Visa detaljer
                             <ExternalLink className="h-3 w-3" />
                           </button>
                           {isAdminUser && (
@@ -356,7 +356,7 @@ const CustomersPage: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-900">Add New Customer</h2>
+              <h2 className="text-xl font-semibold text-gray-900">Lägg till ny kund</h2>
             </div>
             <form onSubmit={handleCreateCustomer} className="p-6 space-y-4">
               {error && (
@@ -380,7 +380,7 @@ const CustomersPage: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Industry
+                    Bransch
                   </label>
                   <input
                     type="text"
@@ -391,7 +391,7 @@ const CustomersPage: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Org Number
+                    Org.nummer
                   </label>
                   <input
                     type="text"
@@ -402,7 +402,7 @@ const CustomersPage: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Website
+                    Webbplats
                   </label>
                   <input
                     type="url"
@@ -413,7 +413,7 @@ const CustomersPage: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Contact Name
+                    Kontaktperson
                   </label>
                   <input
                     type="text"
@@ -424,7 +424,7 @@ const CustomersPage: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Contact Email
+                    Kontakt-e-post
                   </label>
                   <input
                     type="email"
@@ -444,7 +444,7 @@ const CustomersPage: React.FC = () => {
                   disabled={submitting}
                   className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors disabled:opacity-50"
                 >
-                  Cancel
+                  Avbryt
                 </button>
                 <button
                   type="submit"
@@ -452,7 +452,7 @@ const CustomersPage: React.FC = () => {
                   className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
                 >
                   {submitting && <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>}
-                  {submitting ? 'Creating...' : 'Create Customer'}
+                  {submitting ? 'Skapar...' : 'Skapa kund'}
                 </button>
               </div>
             </form>
@@ -464,7 +464,7 @@ const CustomersPage: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-900">Edit Customer</h2>
+              <h2 className="text-xl font-semibold text-gray-900">Redigera kund</h2>
             </div>
             <form onSubmit={handleUpdateCustomer} className="p-6 space-y-4">
               {error && (
@@ -476,7 +476,7 @@ const CustomersPage: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Company Name *
+                    Företagsnamn *
                   </label>
                   <input
                     type="text"
@@ -488,7 +488,7 @@ const CustomersPage: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Industry
+                    Bransch
                   </label>
                   <input
                     type="text"
@@ -499,7 +499,7 @@ const CustomersPage: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Org Number
+                    Org.nummer
                   </label>
                   <input
                     type="text"
@@ -510,7 +510,7 @@ const CustomersPage: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Website
+                    Webbplats
                   </label>
                   <input
                     type="url"
@@ -521,7 +521,7 @@ const CustomersPage: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Contact Name
+                    Kontaktperson
                   </label>
                   <input
                     type="text"
@@ -532,7 +532,7 @@ const CustomersPage: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Contact Email
+                    Kontakt-e-post
                   </label>
                   <input
                     type="email"
@@ -550,9 +550,9 @@ const CustomersPage: React.FC = () => {
                     onChange={(e) => setEditingCustomer({ ...editingCustomer, status: e.target.value as any })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                   >
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                    <option value="pending">Pending</option>
+                    <option value="active">Aktiv</option>
+                    <option value="inactive">Inaktiv</option>
+                    <option value="pending">Väntande</option>
                     <option value="churned">Churned</option>
                   </select>
                 </div>
@@ -569,7 +569,7 @@ const CustomersPage: React.FC = () => {
                   disabled={submitting}
                   className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors disabled:opacity-50"
                 >
-                  Cancel
+                  Avbryt
                 </button>
                 <button
                   type="submit"
@@ -577,7 +577,7 @@ const CustomersPage: React.FC = () => {
                   className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
                 >
                   {submitting && <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>}
-                  {submitting ? 'Saving...' : 'Save Changes'}
+                  {submitting ? 'Sparar...' : 'Spara ändringar'}
                 </button>
               </div>
             </form>
