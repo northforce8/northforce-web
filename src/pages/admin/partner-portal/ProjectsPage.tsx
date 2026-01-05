@@ -60,7 +60,13 @@ const ProjectsPage: React.FC = () => {
       setPartners(partnersData);
     } catch (error) {
       console.error('Error loading projects:', error);
-      setError('Failed to load projects. Please try again.');
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      if (errorMsg.includes('RLS') || errorMsg.includes('Auth')) {
+        setError('Access denied or session expired. Please log in again.');
+        setTimeout(() => window.location.href = '/admin/login', 2000);
+      } else {
+        setError('Failed to load projects. Please try again.');
+      }
     } finally {
       setLoading(false);
     }

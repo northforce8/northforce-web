@@ -440,7 +440,10 @@ export const partnerPortalApi = {
         .from('customers')
         .select('*')
         .order('company_name');
-      if (error) throw error;
+      if (error) {
+        console.error('API Error [customers.getAll]:', error);
+        throw new Error(`RLS/Auth: ${error.message}`);
+      }
       return data || [];
     },
 

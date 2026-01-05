@@ -56,7 +56,13 @@ const CustomersPage: React.FC = () => {
       setCustomers(data);
     } catch (error) {
       console.error('Error loading customers:', error);
-      setError(t('admin.error.load_failed'));
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      if (errorMsg.includes('RLS') || errorMsg.includes('Auth')) {
+        setError('Access denied or session expired. Please log in again.');
+        setTimeout(() => window.location.href = '/admin/login', 2000);
+      } else {
+        setError(t('admin.error.load_failed'));
+      }
     } finally {
       setLoading(false);
     }

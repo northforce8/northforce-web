@@ -38,6 +38,7 @@ const EnterpriseDashboard: React.FC = () => {
   const [dashboardMetrics, setDashboardMetrics] = useState<DashboardMetrics | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [errorType, setErrorType] = useState<'Auth' | 'RLS' | 'Network' | 'Mapping' | 'Unknown'>('Unknown');
   const [filterPriority, setFilterPriority] = useState<string>('all');
   const [totalMRR, setTotalMRR] = useState(0);
   const [totalCreditsValue, setTotalCreditsValue] = useState(0);
@@ -55,6 +56,15 @@ const EnterpriseDashboard: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
+      setErrorType('Unknown');
+
+      const user = await getCurrentUser();
+      if (!user) {
+        setErrorType('Auth');
+        setError('Session expired. Please log in again.');
+        return;
+      }
+
       const [customersData, recommendationsData] = await Promise.all([
         partnerPortalApi.customers.getAll(),
         partnerPortalApi.recommendations.getAll({ status: 'active' }),
@@ -131,8 +141,26 @@ const EnterpriseDashboard: React.FC = () => {
         route: '/admin/partner-portal/enterprise',
         action: 'loadDashboard',
       });
-      console.error(`[${errorId}] Error loading dashboard:`, err);
-      setError(err instanceof Error ? err.message : 'Kunde inte ladda Enterprise Dashboard. Försök igen.');
+      console.error(`[${errorId}] Dashboard load error:`, err);
+
+      const errorMsg = err instanceof Error ? err.message : String(err);
+
+      if (errorMsg.includes('RLS') || errorMsg.includes('permission') || errorMsg.includes('policy')) {
+        setErrorType('RLS');
+        setError('Access denied. Your account may not have proper permissions.');
+      } else if (errorMsg.includes('JWT') || errorMsg.includes('auth') || errorMsg.includes('session')) {
+        setErrorType('Auth');
+        setError('Session expired. Please log in again.');
+      } else if (errorMsg.includes('network') || errorMsg.includes('fetch')) {
+        setErrorType('Network');
+        setError('Network error. Please check your connection and try again.');
+      } else if (errorMsg.includes('undefined') || errorMsg.includes('null')) {
+        setErrorType('Mapping');
+        setError('Data structure error. Please contact support.');
+      } else {
+        setErrorType('Unknown');
+        setError('Could not load dashboard. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -192,20 +220,40 @@ const EnterpriseDashboard: React.FC = () => {
   }
 
   if (error) {
+    const isAuthError = errorType === 'Auth';
+    const isRLSError = errorType === 'RLS';
+
     return (
       <div className="p-6 max-w-7xl mx-auto">
         <div className="bg-red-50 border border-red-200 rounded-lg p-6">
           <div className="flex items-start gap-3">
             <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-red-900 mb-2">Fel vid laddning</h3>
+              <h3 className="text-lg font-semibold text-red-900 mb-2">
+                {errorType === 'Auth' ? 'Authentication Error' :
+                 errorType === 'RLS' ? 'Access Error' :
+                 errorType === 'Network' ? 'Network Error' :
+                 errorType === 'Mapping' ? 'Data Error' :
+                 'Loading Error'}
+              </h3>
               <p className="text-red-700 mb-4">{error}</p>
-              <button
-                onClick={loadDashboard}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-              >
-                Försök igen
-              </button>
+              <div className="flex gap-3">
+                {(isAuthError || isRLSError) ? (
+                  <button
+                    onClick={() => window.location.href = '/admin/login'}
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                  >
+                    Log in again
+                  </button>
+                ) : (
+                  <button
+                    onClick={loadDashboard}
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                  >
+                    Try again
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
