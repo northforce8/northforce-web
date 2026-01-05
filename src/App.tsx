@@ -100,6 +100,8 @@ import CustomerGrowthJourneyPage from './pages/customer/CustomerGrowthJourneyPag
 import CustomerLeadershipPage from './pages/customer/CustomerLeadershipPage';
 import CustomerCampaignsPage from './pages/customer/CustomerCampaignsPage';
 import CustomerBusinessHealthPage from './pages/customer/CustomerBusinessHealthPage';
+import EngagementHubPage from './pages/admin/partner-portal/EngagementHubPage';
+import ValueTrackingPage from './pages/admin/partner-portal/ValueTrackingPage';
 
 function App() {
   const location = useLocation();
@@ -161,6 +163,8 @@ function App() {
           <Route index element={<PartnerDashboard />} />
 
           {/* All admin pages as child routes */}
+          <Route path="engagement-hub" element={<EngagementHubPage />} />
+          <Route path="value-tracking" element={<ValueTrackingPage />} />
           <Route path="leads" element={<AdminDashboard />} />
           <Route path="leads/:type/:id" element={<LeadDetailPage />} />
           <Route path="enterprise" element={<EnterpriseDashboard />} />

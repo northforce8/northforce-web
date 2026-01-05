@@ -17,6 +17,8 @@ export const ADMIN_ROUTES = {
 
   // All routes under partner portal
   DASHBOARD: '/admin/partner-portal',
+  ENGAGEMENT_HUB: '/admin/partner-portal/engagement-hub',
+  VALUE_TRACKING: '/admin/partner-portal/value-tracking',
   LEADS: '/admin/partner-portal/leads',
   LEAD_DETAIL: '/admin/partner-portal/leads/:type/:id',
   ENTERPRISE: '/admin/partner-portal/enterprise',
@@ -101,6 +103,8 @@ export const buildContractDetailRoute = (contractId: string) =>
 // Navigation labels (used in menus)
 export const ADMIN_NAV_LABELS = {
   DASHBOARD: 'Dashboard',
+  ENGAGEMENT_HUB: 'Engagement Hub',
+  VALUE_TRACKING: 'Value Tracking',
   LEAD_MANAGEMENT: 'Lead Management',
   ENTERPRISE_INTELLIGENCE: 'Enterprise Dashboard',
   ENTERPRISE_PLANS: 'Capacity Plans',
@@ -164,6 +168,7 @@ export const ADMIN_NAVIGATION_GROUPED: AdminNavGroup[] = [
     roles: ['admin', 'partner'],
     items: [
       { label: 'Partner Portal Dashboard', path: ADMIN_ROUTES.DASHBOARD, roles: ['admin', 'partner'] },
+      { label: ADMIN_NAV_LABELS.ENGAGEMENT_HUB, path: ADMIN_ROUTES.ENGAGEMENT_HUB, roles: ['admin', 'partner'] },
     ]
   },
   {
@@ -217,6 +222,7 @@ export const ADMIN_NAVIGATION_GROUPED: AdminNavGroup[] = [
     label: 'GROWTH & STRATEGY',
     roles: ['admin'],
     items: [
+      { label: ADMIN_NAV_LABELS.VALUE_TRACKING, path: ADMIN_ROUTES.VALUE_TRACKING, roles: ['admin'] },
       { label: ADMIN_NAV_LABELS.GROWTH_PLANS, path: ADMIN_ROUTES.GROWTH_PLANS, roles: ['admin'] },
       { label: ADMIN_NAV_LABELS.BUSINESS_MODELS, path: ADMIN_ROUTES.BUSINESS_MODELS, roles: ['admin'] },
     ]
