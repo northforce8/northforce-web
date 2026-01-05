@@ -58,10 +58,10 @@ const CustomersPage: React.FC = () => {
       console.error('Error loading customers:', error);
       const errorMsg = error instanceof Error ? error.message : String(error);
       if (errorMsg.includes('JWT') || errorMsg.includes('session')) {
-        setError('Session utgången. Logga in igen.');
+        setError(t('admin.error.session_expired_login'));
         setTimeout(() => window.location.href = '/admin-login', 2000);
       } else {
-        setError('Kunde inte ladda kunder. Försök igen.');
+        setError(t('admin.error.load_customers'));
       }
     } finally {
       setLoading(false);
@@ -87,11 +87,11 @@ const CustomersPage: React.FC = () => {
         contact_phone: '',
         status: 'active',
       });
-      setSuccess('Kund skapad');
+      setSuccess(t('admin.success.customer_created'));
       await loadData();
     } catch (error) {
       console.error('Error creating customer:', error);
-      setError('Kunde inte skapa kund. Försök igen.');
+      setError(t('admin.error.create_customer'));
     } finally {
       setSubmitting(false);
     }
@@ -108,11 +108,11 @@ const CustomersPage: React.FC = () => {
       await partnerPortalApi.customers.update(editingCustomer.id, editingCustomer);
       setShowEditModal(false);
       setEditingCustomer(null);
-      setSuccess('Kund uppdaterad');
+      setSuccess(t('admin.success.customer_updated'));
       await loadData();
     } catch (error) {
       console.error('Error updating customer:', error);
-      setError('Kunde inte uppdatera kund. Försök igen.');
+      setError(t('admin.error.update_customer'));
     } finally {
       setSubmitting(false);
     }
@@ -126,7 +126,7 @@ const CustomersPage: React.FC = () => {
     setError(null);
     try {
       await partnerPortalApi.customers.delete(id);
-      setSuccess('Kund raderad');
+      setSuccess(t('admin.success.customer_deleted'));
       await loadData();
     } catch (error) {
       console.error('Error deleting customer:', error);

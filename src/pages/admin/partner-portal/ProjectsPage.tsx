@@ -62,10 +62,10 @@ const ProjectsPage: React.FC = () => {
       console.error('Error loading projects:', error);
       const errorMsg = error instanceof Error ? error.message : String(error);
       if (errorMsg.includes('JWT') || errorMsg.includes('session')) {
-        setError('Session utgången. Logga in igen.');
+        setError(t('admin.error.session_expired_login'));
         setTimeout(() => window.location.href = '/admin-login', 2000);
       } else {
-        setError('Kunde inte ladda projekt. Försök igen.');
+        setError(t('admin.error.load_projects'));
       }
     } finally {
       setLoading(false);
@@ -75,7 +75,7 @@ const ProjectsPage: React.FC = () => {
   const handleCreateProject = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newProject.customer_id) {
-      setError('Välj en kund');
+      setError(t('admin.error.select_customer'));
       return;
     }
 
@@ -99,11 +99,11 @@ const ProjectsPage: React.FC = () => {
         start_date: '',
         target_end_date: '',
       });
-      setSuccess('Projekt skapat');
+      setSuccess(t('admin.success.project_created'));
       await loadData();
     } catch (error) {
       console.error('Error creating project:', error);
-      setError('Kunde inte skapa projekt. Försök igen.');
+      setError(t('admin.error.create_project'));
     } finally {
       setSubmitting(false);
     }
@@ -120,11 +120,11 @@ const ProjectsPage: React.FC = () => {
       await partnerPortalApi.projects.update(editingProject.id, editingProject);
       setShowEditModal(false);
       setEditingProject(null);
-      setSuccess('Projekt uppdaterat');
+      setSuccess(t('admin.success.project_updated'));
       await loadData();
     } catch (error) {
       console.error('Error updating project:', error);
-      setError('Kunde inte uppdatera projekt. Försök igen.');
+      setError(t('admin.error.update_project'));
     } finally {
       setSubmitting(false);
     }
@@ -138,11 +138,11 @@ const ProjectsPage: React.FC = () => {
     setError(null);
     try {
       await partnerPortalApi.projects.delete(id);
-      setSuccess('Projekt raderat');
+      setSuccess(t('admin.success.project_deleted'));
       await loadData();
     } catch (error) {
       console.error('Error deleting project:', error);
-      setError('Kunde inte radera projekt. Försök igen.');
+      setError(t('admin.error.delete_project'));
     }
   };
 
