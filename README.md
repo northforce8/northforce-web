@@ -15,7 +15,7 @@ cp .env.local.example .env.local
 ```
 
 3. Configure your environment variables in `.env.local`:
-   - Set `ADMIN_USER` and `ADMIN_PASS` for admin access
+   - Set Supabase credentials (`VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`)
    - Configure SMTP settings for email notifications (optional)
    - Add booking and integration URLs as needed
 
@@ -26,17 +26,19 @@ npm run dev
 
 ## Admin Access
 
-The admin area is protected with Basic Authentication. Access it at `/admin` using the credentials configured in your environment variables.
+The admin area is protected with Supabase authentication. Access it at `/admin/login` using your Supabase admin credentials.
 
 ### Admin Features
-- Lead management and export
-- System logs and monitoring
-- Configuration management
+- Customer and partner management
+- Project and contract management
+- Time tracking and billing
+- Strategic frameworks (OKR, SWOT, etc.)
+- Lead management and analytics
 
 ### Security Notes
-- Always use strong passwords for admin access
+- Admin users are managed through Supabase with role-based access (admin/partner/customer)
+- All data access is protected by Row Level Security (RLS) policies
 - Keep environment variables secure and never commit them to version control
-- The admin area is automatically protected - no additional setup required
 
 ## Environment Variables
 

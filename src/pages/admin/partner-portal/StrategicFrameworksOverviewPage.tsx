@@ -30,93 +30,93 @@ export default function StrategicFrameworksOverviewPage() {
   const frameworks: Framework[] = [
     {
       id: 'okr',
-      name: 'OKR - Objectives & Key Results',
-      description: 'Set measurable goals and track progress with key results. Align efforts, ensure transparency, and drive accountability.',
+      name: 'OKR - Mål & Nyckelresultat',
+      description: 'Sätt mätbara mål och följ framsteg med nyckelresultat. Samordna insatser, säkerställ transparens och driv ansvarighet.',
       icon: <Target className="w-8 h-8 text-blue-600" />,
       path: ADMIN_ROUTES.OKR,
-      category: 'Goal Setting',
-      benefits: ['Goal Alignment', 'Progress Tracking', 'Transparency']
+      category: 'Målsättning',
+      benefits: ['Målsamordning', 'Framstegsspårning', 'Transparens']
     },
     {
       id: 'swot',
-      name: 'SWOT Analysis',
-      description: 'Assess internal strengths and weaknesses, external opportunities and threats to inform strategic decisions.',
+      name: 'SWOT-analys',
+      description: 'Bedöm interna styrkor och svagheter, externa möjligheter och hot för att informera strategiska beslut.',
       icon: <TrendingUp className="w-8 h-8 text-green-600" />,
       path: ADMIN_ROUTES.SWOT,
-      category: 'Strategic Planning',
-      benefits: ['Strategic Clarity', 'Risk Mitigation', 'Opportunity Discovery']
+      category: 'Strategisk Planering',
+      benefits: ['Strategisk Klarhet', 'Riskhantering', 'Möjlighetsupptäckt']
     },
     {
       id: 'porter',
-      name: "Porter's Five Forces",
-      description: 'Analyze competitive forces in your industry to develop strategies that protect and enhance market position.',
+      name: "Porters Five Forces",
+      description: 'Analysera konkurrenskrafter i er bransch för att utveckla strategier som skyddar och stärker marknadsposition.',
       icon: <Compass className="w-8 h-8 text-purple-600" />,
       path: ADMIN_ROUTES.PORTER,
-      category: 'Market Analysis',
-      benefits: ['Competitive Intelligence', 'Market Positioning', 'Strategic Advantage']
+      category: 'Marknadsanalys',
+      benefits: ['Konkurrensinsikt', 'Marknadspositionering', 'Strategisk Fördel']
     },
     {
       id: 'bmc',
       name: 'Business Model Canvas',
-      description: 'Design and iterate your business model across nine building blocks to ensure a robust and adaptable strategy.',
+      description: 'Designa och iterera er affärsmodell över nio byggstenar för att säkerställa en robust och anpassningsbar strategi.',
       icon: <Layout className="w-8 h-8 text-orange-600" />,
       path: ADMIN_ROUTES.BMC,
-      category: 'Business Strategy',
-      benefits: ['Business Model Design', 'Innovation', 'Strategic Alignment']
+      category: 'Affärsstrategi',
+      benefits: ['Affärsmodelldesign', 'Innovation', 'Strategisk Samordning']
     },
     {
       id: 'bsc',
       name: 'Balanced Scorecard',
-      description: 'Measure organizational performance across financial, customer, internal processes, and learning perspectives.',
+      description: 'Mät organisatorisk prestation över finansiella, kund-, interna process- och lärandeperspektiv.',
       icon: <PieChart className="w-8 h-8 text-teal-600" />,
       path: ADMIN_ROUTES.BSC,
-      category: 'Performance Management',
-      benefits: ['Balanced Performance', 'Strategic Execution', 'KPI Tracking']
+      category: 'Prestationshantering',
+      benefits: ['Balanserad Prestation', 'Strategisk Verkställighet', 'KPI-spårning']
     },
     {
       id: 'adkar',
-      name: 'Change Management (ADKAR)',
-      description: 'Build awareness, desire, knowledge, ability, and reinforcement to drive successful organizational change.',
+      name: 'Förändringsledning (ADKAR)',
+      description: 'Bygg medvetenhet, vilja, kunskap, förmåga och förstärkning för att driva framgångsrik organisatorisk förändring.',
       icon: <RefreshCw className="w-8 h-8 text-indigo-600" />,
       path: ADMIN_ROUTES.ADKAR,
-      category: 'Change Management',
-      benefits: ['Change Success', 'Adoption', 'Sustainability']
+      category: 'Förändringsledning',
+      benefits: ['Förändringsframgång', 'Adoption', 'Hållbarhet']
     },
     {
       id: 'agile',
-      name: 'Agile Transformation',
-      description: 'Implement agile practices to increase adaptability, innovation, and team collaboration.',
+      name: 'Agil Transformation',
+      description: 'Implementera agila metoder för att öka anpassningsförmåga, innovation och teamsamarbete.',
       icon: <Zap className="w-8 h-8 text-yellow-600" />,
       path: ADMIN_ROUTES.AGILE,
-      category: 'Operational Excellence',
-      benefits: ['Agility', 'Faster Delivery', 'Team Empowerment']
+      category: 'Operativ Excellens',
+      benefits: ['Smidighet', 'Snabbare Leverans', 'Teambemyndigande']
     },
     {
       id: 'mckinsey',
-      name: 'McKinsey 7S Framework',
-      description: 'Align seven organizational elements - Strategy, Structure, Systems, Shared Values, Skills, Style, and Staff.',
+      name: 'McKinsey 7S-ramverk',
+      description: 'Samordna sju organisatoriska element - Strategi, Struktur, System, Delade Värderingar, Kompetenser, Stil och Personal.',
       icon: <Network className="w-8 h-8 text-pink-600" />,
       path: ADMIN_ROUTES.MCKINSEY_7S,
-      category: 'Organizational Alignment',
-      benefits: ['Organizational Alignment', 'Change Readiness', 'Performance Optimization']
+      category: 'Organisatorisk Samordning',
+      benefits: ['Organisatorisk Samordning', 'Förändringsberedskap', 'Prestationsoptimering']
     },
     {
       id: 'lean',
-      name: 'Lean Startup Methodology',
-      description: 'Create MVPs and test hypotheses quickly through iterative learning and customer feedback.',
+      name: 'Lean Startup-metodik',
+      description: 'Skapa MVP:er och testa hypoteser snabbt genom iterativt lärande och kundfeedback.',
       icon: <FlaskConical className="w-8 h-8 text-cyan-600" />,
       path: ADMIN_ROUTES.LEAN_STARTUP,
       category: 'Innovation',
-      benefits: ['Rapid Testing', 'Customer Validation', 'Risk Reduction']
+      benefits: ['Snabb Testning', 'Kundvalidering', 'Riskreduktion']
     },
     {
       id: 'design_thinking',
       name: 'Design Thinking',
-      description: 'Use empathy, ideation, and prototyping to create user-centered, innovative solutions.',
+      description: 'Använd empati, idégenerering och prototyper för att skapa användarcentrerade, innovativa lösningar.',
       icon: <Lightbulb className="w-8 h-8 text-amber-600" />,
       path: ADMIN_ROUTES.DESIGN_THINKING,
       category: 'Innovation',
-      benefits: ['User-Centered Design', 'Innovation', 'Problem Solving']
+      benefits: ['Användarcentrerad Design', 'Innovation', 'Problemlösning']
     }
   ];
 
@@ -125,8 +125,8 @@ export default function StrategicFrameworksOverviewPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Strategic Frameworks"
-        description="Enterprise-grade strategic and operational models to drive organizational growth, leadership development, and sustainable transformation."
+        title="Strategiska Ramverk"
+        description="Strategiska och operativa modeller i företagsklass för att driva organisatorisk tillväxt, ledarutveckling och hållbar transformation."
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
@@ -136,7 +136,7 @@ export default function StrategicFrameworksOverviewPage() {
               <Target className="w-6 h-6 text-blue-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Available Frameworks</p>
+              <p className="text-sm text-gray-600">Tillgängliga Ramverk</p>
               <p className="text-2xl font-bold text-gray-900">{frameworks.length}</p>
             </div>
           </div>
@@ -148,7 +148,7 @@ export default function StrategicFrameworksOverviewPage() {
               <Layout className="w-6 h-6 text-green-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Categories</p>
+              <p className="text-sm text-gray-600">Kategorier</p>
               <p className="text-2xl font-bold text-gray-900">{categories.length}</p>
             </div>
           </div>
@@ -160,7 +160,7 @@ export default function StrategicFrameworksOverviewPage() {
               <Lightbulb className="w-6 h-6 text-purple-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Enterprise Ready</p>
+              <p className="text-sm text-gray-600">Företagsklara</p>
               <p className="text-2xl font-bold text-gray-900">100%</p>
             </div>
           </div>
@@ -191,7 +191,7 @@ export default function StrategicFrameworksOverviewPage() {
                       {framework.description}
                     </p>
                     <div className="space-y-2">
-                      <p className="text-xs font-medium text-gray-500 uppercase">Key Benefits</p>
+                      <p className="text-xs font-medium text-gray-500 uppercase">Viktiga Fördelar</p>
                       <div className="flex flex-wrap gap-2">
                         {framework.benefits.map((benefit, idx) => (
                           <span
@@ -216,13 +216,13 @@ export default function StrategicFrameworksOverviewPage() {
             <Lightbulb className="w-6 h-6 text-blue-600" />
           </div>
           <div>
-            <h3 className="font-semibold text-gray-900 mb-2">Enterprise-Grade Strategic Tools</h3>
+            <h3 className="font-semibold text-gray-900 mb-2">Strategiska Verktyg i Företagsklass</h3>
             <p className="text-sm text-gray-600 mb-4">
-              All frameworks are designed to enterprise standards, combining proven methodologies with real-time insights,
-              AI-powered recommendations, and seamless integration with your projects and customer data.
+              Alla ramverk är utformade enligt företagsstandarder och kombinerar beprövade metoder med realtidsinsikter,
+              AI-drivna rekommendationer och sömlös integration med era projekt och kunddata.
             </p>
             <p className="text-xs text-gray-500">
-              Inspired by world-class consulting firms including McKinsey, BCG, Bain, Accenture, and leading technology companies.
+              Inspirerade av världsledande konsultfirmor inklusive McKinsey, BCG, Bain, Accenture och ledande teknikföretag.
             </p>
           </div>
         </div>

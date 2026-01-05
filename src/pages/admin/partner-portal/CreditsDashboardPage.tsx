@@ -133,19 +133,19 @@ const CreditsDashboardPage: React.FC = () => {
 
       if (errorMsg.includes('RLS') || errorMsg.includes('permission') || errorMsg.includes('policy')) {
         setErrorType('RLS');
-        setError('Access denied. Your account may not have proper permissions.');
+        setError('Åtkomst nekad. Ditt konto kanske inte har rätt behörigheter.');
       } else if (errorMsg.includes('JWT') || errorMsg.includes('auth') || errorMsg.includes('session')) {
         setErrorType('Auth');
-        setError('Session expired. Please log in again.');
+        setError('Sessionen har gått ut. Logga in igen.');
       } else if (errorMsg.includes('network') || errorMsg.includes('fetch')) {
         setErrorType('Network');
-        setError('Network error. Please check your connection and try again.');
+        setError('Nätverksfel. Kontrollera din anslutning och försök igen.');
       } else if (errorMsg.includes('undefined') || errorMsg.includes('null')) {
         setErrorType('Mapping');
-        setError('Data structure error. Please contact support.');
+        setError('Datastrukturfel. Kontakta support.');
       } else {
         setErrorType('Unknown');
-        setError('Failed to load credits dashboard. Please try again.');
+        setError('Kunde inte ladda kreditdashboard. Försök igen.');
       }
     } finally {
       setLoading(false);
@@ -201,11 +201,11 @@ const CreditsDashboardPage: React.FC = () => {
             <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
             <div className="flex-1">
               <h3 className="text-lg font-semibold text-red-900 mb-2">
-                {errorType === 'Auth' ? 'Authentication Error' :
-                 errorType === 'RLS' ? 'Access Error' :
-                 errorType === 'Network' ? 'Network Error' :
-                 errorType === 'Mapping' ? 'Data Error' :
-                 'Loading Error'}
+                {errorType === 'Auth' ? 'Autentiseringsfel' :
+                 errorType === 'RLS' ? 'Åtkomstfel' :
+                 errorType === 'Network' ? 'Nätverksfel' :
+                 errorType === 'Mapping' ? 'Datafel' :
+                 'Laddningsfel'}
               </h3>
               <p className="text-red-700 mb-4">{error}</p>
               <div className="flex gap-3">
@@ -214,14 +214,14 @@ const CreditsDashboardPage: React.FC = () => {
                     onClick={() => window.location.href = '/admin/login'}
                     className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                   >
-                    Log in again
+                    Logga in igen
                   </button>
                 ) : (
                   <button
                     onClick={loadDashboard}
                     className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                   >
-                    Try again
+                    Försök igen
                   </button>
                 )}
               </div>
@@ -235,11 +235,11 @@ const CreditsDashboardPage: React.FC = () => {
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <PageHeader
-        title="Credits & Forecasts"
-        description="Monitor credits consumption, burn rate, and capacity utilization"
+        title="Krediter & Prognoser"
+        description="Övervaka kreditkonsumtion, förbrukningshastighet och kapacitetsutnyttjande"
         icon={Coins}
         action={{
-          label: 'Refresh',
+          label: 'Uppdatera',
           onClick: loadDashboard,
           icon: RefreshCw,
         }}
@@ -249,13 +249,13 @@ const CreditsDashboardPage: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <div className="bg-white rounded-lg border border-gray-200 p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">Total Credits Balance</span>
+            <span className="text-sm text-gray-600">Totalt Kreditsaldo</span>
             <Coins className="w-5 h-5 text-primary-600" />
           </div>
           <div className="text-2xl font-bold text-gray-900">
             {totalStats.totalCreditsBalance.toFixed(1)}
           </div>
-          <div className="text-xs text-gray-500 mt-1">Across all customers</div>
+          <div className="text-xs text-gray-500 mt-1">Över alla kunder</div>
         </div>
 
         <div className="bg-white rounded-lg border border-gray-200 p-4">
@@ -266,34 +266,34 @@ const CreditsDashboardPage: React.FC = () => {
           <div className="text-2xl font-bold text-gray-900">
             {(totalStats.totalMRR / 1000).toFixed(0)}k
           </div>
-          <div className="text-xs text-gray-500 mt-1">SEK per month</div>
+          <div className="text-xs text-gray-500 mt-1">SEK per månad</div>
         </div>
 
         <div className="bg-white rounded-lg border border-gray-200 p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">Avg Utilization</span>
+            <span className="text-sm text-gray-600">Genomsnittligt Utnyttjande</span>
             <Activity className="w-5 h-5 text-blue-600" />
           </div>
           <div className="text-2xl font-bold text-gray-900">
             {totalStats.avgUtilization.toFixed(0)}%
           </div>
-          <div className="text-xs text-gray-500 mt-1">This month</div>
+          <div className="text-xs text-gray-500 mt-1">Denna månad</div>
         </div>
 
         <div className="bg-white rounded-lg border border-gray-200 p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">At Risk</span>
+            <span className="text-sm text-gray-600">I Riskzonen</span>
             <AlertTriangle className="w-5 h-5 text-red-600" />
           </div>
           <div className="text-2xl font-bold text-gray-900">{totalStats.criticalCount}</div>
-          <div className="text-xs text-gray-500 mt-1">Critical or high risk</div>
+          <div className="text-xs text-gray-500 mt-1">Kritisk eller hög risk</div>
         </div>
       </div>
 
       {/* AI Burn Rate Forecasts for Critical Customers */}
       {filteredStatuses.slice(0, 3).filter(s => s.riskLevel === 'critical' || s.riskLevel === 'high').length > 0 && (
         <div className="mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">AI Burn Rate Forecasts (Top Risk Customers)</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">AI-prognoser för förbrukningshastighet (Högriskkunder)</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {filteredStatuses
               .slice(0, 3)
@@ -307,7 +307,7 @@ const CreditsDashboardPage: React.FC = () => {
 
       <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold text-gray-900">Customers Overview</h2>
+          <h2 className="text-xl font-bold text-gray-900">Kundöversikt</h2>
           <div className="flex gap-2">
             <button
               onClick={() => setFilterRisk('all')}
@@ -315,7 +315,7 @@ const CreditsDashboardPage: React.FC = () => {
                 filterRisk === 'all' ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              All
+              Alla
             </button>
             <button
               onClick={() => setFilterRisk('critical')}
@@ -325,7 +325,7 @@ const CreditsDashboardPage: React.FC = () => {
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              Critical
+              Kritisk
             </button>
             <button
               onClick={() => setFilterRisk('high')}
@@ -335,7 +335,7 @@ const CreditsDashboardPage: React.FC = () => {
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              High
+              Hög
             </button>
           </div>
         </div>
@@ -364,7 +364,7 @@ const CreditsDashboardPage: React.FC = () => {
 
                   <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-3">
                     <div>
-                      <div className="text-xs text-gray-500 mb-1">Credits Remaining</div>
+                      <div className="text-xs text-gray-500 mb-1">Återstående Krediter</div>
                       <div className="text-lg font-bold text-gray-900 flex items-center gap-1">
                         <Coins className="w-4 h-4 text-primary-600" />
                         {status.creditsRemaining.toFixed(1)}
@@ -385,12 +385,12 @@ const CreditsDashboardPage: React.FC = () => {
                     </div>
 
                     <div>
-                      <div className="text-xs text-gray-500 mb-1">Burn Rate</div>
+                      <div className="text-xs text-gray-500 mb-1">Förbrukningshastighet</div>
                       <div className="text-lg font-bold text-gray-900 flex items-center gap-1">
                         <TrendingDown className="w-4 h-4 text-amber-600" />
                         {status.burnRate.toFixed(1)}/day
                       </div>
-                      <div className="text-xs text-gray-500">{status.daysRemaining} days left</div>
+                      <div className="text-xs text-gray-500">{status.daysRemaining} dagar kvar</div>
                       <div className="text-xs text-amber-600 font-medium mt-1">
                         {formatCurrency(
                           creditsToMoney(
@@ -404,7 +404,7 @@ const CreditsDashboardPage: React.FC = () => {
                     </div>
 
                     <div>
-                      <div className="text-xs text-gray-500 mb-1">Utilization</div>
+                      <div className="text-xs text-gray-500 mb-1">Utnyttjande</div>
                       <div className="text-lg font-bold text-gray-900 flex items-center gap-1">
                         <Target className="w-4 h-4 text-blue-600" />
                         {status.utilizationPercent.toFixed(0)}%
@@ -419,7 +419,7 @@ const CreditsDashboardPage: React.FC = () => {
                     </div>
 
                     <div>
-                      <div className="text-xs text-gray-500 mb-1">Margin</div>
+                      <div className="text-xs text-gray-500 mb-1">Marginal</div>
                       <div className="text-lg font-bold text-gray-900 flex items-center gap-1">
                         <DollarSign className="w-4 h-4 text-green-600" />
                         {status.marginPercent.toFixed(0)}%
@@ -429,12 +429,12 @@ const CreditsDashboardPage: React.FC = () => {
                         {formatCurrency(
                           revenueThisMonth - status.internalCostThisMonth,
                           status.customer.currency_code || 'EUR'
-                        )} profit
+                        )} vinst
                       </div>
                     </div>
 
                     <div>
-                      <div className="text-xs text-gray-500 mb-1">Revenue vs Cost</div>
+                      <div className="text-xs text-gray-500 mb-1">Intäkt vs Kostnad</div>
                       <div className="text-lg font-bold text-green-600">
                         {formatCurrency(
                           creditsToMoney(
@@ -446,7 +446,7 @@ const CreditsDashboardPage: React.FC = () => {
                         )}
                       </div>
                       <div className="text-xs text-gray-500">
-                        Cost: {formatCurrency(status.internalCostThisMonth, status.customer.currency_code || 'EUR')}
+                        Kostnad: {formatCurrency(status.internalCostThisMonth, status.customer.currency_code || 'EUR')}
                       </div>
                     </div>
                   </div>
@@ -456,11 +456,11 @@ const CreditsDashboardPage: React.FC = () => {
                       <div className="flex items-start gap-2">
                         <AlertTriangle className="w-4 h-4 text-red-600 flex-shrink-0 mt-0.5" />
                         <div>
-                          <div className="font-medium text-red-900">Risk Alert</div>
+                          <div className="font-medium text-red-900">Risklarm</div>
                           <div className="text-red-700">
                             {status.creditsRemaining < status.burnRate * 5
-                              ? `Credits depleting fast. Only ${status.daysRemaining} days remaining at current burn rate.`
-                              : `High utilization (${status.utilizationPercent.toFixed(0)}%). Monitor closely to avoid overdelivery.`}
+                              ? `Krediterna tar snabbt slut. Endast ${status.daysRemaining} dagar kvar vid nuvarande förbrukningshastighet.`
+                              : `Högt utnyttjande (${status.utilizationPercent.toFixed(0)}%). Övervaka noga för att undvika överleverans.`}
                           </div>
                         </div>
                       </div>
@@ -472,7 +472,7 @@ const CreditsDashboardPage: React.FC = () => {
                   to={`/admin/partner-portal/customers/${status.customer.id}`}
                   className="ml-4 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 flex items-center gap-2 flex-shrink-0"
                 >
-                  Details
+                  Detaljer
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
@@ -483,7 +483,7 @@ const CreditsDashboardPage: React.FC = () => {
           {filteredStatuses.length === 0 && (
             <div className="text-center py-12">
               <Activity className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-600">No customers found with {filterRisk} risk level</p>
+              <p className="text-gray-600">Inga kunder hittades med {filterRisk === 'critical' ? 'kritisk' : filterRisk === 'high' ? 'hög' : filterRisk} risknivå</p>
             </div>
           )}
         </div>
