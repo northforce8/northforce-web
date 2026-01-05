@@ -262,8 +262,13 @@ export default function InvoicesPage() {
                         <button
                           onClick={async () => {
                             if (confirm('Send this invoice?')) {
-                              await partnerPortalApi.invoices.updateStatus(invoice.id, 'sent');
-                              loadData();
+                              try {
+                                await partnerPortalApi.invoices.updateStatus(invoice.id, 'sent');
+                                await loadData();
+                              } catch (err) {
+                                console.error('Failed to send invoice:', err);
+                                alert('Failed to send invoice. Please try again.');
+                              }
                             }
                           }}
                           className="text-green-600 hover:text-green-900"

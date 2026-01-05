@@ -26,6 +26,7 @@ const PartnerDashboard: React.FC = () => {
   const [recentTimeEntries, setRecentTimeEntries] = useState<TimeEntryWithRelations[]>([]);
   const [recentNotes, setRecentNotes] = useState<NoteWithRelations[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [currentPartner, setCurrentPartner] = useState<Partner | null>(null);
   const [alerts, setAlerts] = useState<Array<{
     id: string;
@@ -46,6 +47,7 @@ const PartnerDashboard: React.FC = () => {
     const loadDashboard = async () => {
       try {
         setLoading(true);
+        setError(null);
         const user = await getCurrentUser();
         const userIsAdmin = await isAdmin();
         setIsAdminUser(userIsAdmin);
@@ -107,8 +109,9 @@ const PartnerDashboard: React.FC = () => {
             setRecentNotes(notes.slice(0, 5));
           }
         }
-      } catch (error) {
-        console.error('Error loading dashboard:', error);
+      } catch (err) {
+        console.error('Error loading dashboard:', err);
+        setError(err instanceof Error ? err.message : 'Failed to load dashboard data. Please try again.');
       } finally {
         setLoading(false);
       }
@@ -217,6 +220,26 @@ const PartnerDashboard: React.FC = () => {
     );
   }
 
+  if (error) {
+    return (
+      <div>
+        <div className="flex items-center justify-center h-screen">
+          <div className="text-center max-w-md">
+            <AlertCircle className="h-12 w-12 text-red-600 mx-auto mb-4" />
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">Failed to Load Dashboard</h2>
+            <p className="text-gray-600 mb-4">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="p-6 max-w-7xl mx-auto">
@@ -303,9 +326,9 @@ const PartnerDashboard: React.FC = () => {
                     <p className="text-xs text-gray-600 mt-1">{t('dashboard.frameworks.swot_status')}</p>
                   </Link>
 
-                  <Link to="/admin/partner-portal/strategic-frameworks/adkar" className="p-4 border border-gray-200 rounded-lg hover:border-purple-500 hover:shadow-md transition-all">
+                  <Link to="/admin/partner-portal/strategic-frameworks/adkar" className="p-4 border border-gray-200 rounded-lg hover:border-primary-500 hover:shadow-md transition-all">
                     <div className="flex items-center gap-3 mb-2">
-                      <RefreshCw className="h-5 w-5 text-purple-600" />
+                      <RefreshCw className="h-5 w-5 text-primary-600" />
                       <span className="font-semibold text-gray-900">{t('dashboard.frameworks.change')}</span>
                     </div>
                     <p className="text-xs text-gray-500 mb-2">{t('dashboard.frameworks.change_subtitle')}</p>

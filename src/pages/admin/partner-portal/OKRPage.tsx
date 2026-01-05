@@ -253,8 +253,8 @@ export default function OKRPage() {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
         <Card className="p-6">
           <div className="flex items-center gap-4">
-            <div className="p-3 bg-blue-100 rounded-lg">
-              <Target className="w-6 h-6 text-blue-600" />
+            <div className="p-3 bg-primary-100 rounded-lg">
+              <Target className="w-6 h-6 text-primary-600" />
             </div>
             <div>
               <p className="text-sm text-gray-600">Total Objectives</p>
@@ -299,8 +299,8 @@ export default function OKRPage() {
 
         <Card className="p-6">
           <div className="flex items-center gap-4">
-            <div className="p-3 bg-purple-100 rounded-lg">
-              <TrendingUp className="w-6 h-6 text-purple-600" />
+            <div className="p-3 bg-accent-cyan/10 rounded-lg">
+              <TrendingUp className="w-6 h-6 text-accent-cyan" />
             </div>
             <div>
               <p className="text-sm text-gray-600">Avg Progress</p>
