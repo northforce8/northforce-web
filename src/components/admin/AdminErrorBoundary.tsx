@@ -69,36 +69,36 @@ class AdminErrorBoundary extends Component<Props, State> {
                 </div>
                 <div>
                   <h1 className="text-2xl font-bold text-gray-900">
-                    Admin Error
+                    Fel uppstod
                   </h1>
                   <p className="text-gray-600 mt-1">
-                    Something went wrong in the admin interface
+                    Något gick fel i administratörsgränssnittet
                   </p>
                 </div>
               </div>
 
               <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
                 <h2 className="text-sm font-semibold text-red-900 mb-2">
-                  Error Details:
+                  Feldetaljer:
                 </h2>
                 <div className="space-y-2">
                   {this.state.errorId && (
                     <div className="text-sm">
-                      <span className="font-medium text-red-900">Error ID:</span>
+                      <span className="font-medium text-red-900">Fel-ID:</span>
                       <span className="ml-2 text-red-700 font-mono font-bold">
                         {this.state.errorId}
                       </span>
                     </div>
                   )}
                   <div className="text-sm">
-                    <span className="font-medium text-red-900">Route:</span>
+                    <span className="font-medium text-red-900">Rutt:</span>
                     <span className="ml-2 text-red-700 font-mono">
                       {this.state.route}
                     </span>
                   </div>
                   {this.state.error && (
                     <div className="text-sm">
-                      <span className="font-medium text-red-900">Message:</span>
+                      <span className="font-medium text-red-900">Meddelande:</span>
                       <span className="ml-2 text-red-700">
                         {this.state.error.message}
                       </span>
@@ -110,7 +110,7 @@ class AdminErrorBoundary extends Component<Props, State> {
               {this.state.errorInfo && (
                 <details className="mb-6">
                   <summary className="cursor-pointer text-sm font-medium text-gray-700 hover:text-gray-900">
-                    Technical Details (Click to expand)
+                    Tekniska detaljer (Klicka för att expandera)
                   </summary>
                   <div className="mt-3 p-4 bg-gray-100 rounded border border-gray-200 overflow-auto max-h-64">
                     <pre className="text-xs text-gray-800 whitespace-pre-wrap font-mono">
@@ -126,21 +126,21 @@ class AdminErrorBoundary extends Component<Props, State> {
                   className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"
                 >
                   <RefreshCw className="h-5 w-5" />
-                  Reload Page
+                  Ladda om sidan
                 </button>
                 <button
                   onClick={this.handleGoHome}
                   className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors font-medium"
                 >
                   <Home className="h-5 w-5" />
-                  Go to Dashboard
+                  Gå till instrumentpanelen
                 </button>
               </div>
 
               <div className="mt-6 pt-6 border-t border-gray-200">
                 <p className="text-sm text-gray-600">
-                  If this error persists, please contact support and include the{' '}
-                  <strong>Error ID</strong> shown above for faster resolution.
+                  Om felet kvarstår, kontakta support och inkludera{' '}
+                  <strong>Fel-ID</strong> ovan för snabbare lösning.
                 </p>
               </div>
             </div>

@@ -4,6 +4,7 @@ import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import type { EnterprisePlan, PlanLevel } from '../../../lib/partner-portal-types';
 import { normalizeArray, normalizeEnterprisePlan } from '../../../lib/data-validators';
 import { logAdminError } from '../../../lib/admin-error-logger';
+import { ContextualHelp } from '../../../components/admin/ContextualHelp';
 
 const EnterprisePlansPage: React.FC = () => {
   const [plans, setPlans] = useState<EnterprisePlan[]>([]);
@@ -108,7 +109,7 @@ const EnterprisePlansPage: React.FC = () => {
   }, [editingPlan, loadPlans]);
 
   const handleDeletePlan = useCallback(async (planId: string) => {
-    if (!confirm('Are you sure you want to delete this plan?')) return;
+    if (!confirm('Är du säker på att du vill radera denna plan?')) return;
 
     try {
       await partnerPortalApi.enterprisePlans.delete(planId);
@@ -156,15 +157,21 @@ const EnterprisePlansPage: React.FC = () => {
     <div className="p-6 max-w-7xl mx-auto">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Capacity Plans</h1>
-          <p className="text-sm text-gray-500 mt-1">Manage subscription plans and pricing</p>
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-bold text-gray-900">Kapacitetsplaner</h1>
+            <ContextualHelp
+              title="Kapacitetsplaner"
+              content="Hantera prenumerationsplaner och prissättning för företag. Definiera krediter per månad, priser och funktioner för varje plannivå."
+            />
+          </div>
+          <p className="text-sm text-gray-500 mt-1">Hantera prenumerationsplaner och prissättning</p>
         </div>
         <button
           onClick={() => setShowCreateModal(true)}
           className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
         >
           <Plus className="h-5 w-5" />
-          Create Plan
+          Skapa plan
         </button>
       </div>
 
@@ -188,22 +195,28 @@ const EnterprisePlansPage: React.FC = () => {
             <Zap className="h-6 w-6 text-blue-600" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Understanding Credits</h3>
+            <div className="flex items-center gap-2 mb-2">
+              <h3 className="text-lg font-semibold text-gray-900">Förstå krediter</h3>
+              <ContextualHelp
+                title="Kreditmodell"
+                content="Krediter är flexibla kapacitetsenheter som kan användas över olika arbetstyper och partners. Varje kredit motsvarar en standardiserad arbetsenhet."
+              />
+            </div>
             <p className="text-sm text-gray-600 mb-3">
-              Credits are the core capacity unit in the NorthForce system. Each credit represents a standardized unit of work that can be consumed across different work types and partners.
+              Krediter är kärnkapacitetsenheten i NorthForce-systemet. Varje kredit representerar en standardiserad arbetsenhet som kan förbrukas över olika arbetstyper och partners.
             </p>
             <div className="space-y-2">
               <div className="flex items-start gap-2">
-                <span className="text-sm font-medium text-gray-700 min-w-[140px]">Credit Value:</span>
-                <span className="text-sm text-gray-600">1 credit ≈ 1,500 SEK (reference value)</span>
+                <span className="text-sm font-medium text-gray-700 min-w-[140px]">Kreditvärde:</span>
+                <span className="text-sm text-gray-600">1 kredit ≈ 1 500 SEK (referensvärde)</span>
               </div>
               <div className="flex items-start gap-2">
-                <span className="text-sm font-medium text-gray-700 min-w-[140px]">Work Multipliers:</span>
-                <span className="text-sm text-gray-600">Different work types consume credits at different rates based on complexity and expertise required</span>
+                <span className="text-sm font-medium text-gray-700 min-w-[140px]">Arbetsmultiplikatorer:</span>
+                <span className="text-sm text-gray-600">Olika arbetstyper förbrukar krediter i olika takt baserat på komplexitet och expertis som krävs</span>
               </div>
               <div className="flex items-start gap-2">
-                <span className="text-sm font-medium text-gray-700 min-w-[140px]">Flexibility:</span>
-                <span className="text-sm text-gray-600">Credits can be allocated across customers, projects, and work types as business priorities shift</span>
+                <span className="text-sm font-medium text-gray-700 min-w-[140px]">Flexibilitet:</span>
+                <span className="text-sm text-gray-600">Krediter kan allokeras över kunder, projekt och arbetstyper när affärsprioriteringar ändras</span>
               </div>
             </div>
           </div>
@@ -226,7 +239,7 @@ const EnterprisePlansPage: React.FC = () => {
                     plan.plan_level
                   )}`}
                 >
-                  {plan.plan_level?.toUpperCase() || '—'}
+                  {plan.plan_level && typeof plan.plan_level === 'string' ? plan.plan_level.toUpperCase() : 'N/A'}
                 </span>
               </div>
               {!plan.is_active && (
@@ -310,12 +323,12 @@ const EnterprisePlansPage: React.FC = () => {
       {plans.length === 0 && (
         <div className="text-center py-12 bg-white rounded-lg shadow">
           <Award className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-          <p className="text-gray-500">No enterprise plans found</p>
+          <p className="text-gray-500">Inga företagsplaner hittades</p>
           <button
             onClick={() => setShowCreateModal(true)}
             className="mt-4 text-primary-600 hover:text-primary-700"
           >
-            Create your first plan
+            Skapa din första plan
           </button>
         </div>
       )}
