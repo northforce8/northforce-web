@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Calendar as CalendarIcon, Newspaper, Users, Star, TrendingUp, Search, Filter } from 'lucide-react';
+import { Mail, Calendar as CalendarIcon, Newspaper, Users, Star, TrendingUp, Search, Filter, AlertTriangle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../../lib/supabase';
 import { buildLeadDetailRoute } from '../../../lib/admin-routes';
@@ -28,6 +28,7 @@ const LeadManagementPage: React.FC = () => {
   const [bookings, setBookings] = useState<Lead[]>([]);
   const [newsletters, setNewsletters] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'all' | 'contact' | 'booking' | 'newsletter'>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -39,10 +40,13 @@ const LeadManagementPage: React.FC = () => {
   const loadLeads = async () => {
     if (!supabase) {
       setLoading(false);
+      setError('Supabase är inte konfigurerat.');
       return;
     }
 
     try {
+      setLoading(true);
+      setError(null);
       const [contactsRes, bookingsRes, newslettersRes] = await Promise.all([
         supabase.from('contact_submissions').select(`
           *,
@@ -79,8 +83,9 @@ const LeadManagementPage: React.FC = () => {
       setContacts((contactsRes.data || []).map(c => ({ ...c, type: 'contact' as const })));
       setBookings((bookingsRes.data || []).map(b => ({ ...b, type: 'booking' as const })));
       setNewsletters((newslettersRes.data || []).map(n => ({ ...n, type: 'newsletter' as const })));
-    } catch (error) {
-      console.error('Error loading leads:', error);
+    } catch (err) {
+      console.error('Error loading leads:', err);
+      setError(err instanceof Error ? err.message : 'Kunde inte ladda leads. Försök igen.');
     } finally {
       setLoading(false);
     }
@@ -137,10 +142,32 @@ const LeadManagementPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="p-6">
-        <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-gray-200 rounded w-1/4"></div>
-          <div className="h-64 bg-gray-200 rounded"></div>
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Laddar leads...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6 max-w-7xl mx-auto">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-red-900 mb-2">Fel vid laddning</h3>
+              <p className="text-red-700 mb-4">{error}</p>
+              <button
+                onClick={loadLeads}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Försök igen
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );

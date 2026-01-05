@@ -36,6 +36,7 @@ const EnterpriseDashboard: React.FC = () => {
   const [forecasts, setForecasts] = useState<CreditsForecast[]>([]);
   const [dashboardMetrics, setDashboardMetrics] = useState<DashboardMetrics | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [filterPriority, setFilterPriority] = useState<string>('all');
   const [totalMRR, setTotalMRR] = useState(0);
   const [totalCreditsValue, setTotalCreditsValue] = useState(0);
@@ -52,6 +53,7 @@ const EnterpriseDashboard: React.FC = () => {
   const loadDashboard = async () => {
     try {
       setLoading(true);
+      setError(null);
       const [customersData, recommendationsData] = await Promise.all([
         partnerPortalApi.customers.getAll(),
         partnerPortalApi.recommendations.getAll({ status: 'active' }),
@@ -123,12 +125,13 @@ const EnterpriseDashboard: React.FC = () => {
       );
       const validForecasts = forecastsData.filter(f => f !== null) as CreditsForecast[];
       setForecasts(validForecasts);
-    } catch (error) {
-      const errorId = logAdminError(error as Error, {
+    } catch (err) {
+      const errorId = logAdminError(err as Error, {
         route: '/admin/partner-portal/enterprise',
         action: 'loadDashboard',
       });
-      console.error(`[${errorId}] Error loading dashboard:`, error);
+      console.error(`[${errorId}] Error loading dashboard:`, err);
+      setError(err instanceof Error ? err.message : 'Kunde inte ladda Enterprise Dashboard. Försök igen.');
     } finally {
       setLoading(false);
     }
@@ -180,7 +183,29 @@ const EnterpriseDashboard: React.FC = () => {
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading intelligence dashboard...</p>
+            <p className="text-gray-600">Laddar Enterprise Dashboard...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6 max-w-7xl mx-auto">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-red-900 mb-2">Fel vid laddning</h3>
+              <p className="text-red-700 mb-4">{error}</p>
+              <button
+                onClick={loadDashboard}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Försök igen
+              </button>
+            </div>
           </div>
         </div>
       </div>

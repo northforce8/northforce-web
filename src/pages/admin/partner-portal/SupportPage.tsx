@@ -11,6 +11,7 @@ import {
   Calendar,
   Filter,
   TrendingUp,
+  AlertTriangle,
 } from 'lucide-react';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { getCurrentUser } from '../../../lib/auth';
@@ -26,6 +27,7 @@ const SupportPage: React.FC = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [partners, setPartners] = useState<Partner[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [filterPriority, setFilterPriority] = useState<string>('all');
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -44,6 +46,7 @@ const SupportPage: React.FC = () => {
   const loadData = async () => {
     try {
       setLoading(true);
+      setError(null);
       const [ticketsData, customersData, partnersData] = await Promise.all([
         partnerPortalApi.supportTickets.getAll(),
         partnerPortalApi.customers.getAll(),
@@ -52,8 +55,9 @@ const SupportPage: React.FC = () => {
       setTickets(ticketsData);
       setCustomers(customersData);
       setPartners(partnersData);
-    } catch (error) {
-      console.error('Error loading support data:', error);
+    } catch (err) {
+      console.error('Error loading support data:', err);
+      setError(err instanceof Error ? err.message : 'Kunde inte ladda supportdata. Försök igen.');
     } finally {
       setLoading(false);
     }
@@ -153,7 +157,29 @@ const SupportPage: React.FC = () => {
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading support tickets...</p>
+            <p className="text-gray-600">Laddar supportärenden...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6 max-w-7xl mx-auto">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-red-900 mb-2">Fel vid laddning</h3>
+              <p className="text-red-700 mb-4">{error}</p>
+              <button
+                onClick={loadData}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Försök igen
+              </button>
+            </div>
           </div>
         </div>
       </div>
