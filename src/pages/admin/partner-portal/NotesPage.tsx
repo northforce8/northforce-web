@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, FileText, Eye, Edit2, Trash2, X, Save, AlertCircle } from 'lucide-react';
+import { Plus, FileText, Eye, Edit2, Trash2, X, Save, AlertCircle, AlertTriangle } from 'lucide-react';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { PAGE_HELP_CONTENT } from '../../../lib/page-help-content';
@@ -18,6 +18,7 @@ const NotesPage: React.FC = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [editingNote, setEditingNote] = useState<NoteWithRelations | null>(null);
   const [viewingNote, setViewingNote] = useState<NoteWithRelations | null>(null);
@@ -41,6 +42,7 @@ const NotesPage: React.FC = () => {
   const loadData = async () => {
     try {
       setLoading(true);
+      setError(null);
       const [notesData, customersData, projectsData] = await Promise.all([
         partnerPortalApi.notes.getAll(),
         partnerPortalApi.customers.getAll(),
@@ -49,9 +51,9 @@ const NotesPage: React.FC = () => {
       setNotes(notesData);
       setCustomers(customersData);
       setProjects(projectsData);
-    } catch (error: any) {
-      console.error('Error loading data:', error);
-      setFormError('Failed to load data. Please refresh the page.');
+    } catch (err: any) {
+      console.error('Error loading data:', err);
+      setError(err instanceof Error ? err.message : 'Kunde inte ladda anteckningar. Försök igen.');
     } finally {
       setLoading(false);
     }
@@ -178,9 +180,32 @@ const NotesPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div>
-        <div className="flex items-center justify-center h-screen">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Laddar anteckningar...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-7xl mx-auto p-6">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-red-900 mb-2">Fel vid laddning</h3>
+              <p className="text-red-700 mb-4">{error}</p>
+              <button
+                onClick={loadData}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Försök igen
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );

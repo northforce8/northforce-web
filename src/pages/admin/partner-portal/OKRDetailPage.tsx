@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Target, Edit2, Trash2 } from 'lucide-react';
+import { ArrowLeft, Target, Edit2, Trash2, AlertTriangle } from 'lucide-react';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
@@ -30,6 +30,7 @@ export default function OKRDetailPage() {
   const navigate = useNavigate();
   const [objective, setObjective] = useState<Objective | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
@@ -48,7 +49,9 @@ export default function OKRDetailPage() {
 
   const loadObjective = async () => {
     try {
-      const { data, error } = await supabase
+      setLoading(true);
+      setError(null);
+      const { data, error: dbError } = await supabase
         .from('okr_objectives')
         .select(`
           *,
@@ -58,7 +61,7 @@ export default function OKRDetailPage() {
         .eq('id', id)
         .single();
 
-      if (error) throw error;
+      if (dbError) throw dbError;
 
       if (data) {
         const objWithCustomer = {
@@ -76,12 +79,13 @@ export default function OKRDetailPage() {
           status: data.status
         });
       }
-    } catch (error) {
-      const errorId = logAdminError(error as Error, {
+    } catch (err) {
+      const errorId = logAdminError(err as Error, {
         context: 'OKRDetailPage.loadObjective',
         action: 'Loading OKR objective detail'
       });
-      console.error(`[${errorId}] Error loading objective:`, error);
+      console.error(`[${errorId}] Error loading objective:`, err);
+      setError(err instanceof Error ? err.message : 'Kunde inte ladda OKR-mål. Försök igen.');
     } finally {
       setLoading(false);
     }
@@ -133,23 +137,50 @@ export default function OKRDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-gray-500">Loading objective...</div>
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Laddar OKR-mål...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-7xl mx-auto p-6">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-red-900 mb-2">Fel vid laddning</h3>
+              <p className="text-red-700 mb-4">{error}</p>
+              <button
+                onClick={loadObjective}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Försök igen
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (!objective) {
     return (
-      <div className="text-center py-12">
-        <Target className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">Objective Not Found</h3>
-        <button
-          onClick={() => navigate('/admin/partner-portal/okr')}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-        >
-          Back to OKRs
-        </button>
+      <div className="max-w-7xl mx-auto p-6">
+        <div className="text-center py-12 bg-yellow-50 border border-yellow-200 rounded-lg">
+          <Target className="w-12 h-12 text-yellow-600 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">OKR-mål hittades inte</h3>
+          <button
+            onClick={() => navigate('/admin/partner-portal/okr')}
+            className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+          >
+            Tillbaka till OKR
+          </button>
+        </div>
       </div>
     );
   }

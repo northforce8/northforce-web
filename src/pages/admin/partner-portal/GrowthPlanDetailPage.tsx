@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, TrendingUp, Target, Plus, Edit2, Trash2 } from 'lucide-react';
+import { ArrowLeft, TrendingUp, Target, Plus, Edit2, Trash2, AlertTriangle } from 'lucide-react';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
@@ -14,6 +14,7 @@ export default function GrowthPlanDetailPage() {
   const { t } = useLanguage();
   const [plan, setPlan] = useState<GrowthPlanWithObjectives | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [showObjectiveModal, setShowObjectiveModal] = useState(false);
   const [objectiveData, setObjectiveData] = useState({
     objective_title: '',
@@ -38,10 +39,12 @@ export default function GrowthPlanDetailPage() {
     if (!planId) return;
     try {
       setLoading(true);
+      setError(null);
       const data = await enterpriseAPI.getGrowthPlanById(planId);
       setPlan(data);
     } catch (err) {
       console.error('Error loading plan:', err);
+      setError(err instanceof Error ? err.message : 'Kunde inte ladda tillväxtplan. Försök igen.');
     } finally {
       setLoading(false);
     }
@@ -79,8 +82,47 @@ export default function GrowthPlanDetailPage() {
     }
   };
 
-  if (loading || !plan) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Laddar tillväxtplan...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-7xl mx-auto p-6">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-red-900 mb-2">Fel vid laddning</h3>
+              <p className="text-red-700 mb-4">{error}</p>
+              <button
+                onClick={loadPlan}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Försök igen
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!plan) {
+    return (
+      <div className="max-w-7xl mx-auto p-6">
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+          <p className="text-yellow-800">Tillväxtplan hittades inte.</p>
+        </div>
+      </div>
+    );
   }
 
   return (

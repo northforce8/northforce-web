@@ -31,6 +31,7 @@ export default function SWOTDetailPage() {
 
   const [analysis, setAnalysis] = useState<SwotAnalysisWithItems | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [activeCategory, setActiveCategory] = useState<'strength' | 'weakness' | 'opportunity' | 'threat' | null>(null);
   const [showItemModal, setShowItemModal] = useState(false);
@@ -51,12 +52,12 @@ export default function SWOTDetailPage() {
 
     try {
       setLoading(true);
+      setError(null);
       const data = await enterpriseAPI.getSwotAnalysisById(id);
       setAnalysis(data);
-    } catch (error) {
-      console.error('Error loading SWOT analysis:', error);
-      showToast('Kunde inte ladda SWOT-analys', 'error');
-      navigate('/admin/swot');
+    } catch (err) {
+      console.error('Error loading SWOT analysis:', err);
+      setError(err instanceof Error ? err.message : 'Kunde inte ladda SWOT-analys. Försök igen.');
     } finally {
       setLoading(false);
     }
@@ -197,13 +198,61 @@ export default function SWOTDetailPage() {
     }
   };
 
-  if (loading || !analysis) {
+  if (loading) {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center h-96">
           <div className="text-center">
-            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-4"></div>
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mb-4"></div>
             <p className="text-gray-600">Laddar SWOT-analys...</p>
+          </div>
+        </div>
+      </AdminLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <AdminLayout>
+        <div className="max-w-7xl mx-auto p-6">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-red-900 mb-2">Fel vid laddning</h3>
+                <p className="text-red-700 mb-4">{error}</p>
+                <button
+                  onClick={loadAnalysis}
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors mr-2"
+                >
+                  Försök igen
+                </button>
+                <button
+                  onClick={() => navigate('/admin/partner-portal/swot')}
+                  className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                >
+                  Tillbaka till översikt
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </AdminLayout>
+    );
+  }
+
+  if (!analysis) {
+    return (
+      <AdminLayout>
+        <div className="flex items-center justify-center h-96">
+          <div className="text-center">
+            <p className="text-gray-600 mb-4">SWOT-analys hittades inte.</p>
+            <button
+              onClick={() => navigate('/admin/partner-portal/swot')}
+              className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+            >
+              Tillbaka till översikt
+            </button>
           </div>
         </div>
       </AdminLayout>
