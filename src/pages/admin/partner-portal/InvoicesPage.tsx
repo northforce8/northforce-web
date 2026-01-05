@@ -58,9 +58,9 @@ export default function InvoicesPage() {
       });
       console.error(`[${errorId}] Error loading data:`, err);
       const errorMsg = err instanceof Error ? err.message : String(err);
-      if (errorMsg.includes('RLS') || errorMsg.includes('Auth')) {
-        setError('Åtkomst nekad eller session utgången. Omdirigerar till login...');
-        setTimeout(() => window.location.href = '/admin/login', 2000);
+      if (errorMsg.includes('JWT') || errorMsg.includes('session')) {
+        setError('Session utgången. Omdirigerar till login...');
+        setTimeout(() => window.location.href = '/admin-login', 2000);
       } else {
         setError(err instanceof Error ? err.message : 'Kunde inte ladda fakturor. Försök igen.');
       }

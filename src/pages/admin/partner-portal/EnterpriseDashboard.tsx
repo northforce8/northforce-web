@@ -238,9 +238,9 @@ const EnterpriseDashboard: React.FC = () => {
               </h3>
               <p className="text-red-700 mb-4">{error}</p>
               <div className="flex gap-3">
-                {(isAuthError || isRLSError) ? (
+                {isAuthError ? (
                   <button
-                    onClick={() => window.location.href = '/admin/login'}
+                    onClick={() => window.location.href = '/admin-login'}
                     className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                   >
                     Logga in igen

@@ -57,9 +57,9 @@ const CustomersPage: React.FC = () => {
     } catch (error) {
       console.error('Error loading customers:', error);
       const errorMsg = error instanceof Error ? error.message : String(error);
-      if (errorMsg.includes('RLS') || errorMsg.includes('Auth')) {
-        setError('Åtkomst nekad eller session utgången. Logga in igen.');
-        setTimeout(() => window.location.href = '/admin/login', 2000);
+      if (errorMsg.includes('JWT') || errorMsg.includes('session')) {
+        setError('Session utgången. Logga in igen.');
+        setTimeout(() => window.location.href = '/admin-login', 2000);
       } else {
         setError('Kunde inte ladda kunder. Försök igen.');
       }
