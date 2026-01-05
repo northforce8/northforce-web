@@ -24,10 +24,10 @@ const AdminLogin = () => {
       if (admin) {
         navigate(ADMIN_ROUTES.DASHBOARD);
       } else {
-        setError('Invalid credentials. Please check your email and password.');
+        setError('Ogiltiga inloggningsuppgifter. Kontrollera din e-post och ditt lösenord.');
       }
     } catch (error) {
-      setError('Login failed. Please try again.');
+      setError('Inloggningen misslyckades. Försök igen.');
       console.error('Login error:', error);
     } finally {
       setIsLoading(false);
@@ -42,8 +42,8 @@ const AdminLogin = () => {
             <div className="bg-primary-600 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
               <Shield className="h-8 w-8" />
             </div>
-            <h1 className="font-heading text-3xl font-black text-gray-900 tracking-tight">Admin Login</h1>
-            <p className="text-gray-600 mt-2">Access NorthForce Admin Panel</p>
+            <h1 className="font-heading text-3xl font-black text-gray-900 tracking-tight">Admin-inloggning</h1>
+            <p className="text-gray-600 mt-2">Åtkomst till NorthForce adminpanel</p>
           </div>
 
           {error && (
@@ -55,7 +55,7 @@ const AdminLogin = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
+                E-postadress
               </label>
               <input
                 type="email"
@@ -70,7 +70,7 @@ const AdminLogin = () => {
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                Password
+                Lösenord
               </label>
               <div className="relative">
                 <input
@@ -80,7 +80,7 @@ const AdminLogin = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600 transition-all"
-                  placeholder="Enter your password"
+                  placeholder="Ange ditt lösenord"
                 />
                 <button
                   type="button"
@@ -101,7 +101,7 @@ const AdminLogin = () => {
               disabled={isLoading}
               className="w-full bg-gradient-to-r from-primary-600 to-primary-800 text-white py-3 rounded-lg hover:shadow-glow transition-all duration-300 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? 'Signing In...' : 'Sign In'}
+              {isLoading ? 'Loggar in...' : 'Logga in'}
             </button>
           </form>
 
@@ -111,10 +111,10 @@ const AdminLogin = () => {
               className="inline-flex items-center gap-2 text-sm text-primary-600 hover:text-primary-700 font-medium transition-colors"
             >
               <Zap className="h-4 w-4" />
-              First time? Run initial setup
+              Första gången? Kör initial konfiguration
             </Link>
             <p className="text-sm text-gray-500">
-              Secure admin access for NorthForce team members only
+              Säker admin-åtkomst endast för NorthForce-teammedlemmar
             </p>
           </div>
         </div>
