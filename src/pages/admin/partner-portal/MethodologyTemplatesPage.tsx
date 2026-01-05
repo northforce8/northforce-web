@@ -20,26 +20,26 @@ export default function MethodologyTemplatesPage() {
   const [success, setSuccess] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     template_name: '',
-    category: 'consulting',
+    category: 'growth' as const,
     description: '',
     typical_duration_weeks: 0,
     typical_credits: 0,
-    deliverables: '',
-    phases: '',
-    success_criteria: '',
-    risks_and_dependencies: '',
-    is_active: true,
+    deliverables: [] as string[],
+    phases: [] as Array<{ name: string; description?: string; duration_weeks?: number; deliverables?: string[] }>,
+    required_competencies: [] as string[],
+    is_public: true,
     usage_count: 0
   });
 
   const categories = [
-    'consulting',
-    'implementation',
-    'training',
-    'assessment',
+    'growth',
+    'leadership',
+    'marketing',
+    'operations',
+    'strategy',
     'transformation',
-    'optimization'
-  ];
+    'general'
+  ] as const;
 
   useEffect(() => {
     loadData();
@@ -76,15 +76,14 @@ export default function MethodologyTemplatesPage() {
       setShowCreateModal(false);
       setFormData({
         template_name: '',
-        category: 'consulting',
+        category: 'growth' as const,
         description: '',
         typical_duration_weeks: 0,
         typical_credits: 0,
-        deliverables: '',
-        phases: '',
-        success_criteria: '',
-        risks_and_dependencies: '',
-        is_active: true,
+        deliverables: [] as string[],
+        phases: [] as Array<{ name: string; description?: string; duration_weeks?: number; deliverables?: string[] }>,
+        required_competencies: [] as string[],
+        is_public: true,
         usage_count: 0
       });
       setSuccess('Methodology template created successfully');
@@ -454,22 +453,22 @@ export default function MethodologyTemplatesPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Deliverables</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Deliverables (comma-separated)</label>
               <textarea
-                value={formData.deliverables}
-                onChange={(e) => setFormData({ ...formData, deliverables: e.target.value })}
-                placeholder="Key deliverables..."
+                value={formData.deliverables.join(', ')}
+                onChange={(e) => setFormData({ ...formData, deliverables: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+                placeholder="Deliverable 1, Deliverable 2, Deliverable 3"
                 rows={2}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Phases</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Required Competencies (comma-separated)</label>
               <textarea
-                value={formData.phases}
-                onChange={(e) => setFormData({ ...formData, phases: e.target.value })}
-                placeholder="Project phases..."
+                value={formData.required_competencies.join(', ')}
+                onChange={(e) => setFormData({ ...formData, required_competencies: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+                placeholder="Strategy, Leadership, Project Management"
                 rows={2}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               />
@@ -478,13 +477,13 @@ export default function MethodologyTemplatesPage() {
             <div className="flex items-center gap-2">
               <input
                 type="checkbox"
-                id="is_active"
-                checked={formData.is_active}
-                onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
+                id="is_public"
+                checked={formData.is_public}
+                onChange={(e) => setFormData({ ...formData, is_public: e.target.checked })}
                 className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
               />
-              <label htmlFor="is_active" className="text-sm text-gray-700">
-                Active template
+              <label htmlFor="is_public" className="text-sm text-gray-700">
+                Public template
               </label>
             </div>
 
@@ -579,16 +578,38 @@ export default function MethodologyTemplatesPage() {
               </div>
             </div>
 
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Deliverables (comma-separated)</label>
+              <textarea
+                value={editingTemplate.deliverables?.join(', ') || ''}
+                onChange={(e) => setEditingTemplate({ ...editingTemplate, deliverables: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+                placeholder="Deliverable 1, Deliverable 2, Deliverable 3"
+                rows={2}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Required Competencies (comma-separated)</label>
+              <textarea
+                value={editingTemplate.required_competencies?.join(', ') || ''}
+                onChange={(e) => setEditingTemplate({ ...editingTemplate, required_competencies: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+                placeholder="Strategy, Leadership, Project Management"
+                rows={2}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+              />
+            </div>
+
             <div className="flex items-center gap-2">
               <input
                 type="checkbox"
-                id="is_active_edit"
-                checked={editingTemplate.is_active}
-                onChange={(e) => setEditingTemplate({ ...editingTemplate, is_active: e.target.checked })}
+                id="is_public_edit"
+                checked={editingTemplate.is_public}
+                onChange={(e) => setEditingTemplate({ ...editingTemplate, is_public: e.target.checked })}
                 className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
               />
-              <label htmlFor="is_active_edit" className="text-sm text-gray-700">
-                Active template
+              <label htmlFor="is_public_edit" className="text-sm text-gray-700">
+                Public template
               </label>
             </div>
 

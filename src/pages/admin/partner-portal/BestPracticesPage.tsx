@@ -26,12 +26,12 @@ export default function BestPracticesPage() {
     description: '',
     detailed_guidance: '',
     when_to_use: '',
+    tools_needed: [] as string[],
     expected_outcomes: '',
-    related_frameworks: '',
-    difficulty_level: 'intermediate' as const,
+    related_competencies: [] as string[],
+    tags: [] as string[],
     is_published: true,
-    view_count: 0,
-    likes_count: 0
+    view_count: 0
   });
 
   const categories = [
@@ -46,8 +46,6 @@ export default function BestPracticesPage() {
     'innovation',
     'customer_success'
   ];
-
-  const difficultyLevels = ['beginner', 'intermediate', 'advanced', 'expert'];
 
   useEffect(() => {
     loadData();
@@ -88,12 +86,12 @@ export default function BestPracticesPage() {
         description: '',
         detailed_guidance: '',
         when_to_use: '',
+        tools_needed: [] as string[],
         expected_outcomes: '',
-        related_frameworks: '',
-        difficulty_level: 'intermediate',
+        related_competencies: [] as string[],
+        tags: [] as string[],
         is_published: true,
-        view_count: 0,
-        likes_count: 0
+        view_count: 0
       });
       setSuccess('Best practice created successfully');
       await loadData();
@@ -425,17 +423,15 @@ export default function BestPracticesPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Difficulty Level *</label>
-                <select
+                <label className="block text-sm font-medium text-gray-700 mb-1">Tags (comma-separated) *</label>
+                <input
+                  type="text"
                   required
-                  value={formData.difficulty_level}
-                  onChange={(e) => setFormData({ ...formData, difficulty_level: e.target.value as any })}
+                  value={formData.tags.join(', ')}
+                  onChange={(e) => setFormData({ ...formData, tags: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+                  placeholder="strategy, planning, execution"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
-                >
-                  {difficultyLevels.map((level) => (
-                    <option key={level} value={level} className="capitalize">{level}</option>
-                  ))}
-                </select>
+                />
               </div>
             </div>
 
@@ -480,6 +476,30 @@ export default function BestPracticesPage() {
                 onChange={(e) => setFormData({ ...formData, expected_outcomes: e.target.value })}
                 placeholder="What results should this practice deliver..."
                 rows={2}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Tools Needed (comma-separated) *</label>
+              <input
+                type="text"
+                required
+                value={formData.tools_needed.join(', ')}
+                onChange={(e) => setFormData({ ...formData, tools_needed: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+                placeholder="Workshop templates, Analysis tools"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Related Competencies (comma-separated) *</label>
+              <input
+                type="text"
+                required
+                value={formData.related_competencies.join(', ')}
+                onChange={(e) => setFormData({ ...formData, related_competencies: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+                placeholder="Strategy, Facilitation, Analysis"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               />
             </div>
@@ -555,17 +575,15 @@ export default function BestPracticesPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Difficulty Level *</label>
-                <select
+                <label className="block text-sm font-medium text-gray-700 mb-1">Tags (comma-separated) *</label>
+                <input
+                  type="text"
                   required
-                  value={editingPractice.difficulty_level}
-                  onChange={(e) => setEditingPractice({ ...editingPractice, difficulty_level: e.target.value as any })}
+                  value={editingPractice.tags?.join(', ') || ''}
+                  onChange={(e) => setEditingPractice({ ...editingPractice, tags: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+                  placeholder="strategy, planning, execution"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
-                >
-                  {difficultyLevels.map((level) => (
-                    <option key={level} value={level} className="capitalize">{level}</option>
-                  ))}
-                </select>
+                />
               </div>
             </div>
 
@@ -576,6 +594,30 @@ export default function BestPracticesPage() {
                 value={editingPractice.description || ''}
                 onChange={(e) => setEditingPractice({ ...editingPractice, description: e.target.value })}
                 rows={3}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Tools Needed (comma-separated) *</label>
+              <input
+                type="text"
+                required
+                value={editingPractice.tools_needed?.join(', ') || ''}
+                onChange={(e) => setEditingPractice({ ...editingPractice, tools_needed: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+                placeholder="Workshop templates, Analysis tools"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Related Competencies (comma-separated) *</label>
+              <input
+                type="text"
+                required
+                value={editingPractice.related_competencies?.join(', ') || ''}
+                onChange={(e) => setEditingPractice({ ...editingPractice, related_competencies: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+                placeholder="Strategy, Facilitation, Analysis"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               />
             </div>
