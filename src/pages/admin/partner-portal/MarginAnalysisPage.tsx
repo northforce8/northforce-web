@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { TrendingUp, TrendingDown, DollarSign, Target, BarChart3, Calendar } from 'lucide-react';
+import { TrendingUp, TrendingDown, DollarSign, Target, BarChart3, Calendar, AlertTriangle } from 'lucide-react';
 import { supabase } from '../../../lib/supabase';
 import { CurrencyDisplay } from '../../../components/admin/CurrencyDisplay';
+import { PageHeader } from '../../../components/admin/PageHeader';
+import { PAGE_HELP_CONTENT } from '../../../lib/page-help-content';
 
 interface MarginAnalysis {
   id: string;
@@ -27,6 +29,7 @@ interface MarginAnalysis {
 const MarginAnalysisPage: React.FC = () => {
   const [analyses, setAnalyses] = useState<MarginAnalysis[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [periodFilter, setPeriodFilter] = useState<string>('current_month');
 
   useEffect(() => {
@@ -35,12 +38,15 @@ const MarginAnalysisPage: React.FC = () => {
 
   const loadMarginAnalysis = async () => {
     if (!supabase) {
+      setError('Databas ej tillgänglig');
       setLoading(false);
       return;
     }
 
     try {
-      const { data, error } = await supabase
+      setLoading(true);
+      setError(null);
+      const { data, error: dbError } = await supabase
         .from('margin_analysis')
         .select(`
           *,
@@ -50,10 +56,11 @@ const MarginAnalysisPage: React.FC = () => {
         .order('analysis_period_start', { ascending: false })
         .limit(50);
 
-      if (error) throw error;
+      if (dbError) throw dbError;
       setAnalyses(data || []);
-    } catch (error) {
-      console.error('Error loading margin analysis:', error);
+    } catch (err) {
+      console.error('Error loading margin analysis:', err);
+      setError(err instanceof Error ? err.message : 'Kunde inte ladda marginalanalys. Försök igen.');
     } finally {
       setLoading(false);
     }
@@ -74,10 +81,34 @@ const MarginAnalysisPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="p-6">
-        <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-gray-200 rounded w-1/4"></div>
-          <div className="h-64 bg-gray-200 rounded"></div>
+      <div className="p-6 max-w-7xl mx-auto">
+        <div className="flex items-center justify-center h-screen">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Laddar marginalanalys...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6 max-w-7xl mx-auto">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-red-900 mb-2">Fel vid laddning</h3>
+              <p className="text-red-700 mb-4">{error}</p>
+              <button
+                onClick={loadMarginAnalysis}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Försök igen
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -85,10 +116,12 @@ const MarginAnalysisPage: React.FC = () => {
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Margin Analysis</h1>
-        <p className="text-sm text-gray-500 mt-1">Track profitability across customers and projects</p>
-      </div>
+      <PageHeader
+        title="Marginalanalys"
+        description="Spåra lönsamhet per kund och projekt"
+        icon={BarChart3}
+        help={PAGE_HELP_CONTENT.marginAnalysis}
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="bg-white rounded-lg border border-gray-200 p-6">
@@ -124,7 +157,7 @@ const MarginAnalysisPage: React.FC = () => {
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-medium text-gray-600">Avg Margin %</h3>
-            <Target className="h-5 w-5 text-purple-500" />
+            <Target className="h-5 w-5 text-primary-600" />
           </div>
           <p className="text-2xl font-bold text-gray-900">
             {avgMarginPercentage.toFixed(1)}%

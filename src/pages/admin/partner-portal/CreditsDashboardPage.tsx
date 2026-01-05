@@ -35,6 +35,7 @@ interface CustomerCreditsStatus {
 const CreditsDashboardPage: React.FC = () => {
   const [customersStatus, setCustomersStatus] = useState<CustomerCreditsStatus[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [filterRisk, setFilterRisk] = useState<string>('all');
   const [totalStats, setTotalStats] = useState({
     totalCreditsBalance: 0,
@@ -50,6 +51,7 @@ const CreditsDashboardPage: React.FC = () => {
   const loadDashboard = async () => {
     try {
       setLoading(true);
+      setError(null);
       const customers = await partnerPortalApi.customers.getAll();
 
       const statusPromises = customers.map(async (customer) => {
@@ -123,8 +125,9 @@ const CreditsDashboardPage: React.FC = () => {
         criticalCount: statuses.filter((s) => s.riskLevel === 'critical' || s.riskLevel === 'high').length,
       };
       setTotalStats(stats);
-    } catch (error) {
-      console.error('Error loading credits dashboard:', error);
+    } catch (err) {
+      console.error('Error loading credits dashboard:', err);
+      setError(err instanceof Error ? err.message : 'Failed to load credits dashboard. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -162,6 +165,28 @@ const CreditsDashboardPage: React.FC = () => {
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
             <p className="text-gray-600">Loading credits dashboard...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6 max-w-7xl mx-auto">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-red-900 mb-2">Fel vid laddning</h3>
+              <p className="text-red-700 mb-4">{error}</p>
+              <button
+                onClick={loadDashboard}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Försök igen
+              </button>
+            </div>
           </div>
         </div>
       </div>
