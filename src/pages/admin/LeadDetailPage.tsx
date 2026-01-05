@@ -93,7 +93,7 @@ const LeadDetailPage = () => {
       setCustomers(customersData);
     } catch (error) {
       console.error('Error loading lead details:', error);
-      showMessage('error', 'Failed to load lead details');
+      showMessage('error', 'Kunde inte ladda lead-detaljer');
     } finally {
       setIsLoading(false);
     }
@@ -114,7 +114,7 @@ const LeadDetailPage = () => {
       showMessage('success', 'Status updated successfully');
     } catch (error) {
       console.error('Error updating status:', error);
-      showMessage('error', 'Failed to update status');
+      showMessage('error', 'Kunde inte uppdatera status');
     } finally {
       setIsSaving(false);
     }
@@ -141,7 +141,7 @@ const LeadDetailPage = () => {
       showMessage('success', 'Note added successfully');
     } catch (error) {
       console.error('Error adding note:', error);
-      showMessage('error', 'Failed to add note');
+      showMessage('error', 'Kunde inte lägga till anteckning');
     } finally {
       setIsSaving(false);
     }
@@ -169,7 +169,7 @@ const LeadDetailPage = () => {
       showMessage('success', 'Lead linked to customer successfully');
     } catch (error) {
       console.error('Error linking to customer:', error);
-      showMessage('error', 'Failed to link to customer');
+      showMessage('error', 'Kunde inte länka till kund');
     } finally {
       setIsSaving(false);
     }
@@ -196,7 +196,7 @@ const LeadDetailPage = () => {
       showMessage('success', 'Lead classified successfully');
     } catch (error) {
       console.error('Error classifying lead:', error);
-      showMessage('error', 'Failed to classify lead');
+      showMessage('error', 'Kunde inte klassificera lead');
     } finally {
       setIsSaving(false);
     }
@@ -207,7 +207,7 @@ const LeadDetailPage = () => {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading lead details...</p>
+          <p className="text-gray-600">Laddar leaddetaljer...</p>
         </div>
       </div>
     );

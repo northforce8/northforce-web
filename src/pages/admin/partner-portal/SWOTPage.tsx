@@ -83,7 +83,7 @@ export default function SWOTPage() {
     } catch (err) {
       const errorId = logAdminError(err as Error, {
         context: 'SWOTPage.loadData',
-        action: 'Loading SWOT analyses'
+        action: 'Laddar SWOT-analyser'
       });
       console.error(`[${errorId}] Error loading data:`, err);
       setError('Kunde inte ladda data. Försök igen.');

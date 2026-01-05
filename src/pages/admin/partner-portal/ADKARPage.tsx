@@ -45,7 +45,7 @@ export default function ADKARPage() {
     } catch (err) {
       const errorId = logAdminError(err as Error, {
         context: 'ADKARPage.loadData',
-        action: 'Loading change initiatives'
+        action: 'Laddar förändringsinitiativ'
       });
       console.error(`[${errorId}] Error loading data:`, err);
       setError('Kunde inte ladda data. Försök igen.');

@@ -170,7 +170,7 @@ const CustomerDetailPage: React.FC = () => {
       await loadData();
     } catch (error) {
       console.error('Error updating field:', error);
-      setError(`Failed to update ${fieldName.replace(/_/g, ' ')}. Please try again.`);
+      setError(`Kunde inte uppdatera ${fieldName.replace(/_/g, ' ')}. Försök igen.`);
     } finally {
       setSubmitting(false);
     }
@@ -210,7 +210,7 @@ const CustomerDetailPage: React.FC = () => {
       await loadData();
     } catch (error) {
       console.error('Error updating credits:', error);
-      setError('Failed to update credits. Please try again.');
+      setError('Kunde inte uppdatera krediter. Försök igen.');
     } finally {
       setSubmitting(false);
     }
@@ -247,7 +247,7 @@ const CustomerDetailPage: React.FC = () => {
       await loadData();
     } catch (error) {
       console.error('Error creating project:', error);
-      setError('Failed to create project. Please try again.');
+      setError('Kunde inte skapa projekt. Försök igen.');
     } finally {
       setSubmitting(false);
     }
@@ -278,7 +278,7 @@ const CustomerDetailPage: React.FC = () => {
       await loadData();
     } catch (error) {
       console.error('Error creating note:', error);
-      setError('Failed to create note. Please try again.');
+      setError('Kunde inte skapa anteckning. Försök igen.');
     } finally {
       setSubmitting(false);
     }
@@ -1495,7 +1495,7 @@ const CustomerDetailPage: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-gray-900">Add New Project</h2>
+              <h2 className="text-xl font-semibold text-gray-900">Lägg till nytt projekt</h2>
               <button onClick={() => setShowAddProjectModal(false)} className="text-gray-400 hover:text-gray-600">
                 <X className="h-5 w-5" />
               </button>
@@ -1622,14 +1622,14 @@ const CustomerDetailPage: React.FC = () => {
                   disabled={submitting}
                   className="flex-1 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50"
                 >
-                  {submitting ? 'Creating...' : 'Create Project'}
+                  {submitting ? 'Skapar...' : 'Skapa projekt'}
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowAddProjectModal(false)}
                   className="flex-1 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
                 >
-                  Cancel
+                  Avbryt
                 </button>
               </div>
             </form>
@@ -1641,7 +1641,7 @@ const CustomerDetailPage: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-lg w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-gray-900">Add Note</h2>
+              <h2 className="text-xl font-semibold text-gray-900">Lägg till anteckning</h2>
               <button onClick={() => setShowAddNoteModal(false)} className="text-gray-400 hover:text-gray-600">
                 <X className="h-5 w-5" />
               </button>

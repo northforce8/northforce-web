@@ -308,7 +308,7 @@ export default function InvoicesPage() {
                                 await partnerPortalApi.invoices.updateStatus(invoice.id, 'sent');
                                 await loadData();
                               } catch (err) {
-                                console.error('Failed to send invoice:', err);
+                                console.error('Kunde inte skicka faktura:', err);
                                 alert('Kunde inte skicka faktura. Försök igen.');
                               }
                             }

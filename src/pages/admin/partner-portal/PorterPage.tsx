@@ -55,7 +55,7 @@ export default function PorterPage() {
     } catch (err) {
       const errorId = logAdminError(err as Error, {
         context: 'PorterPage.loadData',
-        action: 'Loading Porter analyses'
+        action: 'Laddar Porter-analyser'
       });
       console.error(`[${errorId}] Error loading data:`, err);
       setError('Kunde inte ladda data. Vänligen försök igen.');

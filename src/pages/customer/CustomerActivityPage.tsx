@@ -81,7 +81,7 @@ const CustomerActivityPage: React.FC = () => {
 
       setTimeEntries(formattedEntries);
     } catch (error) {
-      console.error('Failed to load activity:', error);
+      console.error('Kunde inte ladda aktivitet:', error);
     } finally {
       setLoading(false);
     }

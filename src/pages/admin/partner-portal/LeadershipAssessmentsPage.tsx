@@ -54,7 +54,7 @@ export default function LeadershipAssessmentsPage() {
     } catch (err) {
       const errorId = logAdminError(err as Error, {
         context: 'LeadershipAssessmentsPage.loadData',
-        action: 'Loading assessments and customers'
+        action: 'Laddar bedömningar och kunder'
       });
       console.error(`[${errorId}] Error loading data:`, err);
       setError('Kunde inte ladda bedömningar. Försök igen.');

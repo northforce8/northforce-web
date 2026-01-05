@@ -98,7 +98,7 @@ export default function OKRPage() {
     } catch (err) {
       const errorId = logAdminError(err as Error, {
         context: 'OKRPage.loadData',
-        action: 'Loading OKR objectives'
+        action: 'Laddar OKR-mål'
       });
       console.error(`[${errorId}] Error loading data:`, err);
       setError(err instanceof Error ? err.message : 'Kunde inte ladda OKR-mål. Försök igen.');

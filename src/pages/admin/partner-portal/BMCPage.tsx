@@ -36,7 +36,7 @@ export default function BMCPage() {
     } catch (err) {
       const errorId = logAdminError(err as Error, {
         context: 'BMCPage.loadData',
-        action: 'Loading business model canvases'
+        action: 'Laddar business model canvases'
       });
       console.error(`[${errorId}] Error loading data:`, err);
       setError('Kunde inte ladda data. Vänligen försök igen.');

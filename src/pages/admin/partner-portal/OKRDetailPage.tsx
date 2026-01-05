@@ -82,7 +82,7 @@ export default function OKRDetailPage() {
     } catch (err) {
       const errorId = logAdminError(err as Error, {
         context: 'OKRDetailPage.loadObjective',
-        action: 'Loading OKR objective detail'
+        action: 'Laddar OKR-detaljer'
       });
       console.error(`[${errorId}] Error loading objective:`, err);
       setError(err instanceof Error ? err.message : 'Kunde inte ladda OKR-mål. Försök igen.');

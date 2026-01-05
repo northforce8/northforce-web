@@ -56,7 +56,7 @@ export default function MarketingCampaignsPage() {
     } catch (err) {
       const errorId = logAdminError(err as Error, {
         context: 'MarketingCampaignsPage.loadData',
-        action: 'Loading campaigns and customers'
+        action: 'Laddar kampanjer och kunder'
       });
       console.error(`[${errorId}] Error loading data:`, err);
       setError('Kunde inte ladda kampanjer. Försök igen.');

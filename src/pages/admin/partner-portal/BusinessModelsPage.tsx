@@ -125,7 +125,7 @@ export default function BusinessModelsPage() {
   };
 
   const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`Are you sure you want to delete "${name}"? This action cannot be undone.`)) {
+    if (!confirm(`Är du säker på att du vill radera "${name}"? Detta kan inte ångras.`)) {
       return;
     }
 
@@ -157,7 +157,7 @@ export default function BusinessModelsPage() {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading business models...</p>
+          <p className="text-gray-600">Laddar affärsmodeller...</p>
         </div>
       </div>
     );
@@ -166,31 +166,31 @@ export default function BusinessModelsPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Business Models"
-        description="Design, document, and iterate on business models using the Business Model Canvas framework"
+        title="Affärsmodeller"
+        description="Utforma, dokumentera och iterera affärsmodeller med Business Model Canvas"
         icon={<Briefcase className="w-8 h-8" />}
         help={{
-          purpose: 'Business Models provides a structured approach to designing and documenting business strategies using the proven Business Model Canvas framework. Track multiple versions, collaborate with customers, and ensure strategic alignment.',
+          purpose: 'Affärsmodeller erbjuder ett strukturerat tillvägagångssätt för att utforma och dokumentera affärsstrategier med det beprövade Business Model Canvas-ramverket. Spåra flera versioner, samarbeta med kunder och säkerställ strategisk anpassning.',
           usage: [
-            'Document business models for customer engagements',
-            'Create and manage multiple versions of business models',
-            'Analyze all nine building blocks of the canvas',
-            'Track current vs. historical versions',
-            'Collaborate on business model iterations with customers',
-            'Export models for presentations and strategic planning'
+            'Dokumentera affärsmodeller för kundengagemang',
+            'Skapa och hantera flera versioner av affärsmodeller',
+            'Analysera alla nio byggstenar i canvas',
+            'Spåra nuvarande vs. historiska versioner',
+            'Samarbeta om affärsmodelliterationer med kunder',
+            'Exportera modeller för presentationer och strategisk planering'
           ],
           concepts: [
             {
               term: 'Business Model Canvas',
-              definition: 'A strategic management template for developing new business models or documenting existing ones, covering 9 key areas: Value Proposition, Customer Segments, Channels, Customer Relationships, Revenue Streams, Key Resources, Key Activities, Key Partnerships, and Cost Structure.'
+              definition: 'En strategisk hanteringsmall för att utveckla nya affärsmodeller eller dokumentera befintliga, som täcker 9 nyckelområden: Värdeerbjudande, Kundsegment, Kanaler, Kundrelationer, Intäktsströmmar, Nyckelresurser, Nyckelaktiviteter, Nyckelpartnerskap och Kostnadsstruktur.'
             },
             {
-              term: 'Version Management',
-              definition: 'Track iterations of business models over time. Mark the current version and maintain historical records of strategic evolution.'
+              term: 'Versionshantering',
+              definition: 'Spåra iterationer av affärsmodeller över tid. Markera den aktuella versionen och behåll historiska poster över strategisk utveckling.'
             },
             {
-              term: 'Strategic Alignment',
-              definition: 'Ensure all elements of the business model work together cohesively to deliver value and achieve sustainable competitive advantage.'
+              term: 'Strategisk anpassning',
+              definition: 'Säkerställ att alla element i affärsmodellen arbetar tillsammans sammanhållet för att leverera värde och uppnå hållbar konkurrensfördel.'
             }
           ]
         }}
@@ -200,7 +200,7 @@ export default function BusinessModelsPage() {
           className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
         >
           <Plus className="w-5 h-5" />
-          Create Business Model
+          Skapa affärsmodell
         </button>
       </PageHeader>
 
@@ -223,7 +223,7 @@ export default function BusinessModelsPage() {
               <Briefcase className="w-6 h-6 text-blue-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Total Models</p>
+              <p className="text-sm text-gray-600">Totala modeller</p>
               <p className="text-2xl font-bold text-gray-900">{models.length}</p>
             </div>
           </div>
@@ -235,7 +235,7 @@ export default function BusinessModelsPage() {
               <Briefcase className="w-6 h-6 text-green-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Current Versions</p>
+              <p className="text-sm text-gray-600">Aktuella versioner</p>
               <p className="text-2xl font-bold text-gray-900">
                 {models.filter(m => m.is_current).length}
               </p>
@@ -249,7 +249,7 @@ export default function BusinessModelsPage() {
               <Briefcase className="w-6 h-6 text-purple-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Customers</p>
+              <p className="text-sm text-gray-600">Kunder</p>
               <p className="text-2xl font-bold text-gray-900">
                 {new Set(models.map(m => m.customer_id)).size}
               </p>
@@ -264,7 +264,7 @@ export default function BusinessModelsPage() {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
             <input
               type="text"
-              placeholder="Search business models..."
+              placeholder="Sök affärsmodeller..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
@@ -277,7 +277,7 @@ export default function BusinessModelsPage() {
               onChange={(e) => setFilterCustomer(e.target.value)}
               className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
             >
-              <option value="all">All Customers</option>
+              <option value="all">Alla kunder</option>
               {customers.map((c) => (
                 <option key={c.id} value={c.id}>{c.company_name}</option>
               ))}
@@ -285,16 +285,16 @@ export default function BusinessModelsPage() {
           </div>
         </div>
 
-        <h2 className="text-xl font-semibold mb-4">All Business Models</h2>
+        <h2 className="text-xl font-semibold mb-4">Alla affärsmodeller</h2>
         {filteredModels.length === 0 ? (
           <div className="text-center py-12">
             <Briefcase className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-500 mb-2">No business models found</p>
+            <p className="text-gray-500 mb-2">Inga affärsmodeller hittades</p>
             <button
               onClick={() => setShowCreateModal(true)}
               className="text-primary-600 hover:text-primary-800 text-sm font-medium"
             >
-              Create your first business model
+              Skapa din första affärsmodell
             </button>
           </div>
         ) : (
@@ -309,7 +309,7 @@ export default function BusinessModelsPage() {
                         <h3 className="text-lg font-semibold">{model.model_name}</h3>
                         {model.is_current && (
                           <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded">
-                            Current
+                            Aktuell
                           </span>
                         )}
                         <span className="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded">
@@ -317,7 +317,7 @@ export default function BusinessModelsPage() {
                         </span>
                       </div>
                       <p className="text-sm text-gray-600 mb-2">
-                        {customer?.company_name || 'Unknown Customer'}
+                        {customer?.company_name || 'Okänd kund'}
                       </p>
                       {model.value_proposition && (
                         <p className="text-sm text-gray-700 mb-3">{model.value_proposition}</p>
@@ -325,19 +325,19 @@ export default function BusinessModelsPage() {
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
                         {model.customer_segments && (
                           <div className="p-2 bg-blue-50 rounded">
-                            <p className="font-medium text-blue-900">Customer Segments</p>
+                            <p className="font-medium text-blue-900">Kundsegment</p>
                             <p className="text-blue-700 text-xs mt-1 truncate">{model.customer_segments}</p>
                           </div>
                         )}
                         {model.revenue_streams && (
                           <div className="p-2 bg-green-50 rounded">
-                            <p className="font-medium text-green-900">Revenue Streams</p>
+                            <p className="font-medium text-green-900">Intäktsströmmar</p>
                             <p className="text-green-700 text-xs mt-1 truncate">{model.revenue_streams}</p>
                           </div>
                         )}
                         {model.channels && (
                           <div className="p-2 bg-purple-50 rounded">
-                            <p className="font-medium text-purple-900">Channels</p>
+                            <p className="font-medium text-purple-900">Kanaler</p>
                             <p className="text-purple-700 text-xs mt-1 truncate">{model.channels}</p>
                           </div>
                         )}
@@ -347,14 +347,14 @@ export default function BusinessModelsPage() {
                       <button
                         onClick={() => openEditModal(model)}
                         className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded transition-colors"
-                        title="Edit"
+                        title="Redigera"
                       >
                         <Edit2 className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => handleDelete(model.id, model.model_name)}
                         className="p-2 text-red-600 hover:text-red-900 hover:bg-red-50 rounded transition-colors"
-                        title="Delete"
+                        title="Radera"
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -368,7 +368,7 @@ export default function BusinessModelsPage() {
       </Card>
 
       {showCreateModal && (
-        <Modal isOpen={showCreateModal} onClose={() => setShowCreateModal(false)} title="Create Business Model">
+        <Modal isOpen={showCreateModal} onClose={() => setShowCreateModal(false)} title="Skapa affärsmodell">
           <form onSubmit={handleCreate} className="space-y-4">
             {error && (
               <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
@@ -377,14 +377,14 @@ export default function BusinessModelsPage() {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Customer *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Kund *</label>
               <select
                 required
                 value={formData.customer_id}
                 onChange={(e) => setFormData({ ...formData, customer_id: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               >
-                <option value="">Select customer...</option>
+                <option value="">Välj kund...</option>
                 {customers.map((c) => (
                   <option key={c.id} value={c.id}>{c.company_name}</option>
                 ))}
@@ -392,24 +392,24 @@ export default function BusinessModelsPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Model Name *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Modellnamn *</label>
               <input
                 type="text"
                 required
                 value={formData.model_name}
                 onChange={(e) => setFormData({ ...formData, model_name: e.target.value })}
-                placeholder="e.g., Q1 2024 Business Model"
+                placeholder="t.ex. Q1 2024 Affärsmodell"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Value Proposition *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Värdeerbjudande *</label>
               <textarea
                 required
                 value={formData.value_proposition}
                 onChange={(e) => setFormData({ ...formData, value_proposition: e.target.value })}
-                placeholder="What value do you deliver to the customer?"
+                placeholder="Vilket värde levererar du till kunden?"
                 rows={3}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               />
@@ -417,44 +417,44 @@ export default function BusinessModelsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Customer Segments</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Kundsegment</label>
                 <textarea
                   value={formData.customer_segments}
                   onChange={(e) => setFormData({ ...formData, customer_segments: e.target.value })}
-                  placeholder="Who are your customers?"
+                  placeholder="Vilka är dina kunder?"
                   rows={2}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Channels</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Kanaler</label>
                 <textarea
                   value={formData.channels}
                   onChange={(e) => setFormData({ ...formData, channels: e.target.value })}
-                  placeholder="How do you reach customers?"
+                  placeholder="Hur når du kunderna?"
                   rows={2}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Revenue Streams</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Intäktsströmmar</label>
                 <textarea
                   value={formData.revenue_streams}
                   onChange={(e) => setFormData({ ...formData, revenue_streams: e.target.value })}
-                  placeholder="How do you generate revenue?"
+                  placeholder="Hur genererar du intäkter?"
                   rows={2}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Key Resources</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Nyckelresurser</label>
                 <textarea
                   value={formData.key_resources}
                   onChange={(e) => setFormData({ ...formData, key_resources: e.target.value })}
-                  placeholder="What resources are required?"
+                  placeholder="Vilka resurser krävs?"
                   rows={2}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                 />
@@ -470,7 +470,7 @@ export default function BusinessModelsPage() {
                 className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
               />
               <label htmlFor="is_current" className="text-sm text-gray-700">
-                Mark as current version
+                Markera som aktuell version
               </label>
             </div>
 
@@ -483,13 +483,13 @@ export default function BusinessModelsPage() {
                 }}
                 className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
               >
-                Cancel
+                Avbryt
               </button>
               <button
                 type="submit"
                 className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
               >
-                Create Model
+                Skapa modell
               </button>
             </div>
           </form>
@@ -497,7 +497,7 @@ export default function BusinessModelsPage() {
       )}
 
       {showEditModal && editingModel && (
-        <Modal isOpen={showEditModal} onClose={() => setShowEditModal(false)} title="Edit Business Model">
+        <Modal isOpen={showEditModal} onClose={() => setShowEditModal(false)} title="Redigera affärsmodell">
           <form onSubmit={handleUpdate} className="space-y-4">
             {error && (
               <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
@@ -506,7 +506,7 @@ export default function BusinessModelsPage() {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Model Name *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Modellnamn *</label>
               <input
                 type="text"
                 required
@@ -517,7 +517,7 @@ export default function BusinessModelsPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Value Proposition *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Värdeerbjudande *</label>
               <textarea
                 required
                 value={editingModel.value_proposition || ''}
@@ -529,7 +529,7 @@ export default function BusinessModelsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Customer Segments</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Kundsegment</label>
                 <textarea
                   value={editingModel.customer_segments || ''}
                   onChange={(e) => setEditingModel({ ...editingModel, customer_segments: e.target.value })}
@@ -539,7 +539,7 @@ export default function BusinessModelsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Channels</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Kanaler</label>
                 <textarea
                   value={editingModel.channels || ''}
                   onChange={(e) => setEditingModel({ ...editingModel, channels: e.target.value })}
@@ -549,7 +549,7 @@ export default function BusinessModelsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Revenue Streams</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Intäktsströmmar</label>
                 <textarea
                   value={editingModel.revenue_streams || ''}
                   onChange={(e) => setEditingModel({ ...editingModel, revenue_streams: e.target.value })}
@@ -559,7 +559,7 @@ export default function BusinessModelsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Key Resources</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Nyckelresurser</label>
                 <textarea
                   value={editingModel.key_resources || ''}
                   onChange={(e) => setEditingModel({ ...editingModel, key_resources: e.target.value })}
@@ -578,7 +578,7 @@ export default function BusinessModelsPage() {
                 className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
               />
               <label htmlFor="is_current_edit" className="text-sm text-gray-700">
-                Mark as current version
+                Markera som aktuell version
               </label>
             </div>
 
@@ -592,13 +592,13 @@ export default function BusinessModelsPage() {
                 }}
                 className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
               >
-                Cancel
+                Avbryt
               </button>
               <button
                 type="submit"
                 className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
               >
-                Save Changes
+                Spara ändringar
               </button>
             </div>
           </form>

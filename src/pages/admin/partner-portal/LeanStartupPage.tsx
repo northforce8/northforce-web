@@ -43,7 +43,7 @@ export default function LeanStartupPage() {
     } catch (err) {
       const errorId = logAdminError(err as Error, {
         context: 'LeanStartupPage.loadData',
-        action: 'Loading lean experiments'
+        action: 'Laddar lean-experiment'
       });
       console.error(`[${errorId}] Error loading data:`, err);
       setError('Kunde inte ladda data. Försök igen.');

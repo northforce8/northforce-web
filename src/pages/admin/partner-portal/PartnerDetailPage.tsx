@@ -139,7 +139,7 @@ const PartnerDetailPage: React.FC = () => {
       loadData();
     } catch (err) {
       console.error('Error adding work type:', err);
-      setError('Failed to add work type');
+      setError('Kunde inte lägga till arbetstyp');
     }
   };
 
@@ -151,7 +151,7 @@ const PartnerDetailPage: React.FC = () => {
       loadData();
     } catch (err) {
       console.error('Error removing work type:', err);
-      setError('Failed to remove work type');
+      setError('Kunde inte ta bort arbetstyp');
     }
   };
 
@@ -177,7 +177,7 @@ const PartnerDetailPage: React.FC = () => {
       loadData();
     } catch (err) {
       console.error('Error adding capacity:', err);
-      setError('Failed to add capacity period');
+      setError('Kunde inte lägga till kapacitetsperiod');
     }
   };
 
@@ -524,7 +524,7 @@ const PartnerDetailPage: React.FC = () => {
       {showAddWorkTypeModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-md w-full p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Add Work Type</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Lägg till arbetstyp</h2>
             <form onSubmit={handleAddWorkType} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Work Type *</label>
@@ -580,13 +580,13 @@ const PartnerDetailPage: React.FC = () => {
                   onClick={() => setShowAddWorkTypeModal(false)}
                   className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
                 >
-                  Cancel
+                  Avbryt
                 </button>
                 <button
                   type="submit"
                   className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
                 >
-                  Add Work Type
+                  Lägg till arbetstyp
                 </button>
               </div>
             </form>
@@ -597,7 +597,7 @@ const PartnerDetailPage: React.FC = () => {
       {showAddCapacityModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-md w-full p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Add Capacity Period</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Lägg till kapacitetsperiod</h2>
             <form onSubmit={handleAddCapacity} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>

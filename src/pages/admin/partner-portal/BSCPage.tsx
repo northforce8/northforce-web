@@ -36,7 +36,7 @@ export default function BSCPage() {
     } catch (err) {
       const errorId = logAdminError(err as Error, {
         context: 'BSCPage.loadData',
-        action: 'Loading Balanced Scorecards'
+        action: 'Laddar Balanced Scorecards'
       });
       console.error(`[${errorId}] Error loading data:`, err);
       setError('Kunde inte ladda data. Vänligen försök igen.');

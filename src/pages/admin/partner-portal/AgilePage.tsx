@@ -59,7 +59,7 @@ export default function AgilePage() {
     } catch (err) {
       const errorId = logAdminError(err as Error, {
         context: 'AgilePage.loadData',
-        action: 'Loading agile transformations'
+        action: 'Laddar agila transformationer'
       });
       console.error(`[${errorId}] Error loading data:`, err);
       setError('Kunde inte ladda data. Försök igen.');
