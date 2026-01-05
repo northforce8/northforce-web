@@ -121,8 +121,6 @@ const AdminLayout: React.FC = () => {
 
   const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
     [ADMIN_ROUTES.DASHBOARD]: LayoutDashboard,
-    [ADMIN_ROUTES.ENGAGEMENT_HUB]: Target,
-    [ADMIN_ROUTES.VALUE_TRACKING]: TrendingUp,
     [ADMIN_ROUTES.LEADS_MANAGEMENT]: ListChecks,
     [ADMIN_ROUTES.ENTERPRISE]: TrendingUp,
     [ADMIN_ROUTES.ENTERPRISE_PLANS]: Activity,
