@@ -127,7 +127,7 @@ const TimeReportingPage: React.FC = () => {
   };
 
   const handleDeleteEntry = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this time entry?')) return;
+    if (!confirm('Är du säker på att du vill radera denna tidsregistrering?')) return;
 
     try {
       await partnerPortalApi.timeEntries.delete(id);
@@ -198,11 +198,11 @@ const TimeReportingPage: React.FC = () => {
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
       <PageHeader
-        title="Time Reporting"
-        description="Track and manage your work hours"
+        title="Tidsrapportering"
+        description="Spåra och hantera dina arbetstimmar"
         icon={Clock}
         action={{
-          label: 'Report Time',
+          label: 'Rapportera tid',
           onClick: () => setShowCreateModal(true),
           icon: Plus,
         }}
@@ -220,7 +220,7 @@ const TimeReportingPage: React.FC = () => {
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                This Week
+                Denna vecka
               </button>
               <button
                 onClick={() => setSelectedPeriod('month')}
@@ -230,7 +230,7 @@ const TimeReportingPage: React.FC = () => {
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                This Month
+                Denna månad
               </button>
             </div>
           </div>
@@ -238,52 +238,52 @@ const TimeReportingPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-blue-800">Total Hours</span>
+                <span className="text-sm font-medium text-blue-800">Totalt timmar</span>
                 <Clock className="w-5 h-5 text-blue-600" />
               </div>
               <div className="text-3xl font-bold text-blue-900">{safeNumber(totalHours, 0).toFixed(1)}</div>
               <div className="text-xs text-blue-700 mt-1">
-                {safeNumber(billableHours, 0).toFixed(1)} billable ({(safeDivide(billableHours, totalHours, 0) * 100).toFixed(0)}%)
+                {safeNumber(billableHours, 0).toFixed(1)} fakturerbara ({(safeDivide(billableHours, totalHours, 0) * 100).toFixed(0)}%)
               </div>
             </div>
 
             <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-lg p-4">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-primary-800">Credits Used</span>
+                <span className="text-sm font-medium text-primary-800">Krediter använda</span>
                 <Coins className="w-5 h-5 text-primary-600" />
               </div>
               <div className="text-3xl font-bold text-primary-900">{safeNumber(totalCredits, 0).toFixed(1)}</div>
               <div className="text-xs text-primary-700 mt-1">
-                Avg {safeDivide(totalCredits, totalHours, 0).toFixed(2)} per hour
+                Snitt {safeDivide(totalCredits, totalHours, 0).toFixed(2)} per timme
               </div>
             </div>
 
             <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-lg p-4">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-amber-800">Internal Cost</span>
+                <span className="text-sm font-medium text-amber-800">Intern kostnad</span>
                 <DollarSign className="w-5 h-5 text-amber-600" />
               </div>
               <div className="text-3xl font-bold text-amber-900">{(safeNumber(totalCost, 0) / 1000).toFixed(1)}k</div>
               <div className="text-xs text-amber-700 mt-1">
-                {safeDivide(totalCost, totalHours, 0).toFixed(0)} SEK/hour
+                {safeDivide(totalCost, totalHours, 0).toFixed(0)} SEK/timme
               </div>
             </div>
 
             <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-green-800">Work Types</span>
+                <span className="text-sm font-medium text-green-800">Arbetstyper</span>
                 <Activity className="w-5 h-5 text-green-600" />
               </div>
               <div className="text-3xl font-bold text-green-900">{Object.keys(workTypeBreakdown).length}</div>
               <div className="text-xs text-green-700 mt-1">
-                {timeEntries.length} entries
+                {timeEntries.length} poster
               </div>
             </div>
           </div>
 
           {Object.keys(workTypeBreakdown).length > 0 && (
             <div className="border-t border-gray-200 pt-4">
-              <h3 className="text-sm font-semibold text-gray-700 mb-3">Work Type Breakdown</h3>
+              <h3 className="text-sm font-semibold text-gray-700 mb-3">Uppdelning per arbetstyp</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 {Object.entries(workTypeBreakdown)
                   .sort(([, a], [, b]) => b.hours - a.hours)
@@ -291,11 +291,11 @@ const TimeReportingPage: React.FC = () => {
                     <div key={type} className="bg-gray-50 rounded-lg p-3 border border-gray-200">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-sm font-medium text-gray-900">{type}</span>
-                        <span className="text-xs bg-gray-200 px-2 py-0.5 rounded">{data.count} entries</span>
+                        <span className="text-xs bg-gray-200 px-2 py-0.5 rounded">{data.count} poster</span>
                       </div>
                       <div className="flex justify-between text-xs text-gray-600">
                         <span>{data.hours.toFixed(1)}h</span>
-                        <span>{data.credits.toFixed(1)} credits</span>
+                        <span>{data.credits.toFixed(1)} krediter</span>
                       </div>
                     </div>
                   ))}
@@ -309,12 +309,12 @@ const TimeReportingPage: React.FC = () => {
           {timeEntries.length === 0 ? (
             <div className="text-center py-12">
               <Clock className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500 mb-2">No time entries for this period</p>
+              <p className="text-gray-500 mb-2">Inga tidsregistreringar för denna period</p>
               <button
                 onClick={() => setShowCreateModal(true)}
                 className="text-primary-600 hover:text-primary-800 text-sm font-medium"
               >
-                Report your first hours
+                Rapportera dina första timmar
               </button>
             </div>
           ) : (
@@ -371,12 +371,12 @@ const TimeReportingPage: React.FC = () => {
                                     </span>
                                     {entry.billable && (
                                       <span className="inline-flex px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded">
-                                        Billable
+                                        Fakturerbar
                                       </span>
                                     )}
                                     {costFactor !== 1.0 && (
                                       <span className="inline-flex px-2 py-1 text-xs font-medium bg-purple-100 text-purple-800 rounded">
-                                        Cost Factor: {costFactor}x
+                                        Kostnadsfaktor: {costFactor}x
                                       </span>
                                     )}
                                   </div>
@@ -394,7 +394,7 @@ const TimeReportingPage: React.FC = () => {
 
                               <div className="grid grid-cols-3 gap-3 pt-3 border-t border-gray-200">
                                 <div className="text-center">
-                                  <p className="text-xs text-gray-500 mb-1">Credits Consumed</p>
+                                  <p className="text-xs text-gray-500 mb-1">Krediter förbrukade</p>
                                   <p className="text-sm font-semibold text-primary-600">
                                     {creditsConsumed.toFixed(2)}
                                   </p>
@@ -403,18 +403,18 @@ const TimeReportingPage: React.FC = () => {
                                   </p>
                                 </div>
                                 <div className="text-center border-l border-gray-200">
-                                  <p className="text-xs text-gray-500 mb-1">Internal Cost</p>
+                                  <p className="text-xs text-gray-500 mb-1">Intern kostnad</p>
                                   <p className="text-sm font-semibold text-amber-600">
                                     {internalCost.toFixed(0)} SEK
                                   </p>
                                   <p className="text-xs text-gray-400 mt-0.5">
-                                    {costFactor}x factor
+                                    {costFactor}x faktor
                                   </p>
                                 </div>
                                 <div className="text-center border-l border-gray-200">
                                   <p className="text-xs text-gray-500 mb-1">Partner</p>
                                   <p className="text-sm font-semibold text-gray-900">
-                                    {entry.partner?.partner_name || 'N/A'}
+                                    {entry.partner?.partner_name || 'Ej tillgänglig'}
                                   </p>
                                 </div>
                               </div>
@@ -433,13 +433,13 @@ const TimeReportingPage: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-900">Report Time</h2>
+              <h2 className="text-xl font-semibold text-gray-900">Rapportera tid</h2>
             </div>
             <form onSubmit={handleCreateEntry} className="p-6 space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Customer *
+                    Kund *
                   </label>
                   <select
                     required
@@ -447,7 +447,7 @@ const TimeReportingPage: React.FC = () => {
                     onChange={(e) => setNewEntry({ ...newEntry, customer_id: e.target.value, project_id: '' })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                   >
-                    <option value="">Select customer</option>
+                    <option value="">Välj kund</option>
                     {customers.map((customer) => (
                       <option key={customer.id} value={customer.id}>
                         {customer.company_name}
@@ -457,7 +457,7 @@ const TimeReportingPage: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Project
+                    Projekt
                   </label>
                   <select
                     value={newEntry.project_id}
@@ -465,7 +465,7 @@ const TimeReportingPage: React.FC = () => {
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                     disabled={!newEntry.customer_id}
                   >
-                    <option value="">No project</option>
+                    <option value="">Inget projekt</option>
                     {filteredProjects.map((project) => (
                       <option key={project.id} value={project.id}>
                         {project.name}
@@ -475,7 +475,7 @@ const TimeReportingPage: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Work Type *
+                    Arbetstyp *
                   </label>
                   <select
                     required
@@ -483,7 +483,7 @@ const TimeReportingPage: React.FC = () => {
                     onChange={(e) => setNewEntry({ ...newEntry, work_type_id: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                   >
-                    <option value="">Select work type</option>
+                    <option value="">Välj arbetstyp</option>
                     {allowedWorkTypes.map((type) => (
                       <option key={type.id} value={type.id}>
                         {type.name} ({type.credits_per_hour}x)
@@ -492,13 +492,13 @@ const TimeReportingPage: React.FC = () => {
                   </select>
                   {!isAdminUser && allowedWorkTypes.length < workTypes.length && (
                     <p className="text-xs text-gray-500 mt-1">
-                      Showing only work types you're assigned to
+                      Visar endast arbetstyper du är tilldelad
                     </p>
                   )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Date *
+                    Datum *
                   </label>
                   <input
                     type="date"
@@ -510,7 +510,7 @@ const TimeReportingPage: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Hours *
+                    Timmar *
                   </label>
                   <input
                     type="number"
@@ -525,7 +525,7 @@ const TimeReportingPage: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Billable
+                    Fakturerbar
                   </label>
                   <div className="flex items-center h-10">
                     <input
@@ -534,13 +534,13 @@ const TimeReportingPage: React.FC = () => {
                       onChange={(e) => setNewEntry({ ...newEntry, billable: e.target.checked })}
                       className="h-4 w-4 text-primary-600 rounded focus:ring-primary-600"
                     />
-                    <label className="ml-2 text-sm text-gray-700">Billable hours</label>
+                    <label className="ml-2 text-sm text-gray-700">Fakturerbara timmar</label>
                   </div>
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Description *
+                  Beskrivning *
                 </label>
                 <textarea
                   required
@@ -548,7 +548,7 @@ const TimeReportingPage: React.FC = () => {
                   onChange={(e) => setNewEntry({ ...newEntry, description: e.target.value })}
                   rows={3}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
-                  placeholder="Describe what you worked on..."
+                  placeholder="Beskriv vad du arbetade med..."
                 />
               </div>
               <div className="flex justify-end gap-3 mt-6">
@@ -557,13 +557,13 @@ const TimeReportingPage: React.FC = () => {
                   onClick={() => setShowCreateModal(false)}
                   className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
                 >
-                  Cancel
+                  Avbryt
                 </button>
                 <button
                   type="submit"
                   className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
                 >
-                  Save Entry
+                  Spara post
                 </button>
               </div>
             </form>

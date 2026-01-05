@@ -59,7 +59,7 @@ export default function InvoicesPage() {
       console.error(`[${errorId}] Error loading data:`, err);
       const errorMsg = err instanceof Error ? err.message : String(err);
       if (errorMsg.includes('RLS') || errorMsg.includes('Auth')) {
-        setError('Access denied or session expired. Redirecting to login...');
+        setError('Åtkomst nekad eller session utgången. Omdirigerar till login...');
         setTimeout(() => window.location.href = '/admin/login', 2000);
       } else {
         setError(err instanceof Error ? err.message : 'Kunde inte ladda fakturor. Försök igen.');
@@ -122,11 +122,11 @@ export default function InvoicesPage() {
   return (
     <div className="max-w-7xl mx-auto p-6">
       <PageHeader
-        title="Invoices"
-        description="Manage customer invoices and billing"
+        title="Fakturor"
+        description="Hantera kundfakturor och fakturering"
         icon={FileText}
         action={{
-          label: 'Create Invoice',
+          label: 'Skapa faktura',
           onClick: () => setShowCreateModal(true),
           icon: Plus
         }}
@@ -139,14 +139,14 @@ export default function InvoicesPage() {
           className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium"
         >
           <DollarSign className="h-5 w-5" />
-          Generate from Time
+          Generera från tid
         </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Total Invoiced</h3>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Totalt fakturerat</h3>
             <FileText className="h-5 w-5 text-gray-400" />
           </div>
           <p className="text-3xl font-bold text-gray-900">
@@ -156,7 +156,7 @@ export default function InvoicesPage() {
 
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Paid</h3>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Betalt</h3>
             <DollarSign className="h-5 w-5 text-green-500" />
           </div>
           <p className="text-3xl font-bold text-green-600">
@@ -166,7 +166,7 @@ export default function InvoicesPage() {
 
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Overdue</h3>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Förfallet</h3>
             <FileText className="h-5 w-5 text-red-500" />
           </div>
           <p className="text-3xl font-bold text-red-600">
@@ -183,7 +183,7 @@ export default function InvoicesPage() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Search invoices..."
+                  placeholder="Sök fakturor..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -196,22 +196,22 @@ export default function InvoicesPage() {
                 onChange={(e) => setStatusFilter(e.target.value)}
                 className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500"
               >
-                <option value="all">All Status</option>
-                <option value="draft">Draft</option>
-                <option value="sent">Sent</option>
-                <option value="paid">Paid</option>
-                <option value="overdue">Overdue</option>
-                <option value="cancelled">Cancelled</option>
+                <option value="all">Alla statusar</option>
+                <option value="draft">Utkast</option>
+                <option value="sent">Skickad</option>
+                <option value="paid">Betald</option>
+                <option value="overdue">Förfallen</option>
+                <option value="cancelled">Avbruten</option>
               </select>
               <select
                 value={customerFilter}
                 onChange={(e) => setCustomerFilter(e.target.value)}
                 className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500"
               >
-                <option value="all">All Customers</option>
+                <option value="all">Alla kunder</option>
                 {customers.map((customer) => (
                   <option key={customer.id} value={customer.id}>
-                    {customer.company_name || 'Unknown'}
+                    {customer.company_name || 'Okänd'}
                   </option>
                 ))}
               </select>
@@ -220,19 +220,19 @@ export default function InvoicesPage() {
         </div>
 
         {loading ? (
-          <div className="p-12 text-center text-gray-500">Loading invoices...</div>
+          <div className="p-12 text-center text-gray-500">Laddar fakturor...</div>
         ) : filteredInvoices.length === 0 ? (
           <div className="p-12 text-center">
             <FileText className="mx-auto h-12 w-12 text-gray-400" />
-            <h3 className="mt-2 text-sm font-medium text-gray-900">No invoices</h3>
-            <p className="mt-1 text-sm text-gray-500">Get started by creating a new invoice.</p>
+            <h3 className="mt-2 text-sm font-medium text-gray-900">Inga fakturor</h3>
+            <p className="mt-1 text-sm text-gray-500">Kom igång genom att skapa en ny faktura.</p>
             <div className="mt-6">
               <button
                 onClick={() => setShowCreateModal(true)}
                 className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700"
               >
                 <Plus className="h-4 w-4 mr-2" />
-                Create Invoice
+                Skapa faktura
               </button>
             </div>
           </div>
@@ -242,25 +242,25 @@ export default function InvoicesPage() {
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Invoice
+                    Faktura
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Customer
+                    Kund
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Date
+                    Datum
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Due Date
+                    Förfallodatum
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Amount
+                    Belopp
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Status
                   </th>
                   <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
+                    Åtgärder
                   </th>
                 </tr>
               </thead>
@@ -298,24 +298,24 @@ export default function InvoicesPage() {
                         to={`/admin/partner-portal/invoices/${invoice.id}`}
                         className="text-blue-600 hover:text-blue-900 mr-4"
                       >
-                        View
+                        Visa
                       </Link>
                       {invoice.status === 'draft' && (
                         <button
                           onClick={async () => {
-                            if (confirm('Send this invoice?')) {
+                            if (confirm('Skicka denna faktura?')) {
                               try {
                                 await partnerPortalApi.invoices.updateStatus(invoice.id, 'sent');
                                 await loadData();
                               } catch (err) {
                                 console.error('Failed to send invoice:', err);
-                                alert('Failed to send invoice. Please try again.');
+                                alert('Kunde inte skicka faktura. Försök igen.');
                               }
                             }
                           }}
                           className="text-green-600 hover:text-green-900"
                         >
-                          Send
+                          Skicka
                         </button>
                       )}
                     </td>
@@ -368,36 +368,36 @@ function CreateInvoiceModal({ customers, onClose, onSuccess }: any) {
     try {
       setSaving(true);
       await partnerPortalApi.invoices.create(formData);
-      toast.success('Invoice created successfully');
+      toast.success('Faktura skapad');
       onSuccess();
     } catch (error: any) {
       console.error('Error creating invoice:', error);
-      toast.error(error.message || 'Failed to create invoice');
+      toast.error(error.message || 'Kunde inte skapa faktura');
     } finally{
       setSaving(false);
     }
   }
 
   return (
-    <Modal isOpen={true} onClose={onClose} title="Create Invoice">
+    <Modal isOpen={true} onClose={onClose} title="Skapa faktura">
       <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Customer</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Kund</label>
             <select
               value={formData.customer_id}
               onChange={(e) => setFormData({ ...formData, customer_id: e.target.value })}
               className="w-full border border-gray-300 rounded-md px-3 py-2"
               required
             >
-              <option value="">Select customer...</option>
+              <option value="">Välj kund...</option>
               {customers.map((c: any) => (
-                <option key={c.id} value={c.id}>{c.company_name || 'Unknown'}</option>
+                <option key={c.id} value={c.id}>{c.company_name || 'Okänd'}</option>
               ))}
             </select>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Invoice Date</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Fakturadatum</label>
               <input
                 type="date"
                 value={formData.invoice_date}
@@ -407,7 +407,7 @@ function CreateInvoiceModal({ customers, onClose, onSuccess }: any) {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Förfallodatum</label>
               <input
                 type="date"
                 value={formData.due_date}
@@ -418,7 +418,7 @@ function CreateInvoiceModal({ customers, onClose, onSuccess }: any) {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Tax Rate (%)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Momssats (%)</label>
             <input
               type="number"
               value={formData.tax_rate}
@@ -428,7 +428,7 @@ function CreateInvoiceModal({ customers, onClose, onSuccess }: any) {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Anteckningar</label>
             <textarea
               value={formData.notes}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
@@ -442,14 +442,14 @@ function CreateInvoiceModal({ customers, onClose, onSuccess }: any) {
             onClick={onClose}
             className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
           >
-            Cancel
+            Avbryt
           </button>
           <button
             type="submit"
             disabled={saving}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
           >
-            {saving ? 'Creating...' : 'Create'}
+            {saving ? 'Skapar...' : 'Skapa'}
           </button>
         </div>
       </form>
@@ -474,36 +474,36 @@ function GenerateInvoiceModal({ customers, onClose, onSuccess }: any) {
     try {
       setSaving(true);
       await partnerPortalApi.invoices.generateFromTimeEntries(formData);
-      toast.success('Invoice generated successfully from time entries');
+      toast.success('Faktura genererad från tidsregistreringar');
       onSuccess();
     } catch (error: any) {
       console.error('Error generating invoice:', error);
-      toast.error(error.message || 'Failed to generate invoice');
+      toast.error(error.message || 'Kunde inte generera faktura');
     } finally {
       setSaving(false);
     }
   }
 
   return (
-    <Modal isOpen={true} onClose={onClose} title="Generate Invoice from Time Entries">
+    <Modal isOpen={true} onClose={onClose} title="Generera faktura från tidsregistreringar">
       <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Customer</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Kund</label>
             <select
               value={formData.customerId}
               onChange={(e) => setFormData({ ...formData, customerId: e.target.value })}
               className="w-full border border-gray-300 rounded-md px-3 py-2"
               required
             >
-              <option value="">Select customer...</option>
+              <option value="">Välj kund...</option>
               {customers.map((c: any) => (
-                <option key={c.id} value={c.id}>{c.company_name || 'Unknown'}</option>
+                <option key={c.id} value={c.id}>{c.company_name || 'Okänd'}</option>
               ))}
             </select>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Period Start</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Periodstart</label>
               <input
                 type="date"
                 value={formData.periodStart}
@@ -513,7 +513,7 @@ function GenerateInvoiceModal({ customers, onClose, onSuccess }: any) {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Period End</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Periodslut</label>
               <input
                 type="date"
                 value={formData.periodEnd}
@@ -524,7 +524,7 @@ function GenerateInvoiceModal({ customers, onClose, onSuccess }: any) {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Förfallodatum</label>
             <input
               type="date"
               value={formData.dueDate}
@@ -534,7 +534,7 @@ function GenerateInvoiceModal({ customers, onClose, onSuccess }: any) {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Tax Rate (%)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Momssats (%)</label>
             <input
               type="number"
               value={formData.taxRate}
@@ -544,7 +544,7 @@ function GenerateInvoiceModal({ customers, onClose, onSuccess }: any) {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Anteckningar</label>
             <textarea
               value={formData.notes}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
@@ -558,14 +558,14 @@ function GenerateInvoiceModal({ customers, onClose, onSuccess }: any) {
             onClick={onClose}
             className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
           >
-            Cancel
+            Avbryt
           </button>
           <button
             type="submit"
             disabled={saving}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
           >
-            {saving ? 'Generating...' : 'Generate'}
+            {saving ? 'Genererar...' : 'Generera'}
           </button>
         </div>
       </form>

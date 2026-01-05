@@ -59,7 +59,7 @@ export default function ContractsPage() {
       console.error(`[${errorId}] Error loading data:`, err);
       const errorMsg = err instanceof Error ? err.message : String(err);
       if (errorMsg.includes('RLS') || errorMsg.includes('Auth')) {
-        setError('Access denied or session expired. Redirecting to login...');
+        setError('Åtkomst nekad eller session utgången. Omdirigerar till login...');
         setTimeout(() => window.location.href = '/admin/login', 2000);
       } else {
         setError(err instanceof Error ? err.message : 'Kunde inte ladda kontrakt. Försök igen.');
@@ -122,10 +122,10 @@ export default function ContractsPage() {
   return (
     <div className="max-w-7xl mx-auto p-6">
       <PageHeader
-        title="Contracts"
-        description="Manage customer contracts and agreements"
+        title="Kontrakt"
+        description="Hantera kundkontrakt och avtal"
         action={{
-          label: 'Create Contract',
+          label: 'Skapa kontrakt',
           onClick: () => setShowCreateModal(true),
           icon: Plus,
         }}
@@ -134,7 +134,7 @@ export default function ContractsPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Total Contracts</h3>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Totalt antal kontrakt</h3>
             <FileText className="h-5 w-5 text-gray-400" />
           </div>
           <p className="text-3xl font-bold text-gray-900">{filteredContracts.length}</p>
@@ -142,7 +142,7 @@ export default function ContractsPage() {
 
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Active</h3>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Aktiva</h3>
             <FileText className="h-5 w-5 text-green-500" />
           </div>
           <p className="text-3xl font-bold text-green-600">{activeContracts}</p>
@@ -150,7 +150,7 @@ export default function ContractsPage() {
 
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Expiring Soon</h3>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Löper ut snart</h3>
             <FileText className="h-5 w-5 text-orange-500" />
           </div>
           <p className="text-3xl font-bold text-orange-600">{expiringContracts}</p>
@@ -165,7 +165,7 @@ export default function ContractsPage() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Search contracts..."
+                  placeholder="Sök kontrakt..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent"
@@ -178,43 +178,43 @@ export default function ContractsPage() {
                 onChange={(e) => setStatusFilter(e.target.value)}
                 className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary-600"
               >
-                <option value="all">All Status</option>
-                <option value="draft">Draft</option>
-                <option value="review">In Review</option>
-                <option value="sent">Sent</option>
-                <option value="signed">Signed</option>
-                <option value="active">Active</option>
-                <option value="expired">Expired</option>
+                <option value="all">Alla statusar</option>
+                <option value="draft">Utkast</option>
+                <option value="review">Under granskning</option>
+                <option value="sent">Skickad</option>
+                <option value="signed">Signerad</option>
+                <option value="active">Aktiv</option>
+                <option value="expired">Utgången</option>
               </select>
               <select
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value)}
                 className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary-600"
               >
-                <option value="all">All Types</option>
+                <option value="all">Alla typer</option>
                 <option value="msa">MSA</option>
                 <option value="sow">SOW</option>
                 <option value="nda">NDA</option>
-                <option value="amendment">Amendment</option>
+                <option value="amendment">Tillägg</option>
               </select>
             </div>
           </div>
         </div>
 
         {loading ? (
-          <div className="p-12 text-center text-gray-500">Loading contracts...</div>
+          <div className="p-12 text-center text-gray-500">Laddar kontrakt...</div>
         ) : filteredContracts.length === 0 ? (
           <div className="p-12 text-center">
             <FileText className="mx-auto h-12 w-12 text-gray-400" />
-            <h3 className="mt-2 text-sm font-medium text-gray-900">No contracts</h3>
-            <p className="mt-1 text-sm text-gray-500">Get started by creating a new contract.</p>
+            <h3 className="mt-2 text-sm font-medium text-gray-900">Inga kontrakt</h3>
+            <p className="mt-1 text-sm text-gray-500">Kom igång genom att skapa ett nytt kontrakt.</p>
             <div className="mt-6">
               <button
                 onClick={() => setShowCreateModal(true)}
                 className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700"
               >
                 <Plus className="h-4 w-4 mr-2" />
-                Create Contract
+                Skapa kontrakt
               </button>
             </div>
           </div>
@@ -223,14 +223,14 @@ export default function ContractsPage() {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contract</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Start Date</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">End Date</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Value</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kontrakt</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kund</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Typ</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Startdatum</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Slutdatum</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Värde</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Åtgärder</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -270,7 +270,7 @@ export default function ContractsPage() {
                         to={`/admin/partner-portal/contracts/${contract.id}`}
                         className="text-blue-600 hover:text-blue-900"
                       >
-                        View
+                        Visa
                       </Link>
                     </td>
                   </tr>
@@ -334,18 +334,18 @@ function CreateContractModal({ customers, templates, onClose, onSuccess }: any) 
           value: formData.value ? Number(formData.value) : undefined,
         });
       }
-      toast.success('Contract created successfully');
+      toast.success('Kontrakt skapat');
       onSuccess();
     } catch (error: any) {
       console.error('Error creating contract:', error);
-      toast.error(error.message || 'Failed to create contract');
+      toast.error(error.message || 'Kunde inte skapa kontrakt');
     } finally {
       setSaving(false);
     }
   }
 
   return (
-    <Modal isOpen={true} onClose={onClose} title="Create Contract">
+    <Modal isOpen={true} onClose={onClose} title="Skapa kontrakt">
       <form onSubmit={handleSubmit} className="space-y-4">
           <div className="flex gap-4 mb-4">
             <button
@@ -357,7 +357,7 @@ function CreateContractModal({ customers, templates, onClose, onSuccess }: any) 
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              From Template
+              Från mall
             </button>
             <button
               type="button"
@@ -368,59 +368,59 @@ function CreateContractModal({ customers, templates, onClose, onSuccess }: any) 
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              Manual
+              Manuell
             </button>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Customer</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Kund</label>
             <select
               value={formData.customer_id}
               onChange={(e) => setFormData({ ...formData, customer_id: e.target.value })}
               className="w-full border border-gray-300 rounded-md px-3 py-2"
               required
             >
-              <option value="">Select customer...</option>
+              <option value="">Välj kund...</option>
               {customers.map((c: any) => (
-                <option key={c.id} value={c.id}>{c.company_name || 'Unknown'}</option>
+                <option key={c.id} value={c.id}>{c.company_name || 'Okänd'}</option>
               ))}
             </select>
           </div>
 
           {useTemplate ? (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Template</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Mall</label>
               <select
                 value={formData.template_id}
                 onChange={(e) => setFormData({ ...formData, template_id: e.target.value })}
                 className="w-full border border-gray-300 rounded-md px-3 py-2"
                 required
               >
-                <option value="">Select template...</option>
+                <option value="">Välj mall...</option>
                 {templates.map((t: any) => (
-                  <option key={t.id} value={t.id}>{t.template_name || 'Unnamed Template'}</option>
+                  <option key={t.id} value={t.id}>{t.template_name || 'Namnlös mall'}</option>
                 ))}
               </select>
             </div>
           ) : (
             <>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Contract Type</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Kontraktstyp</label>
                 <select
                   value={formData.contract_type}
                   onChange={(e) => setFormData({ ...formData, contract_type: e.target.value })}
                   className="w-full border border-gray-300 rounded-md px-3 py-2"
                   required
                 >
-                  <option value="msa">Master Service Agreement (MSA)</option>
-                  <option value="sow">Statement of Work (SOW)</option>
-                  <option value="nda">Non-Disclosure Agreement (NDA)</option>
-                  <option value="amendment">Amendment</option>
-                  <option value="other">Other</option>
+                  <option value="msa">Ramavtal (MSA)</option>
+                  <option value="sow">Arbetsbeskrivning (SOW)</option>
+                  <option value="nda">Sekretessavtal (NDA)</option>
+                  <option value="amendment">Tillägg</option>
+                  <option value="other">Annat</option>
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Titel</label>
                 <input
                   type="text"
                   value={formData.title}
@@ -434,7 +434,7 @@ function CreateContractModal({ customers, templates, onClose, onSuccess }: any) 
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Startdatum</label>
               <input
                 type="date"
                 value={formData.start_date}
@@ -444,7 +444,7 @@ function CreateContractModal({ customers, templates, onClose, onSuccess }: any) 
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">End Date (Optional)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Slutdatum (valfritt)</label>
               <input
                 type="date"
                 value={formData.end_date}
@@ -455,7 +455,7 @@ function CreateContractModal({ customers, templates, onClose, onSuccess }: any) 
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Contract Value (Optional)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Kontraktsvärde (valfritt)</label>
             <input
               type="number"
               step="0.01"
@@ -471,14 +471,14 @@ function CreateContractModal({ customers, templates, onClose, onSuccess }: any) 
             onClick={onClose}
             className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
           >
-            Cancel
+            Avbryt
           </button>
           <button
             type="submit"
             disabled={saving}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
           >
-            {saving ? 'Creating...' : 'Create Contract'}
+            {saving ? 'Skapar...' : 'Skapa kontrakt'}
           </button>
         </div>
       </form>

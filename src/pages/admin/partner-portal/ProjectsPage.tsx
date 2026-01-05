@@ -62,10 +62,10 @@ const ProjectsPage: React.FC = () => {
       console.error('Error loading projects:', error);
       const errorMsg = error instanceof Error ? error.message : String(error);
       if (errorMsg.includes('RLS') || errorMsg.includes('Auth')) {
-        setError('Access denied or session expired. Please log in again.');
+        setError('Åtkomst nekad eller session utgången. Logga in igen.');
         setTimeout(() => window.location.href = '/admin/login', 2000);
       } else {
-        setError('Failed to load projects. Please try again.');
+        setError('Kunde inte ladda projekt. Försök igen.');
       }
     } finally {
       setLoading(false);
@@ -75,7 +75,7 @@ const ProjectsPage: React.FC = () => {
   const handleCreateProject = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newProject.customer_id) {
-      setError('Please select a customer');
+      setError('Välj en kund');
       return;
     }
 
@@ -99,11 +99,11 @@ const ProjectsPage: React.FC = () => {
         start_date: '',
         target_end_date: '',
       });
-      setSuccess('Project created successfully');
+      setSuccess('Projekt skapat');
       await loadData();
     } catch (error) {
       console.error('Error creating project:', error);
-      setError('Failed to create project. Please try again.');
+      setError('Kunde inte skapa projekt. Försök igen.');
     } finally {
       setSubmitting(false);
     }
@@ -120,29 +120,29 @@ const ProjectsPage: React.FC = () => {
       await partnerPortalApi.projects.update(editingProject.id, editingProject);
       setShowEditModal(false);
       setEditingProject(null);
-      setSuccess('Project updated successfully');
+      setSuccess('Projekt uppdaterat');
       await loadData();
     } catch (error) {
       console.error('Error updating project:', error);
-      setError('Failed to update project. Please try again.');
+      setError('Kunde inte uppdatera projekt. Försök igen.');
     } finally {
       setSubmitting(false);
     }
   };
 
   const handleDeleteProject = async (id: string, name: string) => {
-    if (!confirm(`Are you sure you want to delete project "${name}"? This action cannot be undone.`)) {
+    if (!confirm(`Är du säker på att du vill radera projektet "${name}"? Åtgärden kan inte ångras.`)) {
       return;
     }
 
     setError(null);
     try {
       await partnerPortalApi.projects.delete(id);
-      setSuccess('Project deleted successfully');
+      setSuccess('Projekt raderat');
       await loadData();
     } catch (error) {
       console.error('Error deleting project:', error);
-      setError('Failed to delete project. Please try again.');
+      setError('Kunde inte radera projekt. Försök igen.');
     }
   };
 
@@ -153,7 +153,7 @@ const ProjectsPage: React.FC = () => {
   };
 
   const getCustomerName = (customerId: string) => {
-    return customers.find(c => c.id === customerId)?.company_name || 'Unknown';
+    return customers.find(c => c.id === customerId)?.company_name || 'Okänd';
   };
 
   const getStatusColor = (status: string) => {
@@ -191,7 +191,7 @@ const ProjectsPage: React.FC = () => {
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading projects...</p>
+            <p className="text-gray-600">Laddar projekt...</p>
           </div>
         </div>
       </div>
@@ -202,11 +202,11 @@ const ProjectsPage: React.FC = () => {
     <div>
       <div className="p-6 max-w-7xl mx-auto">
         <PageHeader
-          title="Projects"
-          description="Manage customer projects and deliveries"
+          title="Projekt"
+          description="Hantera kundprojekt och leveranser"
           icon={FolderKanban}
           action={isAdminUser ? {
-            label: 'Add Project',
+            label: 'Lägg till projekt',
             onClick: () => setShowCreateModal(true),
             icon: Plus
           } : undefined}
@@ -231,7 +231,7 @@ const ProjectsPage: React.FC = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search projects..."
+                placeholder="Sök projekt..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
@@ -244,12 +244,12 @@ const ProjectsPage: React.FC = () => {
                 onChange={(e) => setFilterStatus(e.target.value)}
                 className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
               >
-                <option value="all">All Statuses</option>
-                <option value="planning">Planning</option>
-                <option value="active">Active</option>
-                <option value="on_hold">On Hold</option>
-                <option value="completed">Completed</option>
-                <option value="cancelled">Cancelled</option>
+                <option value="all">Alla statusar</option>
+                <option value="planning">Planering</option>
+                <option value="active">Aktiv</option>
+                <option value="on_hold">Pausad</option>
+                <option value="completed">Avslutad</option>
+                <option value="cancelled">Avbruten</option>
               </select>
 
               <select
@@ -257,7 +257,7 @@ const ProjectsPage: React.FC = () => {
                 onChange={(e) => setFilterCustomer(e.target.value)}
                 className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
               >
-                <option value="all">All Customers</option>
+                <option value="all">Alla kunder</option>
                 {customers.map(customer => (
                   <option key={customer.id} value={customer.id}>
                     {customer.company_name}
@@ -271,13 +271,13 @@ const ProjectsPage: React.FC = () => {
             {filteredProjects.length === 0 ? (
               <div className="text-center py-12">
                 <FolderKanban className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-500 mb-2">No projects found</p>
+                <p className="text-gray-500 mb-2">Inga projekt hittades</p>
                 {isAdminUser && (
                   <button
                     onClick={() => setShowCreateModal(true)}
                     className="text-primary-600 hover:text-primary-800 text-sm font-medium"
                   >
-                    Create your first project
+                    Skapa ditt första projekt
                   </button>
                 )}
               </div>
@@ -285,13 +285,13 @@ const ProjectsPage: React.FC = () => {
               <table className="w-full">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Project</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Projekt</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kund</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Priority</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Timeline</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Prioritet</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tidslinje</th>
                     {isAdminUser && (
-                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
+                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Åtgärder</th>
                     )}
                   </tr>
                 </thead>
@@ -330,7 +330,7 @@ const ProjectsPage: React.FC = () => {
                               <span>{new Date(project.start_date).toLocaleDateString()}</span>
                             </div>
                           )}
-                          {!project.start_date && <span className="text-gray-400">No dates set</span>}
+                          {!project.start_date && <span className="text-gray-400">Inget datum satt</span>}
                         </div>
                       </td>
                       {isAdminUser && (
@@ -339,14 +339,14 @@ const ProjectsPage: React.FC = () => {
                             <button
                               onClick={() => openEditModal(project)}
                               className="p-1 text-primary-600 hover:text-primary-900"
-                              title="Edit project"
+                              title="Redigera projekt"
                             >
                               <Edit2 className="h-4 w-4" />
                             </button>
                             <button
                               onClick={() => handleDeleteProject(project.id, project.name)}
                               className="p-1 text-red-600 hover:text-red-900"
-                              title="Delete project"
+                              title="Radera projekt"
                             >
                               <Trash2 className="h-4 w-4" />
                             </button>
@@ -366,7 +366,7 @@ const ProjectsPage: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-900">Create New Project</h2>
+              <h2 className="text-xl font-semibold text-gray-900">Skapa nytt projekt</h2>
             </div>
             <form onSubmit={handleCreateProject} className="p-6 space-y-4">
               {error && (
@@ -377,7 +377,7 @@ const ProjectsPage: React.FC = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Project Name *
+                  Projektnamn *
                 </label>
                 <input
                   type="text"
@@ -385,13 +385,13 @@ const ProjectsPage: React.FC = () => {
                   value={newProject.name}
                   onChange={(e) => setNewProject({ ...newProject, name: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
-                  placeholder="Enter project name"
+                  placeholder="Ange projektnamn"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Customer *
+                  Kund *
                 </label>
                 <select
                   required
@@ -399,7 +399,7 @@ const ProjectsPage: React.FC = () => {
                   onChange={(e) => setNewProject({ ...newProject, customer_id: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                 >
-                  <option value="">Select a customer</option>
+                  <option value="">Välj en kund</option>
                   {customers.map(customer => (
                     <option key={customer.id} value={customer.id}>
                       {customer.company_name}
@@ -410,14 +410,14 @@ const ProjectsPage: React.FC = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Description
+                  Beskrivning
                 </label>
                 <textarea
                   value={newProject.description}
                   onChange={(e) => setNewProject({ ...newProject, description: e.target.value })}
                   rows={3}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
-                  placeholder="Project description and goals"
+                  placeholder="Projektbeskrivning och mål"
                 />
               </div>
 
@@ -431,27 +431,27 @@ const ProjectsPage: React.FC = () => {
                     onChange={(e) => setNewProject({ ...newProject, status: e.target.value as any })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                   >
-                    <option value="planning">Planning</option>
-                    <option value="active">Active</option>
-                    <option value="on_hold">On Hold</option>
-                    <option value="completed">Completed</option>
-                    <option value="cancelled">Cancelled</option>
+                    <option value="planning">Planering</option>
+                    <option value="active">Aktiv</option>
+                    <option value="on_hold">Pausad</option>
+                    <option value="completed">Avslutad</option>
+                    <option value="cancelled">Avbruten</option>
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Priority
+                    Prioritet
                   </label>
                   <select
                     value={newProject.priority}
                     onChange={(e) => setNewProject({ ...newProject, priority: e.target.value as any })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                   >
-                    <option value="low">Low</option>
+                    <option value="low">Låg</option>
                     <option value="medium">Medium</option>
-                    <option value="high">High</option>
-                    <option value="critical">Critical</option>
+                    <option value="high">Hög</option>
+                    <option value="critical">Kritisk</option>
                   </select>
                 </div>
               </div>
@@ -459,7 +459,7 @@ const ProjectsPage: React.FC = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Start Date
+                    Startdatum
                   </label>
                   <input
                     type="date"
@@ -471,7 +471,7 @@ const ProjectsPage: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Target End Date
+                    Måldatum
                   </label>
                   <input
                     type="date"
@@ -492,7 +492,7 @@ const ProjectsPage: React.FC = () => {
                   disabled={submitting}
                   className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors disabled:opacity-50"
                 >
-                  Cancel
+                  Avbryt
                 </button>
                 <button
                   type="submit"
@@ -500,7 +500,7 @@ const ProjectsPage: React.FC = () => {
                   className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
                 >
                   {submitting && <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>}
-                  {submitting ? 'Creating...' : 'Create Project'}
+                  {submitting ? 'Skapar...' : 'Skapa projekt'}
                 </button>
               </div>
             </form>
@@ -512,7 +512,7 @@ const ProjectsPage: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-900">Edit Project</h2>
+              <h2 className="text-xl font-semibold text-gray-900">Redigera projekt</h2>
             </div>
             <form onSubmit={handleUpdateProject} className="p-6 space-y-4">
               {error && (
@@ -556,11 +556,11 @@ const ProjectsPage: React.FC = () => {
                     onChange={(e) => setEditingProject({ ...editingProject, status: e.target.value as any })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                   >
-                    <option value="planning">Planning</option>
-                    <option value="active">Active</option>
-                    <option value="on_hold">On Hold</option>
-                    <option value="completed">Completed</option>
-                    <option value="cancelled">Cancelled</option>
+                    <option value="planning">Planering</option>
+                    <option value="active">Aktiv</option>
+                    <option value="on_hold">Pausad</option>
+                    <option value="completed">Avslutad</option>
+                    <option value="cancelled">Avbruten</option>
                   </select>
                 </div>
 
@@ -584,7 +584,7 @@ const ProjectsPage: React.FC = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Start Date
+                    Startdatum
                   </label>
                   <input
                     type="date"
@@ -596,7 +596,7 @@ const ProjectsPage: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Target End Date
+                    Måldatum
                   </label>
                   <input
                     type="date"
@@ -626,7 +626,7 @@ const ProjectsPage: React.FC = () => {
                   className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
                 >
                   {submitting && <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>}
-                  {submitting ? 'Saving...' : 'Save Changes'}
+                  {submitting ? 'Sparar...' : 'Spara ändringar'}
                 </button>
               </div>
             </form>
