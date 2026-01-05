@@ -546,7 +546,7 @@ const LeadDetailPage = () => {
                       <span className="font-semibold">Connected</span>
                     </div>
                     <p className="text-gray-900 font-medium">
-                      {customerLink.customers?.company_name}
+                      {customerLink.customers?.company_name || 'Unknown Customer'}
                     </p>
                     {customerLink.notes && (
                       <p className="text-sm text-gray-600 mt-2">{customerLink.notes}</p>

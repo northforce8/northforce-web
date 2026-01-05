@@ -180,9 +180,9 @@ const PartnerDashboard: React.FC = () => {
         alerts.push({
           id: `rec-${rec.id}`,
           type: rec.priority === 'critical' ? 'critical' : 'warning',
-          title: rec.title,
+          title: rec.title || 'Untitled Recommendation',
           description: rec.description || '',
-          action: rec.customer ? { label: 'Visa kund', link: `/admin/partner-portal/customers/${rec.customer_id}` } : undefined,
+          action: (rec.customer && rec.customer_id) ? { label: 'Visa kund', link: `/admin/partner-portal/customers/${rec.customer_id}` } : undefined,
           icon: <Zap className="h-5 w-5" />,
         });
       }

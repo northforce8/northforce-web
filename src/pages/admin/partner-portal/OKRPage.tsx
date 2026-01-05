@@ -192,7 +192,9 @@ export default function OKRPage() {
   const calculateOverallProgress = (keyResults: KeyResult[]) => {
     if (!keyResults || keyResults.length === 0) return 0;
     const totalProgress = keyResults.reduce((sum, kr) => {
-      const progress = (kr.current_value / kr.target_value) * 100;
+      const progress = kr.target_value > 0
+        ? (kr.current_value / kr.target_value) * 100
+        : 0;
       return sum + Math.min(progress, 100);
     }, 0);
     return Math.round(totalProgress / keyResults.length);
@@ -418,7 +420,9 @@ export default function OKRPage() {
                   <div className="space-y-3">
                     <p className="text-sm font-medium text-gray-700">Key Results</p>
                     {objective.key_results.map((kr) => {
-                      const krProgress = Math.min((kr.current_value / kr.target_value) * 100, 100);
+                      const krProgress = kr.target_value > 0
+                        ? Math.min((kr.current_value / kr.target_value) * 100, 100)
+                        : 0;
                       return (
                         <div key={kr.id} className="bg-gray-50 rounded-lg p-3">
                           <div className="flex items-center justify-between mb-2">
