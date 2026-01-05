@@ -3,13 +3,15 @@ import { Link } from 'react-router-dom';
 import {
   Clock, Building2, FolderKanban, TrendingUp, Calendar, Plus, FileText,
   AlertTriangle, AlertCircle, Zap, CheckCircle, Info, TrendingDown,
-  Target, Compass, RefreshCw, Lightbulb
+  Target, Compass, RefreshCw, Lightbulb, LayoutDashboard
 } from 'lucide-react';
 import { getCurrentUser, isAdmin } from '../../../lib/auth';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { safeNumber } from '../../../lib/data-validators';
 import { supabase } from '../../../lib/supabase';
 import { useLanguage } from '../../../contexts/LanguageContext';
+import { PageHeader } from '../../../components/admin/PageHeader';
+import { PAGE_HELP_CONTENT } from '../../../lib/page-help-content';
 import type { TimeEntryWithRelations, NoteWithRelations, Partner, Customer, Recommendation } from '../../../lib/partner-portal-types';
 
 const PartnerDashboard: React.FC = () => {
@@ -218,14 +220,12 @@ const PartnerDashboard: React.FC = () => {
   return (
     <div>
       <div className="p-6 max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">
-            {isAdminUser ? t('dashboard.title_admin') : t('dashboard.title_partner')}
-          </h1>
-          <p className="text-sm text-gray-500 mt-1">
-            {isAdminUser ? t('dashboard.subtitle_admin') : t('dashboard.subtitle_partner')}
-          </p>
-        </div>
+        <PageHeader
+          title={isAdminUser ? t('dashboard.title_admin') : t('dashboard.title_partner')}
+          description={isAdminUser ? t('dashboard.subtitle_admin') : t('dashboard.subtitle_partner')}
+          icon={LayoutDashboard}
+          help={PAGE_HELP_CONTENT.dashboard}
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-lg shadow p-6">

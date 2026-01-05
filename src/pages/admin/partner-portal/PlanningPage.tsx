@@ -186,19 +186,17 @@ export default function PlanningPage() {
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Calendar & Planning</h1>
-          <p className="mt-1 text-sm text-gray-500">Schedule and allocate partner capacity</p>
-        </div>
-        <button
-          onClick={() => setShowCreateModal(true)}
-          className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700"
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          Add Capacity
-        </button>
-      </div>
+      <PageHeader
+        title="Calendar & Planning"
+        description="Schedule and allocate partner capacity"
+        icon={Calendar}
+        action={{
+          label: 'Add Capacity',
+          onClick: () => setShowCreateModal(true),
+          icon: Plus,
+        }}
+        help={PAGE_HELP_CONTENT.calendar}
+      />
 
       {/* AI Capacity Conflict Detection */}
       <CapacityConflictsAI

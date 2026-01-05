@@ -3,6 +3,7 @@ import { Plus, FolderKanban, Search, Edit2, Trash2, Calendar, User } from 'lucid
 import { isAdmin } from '../../../lib/auth';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { PageHeader } from '../../../components/admin/PageHeader';
+import { PAGE_HELP_CONTENT } from '../../../lib/page-help-content';
 import type { Project, Customer, Partner } from '../../../lib/partner-portal-types';
 
 const ProjectsPage: React.FC = () => {
@@ -197,36 +198,13 @@ const ProjectsPage: React.FC = () => {
         <PageHeader
           title="Projects"
           description="Manage customer projects and deliveries"
+          icon={FolderKanban}
           action={isAdminUser ? {
             label: 'Add Project',
             onClick: () => setShowCreateModal(true),
             icon: Plus
           } : undefined}
-          help={{
-            purpose: 'Projects structure customer work into defined scopes with objectives, timelines, budgets, and assigned resources. All time entries and deliverables are organized under projects.',
-            usage: [
-              'Create projects for distinct customer initiatives',
-              'Link projects to customers and contracts',
-              'Track project status from initiation through completion',
-              'Monitor budget consumption and resource allocation',
-              'Review time entries logged against the project',
-              'Close projects when work is complete'
-            ],
-            concepts: [
-              {
-                term: 'Project as Container',
-                definition: 'Projects contain all time entries, notes, and deliverables. They provide structure and traceability for customer work.'
-              },
-              {
-                term: 'Project Status',
-                definition: 'Active projects accept time entries. Completed projects are closed for reporting but remain accessible for reference.'
-              },
-              {
-                term: 'Project vs. Contract',
-                definition: 'Contracts govern commercial terms. Projects organize operational execution. Multiple projects can exist under one contract.'
-              }
-            ]
-          }}
+          help={PAGE_HELP_CONTENT.projects}
         />
 
         {error && (

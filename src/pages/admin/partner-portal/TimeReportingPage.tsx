@@ -4,6 +4,7 @@ import { getCurrentUser, isAdmin } from '../../../lib/auth';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { safeNumber, safeDivide } from '../../../lib/data-validators';
 import { PageHeader } from '../../../components/admin/PageHeader';
+import { PAGE_HELP_CONTENT } from '../../../lib/page-help-content';
 import type { TimeEntryWithRelations, Customer, Project, WorkType, Partner } from '../../../lib/partner-portal-types';
 
 const TimeReportingPage: React.FC = () => {
@@ -176,11 +177,13 @@ const TimeReportingPage: React.FC = () => {
       <PageHeader
         title="Time Reporting"
         description="Track and manage your work hours"
+        icon={Clock}
         action={{
           label: 'Report Time',
           onClick: () => setShowCreateModal(true),
           icon: Plus,
         }}
+        help={PAGE_HELP_CONTENT.time}
       />
 
         <div className="bg-white rounded-lg shadow mb-6 p-6">

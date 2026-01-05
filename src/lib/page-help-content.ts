@@ -100,5 +100,45 @@ export const PAGE_HELP_CONTENT = {
       "Applicera på dina projekt",
       "Bidra med egna lärdomar"
     ]
+  },
+  forecast: {
+    purpose: "Credits & Forecasts visar kundkreditsaldon, förbrukningshastigheter och intäktsprognoser. Få varningar när kunder håller på att få slut på kapacitet.",
+    usage: [
+      "Granska kreditsaldon per kund",
+      "Analysera burn rate och förbrukningsmönster",
+      "Prognostisera framtida intäkter baserat på AI",
+      "Reagera på kritiska varningar",
+      "Lägg till krediter vid behov"
+    ]
+  },
+  calendar: {
+    purpose: "Calendar & Planning hjälper dig schemalägg möten, planera sprintar och koordinera teamtillgänglighet. Visualisera kapacitet och deadlines över tid.",
+    usage: [
+      "Skapa nya möten och event",
+      "Länka kalenderpost till kunder och projekt",
+      "Granska teamkapacitet över tid",
+      "Identifiera resurskonflikt automatiskt",
+      "Synkronisera med Google Calendar"
+    ]
+  },
+  frameworks: {
+    purpose: "Strategic Frameworks ger tillgång till 10 olika strategiska ramverk för affärsutveckling och organisationsdesign. Välj rätt ramverk för din utmaning.",
+    usage: [
+      "Bläddra bland tillgängliga ramverk",
+      "Välj ramverk baserat på affärsbehov",
+      "Skapa nya analyser kopplade till kunder",
+      "Få AI-drivna insikter och rekommendationer",
+      "Spåra framsteg över tid"
+    ]
+  },
+  notes: {
+    purpose: "Notes låter dig dokumentera möten, beslut, kundinteraktioner och insights. Koppla anteckningar till kunder och projekt för enkel återfinning.",
+    usage: [
+      "Skapa nya anteckningar med rubrik och innehåll",
+      "Länka till kund eller projekt",
+      "Sök och filtrera anteckningar",
+      "Redigera och uppdatera befintliga notes",
+      "Använd för mötesprotokoll och beslutsdokumentation"
+    ]
   }
 };

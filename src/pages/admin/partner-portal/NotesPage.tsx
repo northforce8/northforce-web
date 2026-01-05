@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, FileText, Eye, Edit2, Trash2, X, Save, AlertCircle } from 'lucide-react';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { PageHeader } from '../../../components/admin/PageHeader';
+import { PAGE_HELP_CONTENT } from '../../../lib/page-help-content';
 import type { NoteWithRelations, Customer, Project } from '../../../lib/partner-portal-types';
 
 interface NoteFormData {
@@ -214,11 +215,13 @@ const NotesPage: React.FC = () => {
       <PageHeader
         title="Notes"
         description="Collaboration and documentation"
+        icon={FileText}
         action={{
           label: 'Add Note',
           onClick: openAddModal,
           icon: Plus,
         }}
+        help={PAGE_HELP_CONTENT.notes}
       />
 
       {customers.length === 0 && (

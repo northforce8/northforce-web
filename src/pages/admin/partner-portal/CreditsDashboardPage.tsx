@@ -13,6 +13,8 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
+import { PageHeader } from '../../../components/admin/PageHeader';
+import { PAGE_HELP_CONTENT } from '../../../lib/page-help-content';
 import type { Customer } from '../../../lib/partner-portal-types';
 import { CreditsWithMoneyDisplay, PlanPricingCard } from '../../../components/admin/CreditsWithMoneyDisplay';
 import { creditsToMoney, formatCurrency } from '../../../lib/credits-pricing-config';
@@ -168,19 +170,17 @@ const CreditsDashboardPage: React.FC = () => {
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Credits & Capacity Engine</h1>
-          <p className="text-sm text-gray-500 mt-1">Monitor credits consumption, burn rate, and capacity utilization</p>
-        </div>
-        <button
-          onClick={loadDashboard}
-          className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
-        >
-          <RefreshCw className="w-4 h-4" />
-          Refresh
-        </button>
-      </div>
+      <PageHeader
+        title="Credits & Forecasts"
+        description="Monitor credits consumption, burn rate, and capacity utilization"
+        icon={Coins}
+        action={{
+          label: 'Refresh',
+          onClick: loadDashboard,
+          icon: RefreshCw,
+        }}
+        help={PAGE_HELP_CONTENT.forecast}
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <div className="bg-white rounded-lg border border-gray-200 p-4">
