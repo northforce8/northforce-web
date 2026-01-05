@@ -146,6 +146,7 @@ function App() {
 
         {/* Standard Admin Redirects */}
         <Route path="/admin" element={<Navigate to={ADMIN_ROUTES.LOGIN} replace />} />
+        <Route path="/admin-portal" element={<Navigate to="/admin/partner-portal" replace />} />
 
         {/* Legacy Redirects - Backwards compatibility */}
         <Route path={ADMIN_ROUTES.LEGACY_LEAD_DASHBOARD} element={<Navigate to={ADMIN_ROUTES.LEADS} replace />} />
