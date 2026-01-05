@@ -5,6 +5,7 @@ import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
 import { supabase } from '../../../lib/supabase';
 import { logAdminError } from '../../../lib/admin-error-logger';
+import { PAGE_HELP_CONTENT } from '../../../lib/page-help-content';
 
 export default function ADKARPage() {
   const [initiatives, setInitiatives] = useState<any[]>([]);
@@ -154,6 +155,7 @@ export default function ADKARPage() {
       <PageHeader
         title="Change Management (ADKAR)"
         description="Build awareness, desire, knowledge, ability, and reinforcement to drive successful organizational change."
+        icon={RefreshCw}
         action={{
           label: 'Create Initiative',
           onClick: () => {
@@ -162,6 +164,7 @@ export default function ADKARPage() {
           },
           icon: Plus
         }}
+        help={PAGE_HELP_CONTENT.adkar}
       />
 
       <div className="mb-6">

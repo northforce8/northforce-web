@@ -6,6 +6,7 @@ import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
 import { supabase } from '../../../lib/supabase';
 import { logAdminError } from '../../../lib/admin-error-logger';
+import { PAGE_HELP_CONTENT } from '../../../lib/page-help-content';
 
 interface Objective {
   id: string;
@@ -224,6 +225,7 @@ export default function OKRPage() {
       <PageHeader
         title="OKR - Objectives & Key Results"
         description="Set measurable goals and track progress with key results. Align efforts, ensure transparency, and drive accountability."
+        icon={Target}
         action={{
           label: 'Create Objective',
           onClick: () => {
@@ -232,6 +234,7 @@ export default function OKRPage() {
           },
           icon: Plus
         }}
+        help={PAGE_HELP_CONTENT.okr}
       />
 
       <div className="mb-6">

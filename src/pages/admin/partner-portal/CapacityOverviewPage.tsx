@@ -125,6 +125,15 @@ const CapacityOverviewPage: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto p-6">
+      {error && (
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+          <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <p className="text-red-800 font-medium">Error</p>
+            <p className="text-red-700 text-sm mt-1">{error}</p>
+          </div>
+        </div>
+      )}
       <div className="mb-8 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="flex-shrink-0 w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">

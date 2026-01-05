@@ -9,6 +9,7 @@ import { logAdminError } from '../../../lib/admin-error-logger';
 import { safeString, safeNumber } from '../../../lib/data-validators';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { Modal } from '../../../components/admin/ui/Modal';
+import { PAGE_HELP_CONTENT } from '../../../lib/page-help-content';
 
 export default function InvoicesPage() {
   const [invoices, setInvoices] = useState<any[]>([]);
@@ -81,11 +82,13 @@ export default function InvoicesPage() {
       <PageHeader
         title="Invoices"
         description="Manage customer invoices and billing"
+        icon={FileText}
         action={{
           label: 'Create Invoice',
           onClick: () => setShowCreateModal(true),
           icon: Plus
         }}
+        help={PAGE_HELP_CONTENT.invoices}
       />
 
       <div className="mb-6">
