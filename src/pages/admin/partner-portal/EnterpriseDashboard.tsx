@@ -61,7 +61,7 @@ const EnterpriseDashboard: React.FC = () => {
       const user = await getCurrentUser();
       if (!user) {
         setErrorType('Auth');
-        setError('Session expired. Please log in again.');
+        setError('Sessionen har gått ut. Logga in igen.');
         return;
       }
 
@@ -147,19 +147,19 @@ const EnterpriseDashboard: React.FC = () => {
 
       if (errorMsg.includes('RLS') || errorMsg.includes('permission') || errorMsg.includes('policy')) {
         setErrorType('RLS');
-        setError('Access denied. Your account may not have proper permissions.');
+        setError('Åtkomst nekad. Ditt konto kanske inte har rätt behörigheter.');
       } else if (errorMsg.includes('JWT') || errorMsg.includes('auth') || errorMsg.includes('session')) {
         setErrorType('Auth');
-        setError('Session expired. Please log in again.');
+        setError('Sessionen har gått ut. Logga in igen.');
       } else if (errorMsg.includes('network') || errorMsg.includes('fetch')) {
         setErrorType('Network');
-        setError('Network error. Please check your connection and try again.');
+        setError('Nätverksfel. Kontrollera din anslutning och försök igen.');
       } else if (errorMsg.includes('undefined') || errorMsg.includes('null')) {
         setErrorType('Mapping');
-        setError('Data structure error. Please contact support.');
+        setError('Datastrukturfel. Kontakta support.');
       } else {
         setErrorType('Unknown');
-        setError('Could not load dashboard. Please try again.');
+        setError('Kunde inte ladda instrumentpanel. Försök igen.');
       }
     } finally {
       setLoading(false);
@@ -212,7 +212,7 @@ const EnterpriseDashboard: React.FC = () => {
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Laddar Enterprise Dashboard...</p>
+            <p className="text-gray-600">Laddar Företagsinstrumentpanel...</p>
           </div>
         </div>
       </div>
@@ -230,11 +230,11 @@ const EnterpriseDashboard: React.FC = () => {
             <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
             <div className="flex-1">
               <h3 className="text-lg font-semibold text-red-900 mb-2">
-                {errorType === 'Auth' ? 'Authentication Error' :
-                 errorType === 'RLS' ? 'Access Error' :
-                 errorType === 'Network' ? 'Network Error' :
-                 errorType === 'Mapping' ? 'Data Error' :
-                 'Loading Error'}
+                {errorType === 'Auth' ? 'Autentiseringsfel' :
+                 errorType === 'RLS' ? 'Åtkomstfel' :
+                 errorType === 'Network' ? 'Nätverksfel' :
+                 errorType === 'Mapping' ? 'Datafel' :
+                 'Laddningsfel'}
               </h3>
               <p className="text-red-700 mb-4">{error}</p>
               <div className="flex gap-3">
@@ -243,14 +243,14 @@ const EnterpriseDashboard: React.FC = () => {
                     onClick={() => window.location.href = '/admin/login'}
                     className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                   >
-                    Log in again
+                    Logga in igen
                   </button>
                 ) : (
                   <button
                     onClick={loadDashboard}
                     className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                   >
-                    Try again
+                    Försök igen
                   </button>
                 )}
               </div>
@@ -489,8 +489,8 @@ const EnterpriseDashboard: React.FC = () => {
               {filteredRecommendations.length === 0 ? (
                 <div className="text-center py-12">
                   <TrendingUp className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                  <p className="text-base font-medium text-gray-600 mb-1">No active recommendations</p>
-                  <p className="text-sm text-gray-500">System is monitoring for issues</p>
+                  <p className="text-base font-medium text-gray-600 mb-1">Inga aktiva rekommendationer</p>
+                  <p className="text-sm text-gray-500">Systemet övervakar för problem</p>
                 </div>
               ) : (
                 <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">

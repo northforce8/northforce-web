@@ -151,7 +151,7 @@ const CustomerDetailPage: React.FC = () => {
       });
     } catch (error) {
       console.error('Error loading customer details:', error);
-      setError('Failed to load customer details. Please try again.');
+      setError('Kunde inte ladda kunddetaljer. Försök igen.');
     } finally {
       setLoading(false);
     }
@@ -535,14 +535,14 @@ const CustomerDetailPage: React.FC = () => {
         <div className="max-w-7xl mx-auto p-6">
           <div className="text-center py-12">
             <AlertTriangle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Customer Not Found</h3>
-            <p className="text-gray-600 mb-6">The customer you're looking for doesn't exist.</p>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">Kund Hittades Inte</h3>
+            <p className="text-gray-600 mb-6">Kunden du söker finns inte.</p>
             <button
               onClick={() => navigate('/admin/partner-portal/customers')}
               className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
             >
               <ArrowLeft className="h-4 w-4" />
-              Back to Customers
+              Tillbaka till Kunder
             </button>
           </div>
         </div>
@@ -645,7 +645,7 @@ const CustomerDetailPage: React.FC = () => {
           <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
             <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
             <div className="flex-1">
-              <p className="text-red-800 font-medium">Error</p>
+              <p className="text-red-800 font-medium">Fel</p>
               <p className="text-red-700 text-sm mt-1">{error}</p>
             </div>
             <button onClick={() => setError(null)} className="text-red-600 hover:text-red-800">
@@ -658,7 +658,7 @@ const CustomerDetailPage: React.FC = () => {
           <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-start gap-3">
             <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
             <div className="flex-1">
-              <p className="text-green-800 font-medium">Success</p>
+              <p className="text-green-800 font-medium">Lyckades</p>
               <p className="text-green-700 text-sm mt-1">{success}</p>
             </div>
             <button onClick={() => setSuccess(null)} className="text-green-600 hover:text-green-800">
