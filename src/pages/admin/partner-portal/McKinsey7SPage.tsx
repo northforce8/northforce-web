@@ -6,6 +6,8 @@ import type {
   McKinsey7SElement,
 } from '../../../lib/mckinsey-types';
 import { generateMcKinsey7SInsights } from '../../../lib/mckinsey-ai-service';
+import { PageHeader } from '../../../components/admin/PageHeader';
+import { PAGE_HELP_CONTENT } from '../../../lib/page-help-content';
 
 const ELEMENT_ICONS = {
   strategy: Target,
@@ -22,6 +24,7 @@ export default function McKinsey7SPage() {
   const [selectedAssessment, setSelectedAssessment] = useState<McKinsey7SAssessment | null>(null);
   const [elements, setElements] = useState<McKinsey7SElement[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [customers, setCustomers] = useState<any[]>([]);
   const [aiInsights, setAiInsights] = useState<any>(null);
@@ -55,18 +58,21 @@ export default function McKinsey7SPage() {
 
   const loadAssessments = async () => {
     try {
-      const { data, error } = await supabase
+      setLoading(true);
+      setError(null);
+      const { data, error: dbError } = await supabase
         .from('mckinsey_7s_assessments')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (dbError) throw dbError;
       setAssessments(data || []);
       if (data && data.length > 0 && !selectedAssessment) {
         setSelectedAssessment(data[0]);
       }
-    } catch (error) {
-      console.error('Error loading assessments:', error);
+    } catch (err) {
+      console.error('Error loading assessments:', err);
+      setError(err instanceof Error ? err.message : 'Kunde inte ladda McKinsey 7S-analyser. Försök igen.');
     } finally {
       setLoading(false);
     }
@@ -162,29 +168,50 @@ export default function McKinsey7SPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-gray-500">Loading McKinsey 7S assessments...</div>
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Laddar McKinsey 7S-analyser...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6 max-w-7xl mx-auto">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-red-900 mb-2">Fel vid laddning</h3>
+              <p className="text-red-700 mb-4">{error}</p>
+              <button
+                onClick={loadAssessments}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Försök igen
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">McKinsey 7S Framework</h1>
-          <p className="mt-1 text-sm text-gray-500">
-            Analyze organizational alignment across seven interdependent elements
-          </p>
-        </div>
-        <button
-          onClick={() => setShowCreateModal(true)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
-        >
-          <Plus className="w-4 h-4" />
-          New Assessment
-        </button>
-      </div>
+      <PageHeader
+        title="McKinsey 7S Framework"
+        description="Analysera organisatorisk anpassning över sju beroende element"
+        icon={Network}
+        help={PAGE_HELP_CONTENT.frameworks}
+        action={{
+          label: 'Ny analys',
+          onClick: () => setShowCreateModal(true),
+          icon: Plus,
+        }}
+      />
 
       {assessments.length === 0 ? (
         <div className="bg-white rounded-lg shadow p-12 text-center">

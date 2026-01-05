@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import {
   Lightbulb, Users, Target, Boxes, TestTube, Plus, TrendingUp,
   Brain, Heart, MessageSquare, Map, ArrowRight, CheckCircle2,
-  AlertCircle, Sparkles, RefreshCw, Eye, ThumbsUp
+  AlertCircle, Sparkles, RefreshCw, Eye, ThumbsUp, AlertTriangle
 } from 'lucide-react';
+import { PageHeader } from '../../../components/admin/PageHeader';
+import { PAGE_HELP_CONTENT } from '../../../lib/page-help-content';
 import { supabase } from '../../../lib/supabase';
 import { Card } from '../../../components/admin/ui/Card';
 import { Badge } from '../../../components/admin/ui/Badge';
@@ -37,6 +39,7 @@ const PHASE_ICONS: Record<DTPhase, typeof Heart> = {
 export default function DesignThinkingPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [projects, setProjects] = useState<DesignThinkingProject[]>([]);
   const [selectedProject, setSelectedProject] = useState<DesignThinkingProject | null>(null);
   const [phases, setPhases] = useState<DTPhaseData[]>([]);
@@ -62,18 +65,21 @@ export default function DesignThinkingPage() {
 
   const loadProjects = async () => {
     try {
-      const { data, error } = await supabase
+      setLoading(true);
+      setError(null);
+      const { data, error: dbError } = await supabase
         .from('design_thinking_projects')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (dbError) throw dbError;
       setProjects(data || []);
       if (data && data.length > 0) {
         setSelectedProject(data[0]);
       }
-    } catch (error) {
-      console.error('Error loading projects:', error);
+    } catch (err) {
+      console.error('Error loading projects:', err);
+      setError(err instanceof Error ? err.message : 'Kunde inte ladda Design Thinking-projekt. Försök igen.');
     } finally {
       setLoading(false);
     }
@@ -229,29 +235,52 @@ export default function DesignThinkingPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-96">
-        <RefreshCw className="w-8 h-8 text-blue-600 animate-spin" />
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Laddar Design Thinking-projekt...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6 max-w-7xl mx-auto">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-red-900 mb-2">Fel vid laddning</h3>
+              <p className="text-red-700 mb-4">{error}</p>
+              <button
+                onClick={loadProjects}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Försök igen
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <Lightbulb className="w-8 h-8 text-amber-600" />
-            Design Thinking Canvas
-          </h1>
-          <p className="text-gray-600 mt-1">
-            Human-centered innovation through empathy, ideation, and experimentation
-          </p>
-        </div>
+      <PageHeader
+        title="Design Thinking Canvas"
+        description="Människocentrerad innovation genom empati, idéskapande och experiment"
+        icon={Lightbulb}
+        help={PAGE_HELP_CONTENT.frameworks}
+      />
+
+      <div className="flex justify-between items-center">
         <div className="flex gap-3">
           <button
             onClick={generateAIInsights}
             disabled={!selectedProject || generatingAI}
-            className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 flex items-center gap-2"
+            className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 flex items-center gap-2"
           >
             {generatingAI ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Brain className="w-4 h-4" />}
             AI Insights

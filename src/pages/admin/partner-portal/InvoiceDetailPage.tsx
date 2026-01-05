@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, Send, Check, X, Plus, Trash2, Edit2, Download, Mail } from 'lucide-react';
+import { ArrowLeft, Send, Check, X, Plus, Trash2, Edit2, Download, Mail, AlertTriangle } from 'lucide-react';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { InvoiceStatusBadge } from '../../../components/admin/InvoiceStatusBadge';
 import { CurrencyDisplay } from '../../../components/admin/CurrencyDisplay';
@@ -16,6 +16,7 @@ export default function InvoiceDetailPage() {
   const [invoice, setInvoice] = useState<any>(null);
   const [lineItems, setLineItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [showAddLineItem, setShowAddLineItem] = useState(false);
   const [showPDFPreview, setShowPDFPreview] = useState(false);
   const [sendingEmail, setSendingEmail] = useState(false);
@@ -28,11 +29,13 @@ export default function InvoiceDetailPage() {
   async function loadInvoice() {
     try {
       setLoading(true);
+      setError(null);
       const data = await partnerPortalApi.invoices.getById(invoiceId!);
       setInvoice(data);
       setLineItems(data?.line_items || []);
-    } catch (error) {
-      console.error('Error loading invoice:', error);
+    } catch (err) {
+      console.error('Error loading invoice:', err);
+      setError(err instanceof Error ? err.message : 'Kunde inte ladda faktura. Försök igen.');
     } finally {
       setLoading(false);
     }
@@ -145,7 +148,29 @@ export default function InvoiceDetailPage() {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading invoice...</p>
+          <p className="text-gray-600">Laddar faktura...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error && !invoice) {
+    return (
+      <div className="max-w-7xl mx-auto p-6">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-red-900 mb-2">Fel vid laddning</h3>
+              <p className="text-red-700 mb-4">{error}</p>
+              <button
+                onClick={loadInvoice}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Försök igen
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );

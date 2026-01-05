@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, Send, Check, FileText, Download, History, GitBranch, Edit } from 'lucide-react';
+import { ArrowLeft, Send, Check, FileText, Download, History, GitBranch, Edit, AlertTriangle } from 'lucide-react';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { ContractStatusBadge } from '../../../components/admin/ContractStatusBadge';
 import ContractValidationAI from '../../../components/admin/ContractValidationAI';
@@ -13,6 +13,7 @@ export default function ContractDetailPage() {
   const [contract, setContract] = useState<any>(null);
   const [versions, setVersions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [showVersions, setShowVersions] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [generatingPDF, setGeneratingPDF] = useState(false);
@@ -24,14 +25,16 @@ export default function ContractDetailPage() {
   async function loadContract() {
     try {
       setLoading(true);
+      setError(null);
       const [contractData, versionsData] = await Promise.all([
         partnerPortalApi.contracts.getById(contractId!),
         partnerPortalApi.contracts.getVersionHistory(contractId!),
       ]);
       setContract(contractData);
       setVersions(versionsData);
-    } catch (error) {
-      console.error('Error loading contract:', error);
+    } catch (err) {
+      console.error('Error loading contract:', err);
+      setError(err instanceof Error ? err.message : 'Kunde inte ladda kontrakt. Försök igen.');
     } finally {
       setLoading(false);
     }
@@ -108,7 +111,29 @@ export default function ContractDetailPage() {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading contract...</p>
+          <p className="text-gray-600">Laddar kontrakt...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error && !contract) {
+    return (
+      <div className="max-w-7xl mx-auto p-6">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-red-900 mb-2">Fel vid laddning</h3>
+              <p className="text-red-700 mb-4">{error}</p>
+              <button
+                onClick={loadContract}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Försök igen
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
