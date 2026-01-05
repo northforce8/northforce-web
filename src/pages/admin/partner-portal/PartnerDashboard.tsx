@@ -9,9 +9,11 @@ import { getCurrentUser, isAdmin } from '../../../lib/auth';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { safeNumber } from '../../../lib/data-validators';
 import { supabase } from '../../../lib/supabase';
+import { useLanguage } from '../../../contexts/LanguageContext';
 import type { TimeEntryWithRelations, NoteWithRelations, Partner, Customer, Recommendation } from '../../../lib/partner-portal-types';
 
 const PartnerDashboard: React.FC = () => {
+  const { t } = useLanguage();
   const [isAdminUser, setIsAdminUser] = useState(false);
   const [stats, setStats] = useState({
     totalHours: 0,
@@ -132,18 +134,18 @@ const PartnerDashboard: React.FC = () => {
         alerts.push({
           id: `credits-critical-${customer.id}`,
           type: 'critical',
-          title: `Critical: ${customer.company_name} - Credits Depleted`,
-          description: `Only ${safeNumber(customer.credits_balance, 0).toFixed(1)} credits remaining (${safeNumber(creditsPercentage, 0).toFixed(0)}%). Immediate action required.`,
-          action: { label: 'Add Credits', link: `/admin/partner-portal/customers/${customer.id}` },
+          title: `Kritiskt: ${customer.company_name} - Krediter slut`,
+          description: `Endast ${safeNumber(customer.credits_balance, 0).toFixed(1)} krediter kvar (${safeNumber(creditsPercentage, 0).toFixed(0)}%). Omedelbar åtgärd krävs.`,
+          action: { label: 'Lägg till krediter', link: `/admin/partner-portal/customers/${customer.id}` },
           icon: <AlertTriangle className="h-5 w-5" />,
         });
       } else if (creditsPercentage < 20) {
         alerts.push({
           id: `credits-low-${customer.id}`,
           type: 'warning',
-          title: `${customer.company_name} - Low Credits`,
-          description: `${safeNumber(customer.credits_balance, 0).toFixed(1)} credits remaining (${safeNumber(creditsPercentage, 0).toFixed(0)}%). Consider refilling.`,
-          action: { label: 'Manage Credits', link: `/admin/partner-portal/customers/${customer.id}` },
+          title: `${customer.company_name} - Lågt kreditsaldo`,
+          description: `${safeNumber(customer.credits_balance, 0).toFixed(1)} krediter kvar (${safeNumber(creditsPercentage, 0).toFixed(0)}%). Överväg påfyllning.`,
+          action: { label: 'Hantera krediter', link: `/admin/partner-portal/customers/${customer.id}` },
           icon: <AlertCircle className="h-5 w-5" />,
         });
       }
@@ -152,9 +154,9 @@ const PartnerDashboard: React.FC = () => {
         alerts.push({
           id: `overdelivery-${customer.id}`,
           type: customer.overdelivery_risk_level === 'critical' ? 'critical' : 'warning',
-          title: `${customer.company_name} - High Overdelivery Risk`,
-          description: `Current burn rate exceeds allocation. Scope review recommended.`,
-          action: { label: 'View Details', link: `/admin/partner-portal/customers/${customer.id}` },
+          title: `${customer.company_name} - Hög överleveransrisk`,
+          description: `Nuvarande förbrukningshastighet överstiger allokering. Omfattningsgranskning rekommenderas.`,
+          action: { label: 'Visa detaljer', link: `/admin/partner-portal/customers/${customer.id}` },
           icon: <TrendingDown className="h-5 w-5" />,
         });
       }
@@ -163,9 +165,9 @@ const PartnerDashboard: React.FC = () => {
         alerts.push({
           id: `blocked-${customer.id}`,
           type: 'critical',
-          title: `${customer.company_name} - Project Blocked`,
-          description: `Collaboration is blocked. Immediate attention required to unblock progress.`,
-          action: { label: 'View Details', link: `/admin/partner-portal/customers/${customer.id}` },
+          title: `${customer.company_name} - Projekt blockerat`,
+          description: `Samarbetet är blockerat. Omedelbar uppmärksamhet krävs för att låsa upp framsteg.`,
+          action: { label: 'Visa detaljer', link: `/admin/partner-portal/customers/${customer.id}` },
           icon: <AlertTriangle className="h-5 w-5" />,
         });
       }
@@ -178,7 +180,7 @@ const PartnerDashboard: React.FC = () => {
           type: rec.priority === 'critical' ? 'critical' : 'warning',
           title: rec.title,
           description: rec.description || '',
-          action: rec.customer ? { label: 'View Customer', link: `/admin/partner-portal/customers/${rec.customer_id}` } : undefined,
+          action: rec.customer ? { label: 'Visa kund', link: `/admin/partner-portal/customers/${rec.customer_id}` } : undefined,
           icon: <Zap className="h-5 w-5" />,
         });
       }
@@ -206,7 +208,7 @@ const PartnerDashboard: React.FC = () => {
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading dashboard...</p>
+            <p className="text-gray-600">{t('dashboard.loading')}</p>
           </div>
         </div>
       </div>
@@ -218,10 +220,10 @@ const PartnerDashboard: React.FC = () => {
       <div className="p-6 max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900">
-            {isAdminUser ? 'Partner Portal Dashboard' : 'My Dashboard'}
+            {isAdminUser ? t('dashboard.title_admin') : t('dashboard.title_partner')}
           </h1>
           <p className="text-sm text-gray-500 mt-1">
-            {isAdminUser ? 'Overview of all partner activities' : 'Your activity overview'}
+            {isAdminUser ? t('dashboard.subtitle_admin') : t('dashboard.subtitle_partner')}
           </p>
         </div>
 
@@ -233,7 +235,8 @@ const PartnerDashboard: React.FC = () => {
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{stats.totalHours}</p>
-            <p className="text-sm text-gray-600 mt-1">Total Hours</p>
+            <p className="text-sm font-medium text-gray-900 mt-1">{t('dashboard.kpi.total_hours')}</p>
+            <p className="text-xs text-gray-500 mt-0.5">{t('dashboard.kpi.total_hours_desc')}</p>
           </div>
 
           <div className="bg-white rounded-lg shadow p-6">
@@ -243,7 +246,8 @@ const PartnerDashboard: React.FC = () => {
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{stats.activeCustomers}</p>
-            <p className="text-sm text-gray-600 mt-1">Active Customers</p>
+            <p className="text-sm font-medium text-gray-900 mt-1">{t('dashboard.kpi.active_customers')}</p>
+            <p className="text-xs text-gray-500 mt-0.5">{t('dashboard.kpi.active_customers_desc')}</p>
           </div>
 
           <div className="bg-white rounded-lg shadow p-6">
@@ -253,7 +257,8 @@ const PartnerDashboard: React.FC = () => {
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{stats.activeProjects}</p>
-            <p className="text-sm text-gray-600 mt-1">Active Projects</p>
+            <p className="text-sm font-medium text-gray-900 mt-1">{t('dashboard.kpi.active_projects')}</p>
+            <p className="text-xs text-gray-500 mt-0.5">{t('dashboard.kpi.active_projects_desc')}</p>
           </div>
 
           <div className="bg-white rounded-lg shadow p-6">
@@ -263,7 +268,8 @@ const PartnerDashboard: React.FC = () => {
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{stats.thisWeekHours}</p>
-            <p className="text-sm text-gray-600 mt-1">This Week</p>
+            <p className="text-sm font-medium text-gray-900 mt-1">{t('dashboard.kpi.this_week')}</p>
+            <p className="text-xs text-gray-500 mt-0.5">{t('dashboard.kpi.this_week_desc')}</p>
           </div>
         </div>
 
@@ -273,44 +279,45 @@ const PartnerDashboard: React.FC = () => {
               <div className="p-6 border-b border-gray-200">
                 <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                   <Target className="h-5 w-5 text-primary-600" />
-                  Strategic Frameworks Overview
+                  {t('dashboard.frameworks.title')}
                 </h2>
-                <p className="text-sm text-gray-600 mt-1">Enterprise-grade strategic tools and methodologies</p>
+                <p className="text-sm text-gray-600 mt-1">{t('dashboard.frameworks.subtitle')}</p>
               </div>
               <div className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <Link to="/admin/partner-portal/strategic-frameworks/okr" className="p-4 border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-md transition-all">
                     <div className="flex items-center gap-3 mb-2">
                       <Target className="h-5 w-5 text-blue-600" />
-                      <span className="font-semibold text-gray-900">OKRs</span>
+                      <span className="font-semibold text-gray-900">{t('dashboard.frameworks.okr')}</span>
                     </div>
                     <p className="text-2xl font-bold text-gray-900">{frameworkStats.totalOKRs}</p>
-                    <p className="text-xs text-gray-600 mt-1">{frameworkStats.okrsOnTrack} active</p>
+                    <p className="text-xs text-gray-600 mt-1">{frameworkStats.okrsOnTrack} {t('dashboard.frameworks.okr_status')}</p>
                   </Link>
 
                   <Link to="/admin/partner-portal/strategic-frameworks/swot" className="p-4 border border-gray-200 rounded-lg hover:border-green-500 hover:shadow-md transition-all">
                     <div className="flex items-center gap-3 mb-2">
                       <TrendingUp className="h-5 w-5 text-green-600" />
-                      <span className="font-semibold text-gray-900">SWOT</span>
+                      <span className="font-semibold text-gray-900">{t('dashboard.frameworks.swot')}</span>
                     </div>
                     <p className="text-2xl font-bold text-gray-900">{frameworkStats.activeSWOTs}</p>
-                    <p className="text-xs text-gray-600 mt-1">In progress</p>
+                    <p className="text-xs text-gray-600 mt-1">{t('dashboard.frameworks.swot_status')}</p>
                   </Link>
 
                   <Link to="/admin/partner-portal/strategic-frameworks/adkar" className="p-4 border border-gray-200 rounded-lg hover:border-purple-500 hover:shadow-md transition-all">
                     <div className="flex items-center gap-3 mb-2">
                       <RefreshCw className="h-5 w-5 text-purple-600" />
-                      <span className="font-semibold text-gray-900">Change</span>
+                      <span className="font-semibold text-gray-900">{t('dashboard.frameworks.change')}</span>
                     </div>
+                    <p className="text-xs text-gray-500 mb-2">{t('dashboard.frameworks.change_subtitle')}</p>
                     <p className="text-2xl font-bold text-gray-900">{frameworkStats.activeChangeInitiatives}</p>
-                    <p className="text-xs text-gray-600 mt-1">Initiatives</p>
+                    <p className="text-xs text-gray-600 mt-1">{t('dashboard.frameworks.change_status')}</p>
                   </Link>
 
                   <Link to="/admin/partner-portal/strategic-frameworks" className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-all flex items-center justify-center">
                     <div className="text-center">
                       <Lightbulb className="h-6 w-6 text-gray-400 mx-auto mb-2" />
-                      <p className="text-sm font-medium text-gray-600">View All</p>
-                      <p className="text-xs text-gray-500">10 frameworks</p>
+                      <p className="text-sm font-medium text-gray-600">{t('dashboard.frameworks.view_all')}</p>
+                      <p className="text-xs text-gray-500">{t('dashboard.frameworks.view_all_count')}</p>
                     </div>
                   </Link>
                 </div>
@@ -325,9 +332,9 @@ const PartnerDashboard: React.FC = () => {
               <div className="p-6 border-b border-gray-200">
                 <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                   <Zap className="h-5 w-5 text-primary-600" />
-                  Business Intelligence & Alerts
+                  {t('dashboard.alerts.title')}
                 </h2>
-                <p className="text-sm text-gray-600 mt-1">Rule-based recommendations requiring attention</p>
+                <p className="text-sm text-gray-600 mt-1">{t('dashboard.alerts.subtitle')}</p>
               </div>
               <div className="p-6">
                 <div className="space-y-3">
@@ -392,26 +399,28 @@ const PartnerDashboard: React.FC = () => {
           <div className="bg-white rounded-lg shadow">
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-gray-900">Recent Time Entries</h2>
+                <h2 className="text-lg font-semibold text-gray-900">{t('dashboard.time.title')}</h2>
                 <Link
                   to="/admin/partner-portal/time"
                   className="text-sm text-primary-600 hover:text-primary-800 font-medium flex items-center"
                 >
                   <Plus className="h-4 w-4 mr-1" />
-                  Add Time
+                  {t('dashboard.time.add')}
                 </Link>
               </div>
             </div>
             <div className="p-6">
               {recentTimeEntries.length === 0 ? (
-                <div className="text-center py-8">
+                <div className="text-center py-8 px-4">
                   <Clock className="h-12 w-12 text-gray-300 mx-auto mb-3" />
-                  <p className="text-gray-500">No time entries yet</p>
+                  <p className="text-sm font-semibold text-gray-900 mb-2">{t('dashboard.time.empty_title')}</p>
+                  <p className="text-xs text-gray-600 mb-4 max-w-sm mx-auto">{t('dashboard.time.empty_desc')}</p>
                   <Link
                     to="/admin/partner-portal/time"
-                    className="text-primary-600 hover:text-primary-800 text-sm font-medium mt-2 inline-block"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 text-sm font-medium transition-colors"
                   >
-                    Report your first hours
+                    <Plus className="h-4 w-4" />
+                    {t('dashboard.time.empty_action')}
                   </Link>
                 </div>
               ) : (
@@ -439,26 +448,28 @@ const PartnerDashboard: React.FC = () => {
           <div className="bg-white rounded-lg shadow">
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-gray-900">Recent Notes</h2>
+                <h2 className="text-lg font-semibold text-gray-900">{t('dashboard.notes.title')}</h2>
                 <Link
                   to="/admin/partner-portal/notes"
                   className="text-sm text-primary-600 hover:text-primary-800 font-medium flex items-center"
                 >
                   <Plus className="h-4 w-4 mr-1" />
-                  Add Note
+                  {t('dashboard.notes.add')}
                 </Link>
               </div>
             </div>
             <div className="p-6">
               {recentNotes.length === 0 ? (
-                <div className="text-center py-8">
+                <div className="text-center py-8 px-4">
                   <FileText className="h-12 w-12 text-gray-300 mx-auto mb-3" />
-                  <p className="text-gray-500">No notes yet</p>
+                  <p className="text-sm font-semibold text-gray-900 mb-2">{t('dashboard.notes.empty_title')}</p>
+                  <p className="text-xs text-gray-600 mb-4 max-w-sm mx-auto">{t('dashboard.notes.empty_desc')}</p>
                   <Link
                     to="/admin/partner-portal/notes"
-                    className="text-primary-600 hover:text-primary-800 text-sm font-medium mt-2 inline-block"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 text-sm font-medium transition-colors"
                   >
-                    Create your first note
+                    <Plus className="h-4 w-4" />
+                    {t('dashboard.notes.empty_action')}
                   </Link>
                 </div>
               ) : (
@@ -487,8 +498,8 @@ const PartnerDashboard: React.FC = () => {
             className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow"
           >
             <Building2 className="h-8 w-8 text-primary-600 mb-3" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Customers</h3>
-            <p className="text-sm text-gray-600">View and manage customer relationships</p>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('dashboard.links.customers')}</h3>
+            <p className="text-sm text-gray-600">{t('dashboard.links.customers_desc')}</p>
           </Link>
 
           <Link
@@ -496,8 +507,8 @@ const PartnerDashboard: React.FC = () => {
             className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow"
           >
             <FolderKanban className="h-8 w-8 text-accent-emerald mb-3" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Projects</h3>
-            <p className="text-sm text-gray-600">Track active projects and deliverables</p>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('dashboard.links.projects')}</h3>
+            <p className="text-sm text-gray-600">{t('dashboard.links.projects_desc')}</p>
           </Link>
 
           <Link
@@ -505,8 +516,8 @@ const PartnerDashboard: React.FC = () => {
             className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow"
           >
             <Clock className="h-8 w-8 text-accent-cyan mb-3" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Time Reporting</h3>
-            <p className="text-sm text-gray-600">Log and track your hours</p>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('dashboard.links.time')}</h3>
+            <p className="text-sm text-gray-600">{t('dashboard.links.time_desc')}</p>
           </Link>
         </div>
       </div>

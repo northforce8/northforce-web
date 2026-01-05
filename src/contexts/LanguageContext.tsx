@@ -298,6 +298,66 @@ const translations: Record<string, Record<Language, string>> = {
   'audit.analyze.form_title': { en: 'Request Your AI Analysis', sv: 'Begär din AI-analys' },
   'audit.analyze.form_subtitle': { en: 'Fill in your details and we\'ll send you the comprehensive report within 48 hours.', sv: 'Fyll i dina uppgifter så skickar vi dig den omfattande rapporten inom 48 timmar.' },
 
+  // Partner Portal Dashboard
+  'dashboard.title_admin': { en: 'Partner Portal Dashboard', sv: 'Instrumentpanel för partnerportal' },
+  'dashboard.title_partner': { en: 'My Dashboard', sv: 'Min instrumentpanel' },
+  'dashboard.subtitle_admin': { en: 'Overview of all partner activities', sv: 'Översikt över all partneraktivitet' },
+  'dashboard.subtitle_partner': { en: 'Your activity overview', sv: 'Din aktivitetsöversikt' },
+  'dashboard.loading': { en: 'Loading dashboard...', sv: 'Laddar instrumentpanel...' },
+
+  // KPI Cards
+  'dashboard.kpi.total_hours': { en: 'Total Hours', sv: 'Totalt antal timmar' },
+  'dashboard.kpi.total_hours_desc': { en: 'Cumulative hours tracked across all projects', sv: 'Ackumulerade timmar över alla projekt' },
+  'dashboard.kpi.active_customers': { en: 'Active Customers', sv: 'Aktiva kunder' },
+  'dashboard.kpi.active_customers_desc': { en: 'Customer accounts with ongoing engagements', sv: 'Kundkonton med pågående uppdrag' },
+  'dashboard.kpi.active_projects': { en: 'Active Projects', sv: 'Aktiva projekt' },
+  'dashboard.kpi.active_projects_desc': { en: 'Projects currently in progress', sv: 'Projekt som pågår' },
+  'dashboard.kpi.this_week': { en: 'This Week', sv: 'Denna vecka' },
+  'dashboard.kpi.this_week_desc': { en: 'Hours logged in current week', sv: 'Timmar loggade under pågående vecka' },
+
+  // Strategic Frameworks Section
+  'dashboard.frameworks.title': { en: 'Strategic Frameworks Overview', sv: 'Översikt strategiska ramverk' },
+  'dashboard.frameworks.subtitle': { en: 'Enterprise-grade strategic tools and methodologies', sv: 'Strategiska verktyg och metoder i företagsklass' },
+  'dashboard.frameworks.okr': { en: 'OKRs', sv: 'OKR' },
+  'dashboard.frameworks.okr_status': { en: 'active', sv: 'aktiva' },
+  'dashboard.frameworks.swot': { en: 'SWOT', sv: 'SWOT' },
+  'dashboard.frameworks.swot_status': { en: 'In progress', sv: 'Pågående' },
+  'dashboard.frameworks.change': { en: 'ADKAR', sv: 'ADKAR' },
+  'dashboard.frameworks.change_subtitle': { en: 'Change Management', sv: 'Förändringsledning' },
+  'dashboard.frameworks.change_status': { en: 'Initiatives', sv: 'Initiativ' },
+  'dashboard.frameworks.view_all': { en: 'View All', sv: 'Visa alla' },
+  'dashboard.frameworks.view_all_count': { en: '10 frameworks', sv: '10 ramverk' },
+
+  // Alerts Section
+  'dashboard.alerts.title': { en: 'Business Intelligence & Alerts', sv: 'Affärsinsikter & varningar' },
+  'dashboard.alerts.subtitle': { en: 'Rule-based recommendations requiring attention', sv: 'Regelbaserade rekommendationer som kräver uppmärksamhet' },
+  'dashboard.alerts.add_credits': { en: 'Add Credits', sv: 'Lägg till krediter' },
+  'dashboard.alerts.manage_credits': { en: 'Manage Credits', sv: 'Hantera krediter' },
+  'dashboard.alerts.view_details': { en: 'View Details', sv: 'Visa detaljer' },
+  'dashboard.alerts.view_customer': { en: 'View Customer', sv: 'Visa kund' },
+
+  // Time Entries Section
+  'dashboard.time.title': { en: 'Recent Time Entries', sv: 'Senaste tidsregistreringar' },
+  'dashboard.time.add': { en: 'Add Time', sv: 'Lägg till tid' },
+  'dashboard.time.empty_title': { en: 'Start tracking your work', sv: 'Börja spåra ditt arbete' },
+  'dashboard.time.empty_desc': { en: 'Time tracking enables accurate project insights, resource planning, and transparent client billing. Log your first hours to begin.', sv: 'Tidsspårning möjliggör exakta projektinsikter, resursplanering och transparent kundfakturering. Logga dina första timmar för att börja.' },
+  'dashboard.time.empty_action': { en: 'Report your first hours', sv: 'Rapportera dina första timmar' },
+
+  // Notes Section
+  'dashboard.notes.title': { en: 'Recent Notes', sv: 'Senaste anteckningar' },
+  'dashboard.notes.add': { en: 'Add Note', sv: 'Lägg till anteckning' },
+  'dashboard.notes.empty_title': { en: 'Document key insights', sv: 'Dokumentera viktiga insikter' },
+  'dashboard.notes.empty_desc': { en: 'Notes capture client conversations, strategic decisions, and action items. Build your knowledge base to drive better outcomes.', sv: 'Anteckningar fångar kundsamtal, strategiska beslut och åtgärdspunkter. Bygg din kunskapsbas för bättre resultat.' },
+  'dashboard.notes.empty_action': { en: 'Create your first note', sv: 'Skapa din första anteckning' },
+
+  // Quick Links
+  'dashboard.links.customers': { en: 'Customers', sv: 'Kunder' },
+  'dashboard.links.customers_desc': { en: 'View and manage customer relationships', sv: 'Visa och hantera kundrelationer' },
+  'dashboard.links.projects': { en: 'Projects', sv: 'Projekt' },
+  'dashboard.links.projects_desc': { en: 'Track active projects and deliverables', sv: 'Följ aktiva projekt och leveranser' },
+  'dashboard.links.time': { en: 'Time Reporting', sv: 'Tidsrapportering' },
+  'dashboard.links.time_desc': { en: 'Log and track your hours', sv: 'Logga och spåra dina timmar' },
+
   'audit.credentials.title': { en: 'Enterprise-Grade', sv: 'Företagsklass' },
   'audit.credentials.title_highlight': { en: 'Strategy', sv: 'strategi' },
   'audit.credentials.subtitle': { en: 'Our strategic advisory combines Fortune 500 methodology with growth-stage execution speed. Built for businesses serious about scaling.', sv: 'Vår strategiska rådgivning kombinerar Fortune 500-metodik med snabb exekvering i tillväxtfas. Byggd för företag som är seriösa om skalning.' },
