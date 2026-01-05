@@ -12,6 +12,7 @@ import {
   Award,
   AlertTriangle,
 } from 'lucide-react';
+import { PageHeader } from '../../../components/admin/PageHeader';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import type {
   Partner,
@@ -177,22 +178,19 @@ const PartnerManagementPage: React.FC = () => {
 
   return (
     <div>
-      <div className="p-6 max-w-7xl mx-auto">
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Partner Management</h1>
-            <p className="text-sm text-gray-500 mt-1">Manage partner network, costs, and capacity</p>
-          </div>
-          <button
-            onClick={() => setShowPartnerModal(true)}
-            className="flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
-          >
-            <Plus className="h-5 w-5 mr-2" />
-            Add Partner
-          </button>
-        </div>
+      <div className="p-6 max-w-7xl mx-auto space-y-8">
+        <PageHeader
+          title="Partnerhantering"
+          description="Hantera partnernätverket, kostnader och kapacitet"
+          icon={Users}
+          action={{
+            label: 'Lägg till partner',
+            onClick: () => setShowPartnerModal(true),
+            icon: <Plus className="h-5 w-5" />
+          }}
+        />
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="bg-white border border-gray-200 rounded-lg p-4">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-gray-600">Total Partners</span>

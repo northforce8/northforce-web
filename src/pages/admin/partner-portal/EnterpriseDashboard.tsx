@@ -217,8 +217,8 @@ const EnterpriseDashboard: React.FC = () => {
     <div>
       <div className="p-6 max-w-7xl mx-auto space-y-8">
         <PageHeader
-          title="Enterprise Dashboard"
-          description="Operational intelligence for strategic control and decision-making"
+          title="Instrumentpanel"
+          description="Operativ intelligens för strategisk kontroll och beslutsfattande"
           icon={Activity}
         />
 

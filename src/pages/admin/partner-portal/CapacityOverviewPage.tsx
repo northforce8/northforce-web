@@ -127,11 +127,11 @@ const CapacityOverviewPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto p-6 space-y-6">
       <PageHeader
-        title="Capacity Planning"
-        description="Monitor partner availability and workload across projects"
+        title="Kapacitetsplanering"
+        description="Övervaka partnertillgänglighet och arbetsbelastning över projekt"
         icon={Gauge}
         action={{
-          label: generatingRecommendations ? 'Generating...' : 'Generate Recommendations',
+          label: generatingRecommendations ? 'Genererar...' : 'Generera rekommendationer',
           onClick: handleGenerateRecommendations,
           icon: <RefreshCw className={`h-5 w-5 ${generatingRecommendations ? 'animate-spin' : ''}`} />,
           disabled: generatingRecommendations

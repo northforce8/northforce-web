@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Mail, Calendar as CalendarIcon, Newspaper, Users, Star, TrendingUp, Search, Filter, AlertTriangle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { PageHeader } from '../../../components/admin/PageHeader';
 import { supabase } from '../../../lib/supabase';
 import { buildLeadDetailRoute } from '../../../lib/admin-routes';
 
@@ -175,10 +176,11 @@ const LeadManagementPage: React.FC = () => {
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Lead Management</h1>
-        <p className="text-sm text-gray-500 mt-1">Manage and qualify incoming leads from all sources</p>
-      </div>
+      <PageHeader
+        title="Leadhantering"
+        description="Hantera och kvalificera inkommande leads från alla källor"
+        icon={Users}
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div className="bg-white rounded-lg shadow p-6">
