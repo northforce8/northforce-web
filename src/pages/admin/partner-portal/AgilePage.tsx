@@ -62,7 +62,7 @@ export default function AgilePage() {
         action: 'Laddar agila transformationer'
       });
       console.error(`[${errorId}] Error loading data:`, err);
-      setError('Kunde inte ladda data. Försök igen.');
+      setError(t('admin.error.load_failed'));
     } finally {
       setLoading(false);
     }
@@ -103,12 +103,12 @@ export default function AgilePage() {
         action: selectedTransformation ? 'Updating agile transformation' : 'Creating agile transformation'
       });
       console.error(`[${errorId}] Error saving transformation:`, err);
-      setError('Kunde inte spara transformation. Försök igen.');
+      setError(t('admin.error.save_transformation'));
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Är du säker på att du vill ta bort denna transformation? Denna åtgärd kan inte ångras.')) {
+    if (!confirm(t('admin.confirm.delete_transformation'))) {
       return;
     }
     try {
@@ -125,7 +125,7 @@ export default function AgilePage() {
         action: 'Deleting agile transformation'
       });
       console.error(`[${errorId}] Error deleting transformation:`, err);
-      setError('Kunde inte ta bort transformation. Försök igen.');
+      setError(t('admin.error.delete_transformation'));
     }
   };
 

@@ -57,7 +57,7 @@ export default function SWOTDetailPage() {
       setAnalysis(data);
     } catch (err) {
       console.error('Error loading SWOT analysis:', err);
-      setError(err instanceof Error ? err.message : 'Kunde inte ladda SWOT-analys. Försök igen.');
+      setError(err instanceof Error ? err.message : t('admin.error.load_swot'));
     } finally {
       setLoading(false);
     }

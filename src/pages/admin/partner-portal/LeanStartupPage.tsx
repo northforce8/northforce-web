@@ -46,7 +46,7 @@ export default function LeanStartupPage() {
         action: 'Laddar lean-experiment'
       });
       console.error(`[${errorId}] Error loading data:`, err);
-      setError('Kunde inte ladda data. Försök igen.');
+      setError(t('admin.error.load_failed'));
     } finally {
       setLoading(false);
     }
@@ -83,12 +83,12 @@ export default function LeanStartupPage() {
         action: selectedExperiment ? 'Updating lean experiment' : 'Creating lean experiment'
       });
       console.error(`[${errorId}] Error saving experiment:`, err);
-      setError('Kunde inte spara experiment. Försök igen.');
+      setError(t('admin.error.save_experiment'));
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Är du säker på att du vill ta bort detta experiment? Denna åtgärd kan inte ångras.')) {
+    if (!confirm(t('admin.confirm.delete_experiment'))) {
       return;
     }
     try {
@@ -102,7 +102,7 @@ export default function LeanStartupPage() {
         action: 'Deleting lean experiment'
       });
       console.error(`[${errorId}] Error deleting experiment:`, err);
-      setError('Kunde inte ta bort experiment. Försök igen.');
+      setError(t('admin.error.delete_experiment'));
     }
   };
 

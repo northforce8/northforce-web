@@ -48,7 +48,7 @@ export default function ADKARPage() {
         action: 'Laddar förändringsinitiativ'
       });
       console.error(`[${errorId}] Error loading data:`, err);
-      setError('Kunde inte ladda data. Försök igen.');
+      setError(t('admin.error.load_failed'));
     } finally {
       setLoading(false);
     }
@@ -86,12 +86,12 @@ export default function ADKARPage() {
         action: selectedInitiative ? 'Updating change initiative' : 'Creating change initiative'
       });
       console.error(`[${errorId}] Error saving initiative:`, err);
-      setError('Kunde inte spara initiativ. Försök igen.');
+      setError(t('admin.error.save_initiative'));
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Är du säker på att du vill ta bort detta initiativ? Denna åtgärd kan inte ångras.')) {
+    if (!confirm(t('admin.confirm.delete_initiative'))) {
       return;
     }
     try {
@@ -105,7 +105,7 @@ export default function ADKARPage() {
         action: 'Deleting change initiative'
       });
       console.error(`[${errorId}] Error deleting initiative:`, err);
-      setError('Kunde inte ta bort initiativ. Försök igen.');
+      setError(t('admin.error.delete_initiative'));
     }
   };
 

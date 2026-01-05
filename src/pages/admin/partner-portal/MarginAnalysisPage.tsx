@@ -60,7 +60,7 @@ const MarginAnalysisPage: React.FC = () => {
       setAnalyses(data || []);
     } catch (err) {
       console.error('Error loading margin analysis:', err);
-      setError(err instanceof Error ? err.message : 'Kunde inte ladda marginalanalys. Försök igen.');
+      setError(err instanceof Error ? err.message : t('admin.error.load_margin_analysis'));
     } finally {
       setLoading(false);
     }
@@ -99,13 +99,13 @@ const MarginAnalysisPage: React.FC = () => {
           <div className="flex items-start gap-3">
             <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-red-900 mb-2">Fel vid laddning</h3>
+              <h3 className="text-lg font-semibold text-red-900 mb-2">{t('admin.label.error_loading')}</h3>
               <p className="text-red-700 mb-4">{error}</p>
               <button
-                onClick={loadMarginAnalysis}
+                onClick=  {loadMarginAnalysis}
                 className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
               >
-                Försök igen
+                {t('admin.action.try_again')}
               </button>
             </div>
           </div>

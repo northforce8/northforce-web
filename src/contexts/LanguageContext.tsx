@@ -977,6 +977,14 @@ const translations: Record<string, Record<Language, string>> = {
   'admin.error.save_experiment': { en: 'Failed to save experiment. Please try again.', sv: 'Kunde inte spara experiment. Försök igen.' },
   'admin.error.delete_experiment': { en: 'Failed to delete experiment. Please try again.', sv: 'Kunde inte ta bort experiment. Försök igen.' },
   'admin.error.generate_recommendations': { en: 'Failed to generate recommendations', sv: 'Kunde inte generera rekommendationer' },
+  'admin.error.network': { en: 'Network error. Check your connection and try again.', sv: 'Nätverksfel. Kontrollera din anslutning och försök igen.' },
+  'admin.error.data_structure': { en: 'Data structure error. Contact support.', sv: 'Datastrukturfel. Kontakta support.' },
+  'admin.error.session_expired_short': { en: 'Session expired. Log in again.', sv: 'Sessionen har gått ut. Logga in igen.' },
+  'admin.error.load_okr': { en: 'Failed to load OKR objectives. Please try again.', sv: 'Kunde inte ladda OKR-mål. Försök igen.' },
+  'admin.error.load_swot': { en: 'Failed to load SWOT analysis. Please try again.', sv: 'Kunde inte ladda SWOT-analys. Försök igen.' },
+  'admin.error.load_bsc': { en: 'Failed to load BSC scorecards. Please try again.', sv: 'Kunde inte ladda BSC-styrkort. Försök igen.' },
+  'admin.error.load_bmc': { en: 'Failed to load business models. Please try again.', sv: 'Kunde inte ladda affärsmodeller. Försök igen.' },
+  'admin.error.load_porter': { en: 'Failed to load Porter analyses. Please try again.', sv: 'Kunde inte ladda Porter-analyser. Försök igen.' },
 
   // Admin Portal - Success Messages
   'admin.success.saved': { en: 'Saved successfully', sv: 'Sparat' },
@@ -1003,6 +1011,11 @@ const translations: Record<string, Record<Language, string>> = {
   'admin.confirm.no': { en: 'No', sv: 'Nej' },
   'admin.confirm.cancel': { en: 'Cancel', sv: 'Avbryt' },
   'admin.confirm.delete_framework': { en: 'Are you sure you want to delete this item? This action cannot be undone.', sv: 'Är du säker på att du vill radera detta? Denna åtgärd kan inte ångras.' },
+  'admin.confirm.delete_initiative': { en: 'Are you sure you want to delete this initiative? This action cannot be undone.', sv: 'Är du säker på att du vill ta bort detta initiativ? Denna åtgärd kan inte ångras.' },
+  'admin.confirm.delete_transformation': { en: 'Are you sure you want to delete this transformation? This action cannot be undone.', sv: 'Är du säker på att du vill ta bort denna transformation? Denna åtgärd kan inte ångras.' },
+  'admin.confirm.delete_experiment': { en: 'Are you sure you want to delete this experiment? This action cannot be undone.', sv: 'Är du säker på att du vill ta bort detta experiment? Denna åtgärd kan inte ångras.' },
+  'admin.confirm.delete_okr': { en: 'Are you sure you want to delete this OKR objective? This will also delete all associated key results. This action cannot be undone.', sv: 'Är du säker på att du vill radera detta OKR-mål? Detta kommer även att radera alla associerade nyckelresultat. Denna åtgärd kan inte ångras.' },
+  'admin.confirm.delete_swot': { en: 'Are you sure you want to delete this SWOT analysis? This action cannot be undone.', sv: 'Är du säker på att du vill radera denna SWOT-analys? Denna åtgärd kan inte ångras.' },
 
   // Admin Portal - Actions
   'admin.action.save': { en: 'Save', sv: 'Spara' },
@@ -1036,6 +1049,7 @@ const translations: Record<string, Record<Language, string>> = {
   'admin.label.created': { en: 'Created', sv: 'Skapad' },
   'admin.label.updated': { en: 'Updated', sv: 'Uppdaterad' },
   'admin.label.loading': { en: 'Loading...', sv: 'Laddar...' },
+  'admin.label.error_loading': { en: 'Error loading', sv: 'Fel vid laddning' },
   'admin.label.description': { en: 'Description', sv: 'Beskrivning' },
   'admin.label.notes': { en: 'Notes', sv: 'Anteckningar' },
   'admin.label.budget': { en: 'Budget', sv: 'Budget' },

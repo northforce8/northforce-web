@@ -45,7 +45,7 @@ const CapacityOverviewPage: React.FC = () => {
       setRecommendations(recommendationsData);
     } catch (err) {
       console.error('Error loading capacity data:', err);
-      setError('Kunde inte ladda kapacitetsdata');
+      setError(t('admin.error.load_capacity'));
     } finally {
       setLoading(false);
     }
@@ -58,7 +58,7 @@ const CapacityOverviewPage: React.FC = () => {
       await loadData();
     } catch (err) {
       console.error('Error generating recommendations:', err);
-      setError('Kunde inte generera rekommendationer');
+      setError(t('admin.error.generate_recommendations'));
     } finally {
       setGeneratingRecommendations(false);
     }

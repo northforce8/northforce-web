@@ -85,7 +85,7 @@ export default function OKRDetailPage() {
         action: 'Laddar OKR-detaljer'
       });
       console.error(`[${errorId}] Error loading objective:`, err);
-      setError(err instanceof Error ? err.message : 'Kunde inte ladda OKR-mål. Försök igen.');
+      setError(err instanceof Error ? err.message : t('admin.error.load_okr'));
     } finally {
       setLoading(false);
     }
@@ -113,7 +113,7 @@ export default function OKRDetailPage() {
   };
 
   const handleDelete = async () => {
-    if (!confirm('Är du säker på att du vill radera detta OKR-mål? Detta kommer även att radera alla associerade nyckelresultat. Denna åtgärd kan inte ångras.')) {
+    if (!confirm(t('admin.confirm.delete_okr'))) {
       return;
     }
 

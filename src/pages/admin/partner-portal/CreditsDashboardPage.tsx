@@ -133,19 +133,19 @@ const CreditsDashboardPage: React.FC = () => {
 
       if (errorMsg.includes('RLS') || errorMsg.includes('permission') || errorMsg.includes('policy')) {
         setErrorType('RLS');
-        setError('Åtkomst nekad. Ditt konto kanske inte har rätt behörigheter.');
+        setError(t('admin.error.access_denied'));
       } else if (errorMsg.includes('JWT') || errorMsg.includes('auth') || errorMsg.includes('session')) {
         setErrorType('Auth');
-        setError('Sessionen har gått ut. Logga in igen.');
+        setError(t('admin.error.session_expired_short'));
       } else if (errorMsg.includes('network') || errorMsg.includes('fetch')) {
         setErrorType('Network');
-        setError('Nätverksfel. Kontrollera din anslutning och försök igen.');
+        setError(t('admin.error.network'));
       } else if (errorMsg.includes('undefined') || errorMsg.includes('null')) {
         setErrorType('Mapping');
-        setError('Datastrukturfel. Kontakta support.');
+        setError(t('admin.error.data_structure'));
       } else {
         setErrorType('Unknown');
-        setError('Kunde inte ladda kreditdashboard. Försök igen.');
+        setError(t('admin.error.load_credits_dashboard'));
       }
     } finally {
       setLoading(false);
