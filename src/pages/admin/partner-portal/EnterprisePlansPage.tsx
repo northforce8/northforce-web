@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Plus, Edit2, Trash2, Save, X, Award, DollarSign, Users, Zap } from 'lucide-react';
+import { PageHeader } from '../../../components/admin/PageHeader';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import type { EnterprisePlan, PlanLevel } from '../../../lib/partner-portal-types';
 import { normalizeArray, normalizeEnterprisePlan } from '../../../lib/data-validators';
@@ -154,42 +155,37 @@ const EnterprisePlansPage: React.FC = () => {
   }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold text-gray-900">Kapacitetsplaner</h1>
-            <ContextualHelp
-              title="Kapacitetsplaner"
-              purpose="Hantera prenumerationsplaner och prissättning för företag. Definiera krediter per månad, priser och funktioner för varje plannivå."
-              usage={[
-                "Klicka på 'Skapa plan' för att lägga till en ny kapacitetsplan",
-                "Definiera plannamn, nivå (Starter, Growth, Scale, Custom) och prissättning",
-                "Ange krediter per månad och maximalt antal användare/projekt",
-                "Aktivera eller inaktivera planer efter behov"
-              ]}
-              concepts={[
-                {
-                  term: "Krediter per månad",
-                  definition: "Antal flexibla kapacitetsenheter som ingår i planen"
-                },
-                {
-                  term: "Plannivå",
-                  definition: "Kategorisering av plan: Starter (grundläggande), Growth (tillväxt), Scale (skalning), Custom (anpassad)"
-                }
-              ]}
-            />
-          </div>
-          <p className="text-sm text-gray-500 mt-1">Hantera prenumerationsplaner och prissättning</p>
-        </div>
-        <button
-          onClick={() => setShowCreateModal(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
-        >
-          <Plus className="h-5 w-5" />
-          Skapa plan
-        </button>
-      </div>
+    <div className="p-6 max-w-7xl mx-auto space-y-6">
+      <PageHeader
+        title="Kapacitetsplaner"
+        description="Hantera prenumerationsplaner och prissättning för företag"
+        icon={Award}
+        action={{
+          label: 'Skapa plan',
+          onClick: () => setShowCreateModal(true),
+          icon: <Plus className="h-5 w-5" />
+        }}
+        helpContent={{
+          title: "Kapacitetsplaner",
+          purpose: "Hantera prenumerationsplaner och prissättning för företag. Definiera krediter per månad, priser och funktioner för varje plannivå.",
+          usage: [
+            "Klicka på 'Skapa plan' för att lägga till en ny kapacitetsplan",
+            "Definiera plannamn, nivå (Starter, Growth, Scale, Custom) och prissättning",
+            "Ange krediter per månad och maximalt antal användare/projekt",
+            "Aktivera eller inaktivera planer efter behov"
+          ],
+          concepts: [
+            {
+              term: "Krediter per månad",
+              definition: "Antal flexibla kapacitetsenheter som ingår i planen"
+            },
+            {
+              term: "Plannivå",
+              definition: "Kategorisering av plan: Starter (grundläggande), Growth (tillväxt), Scale (skalning), Custom (anpassad)"
+            }
+          ]
+        }}
+      />
 
       {error && (
         <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">

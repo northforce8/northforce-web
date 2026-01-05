@@ -11,6 +11,7 @@ import {
   RefreshCw,
   Gauge,
 } from 'lucide-react';
+import { PageHeader } from '../../../components/admin/PageHeader';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import type {
   PartnerAvailabilitySummary,
@@ -124,38 +125,21 @@ const CapacityOverviewPage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
-      {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
-          <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
-          <div className="flex-1">
-            <p className="text-red-800 font-medium">Error</p>
-            <p className="text-red-700 text-sm mt-1">{error}</p>
-          </div>
-        </div>
-      )}
-      <div className="mb-8 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex-shrink-0 w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
-            <Gauge className="h-6 w-6 text-primary-600" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Capacity Planning</h1>
-            <p className="text-sm text-gray-500 mt-1">Monitor and optimize partner workload allocation</p>
-          </div>
-        </div>
-        <button
-          onClick={handleGenerateRecommendations}
-          disabled={generatingRecommendations}
-          className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
-        >
-          <RefreshCw className={`h-5 w-5 ${generatingRecommendations ? 'animate-spin' : ''}`} />
-          {generatingRecommendations ? 'Generating...' : 'Generate Recommendations'}
-        </button>
-      </div>
+    <div className="max-w-7xl mx-auto p-6 space-y-6">
+      <PageHeader
+        title="Capacity Planning"
+        description="Monitor partner availability and workload across projects"
+        icon={Gauge}
+        action={{
+          label: generatingRecommendations ? 'Generating...' : 'Generate Recommendations',
+          onClick: handleGenerateRecommendations,
+          icon: <RefreshCw className={`h-5 w-5 ${generatingRecommendations ? 'animate-spin' : ''}`} />,
+          disabled: generatingRecommendations
+        }}
+      />
 
       {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
           <p className="text-red-800 text-sm">{error}</p>
         </div>
       )}

@@ -14,6 +14,7 @@ import {
   Activity,
   AlertCircle,
 } from 'lucide-react';
+import { PageHeader } from '../../../components/admin/PageHeader';
 import StatusIndicator from '../../../components/admin/StatusIndicator';
 import CreditsDisplay from '../../../components/admin/CreditsDisplay';
 import RecommendationCard from '../../../components/admin/RecommendationCard';
@@ -215,12 +216,11 @@ const EnterpriseDashboard: React.FC = () => {
   return (
     <div>
       <div className="p-6 max-w-7xl mx-auto space-y-8">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">Enterprise Dashboard</h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Operational intelligence for strategic control and decision-making
-          </p>
-        </div>
+        <PageHeader
+          title="Enterprise Dashboard"
+          description="Operational intelligence for strategic control and decision-making"
+          icon={Activity}
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
