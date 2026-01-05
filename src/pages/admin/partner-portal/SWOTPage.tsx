@@ -86,7 +86,7 @@ export default function SWOTPage() {
         action: 'Loading SWOT analyses'
       });
       console.error(`[${errorId}] Error loading data:`, err);
-      setError('Failed to load data. Please try again.');
+      setError('Kunde inte ladda data. Försök igen.');
     } finally {
       setLoading(false);
     }
@@ -118,12 +118,12 @@ export default function SWOTPage() {
         action: selectedAnalysis ? 'Updating SWOT analysis' : 'Creating SWOT analysis'
       });
       console.error(`[${errorId}] Error saving analysis:`, err);
-      setError('Failed to save analysis. Please try again.');
+      setError('Kunde inte spara analys. Försök igen.');
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this SWOT analysis? This action cannot be undone.')) {
+    if (!confirm('Är du säker på att du vill radera denna SWOT-analys? Åtgärden kan inte ångras.')) {
       return;
     }
 
@@ -141,7 +141,7 @@ export default function SWOTPage() {
         action: 'Deleting SWOT analysis'
       });
       console.error(`[${errorId}] Error deleting analysis:`, err);
-      setError('Failed to delete analysis. Please try again.');
+      setError('Kunde inte radera analys. Försök igen.');
     }
   };
 
@@ -173,7 +173,7 @@ export default function SWOTPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-500">Loading SWOT analyses...</div>
+        <div className="text-gray-500">Laddar SWOT-analyser...</div>
       </div>
     );
   }
@@ -184,17 +184,17 @@ export default function SWOTPage() {
         <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
           <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
           <div className="flex-1">
-            <p className="text-red-800 font-medium">Error</p>
+            <p className="text-red-800 font-medium">Fel</p>
             <p className="text-red-700 text-sm mt-1">{error}</p>
           </div>
         </div>
       )}
 
       <PageHeader
-        title="SWOT Analysis"
-        description="Assess internal strengths and weaknesses, external opportunities and threats to inform strategic decisions."
+        title="SWOT-analys"
+        description="Bedöm interna styrkor och svagheter, externa möjligheter och hot för att informera strategiska beslut."
         action={{
-          label: 'Create SWOT Analysis',
+          label: 'Skapa SWOT-analys',
           onClick: () => {
             setSelectedAnalysis(null);
             setShowModal(true);
@@ -208,7 +208,7 @@ export default function SWOTPage() {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Sök..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -217,14 +217,22 @@ export default function SWOTPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        {['strength', 'weakness', 'opportunity', 'threat'].map((category) => (
-          <Card key={category} className="p-6">
-            <p className="text-sm text-gray-600 capitalize mb-2">{category}s</p>
-            <p className="text-2xl font-bold text-gray-900">
-              {analyses.reduce((sum, a) => sum + getCategoryCount(a.items, category), 0)}
-            </p>
-          </Card>
-        ))}
+        {['strength', 'weakness', 'opportunity', 'threat'].map((category) => {
+          const categoryNames: Record<string, string> = {
+            strength: 'Styrkor',
+            weakness: 'Svagheter',
+            opportunity: 'Möjligheter',
+            threat: 'Hot'
+          };
+          return (
+            <Card key={category} className="p-6">
+              <p className="text-sm text-gray-600 mb-2">{categoryNames[category]}</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {analyses.reduce((sum, a) => sum + getCategoryCount(a.items, category), 0)}
+              </p>
+            </Card>
+          );
+        })}
       </div>
 
       <div className="space-y-4">
@@ -232,23 +240,23 @@ export default function SWOTPage() {
           searchQuery ? (
             <Card className="p-12 text-center">
               <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Results Found</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Inga resultat hittades</h3>
               <p className="text-gray-600 mb-4">
-                No items match "{searchQuery}". Try a different search term.
+                Inga element matchar "{searchQuery}". Prova en annan sökterm.
               </p>
             </Card>
           ) : (
             <Card className="p-12 text-center">
               <TrendingUp className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No SWOT Analyses Yet</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Inga SWOT-analyser ännu</h3>
               <p className="text-gray-600 mb-4">
-                Create your first SWOT analysis to assess strengths, weaknesses, opportunities, and threats.
+                Skapa din första SWOT-analys för att bedöma styrkor, svagheter, möjligheter och hot.
               </p>
               <button
                 onClick={() => setShowModal(true)}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
-                Create First Analysis
+                Skapa första analysen
               </button>
             </Card>
           )
@@ -260,9 +268,9 @@ export default function SWOTPage() {
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">{analysis.title}</h3>
                   <p className="text-sm text-gray-600 mb-2">{analysis.description}</p>
                   <div className="flex items-center gap-4 text-xs text-gray-500">
-                    <span>Customer: {analysis.customer_name}</span>
+                    <span>Kund: {analysis.customer_name}</span>
                     <span>•</span>
-                    <span>Context: {analysis.context}</span>
+                    <span>Kontext: {analysis.context}</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -279,14 +287,14 @@ export default function SWOTPage() {
                       setShowModal(true);
                     }}
                     className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                    title="Edit analysis"
+                    title="Redigera analys"
                   >
                     <Edit2 className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => handleDelete(analysis.id)}
                     className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                    title="Delete analysis"
+                    title="Radera analys"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -294,12 +302,20 @@ export default function SWOTPage() {
               </div>
 
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                {['strength', 'weakness', 'opportunity', 'threat'].map((category) => (
-                  <div key={category} className={`p-3 rounded-lg ${getCategoryColor(category)}`}>
-                    <p className="text-xs font-medium uppercase mb-1">{category}s</p>
-                    <p className="text-2xl font-bold">{getCategoryCount(analysis.items, category)}</p>
-                  </div>
-                ))}
+                {['strength', 'weakness', 'opportunity', 'threat'].map((category) => {
+                  const categoryNames: Record<string, string> = {
+                    strength: 'Styrkor',
+                    weakness: 'Svagheter',
+                    opportunity: 'Möjligheter',
+                    threat: 'Hot'
+                  };
+                  return (
+                    <div key={category} className={`p-3 rounded-lg ${getCategoryColor(category)}`}>
+                      <p className="text-xs font-medium uppercase mb-1">{categoryNames[category]}</p>
+                      <p className="text-2xl font-bold">{getCategoryCount(analysis.items, category)}</p>
+                    </div>
+                  );
+                })}
               </div>
             </Card>
           ))
@@ -312,18 +328,18 @@ export default function SWOTPage() {
           setShowModal(false);
           setSelectedAnalysis(null);
         }}
-        title={selectedAnalysis ? 'Edit SWOT Analysis' : 'Create SWOT Analysis'}
+        title={selectedAnalysis ? 'Redigera SWOT-analys' : 'Skapa SWOT-analys'}
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Customer</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Kund</label>
             <select
               value={formData.customer_id}
               onChange={(e) => setFormData({ ...formData, customer_id: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg"
               required
             >
-              <option value="">Select Customer</option>
+              <option value="">Välj kund</option>
               {customers.map((c) => (
                 <option key={c.id} value={c.id}>{c.name}</option>
               ))}
@@ -331,7 +347,7 @@ export default function SWOTPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Titel</label>
             <input
               type="text"
               value={formData.title}
@@ -342,7 +358,7 @@ export default function SWOTPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Beskrivning</label>
             <textarea
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -352,13 +368,13 @@ export default function SWOTPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Context</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Kontext</label>
             <input
               type="text"
               value={formData.context}
               onChange={(e) => setFormData({ ...formData, context: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-              placeholder="e.g., Market expansion, Product launch"
+              placeholder="t.ex. Marknadsexpansion, Produktlansering"
             />
           </div>
 
@@ -371,13 +387,13 @@ export default function SWOTPage() {
               }}
               className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
             >
-              Cancel
+              Avbryt
             </button>
             <button
               type="submit"
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
             >
-              {selectedAnalysis ? 'Update' : 'Create'} Analysis
+              {selectedAnalysis ? 'Uppdatera' : 'Skapa'} analys
             </button>
           </div>
         </form>

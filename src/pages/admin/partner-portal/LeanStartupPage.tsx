@@ -46,7 +46,7 @@ export default function LeanStartupPage() {
         action: 'Loading lean experiments'
       });
       console.error(`[${errorId}] Error loading data:`, err);
-      setError('Failed to load data. Please try again.');
+      setError('Kunde inte ladda data. Försök igen.');
     } finally {
       setLoading(false);
     }
@@ -83,12 +83,12 @@ export default function LeanStartupPage() {
         action: selectedExperiment ? 'Updating lean experiment' : 'Creating lean experiment'
       });
       console.error(`[${errorId}] Error saving experiment:`, err);
-      setError('Failed to save experiment. Please try again.');
+      setError('Kunde inte spara experiment. Försök igen.');
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this experiment? This action cannot be undone.')) {
+    if (!confirm('Är du säker på att du vill ta bort detta experiment? Denna åtgärd kan inte ångras.')) {
       return;
     }
     try {
@@ -102,7 +102,7 @@ export default function LeanStartupPage() {
         action: 'Deleting lean experiment'
       });
       console.error(`[${errorId}] Error deleting experiment:`, err);
-      setError('Failed to delete experiment. Please try again.');
+      setError('Kunde inte ta bort experiment. Försök igen.');
     }
   };
 
@@ -119,7 +119,7 @@ export default function LeanStartupPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-500">Loading Lean Experiments...</div>
+        <div className="text-gray-500">Laddar Lean-experiment...</div>
       </div>
     );
   }
@@ -130,17 +130,17 @@ export default function LeanStartupPage() {
         <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
           <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
           <div className="flex-1">
-            <p className="text-red-800 font-medium">Error</p>
+            <p className="text-red-800 font-medium">Fel</p>
             <p className="text-red-700 text-sm mt-1">{error}</p>
           </div>
         </div>
       )}
 
       <PageHeader
-        title="Lean Startup Methodology"
-        description="Create MVPs and test hypotheses quickly through iterative learning and customer feedback."
+        title="Lean Startup-metodik"
+        description="Skapa MVP:er och testa hypoteser snabbt genom iterativt lärande och kundfeedback."
         action={{
-          label: 'Create Experiment',
+          label: 'Skapa experiment',
           onClick: () => {
             setSelectedExperiment(null);
             setShowModal(true);
@@ -154,7 +154,7 @@ export default function LeanStartupPage() {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Sök..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -163,11 +163,16 @@ export default function LeanStartupPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        {['planning', 'running', 'completed', 'pivoted'].map((status) => (
-          <Card key={status} className="p-6">
-            <p className="text-sm text-gray-600 capitalize mb-2">{status}</p>
+        {[
+          { key: 'planning', label: 'Planering' },
+          { key: 'running', label: 'Pågående' },
+          { key: 'completed', label: 'Slutförda' },
+          { key: 'pivoted', label: 'Pivoterade' }
+        ].map(({ key, label }) => (
+          <Card key={key} className="p-6">
+            <p className="text-sm text-gray-600 mb-2">{label}</p>
             <p className="text-2xl font-bold text-gray-900">
-              {experiments.filter(e => e.status === status).length}
+              {experiments.filter(e => e.status === key).length}
             </p>
           </Card>
         ))}
@@ -178,23 +183,23 @@ export default function LeanStartupPage() {
           searchQuery ? (
             <Card className="p-12 text-center">
               <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Results Found</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Inga resultat hittades</h3>
               <p className="text-gray-600 mb-4">
-                No items match "{searchQuery}". Try a different search term.
+                Inga objekt matchar "{searchQuery}". Prova ett annat sökord.
               </p>
             </Card>
           ) : (
             <Card className="p-12 text-center">
               <FlaskConical className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Lean Experiments Yet</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Inga Lean-experiment ännu</h3>
               <p className="text-gray-600 mb-4">
-                Create your first experiment to test MVPs and hypotheses through iterative learning.
+                Skapa ditt första experiment för att testa MVP:er och hypoteser genom iterativt lärande.
               </p>
               <button
                 onClick={() => setShowModal(true)}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
-                Create First Experiment
+                Skapa första experiment
               </button>
             </Card>
           )
@@ -207,7 +212,7 @@ export default function LeanStartupPage() {
                   <p className="text-sm text-gray-600 mb-2">MVP: {experiment.mvp_description}</p>
                   <p className="text-sm text-gray-500">Problem: {experiment.problem_statement}</p>
                   <div className="flex items-center gap-4 text-xs text-gray-500 mt-2">
-                    <span>Customer: {experiment.customers?.name}</span>
+                    <span>Kund: {experiment.customers?.name}</span>
                     <span>•</span>
                     <span>Segment: {experiment.target_segment}</span>
                   </div>
@@ -235,14 +240,14 @@ export default function LeanStartupPage() {
                       setShowModal(true);
                     }}
                     className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                    title="Edit experiment"
+                    title="Redigera experiment"
                   >
                     <Edit2 className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => handleDelete(experiment.id)}
                     className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                    title="Delete experiment"
+                    title="Ta bort experiment"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -259,30 +264,30 @@ export default function LeanStartupPage() {
           setShowModal(false);
           setSelectedExperiment(null);
         }}
-        title={selectedExperiment ? 'Edit Lean Experiment' : 'Create Lean Experiment'}
+        title={selectedExperiment ? 'Redigera Lean-experiment' : 'Skapa Lean-experiment'}
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Customer</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Kund</label>
             <select value={formData.customer_id} onChange={(e) => setFormData({ ...formData, customer_id: e.target.value })} className="w-full px-3 py-2 border rounded-lg" required>
-              <option value="">Select Customer</option>
+              <option value="">Välj kund</option>
               {customers.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Experiment Name</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Experimentnamn</label>
             <input type="text" value={formData.experiment_name} onChange={(e) => setFormData({ ...formData, experiment_name: e.target.value })} className="w-full px-3 py-2 border rounded-lg" required />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">MVP Description</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">MVP-beskrivning</label>
             <textarea value={formData.mvp_description} onChange={(e) => setFormData({ ...formData, mvp_description: e.target.value })} className="w-full px-3 py-2 border rounded-lg" rows={2} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Problem Statement</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Problemformulering</label>
             <textarea value={formData.problem_statement} onChange={(e) => setFormData({ ...formData, problem_statement: e.target.value })} className="w-full px-3 py-2 border rounded-lg" rows={2} required />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Target Segment</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Målsegment</label>
             <input type="text" value={formData.target_segment} onChange={(e) => setFormData({ ...formData, target_segment: e.target.value })} className="w-full px-3 py-2 border rounded-lg" />
           </div>
           <div className="flex justify-end gap-3 pt-4">
@@ -294,10 +299,10 @@ export default function LeanStartupPage() {
               }}
               className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
             >
-              Cancel
+              Avbryt
             </button>
             <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-              {selectedExperiment ? 'Update' : 'Create'} Experiment
+              {selectedExperiment ? 'Uppdatera' : 'Skapa'} experiment
             </button>
           </div>
         </form>

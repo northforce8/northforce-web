@@ -8,7 +8,7 @@ interface ErrorAlertProps {
 }
 
 export const ErrorAlert: React.FC<ErrorAlertProps> = ({
-  title = 'Error',
+  title = 'Fel',
   message,
   onDismiss
 }) => {
@@ -23,7 +23,7 @@ export const ErrorAlert: React.FC<ErrorAlertProps> = ({
         <button
           onClick={onDismiss}
           className="text-red-600 hover:text-red-800 transition-colors"
-          aria-label="Dismiss error"
+          aria-label="Stäng felmeddelande"
         >
           <X className="h-4 w-4" />
         </button>

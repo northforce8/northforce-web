@@ -62,7 +62,7 @@ export default function AgilePage() {
         action: 'Loading agile transformations'
       });
       console.error(`[${errorId}] Error loading data:`, err);
-      setError('Failed to load data. Please try again.');
+      setError('Kunde inte ladda data. Försök igen.');
     } finally {
       setLoading(false);
     }
@@ -103,12 +103,12 @@ export default function AgilePage() {
         action: selectedTransformation ? 'Updating agile transformation' : 'Creating agile transformation'
       });
       console.error(`[${errorId}] Error saving transformation:`, err);
-      setError('Failed to save transformation. Please try again.');
+      setError('Kunde inte spara transformation. Försök igen.');
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this transformation? This action cannot be undone.')) {
+    if (!confirm('Är du säker på att du vill ta bort denna transformation? Denna åtgärd kan inte ångras.')) {
       return;
     }
     try {
@@ -125,7 +125,7 @@ export default function AgilePage() {
         action: 'Deleting agile transformation'
       });
       console.error(`[${errorId}] Error deleting transformation:`, err);
-      setError('Failed to delete transformation. Please try again.');
+      setError('Kunde inte ta bort transformation. Försök igen.');
     }
   };
 
@@ -157,7 +157,7 @@ export default function AgilePage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-500">Loading Agile Transformations...</div>
+        <div className="text-gray-500">Laddar agila transformationer...</div>
       </div>
     );
   }
@@ -168,17 +168,17 @@ export default function AgilePage() {
         <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
           <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
           <div className="flex-1">
-            <p className="text-red-800 font-medium">Error</p>
+            <p className="text-red-800 font-medium">Fel</p>
             <p className="text-red-700 text-sm mt-1">{error}</p>
           </div>
         </div>
       )}
 
       <PageHeader
-        title="Agile Transformation"
-        description="Manage and track your organization's agile transformation journey"
+        title="Agil transformation"
+        description="Hantera och följ din organisations agila transformationsresa"
         action={{
-          label: 'Create Transformation',
+          label: 'Skapa transformation',
           onClick: () => {
             setSelectedTransformation(null);
             setShowModal(true);
@@ -192,7 +192,7 @@ export default function AgilePage() {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
           <input
             type="text"
-            placeholder="Search transformations..."
+            placeholder="Sök transformationer..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -205,23 +205,23 @@ export default function AgilePage() {
           searchQuery ? (
             <Card className="p-12 text-center">
               <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Results Found</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Inga resultat hittades</h3>
               <p className="text-gray-600 mb-4">
-                No transformations match "{searchQuery}". Try a different search term.
+                Inga transformationer matchar "{searchQuery}". Prova en annan sökterm.
               </p>
             </Card>
           ) : (
             <Card className="p-12 text-center">
               <Zap className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Agile Transformations Yet</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Inga agila transformationer än</h3>
               <p className="text-gray-600 mb-4">
-                Start tracking your agile transformation journey. Create your first transformation to get started.
+                Börja spåra din agila transformationsresa. Skapa din första transformation för att komma igång.
               </p>
               <button
                 onClick={() => setShowModal(true)}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
-                Create First Transformation
+                Skapa första transformationen
               </button>
             </Card>
           )
@@ -250,7 +250,7 @@ export default function AgilePage() {
                     <span>•</span>
                     <span>{transformation.scope}</span>
                     <span>•</span>
-                    <span>Started: {new Date(transformation.start_date).toLocaleDateString()}</span>
+                    <span>Startad: {new Date(transformation.start_date).toLocaleDateString()}</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -273,14 +273,14 @@ export default function AgilePage() {
                       setShowModal(true);
                     }}
                     className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                    title="Edit transformation"
+                    title="Redigera transformation"
                   >
                     <Edit2 className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => handleDelete(transformation.id)}
                     className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                    title="Delete transformation"
+                    title="Ta bort transformation"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -288,7 +288,7 @@ export default function AgilePage() {
               </div>
               <div className="mt-4">
                 <div className="flex items-center justify-between text-xs text-gray-600 mb-1">
-                  <span>Overall Progress</span>
+                  <span>Total framsteg</span>
                   <span className="font-medium">{transformation.overall_progress}%</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
@@ -309,25 +309,25 @@ export default function AgilePage() {
           setShowModal(false);
           setSelectedTransformation(null);
         }}
-        title={selectedTransformation ? 'Edit Agile Transformation' : 'Create Agile Transformation'}
+        title={selectedTransformation ? 'Redigera agil transformation' : 'Skapa agil transformation'}
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Customer</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Kund</label>
             <select
               value={formData.customer_id}
               onChange={(e) => setFormData({ ...formData, customer_id: e.target.value })}
               className="w-full px-3 py-2 border rounded-lg"
               required
             >
-              <option value="">Select Customer</option>
+              <option value="">Välj kund</option>
               {customers.map((c) => (
                 <option key={c.id} value={c.id}>{c.name}</option>
               ))}
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Titel</label>
             <input
               type="text"
               value={formData.title}
@@ -337,17 +337,17 @@ export default function AgilePage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Vision Statement</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Visionsbeskrivning</label>
             <textarea
               value={formData.vision}
               onChange={(e) => setFormData({ ...formData, vision: e.target.value })}
               className="w-full px-3 py-2 border rounded-lg"
               rows={2}
-              placeholder="Why are we doing this transformation?"
+              placeholder="Varför gör vi denna transformation?"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Beskrivning</label>
             <textarea
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -357,7 +357,7 @@ export default function AgilePage() {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Framework</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Ramverk</label>
               <select
                 value={formData.framework_type}
                 onChange={(e) => setFormData({ ...formData, framework_type: e.target.value as any })}
@@ -369,7 +369,7 @@ export default function AgilePage() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Scope</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Omfattning</label>
               <select
                 value={formData.scope}
                 onChange={(e) => setFormData({ ...formData, scope: e.target.value as any })}
@@ -383,7 +383,7 @@ export default function AgilePage() {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Startdatum</label>
               <input
                 type="date"
                 value={formData.start_date}
@@ -393,7 +393,7 @@ export default function AgilePage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Target Completion</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Målsättning slutdatum</label>
               <input
                 type="date"
                 value={formData.target_completion_date}
@@ -411,10 +411,10 @@ export default function AgilePage() {
               }}
               className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
             >
-              Cancel
+              Avbryt
             </button>
             <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-              {selectedTransformation ? 'Update' : 'Create'} Transformation
+              {selectedTransformation ? 'Uppdatera' : 'Skapa'} transformation
             </button>
           </div>
         </form>

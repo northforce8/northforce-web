@@ -7,7 +7,7 @@ interface LoadingStateProps {
 }
 
 export const LoadingState: React.FC<LoadingStateProps> = ({
-  message = 'Loading...',
+  message = 'Laddar...',
   fullScreen = true
 }) => {
   const containerClass = fullScreen

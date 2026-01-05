@@ -41,7 +41,7 @@ const EnterprisePlansPage: React.FC = () => {
         route: '/admin/partner-portal/enterprise-plans',
         action: 'loadPlans',
       });
-      setError(`Failed to load enterprise plans (Error ID: ${errorId})`);
+      setError(`Kunde inte ladda företagsplaner (Fel-ID: ${errorId})`);
     } finally {
       setLoading(false);
     }
@@ -79,14 +79,14 @@ const EnterprisePlansPage: React.FC = () => {
         features: [],
         is_active: true,
       });
-      setSuccess('Plan created successfully');
+      setSuccess('Plan skapad');
       await loadPlans();
     } catch (err) {
       const errorId = logAdminError(err as Error, {
         route: '/admin/partner-portal/enterprise-plans',
         action: 'createPlan',
       });
-      setError(`Failed to create plan (Error ID: ${errorId})`);
+      setError(`Kunde inte skapa plan (Fel-ID: ${errorId})`);
     }
   }, [newPlan, loadPlans]);
 
@@ -98,14 +98,14 @@ const EnterprisePlansPage: React.FC = () => {
       await partnerPortalApi.enterprisePlans.update(editingPlan.id, editingPlan);
       setShowEditModal(false);
       setEditingPlan(null);
-      setSuccess('Plan updated successfully');
+      setSuccess('Plan uppdaterad');
       await loadPlans();
     } catch (err) {
       const errorId = logAdminError(err as Error, {
         route: '/admin/partner-portal/enterprise-plans',
         action: 'updatePlan',
       });
-      setError(`Failed to update plan (Error ID: ${errorId})`);
+      setError(`Kunde inte uppdatera plan (Fel-ID: ${errorId})`);
     }
   }, [editingPlan, loadPlans]);
 
@@ -114,14 +114,14 @@ const EnterprisePlansPage: React.FC = () => {
 
     try {
       await partnerPortalApi.enterprisePlans.delete(planId);
-      setSuccess('Plan deleted successfully');
+      setSuccess('Plan raderad');
       await loadPlans();
     } catch (err) {
       const errorId = logAdminError(err as Error, {
         route: '/admin/partner-portal/enterprise-plans',
         action: 'deletePlan',
       });
-      setError(`Failed to delete plan (Error ID: ${errorId})`);
+      setError(`Kunde inte radera plan (Fel-ID: ${errorId})`);
     }
   }, [loadPlans]);
 
@@ -276,7 +276,7 @@ const EnterprisePlansPage: React.FC = () => {
               </div>
               {!plan.is_active && (
                 <span className="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded">
-                  Inactive
+                  Inaktiv
                 </span>
               )}
             </div>
@@ -286,7 +286,7 @@ const EnterprisePlansPage: React.FC = () => {
                 <span className="text-3xl font-bold text-gray-900">
                   {formatCurrency(plan.price_per_month)}
                 </span>
-                <span className="text-gray-600">/month</span>
+                <span className="text-gray-600">/månad</span>
               </div>
             </div>
 
@@ -294,26 +294,26 @@ const EnterprisePlansPage: React.FC = () => {
               <div className="flex items-center gap-2 text-sm">
                 <Zap className="h-4 w-4 text-primary-600" />
                 <span className="text-gray-700">
-                  {plan.credits_per_month} credits/month
+                  {plan.credits_per_month} krediter/månad
                 </span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <DollarSign className="h-4 w-4 text-green-600" />
                 <span className="text-gray-700">
-                  {formatCurrency(plan.credits_price_per_credit)} per credit
+                  {formatCurrency(plan.credits_price_per_credit)} per kredit
                 </span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Users className="h-4 w-4 text-blue-600" />
                 <span className="text-gray-700">
-                  Up to {plan.max_users || '∞'} users
+                  Upp till {plan.max_users || '∞'} användare
                 </span>
               </div>
             </div>
 
             {plan.features && plan.features.length > 0 && (
               <div className="mb-6">
-                <p className="text-sm font-semibold text-gray-700 mb-2">Features:</p>
+                <p className="text-sm font-semibold text-gray-700 mb-2">Funktioner:</p>
                 <ul className="space-y-1">
                   {plan.features.slice(0, 3).map((feature, index) => (
                     <li key={index} className="text-sm text-gray-600 flex items-start gap-2">
@@ -324,7 +324,7 @@ const EnterprisePlansPage: React.FC = () => {
                 </ul>
                 {plan.features.length > 3 && (
                   <p className="text-xs text-gray-500 mt-1">
-                    +{plan.features.length - 3} more features
+                    +{plan.features.length - 3} fler funktioner
                   </p>
                 )}
               </div>
@@ -339,7 +339,7 @@ const EnterprisePlansPage: React.FC = () => {
                 className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100"
               >
                 <Edit2 className="h-4 w-4" />
-                Edit
+                Redigera
               </button>
               <button
                 onClick={() => handleDeletePlan(plan.id)}
@@ -370,7 +370,7 @@ const EnterprisePlansPage: React.FC = () => {
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">Create Enterprise Plan</h2>
+                <h2 className="text-2xl font-bold text-gray-900">Skapa företagsplan</h2>
                 <button
                   onClick={() => setShowCreateModal(false)}
                   className="text-gray-500 hover:text-gray-700"
@@ -382,7 +382,7 @@ const EnterprisePlansPage: React.FC = () => {
               <form onSubmit={handleCreatePlan} className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Plan Name
+                    Plannamn
                   </label>
                   <input
                     type="text"
@@ -395,7 +395,7 @@ const EnterprisePlansPage: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Plan Level
+                    Plannivå
                   </label>
                   <select
                     value={newPlan.plan_level}
@@ -414,7 +414,7 @@ const EnterprisePlansPage: React.FC = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Credits/Month
+                      Krediter/månad
                     </label>
                     <input
                       type="number"
@@ -429,7 +429,7 @@ const EnterprisePlansPage: React.FC = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Price/Month (SEK)
+                      Pris/månad (SEK)
                     </label>
                     <input
                       type="number"
@@ -446,7 +446,7 @@ const EnterprisePlansPage: React.FC = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Max Users
+                      Max användare
                     </label>
                     <input
                       type="number"
@@ -455,13 +455,13 @@ const EnterprisePlansPage: React.FC = () => {
                         setNewPlan({ ...newPlan, max_users: Number(e.target.value) || null })
                       }
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
-                      placeholder="Unlimited"
+                      placeholder="Obegränsat"
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Max Projects
+                      Max projekt
                     </label>
                     <input
                       type="number"
@@ -470,7 +470,7 @@ const EnterprisePlansPage: React.FC = () => {
                         setNewPlan({ ...newPlan, max_projects: Number(e.target.value) || null })
                       }
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
-                      placeholder="Unlimited"
+                      placeholder="Obegränsat"
                     />
                   </div>
                 </div>
@@ -484,7 +484,7 @@ const EnterprisePlansPage: React.FC = () => {
                     className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                   />
                   <label htmlFor="is_active" className="text-sm text-gray-700">
-                    Active
+                    Aktiv
                   </label>
                 </div>
 
@@ -494,13 +494,13 @@ const EnterprisePlansPage: React.FC = () => {
                     onClick={() => setShowCreateModal(false)}
                     className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
                   >
-                    Cancel
+                    Avbryt
                   </button>
                   <button
                     type="submit"
                     className="flex-1 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
                   >
-                    Create Plan
+                    Skapa plan
                   </button>
                 </div>
               </form>
@@ -514,7 +514,7 @@ const EnterprisePlansPage: React.FC = () => {
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">Edit Enterprise Plan</h2>
+                <h2 className="text-2xl font-bold text-gray-900">Redigera företagsplan</h2>
                 <button
                   onClick={() => {
                     setShowEditModal(false);
@@ -529,7 +529,7 @@ const EnterprisePlansPage: React.FC = () => {
               <form onSubmit={handleUpdatePlan} className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Plan Name
+                    Plannamn
                   </label>
                   <input
                     type="text"
@@ -545,7 +545,7 @@ const EnterprisePlansPage: React.FC = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Credits/Month
+                      Krediter/månad
                     </label>
                     <input
                       type="number"
@@ -563,7 +563,7 @@ const EnterprisePlansPage: React.FC = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Price/Month (SEK)
+                      Pris/månad (SEK)
                     </label>
                     <input
                       type="number"
@@ -591,7 +591,7 @@ const EnterprisePlansPage: React.FC = () => {
                     className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                   />
                   <label htmlFor="edit_is_active" className="text-sm text-gray-700">
-                    Active
+                    Aktiv
                   </label>
                 </div>
 
@@ -604,13 +604,13 @@ const EnterprisePlansPage: React.FC = () => {
                     }}
                     className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
                   >
-                    Cancel
+                    Avbryt
                   </button>
                   <button
                     type="submit"
                     className="flex-1 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
                   >
-                    Save Changes
+                    Spara ändringar
                   </button>
                 </div>
               </form>

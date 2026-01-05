@@ -39,7 +39,7 @@ export default function BMCPage() {
         action: 'Loading business model canvases'
       });
       console.error(`[${errorId}] Error loading data:`, err);
-      setError('Failed to load data. Please try again.');
+      setError('Kunde inte ladda data. Vänligen försök igen.');
     } finally {
       setLoading(false);
     }
@@ -69,12 +69,12 @@ export default function BMCPage() {
         action: selectedCanvas ? 'Updating business model canvas' : 'Creating business model canvas'
       });
       console.error(`[${errorId}] Error saving canvas:`, err);
-      setError('Failed to save canvas. Please try again.');
+      setError('Kunde inte spara canvas. Vänligen försök igen.');
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this canvas? This action cannot be undone.')) {
+    if (!confirm('Är du säker på att du vill radera denna canvas? Detta kan inte ångras.')) {
       return;
     }
     try {
@@ -88,13 +88,13 @@ export default function BMCPage() {
         action: 'Deleting business model canvas'
       });
       console.error(`[${errorId}] Error deleting canvas:`, err);
-      setError('Failed to delete canvas. Please try again.');
+      setError('Kunde inte radera canvas. Vänligen försök igen.');
     }
   };
 
   const blocks = [
-    'Customer Segments', 'Value Propositions', 'Channels', 'Customer Relationships',
-    'Revenue Streams', 'Key Resources', 'Key Activities', 'Key Partnerships', 'Cost Structure'
+    'Kundsegment', 'Värdeförslag', 'Kanaler', 'Kundrelationer',
+    'Intäktsströmmar', 'Nyckelresurser', 'Nyckelaktiviteter', 'Nyckelpartners', 'Kostnadsstruktur'
   ];
 
   const filteredCanvases = canvases.filter(canvas => {
@@ -109,7 +109,7 @@ export default function BMCPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-500">Loading Business Model Canvases...</div>
+        <div className="text-gray-500">Laddar affärsmodellscanvas...</div>
       </div>
     );
   }
@@ -120,7 +120,7 @@ export default function BMCPage() {
         <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
           <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
           <div className="flex-1">
-            <p className="text-red-800 font-medium">Error</p>
+            <p className="text-red-800 font-medium">Fel</p>
             <p className="text-red-700 text-sm mt-1">{error}</p>
           </div>
         </div>
@@ -128,9 +128,9 @@ export default function BMCPage() {
 
       <PageHeader
         title="Business Model Canvas"
-        description="Design and iterate your business model across nine building blocks to ensure a robust and adaptable strategy."
+        description="Designa och iterera din affärsmodell över nio byggblock för att säkerställa en robust och anpassningsbar strategi."
         action={{
-          label: 'Create Canvas',
+          label: 'Skapa Canvas',
           onClick: () => {
             setSelectedCanvas(null);
             setShowModal(true);
@@ -144,7 +144,7 @@ export default function BMCPage() {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Sök..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -165,23 +165,23 @@ export default function BMCPage() {
           searchQuery ? (
             <Card className="p-12 text-center">
               <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Results Found</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Inga resultat hittades</h3>
               <p className="text-gray-600 mb-4">
-                No items match "{searchQuery}". Try a different search term.
+                Inga objekt matchar "{searchQuery}". Prova ett annat sökord.
               </p>
             </Card>
           ) : (
             <Card className="p-12 text-center">
               <Layout className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Business Model Canvases Yet</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Inga affärsmodellscanvas än</h3>
               <p className="text-gray-600 mb-4">
-                Create your first canvas to design and iterate your business model across nine building blocks.
+                Skapa din första canvas för att designa och iterera din affärsmodell över nio byggblock.
               </p>
               <button
                 onClick={() => setShowModal(true)}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
-                Create First Canvas
+                Skapa första canvas
               </button>
             </Card>
           )
@@ -191,7 +191,7 @@ export default function BMCPage() {
               <div className="flex items-center justify-between">
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold text-gray-900">{canvas.title}</h3>
-                  <p className="text-sm text-gray-600">Customer: {canvas.customers?.name} | Version {canvas.version}</p>
+                  <p className="text-sm text-gray-600">Kund: {canvas.customers?.name} | Version {canvas.version}</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className={`px-3 py-1 text-xs rounded ${canvas.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}>
@@ -208,14 +208,14 @@ export default function BMCPage() {
                       setShowModal(true);
                     }}
                     className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                    title="Edit canvas"
+                    title="Redigera canvas"
                   >
                     <Edit2 className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => handleDelete(canvas.id)}
                     className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                    title="Delete canvas"
+                    title="Radera canvas"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -232,18 +232,18 @@ export default function BMCPage() {
           setShowModal(false);
           setSelectedCanvas(null);
         }}
-        title={selectedCanvas ? 'Edit Business Model Canvas' : 'Create Business Model Canvas'}
+        title={selectedCanvas ? 'Redigera affärsmodellscanvas' : 'Skapa affärsmodellscanvas'}
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Customer</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Kund</label>
             <select value={formData.customer_id} onChange={(e) => setFormData({ ...formData, customer_id: e.target.value })} className="w-full px-3 py-2 border rounded-lg" required>
-              <option value="">Select Customer</option>
+              <option value="">Välj kund</option>
               {customers.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Titel</label>
             <input type="text" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} className="w-full px-3 py-2 border rounded-lg" required />
           </div>
           <div>
@@ -259,10 +259,10 @@ export default function BMCPage() {
               }}
               className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
             >
-              Cancel
+              Avbryt
             </button>
             <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-              {selectedCanvas ? 'Update' : 'Create'} Canvas
+              {selectedCanvas ? 'Uppdatera' : 'Skapa'} Canvas
             </button>
           </div>
         </form>

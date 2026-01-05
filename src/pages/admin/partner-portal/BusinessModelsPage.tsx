@@ -73,7 +73,7 @@ export default function BusinessModelsPage() {
       setModels(allModels);
     } catch (err) {
       console.error('Error loading data:', err);
-      setError('Failed to load business models');
+      setError('Kunde inte ladda affärsmodeller');
     } finally {
       setLoading(false);
     }
@@ -100,11 +100,11 @@ export default function BusinessModelsPage() {
         is_current: true,
         notes: ''
       });
-      setSuccess('Business model created successfully');
+      setSuccess('Affärsmodell skapad');
       await loadData();
     } catch (err) {
       console.error('Error creating business model:', err);
-      setError('Failed to create business model');
+      setError('Kunde inte skapa affärsmodell');
     }
   };
 
@@ -116,11 +116,11 @@ export default function BusinessModelsPage() {
       await enterpriseAPI.updateBusinessModel(editingModel.id, editingModel);
       setShowEditModal(false);
       setEditingModel(null);
-      setSuccess('Business model updated successfully');
+      setSuccess('Affärsmodell uppdaterad');
       await loadData();
     } catch (err) {
       console.error('Error updating business model:', err);
-      setError('Failed to update business model');
+      setError('Kunde inte uppdatera affärsmodell');
     }
   };
 
@@ -131,11 +131,11 @@ export default function BusinessModelsPage() {
 
     try {
       await enterpriseAPI.deleteBusinessModel(id);
-      setSuccess('Business model deleted successfully');
+      setSuccess('Affärsmodell raderad');
       await loadData();
     } catch (err) {
       console.error('Error deleting business model:', err);
-      setError('Failed to delete business model');
+      setError('Kunde inte radera affärsmodell');
     }
   };
 

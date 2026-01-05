@@ -93,17 +93,17 @@ const NotesPage: React.FC = () => {
 
   const validateForm = (): boolean => {
     if (!formData.content.trim()) {
-      setFormError('Content is required');
+      setFormError('Innehåll krävs');
       return false;
     }
 
     if (!formData.customer_id && customers.length > 0) {
-      setFormError('Please select a customer');
+      setFormError('Välj en kund');
       return false;
     }
 
     if (!formData.note_type.trim()) {
-      setFormError('Note type is required');
+      setFormError('Anteckningstyp krävs');
       return false;
     }
 
@@ -129,10 +129,10 @@ const NotesPage: React.FC = () => {
 
       if (editingNote) {
         await partnerPortalApi.notes.update(editingNote.id, noteData);
-        setSuccessMessage('Note updated successfully');
+        setSuccessMessage('Anteckning uppdaterad');
       } else {
         await partnerPortalApi.notes.create(noteData);
-        setSuccessMessage('Note created successfully');
+        setSuccessMessage('Anteckning skapad');
       }
 
       await loadData();
@@ -141,7 +141,7 @@ const NotesPage: React.FC = () => {
       setTimeout(() => setSuccessMessage(''), 3000);
     } catch (error: any) {
       console.error('Error saving note:', error);
-      setFormError(error.message || 'Failed to save note. Please try again.');
+      setFormError(error.message || 'Kunde inte spara anteckning. Försök igen.');
     } finally {
       setSaving(false);
     }
@@ -151,13 +151,13 @@ const NotesPage: React.FC = () => {
     setDeleting(true);
     try {
       await partnerPortalApi.notes.delete(noteId);
-      setSuccessMessage('Note deleted successfully');
+      setSuccessMessage('Anteckning raderad');
       await loadData();
       setDeleteConfirm(null);
       setTimeout(() => setSuccessMessage(''), 3000);
     } catch (error: any) {
       console.error('Error deleting note:', error);
-      setFormError(error.message || 'Failed to delete note. Please try again.');
+      setFormError(error.message || 'Kunde inte radera anteckning. Försök igen.');
       setTimeout(() => setFormError(''), 5000);
     } finally {
       setDeleting(false);
@@ -238,11 +238,11 @@ const NotesPage: React.FC = () => {
       )}
 
       <PageHeader
-        title="Notes"
-        description="Collaboration and documentation"
+        title="Anteckningar"
+        description="Samarbete och dokumentation"
         icon={FileText}
         action={{
-          label: 'Add Note',
+          label: 'Lägg till anteckning',
           onClick: openAddModal,
           icon: Plus,
         }}
@@ -255,7 +255,7 @@ const NotesPage: React.FC = () => {
             <AlertCircle className="h-5 w-5 text-yellow-400" />
             <div className="ml-3">
               <p className="text-sm text-yellow-800">
-                <strong>No customers available.</strong> Create a customer first before adding notes.
+                <strong>Inga kunder tillgängliga.</strong> Skapa en kund först innan du lägger till anteckningar.
               </p>
             </div>
           </div>
@@ -266,13 +266,13 @@ const NotesPage: React.FC = () => {
           {notes.length === 0 ? (
             <div className="text-center py-12">
               <FileText className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500 mb-2">No notes yet</p>
+              <p className="text-gray-500 mb-2">Inga anteckningar ännu</p>
               {customers.length > 0 && (
                 <button
                   onClick={openAddModal}
                   className="text-primary-600 hover:text-primary-700 font-medium text-sm"
                 >
-                  Create your first note
+                  Skapa din första anteckning
                 </button>
               )}
             </div>
@@ -294,21 +294,21 @@ const NotesPage: React.FC = () => {
                       <button
                         onClick={() => setViewingNote(note)}
                         className="p-1.5 text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded transition-colors"
-                        title="View details"
+                        title="Visa detaljer"
                       >
                         <Eye className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => openEditModal(note)}
                         className="p-1.5 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
-                        title="Edit note"
+                        title="Redigera anteckning"
                       >
                         <Edit2 className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => setDeleteConfirm(note.id)}
                         className="p-1.5 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
-                        title="Delete note"
+                        title="Radera anteckning"
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -335,7 +335,7 @@ const NotesPage: React.FC = () => {
           <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white z-10">
               <h2 className="text-2xl font-bold text-gray-900">
-                {editingNote ? 'Edit Note' : 'Add New Note'}
+                {editingNote ? 'Redigera anteckning' : 'Lägg till ny anteckning'}
               </h2>
               <button
                 onClick={closeModal}
@@ -359,7 +359,7 @@ const NotesPage: React.FC = () => {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Customer <span className="text-red-500">*</span>
+                    Kund <span className="text-red-500">*</span>
                   </label>
                   <select
                     value={formData.customer_id}
@@ -370,7 +370,7 @@ const NotesPage: React.FC = () => {
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     disabled={saving}
                   >
-                    <option value="">Select a customer</option>
+                    <option value="">Välj en kund</option>
                     {customers.map((customer) => (
                       <option key={customer.id} value={customer.id}>
                         {customer.company_name}
@@ -381,7 +381,7 @@ const NotesPage: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Project (optional)
+                    Projekt (valfritt)
                   </label>
                   <select
                     value={formData.project_id}
@@ -392,7 +392,7 @@ const NotesPage: React.FC = () => {
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     disabled={saving || !formData.customer_id}
                   >
-                    <option value="">No project</option>
+                    <option value="">Inget projekt</option>
                     {formData.customer_id &&
                       getProjectsByCustomer(formData.customer_id).map((project) => (
                         <option key={project.id} value={project.id}>
@@ -404,7 +404,7 @@ const NotesPage: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Note Type <span className="text-red-500">*</span>
+                    Anteckningstyp <span className="text-red-500">*</span>
                   </label>
                   <select
                     value={formData.note_type}
@@ -415,19 +415,19 @@ const NotesPage: React.FC = () => {
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     disabled={saving}
                   >
-                    <option value="general">General</option>
-                    <option value="meeting">Meeting</option>
-                    <option value="decision">Decision</option>
-                    <option value="action_item">Action Item</option>
+                    <option value="general">Allmänt</option>
+                    <option value="meeting">Möte</option>
+                    <option value="decision">Beslut</option>
+                    <option value="action_item">Åtgärdspunkt</option>
                     <option value="risk">Risk</option>
-                    <option value="issue">Issue</option>
-                    <option value="update">Update</option>
+                    <option value="issue">Problem</option>
+                    <option value="update">Uppdatering</option>
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Visibility <span className="text-red-500">*</span>
+                    Synlighet <span className="text-red-500">*</span>
                   </label>
                   <select
                     value={formData.visibility}
@@ -438,17 +438,17 @@ const NotesPage: React.FC = () => {
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     disabled={saving}
                   >
-                    <option value="shared">Shared</option>
-                    <option value="admin_only">Admin Only</option>
+                    <option value="shared">Delad</option>
+                    <option value="admin_only">Endast admin</option>
                   </select>
                   <p className="mt-1 text-xs text-gray-500">
-                    Shared notes are visible to partners. Admin only notes are internal.
+                    Delade anteckningar är synliga för partners. Endast admin-anteckningar är interna.
                   </p>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Content <span className="text-red-500">*</span>
+                    Innehåll <span className="text-red-500">*</span>
                   </label>
                   <textarea
                     value={formData.content}
@@ -458,7 +458,7 @@ const NotesPage: React.FC = () => {
                     }}
                     rows={6}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
-                    placeholder="Enter note content..."
+                    placeholder="Ange anteckningens innehåll..."
                     disabled={saving}
                   />
                 </div>
@@ -471,7 +471,7 @@ const NotesPage: React.FC = () => {
                 className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
                 disabled={saving}
               >
-                Cancel
+                Avbryt
               </button>
               <button
                 onClick={handleSave}
@@ -481,12 +481,12 @@ const NotesPage: React.FC = () => {
                 {saving ? (
                   <>
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Saving...
+                    Sparar...
                   </>
                 ) : (
                   <>
                     <Save className="h-4 w-4 mr-2" />
-                    {editingNote ? 'Update Note' : 'Create Note'}
+                    {editingNote ? 'Uppdatera anteckning' : 'Skapa anteckning'}
                   </>
                 )}
               </button>
@@ -499,7 +499,7 @@ const NotesPage: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white z-10">
-              <h2 className="text-2xl font-bold text-gray-900">Note Details</h2>
+              <h2 className="text-2xl font-bold text-gray-900">Anteckningsdetaljer</h2>
               <button
                 onClick={() => setViewingNote(null)}
                 className="p-1 hover:bg-gray-100 rounded transition-colors"
@@ -511,44 +511,44 @@ const NotesPage: React.FC = () => {
             <div className="p-6">
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-500 mb-1">Customer</label>
-                  <p className="text-gray-900">{viewingNote.customer?.company_name || 'Unknown'}</p>
+                  <label className="block text-sm font-medium text-gray-500 mb-1">Kund</label>
+                  <p className="text-gray-900">{viewingNote.customer?.company_name || 'Okänd'}</p>
                 </div>
 
                 {viewingNote.project && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-500 mb-1">Project</label>
+                    <label className="block text-sm font-medium text-gray-500 mb-1">Projekt</label>
                     <p className="text-gray-900">{viewingNote.project.name}</p>
                   </div>
                 )}
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-500 mb-1">Type</label>
+                  <label className="block text-sm font-medium text-gray-500 mb-1">Typ</label>
                   <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded">
                     {viewingNote.note_type}
                   </span>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-500 mb-1">Visibility</label>
+                  <label className="block text-sm font-medium text-gray-500 mb-1">Synlighet</label>
                   <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded">
                     {viewingNote.visibility}
                   </span>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-500 mb-1">Content</label>
+                  <label className="block text-sm font-medium text-gray-500 mb-1">Innehåll</label>
                   <p className="text-gray-900 whitespace-pre-wrap">{viewingNote.content}</p>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-500 mb-1">Created</label>
+                  <label className="block text-sm font-medium text-gray-500 mb-1">Skapad</label>
                   <p className="text-gray-900">{formatDate(viewingNote.created_at)}</p>
                 </div>
 
                 {viewingNote.updated_at && viewingNote.updated_at !== viewingNote.created_at && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-500 mb-1">Last Updated</label>
+                    <label className="block text-sm font-medium text-gray-500 mb-1">Senast uppdaterad</label>
                     <p className="text-gray-900">{formatDate(viewingNote.updated_at)}</p>
                   </div>
                 )}
@@ -564,13 +564,13 @@ const NotesPage: React.FC = () => {
                 className="flex items-center px-4 py-2 text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
               >
                 <Edit2 className="h-4 w-4 mr-2" />
-                Edit
+                Redigera
               </button>
               <button
                 onClick={() => setViewingNote(null)}
                 className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
               >
-                Close
+                Stäng
               </button>
             </div>
           </div>
@@ -585,10 +585,10 @@ const NotesPage: React.FC = () => {
                 <div className="flex-shrink-0 w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
                   <AlertCircle className="h-6 w-6 text-red-600" />
                 </div>
-                <h3 className="ml-3 text-lg font-medium text-gray-900">Delete Note</h3>
+                <h3 className="ml-3 text-lg font-medium text-gray-900">Radera anteckning</h3>
               </div>
               <p className="text-sm text-gray-600 mb-6">
-                Are you sure you want to delete this note? This action cannot be undone.
+                Är du säker på att du vill radera denna anteckning? Detta kan inte ångras.
               </p>
               <div className="flex items-center justify-end gap-3">
                 <button
@@ -596,7 +596,7 @@ const NotesPage: React.FC = () => {
                   className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
                   disabled={deleting}
                 >
-                  Cancel
+                  Avbryt
                 </button>
                 <button
                   onClick={() => handleDelete(deleteConfirm)}
@@ -606,12 +606,12 @@ const NotesPage: React.FC = () => {
                   {deleting ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                      Deleting...
+                      Raderar...
                     </>
                   ) : (
                     <>
                       <Trash2 className="h-4 w-4 mr-2" />
-                      Delete
+                      Radera
                     </>
                   )}
                 </button>

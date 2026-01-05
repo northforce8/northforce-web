@@ -303,7 +303,7 @@ export default function SWOTDetailPage() {
     <AdminLayout>
       <div className="mb-6">
         <Link
-          to="/admin/swot"
+          to="/admin/partner-portal/swot"
           className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -352,7 +352,7 @@ export default function SWOTDetailPage() {
           >
             <option value="draft">Utkast</option>
             <option value="in_progress">Pågående</option>
-            <option value="completed">Klar</option>
+            <option value="completed">Slutförd</option>
             <option value="archived">Arkiverad</option>
           </select>
 
@@ -393,10 +393,10 @@ export default function SWOTDetailPage() {
 
                       <div className="flex items-center gap-4 text-sm mb-3">
                         <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded">
-                          Impact: {insight.impact_score}/100
+                          Påverkan: {insight.impact_score}/100
                         </span>
                         <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded">
-                          Confidence: {insight.confidence}%
+                          Säkerhet: {insight.confidence}%
                         </span>
                         <span className="text-gray-500 capitalize">
                           {insight.source.replace(/_/g, ' ')}
@@ -514,7 +514,7 @@ export default function SWOTDetailPage() {
               <div className="space-y-3">
                 {items.length === 0 ? (
                   <div className="text-center py-8 text-sm opacity-75">
-                    Inga element ännu. Klicka på + för att lägga till.
+                    Inga element ännu. Tryck på + för att lägga till.
                   </div>
                 ) : (
                   items.map((item) => (
@@ -551,12 +551,12 @@ export default function SWOTDetailPage() {
                       <div className="flex items-center gap-2 flex-wrap">
                         {item.impact_level && (
                           <span className={`px-2 py-1 text-xs font-medium rounded ${getImpactColor(item.impact_level)}`}>
-                            {item.impact_level.toUpperCase()}
+                            {item.impact_level === 'low' ? 'LÅG' : item.impact_level === 'medium' ? 'MEDEL' : item.impact_level === 'high' ? 'HÖG' : 'KRITISK'}
                           </span>
                         )}
                         {item.actionable && (
                           <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-700 rounded">
-                            ACTIONABLE
+                            KRÄVER ÅTGÄRD
                           </span>
                         )}
                       </div>
@@ -682,7 +682,7 @@ function SwotItemModal({
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="low">Låg</option>
-              <option value="medium">Medium</option>
+              <option value="medium">Medel</option>
               <option value="high">Hög</option>
               <option value="critical">Kritisk</option>
             </select>

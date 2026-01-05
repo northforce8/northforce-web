@@ -223,11 +223,11 @@ export default function PlanningPage() {
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
       <PageHeader
-        title="Calendar & Planning"
-        description="Schedule and allocate partner capacity"
+        title="Kalender & Planering"
+        description="Schemalägg och fördela partnerkapacitet"
         icon={Calendar}
         action={{
-          label: 'Add Capacity',
+          label: 'Lägg till kapacitet',
           onClick: () => setShowCreateModal(true),
           icon: Plus,
         }}
@@ -262,7 +262,7 @@ export default function PlanningPage() {
                 onClick={() => setCurrentDate(new Date())}
                 className="ml-4 text-sm text-blue-600 hover:text-blue-900"
               >
-                Today
+                Idag
               </button>
             </div>
 
@@ -285,22 +285,22 @@ export default function PlanningPage() {
         </div>
 
         {loading ? (
-          <div className="p-12 text-center text-gray-500">Loading calendar...</div>
+          <div className="p-12 text-center text-gray-500">Laddar kalender...</div>
         ) : (
           <div className="p-4">
             <div className="space-y-2">
               {capacityEntries.length === 0 ? (
                 <div className="text-center py-12">
                   <Calendar className="mx-auto h-12 w-12 text-gray-400" />
-                  <h3 className="mt-2 text-sm font-medium text-gray-900">No capacity entries</h3>
-                  <p className="mt-1 text-sm text-gray-500">Get started by adding capacity allocation.</p>
+                  <h3 className="mt-2 text-sm font-medium text-gray-900">Inga kapacitetsposter</h3>
+                  <p className="mt-1 text-sm text-gray-500">Kom igång genom att lägga till kapacitetstilldelning.</p>
                   <div className="mt-6">
                     <button
                       onClick={() => setShowCreateModal(true)}
                       className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
                     >
                       <Plus className="h-4 w-4 mr-2" />
-                      Add Capacity
+                      Lägg till kapacitet
                     </button>
                   </div>
                 </div>
@@ -333,11 +333,11 @@ export default function PlanningPage() {
                           {new Date(entry.start_date).toLocaleDateString('sv-SE')} - {new Date(entry.end_date).toLocaleDateString('sv-SE')}
                         </div>
                         <div className="mt-1 flex items-center gap-4 text-xs text-gray-500">
-                          <span>{entry.allocated_hours}h allocated</span>
-                          <span>{entry.allocated_credits} credits</span>
+                          <span>{entry.allocated_hours}h tilldelat</span>
+                          <span>{entry.allocated_credits} krediter</span>
                           {entry.recurrence_pattern && entry.recurrence_pattern !== 'none' && (
                             <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">
-                              Recurring: {entry.recurrence_pattern}
+                              Återkommande: {entry.recurrence_pattern}
                             </span>
                           )}
                         </div>
@@ -385,7 +385,7 @@ function CreateCapacityModal({ partners, customers, projects, onClose, onSuccess
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!supabase) {
-      alert('Database not configured');
+      alert('Databas ej konfigurerad');
       return;
     }
 
@@ -408,7 +408,7 @@ function CreateCapacityModal({ partners, customers, projects, onClose, onSuccess
       onSuccess();
     } catch (error) {
       console.error('Error creating capacity entry:', error);
-      alert('Failed to create capacity entry');
+      alert('Kunde inte skapa kapacitetspost');
     } finally {
       setSaving(false);
     }
@@ -417,7 +417,7 @@ function CreateCapacityModal({ partners, customers, projects, onClose, onSuccess
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">Add Capacity Allocation</h2>
+        <h2 className="text-lg font-bold text-gray-900 mb-4">Lägg till kapacitetstilldelning</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Partner</label>
@@ -426,7 +426,7 @@ function CreateCapacityModal({ partners, customers, projects, onClose, onSuccess
               onChange={(e) => setFormData({ ...formData, partner_id: e.target.value })}
               className="w-full border border-gray-300 rounded-md px-3 py-2"
             >
-              <option value="">Select partner...</option>
+              <option value="">Välj partner...</option>
               {partners.map((p: any) => (
                 <option key={p.id} value={p.id}>{p.partner_name}</option>
               ))}
@@ -434,13 +434,13 @@ function CreateCapacityModal({ partners, customers, projects, onClose, onSuccess
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Customer (Optional)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Kund (Valfritt)</label>
             <select
               value={formData.customer_id}
               onChange={(e) => setFormData({ ...formData, customer_id: e.target.value })}
               className="w-full border border-gray-300 rounded-md px-3 py-2"
             >
-              <option value="">Select customer...</option>
+              <option value="">Välj kund...</option>
               {customers.map((c: any) => (
                 <option key={c.id} value={c.id}>{c.company_name}</option>
               ))}
@@ -448,13 +448,13 @@ function CreateCapacityModal({ partners, customers, projects, onClose, onSuccess
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Project (Optional)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Projekt (Valfritt)</label>
             <select
               value={formData.project_id}
               onChange={(e) => setFormData({ ...formData, project_id: e.target.value })}
               className="w-full border border-gray-300 rounded-md px-3 py-2"
             >
-              <option value="">Select project...</option>
+              <option value="">Välj projekt...</option>
               {projects.map((p: any) => (
                 <option key={p.id} value={p.id}>{p.name}</option>
               ))}
@@ -463,7 +463,7 @@ function CreateCapacityModal({ partners, customers, projects, onClose, onSuccess
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Startdatum</label>
               <input
                 type="date"
                 value={formData.start_date}
@@ -473,7 +473,7 @@ function CreateCapacityModal({ partners, customers, projects, onClose, onSuccess
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Slutdatum</label>
               <input
                 type="date"
                 value={formData.end_date}
@@ -485,7 +485,7 @@ function CreateCapacityModal({ partners, customers, projects, onClose, onSuccess
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Allocated Hours</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Tilldelade timmar</label>
               <input
                 type="number"
                 step="0.5"
@@ -496,7 +496,7 @@ function CreateCapacityModal({ partners, customers, projects, onClose, onSuccess
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Allocated Credits</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Tilldelade krediter</label>
               <input
                 type="number"
                 step="0.1"
@@ -509,22 +509,22 @@ function CreateCapacityModal({ partners, customers, projects, onClose, onSuccess
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Recurrence</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Återkommande</label>
             <select
               value={formData.recurrence_pattern}
               onChange={(e) => setFormData({ ...formData, recurrence_pattern: e.target.value })}
               className="w-full border border-gray-300 rounded-md px-3 py-2"
             >
-              <option value="none">No recurrence</option>
-              <option value="weekly">Weekly</option>
-              <option value="biweekly">Biweekly</option>
-              <option value="monthly">Monthly</option>
+              <option value="none">Ingen återkommande</option>
+              <option value="weekly">Veckovis</option>
+              <option value="biweekly">Varannan vecka</option>
+              <option value="monthly">Månadsvis</option>
             </select>
           </div>
 
           {formData.recurrence_pattern !== 'none' && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Recurrence End Date</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Återkommande slutdatum</label>
               <input
                 type="date"
                 value={formData.recurrence_end_date}
@@ -535,7 +535,7 @@ function CreateCapacityModal({ partners, customers, projects, onClose, onSuccess
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Anteckningar</label>
             <textarea
               value={formData.notes}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
@@ -549,14 +549,14 @@ function CreateCapacityModal({ partners, customers, projects, onClose, onSuccess
               onClick={onClose}
               className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
             >
-              Cancel
+              Avbryt
             </button>
             <button
               type="submit"
               disabled={saving}
               className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
             >
-              {saving ? 'Saving...' : 'Add Capacity'}
+              {saving ? 'Sparar...' : 'Lägg till kapacitet'}
             </button>
           </div>
         </form>

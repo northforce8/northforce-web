@@ -51,7 +51,7 @@ export default function GrowthPlansPage() {
       setPlans(plansData);
       setCustomers(customersData);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load data');
+      setError(err instanceof Error ? err.message : 'Kunde inte ladda data');
       console.error('Error loading data:', err);
     } finally {
       setLoading(false);
@@ -83,7 +83,7 @@ export default function GrowthPlansPage() {
 
       await loadData();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create plan');
+      setError(err instanceof Error ? err.message : 'Kunde inte skapa plan');
       console.error('Error creating plan:', err);
     }
   };
@@ -144,7 +144,7 @@ export default function GrowthPlansPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg">{t('common.loading', 'Loading...')}</div>
+        <div className="text-lg">{t('common.loading', 'Laddar...')}</div>
       </div>
     );
   }

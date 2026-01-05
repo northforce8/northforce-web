@@ -57,7 +57,7 @@ export default function LeadershipAssessmentsPage() {
         action: 'Loading assessments and customers'
       });
       console.error(`[${errorId}] Error loading data:`, err);
-      setError('Failed to load assessments. Please try again.');
+      setError('Kunde inte ladda bedömningar. Försök igen.');
     } finally {
       setLoading(false);
     }
@@ -87,7 +87,7 @@ export default function LeadershipAssessmentsPage() {
       });
       setShowCreateModal(false);
       resetForm();
-      setSuccess('Leadership assessment created successfully!');
+      setSuccess('Ledarskaps bedömning skapad!');
       await loadData();
     } catch (err) {
       const errorId = logAdminError(err as Error, {
@@ -95,7 +95,7 @@ export default function LeadershipAssessmentsPage() {
         action: 'Creating leadership assessment'
       });
       console.error(`[${errorId}] Error creating assessment:`, err);
-      setError('Failed to create assessment. Please try again.');
+      setError('Kunde inte skapa bedömning. Försök igen.');
     }
   };
 
@@ -108,7 +108,7 @@ export default function LeadershipAssessmentsPage() {
       await enterpriseAPI.updateLeadershipAssessment(selectedAssessment.id, formData);
       setShowCreateModal(false);
       resetForm();
-      setSuccess('Leadership assessment updated successfully!');
+      setSuccess('Ledarskaps bedömning uppdaterad!');
       await loadData();
     } catch (err) {
       const errorId = logAdminError(err as Error, {
@@ -116,19 +116,19 @@ export default function LeadershipAssessmentsPage() {
         action: 'Updating leadership assessment'
       });
       console.error(`[${errorId}] Error updating assessment:`, err);
-      setError('Failed to update assessment. Please try again.');
+      setError('Kunde inte uppdatera bedömning. Försök igen.');
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this assessment? This action cannot be undone.')) {
+    if (!confirm('Är du säker på att du vill radera denna bedömning? Denna åtgärd kan inte ångras.')) {
       return;
     }
 
     try {
       setError(null);
       await enterpriseAPI.deleteLeadershipAssessment(id);
-      setSuccess('Leadership assessment deleted successfully!');
+      setSuccess('Ledarskaps bedömning raderad!');
       await loadData();
     } catch (err) {
       const errorId = logAdminError(err as Error, {
@@ -136,7 +136,7 @@ export default function LeadershipAssessmentsPage() {
         action: 'Deleting leadership assessment'
       });
       console.error(`[${errorId}] Error deleting assessment:`, err);
-      setError('Failed to delete assessment. Please try again.');
+      setError('Kunde inte radera bedömning. Försök igen.');
     }
   };
 
@@ -169,7 +169,7 @@ export default function LeadershipAssessmentsPage() {
       <div className="flex items-center justify-center h-screen">
         <div className="flex items-center gap-3">
           <RefreshCw className="h-5 w-5 text-primary-600 animate-spin" />
-          <span className="text-gray-600">Loading assessments...</span>
+          <span className="text-gray-600">Laddar bedömningar...</span>
         </div>
       </div>
     );
@@ -181,7 +181,7 @@ export default function LeadershipAssessmentsPage() {
         <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
           <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
           <div className="flex-1">
-            <p className="text-red-800 font-medium">Error</p>
+            <p className="text-red-800 font-medium">Fel</p>
             <p className="text-red-700 text-sm mt-1">{error}</p>
           </div>
         </div>
@@ -191,7 +191,7 @@ export default function LeadershipAssessmentsPage() {
         <div className="p-4 bg-green-50 border border-green-200 rounded-lg flex items-start gap-3">
           <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
           <div className="flex-1">
-            <p className="text-green-800 font-medium">Success</p>
+            <p className="text-green-800 font-medium">Klar</p>
             <p className="text-green-700 text-sm mt-1">{success}</p>
           </div>
         </div>
@@ -212,23 +212,23 @@ export default function LeadershipAssessmentsPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card className="p-6">
-          <p className="text-sm text-gray-600 mb-1">Total Assessments</p>
+          <p className="text-sm text-gray-600 mb-1">Totalt antal bedömningar</p>
           <p className="text-3xl font-bold">{assessments.length}</p>
         </Card>
         <Card className="p-6">
-          <p className="text-sm text-gray-600 mb-1">Active</p>
+          <p className="text-sm text-gray-600 mb-1">Aktiva</p>
           <p className="text-3xl font-bold text-green-600">
             {assessments.filter(a => a.status === 'active').length}
           </p>
         </Card>
         <Card className="p-6">
-          <p className="text-sm text-gray-600 mb-1">Completed</p>
+          <p className="text-sm text-gray-600 mb-1">Slutförda</p>
           <p className="text-3xl font-bold text-blue-600">
             {assessments.filter(a => a.status === 'completed').length}
           </p>
         </Card>
         <Card className="p-6">
-          <p className="text-sm text-gray-600 mb-1">Total Participants</p>
+          <p className="text-sm text-gray-600 mb-1">Totalt antal deltagare</p>
           <p className="text-3xl font-bold">
             {assessments.reduce((sum, a) => sum + a.participants_count, 0)}
           </p>
@@ -237,13 +237,13 @@ export default function LeadershipAssessmentsPage() {
 
       <Card className="p-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-          <h2 className="text-xl font-semibold">All Assessments</h2>
+          <h2 className="text-xl font-semibold">Alla bedömningar</h2>
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <div className="relative flex-1 sm:flex-initial">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search assessments..."
+                placeholder="Sök bedömningar..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full sm:w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
@@ -254,11 +254,11 @@ export default function LeadershipAssessmentsPage() {
               onChange={(e) => setStatusFilter(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             >
-              <option value="all">All Status</option>
-              <option value="draft">Draft</option>
-              <option value="active">Active</option>
-              <option value="completed">Completed</option>
-              <option value="cancelled">Cancelled</option>
+              <option value="all">Alla status</option>
+              <option value="draft">Utkast</option>
+              <option value="active">Aktiv</option>
+              <option value="completed">Slutförd</option>
+              <option value="cancelled">Avbruten</option>
             </select>
           </div>
         </div>
@@ -267,12 +267,12 @@ export default function LeadershipAssessmentsPage() {
           <div className="text-center py-12">
             <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              {searchQuery || statusFilter !== 'all' ? 'No assessments found' : 'No assessments yet'}
+              {searchQuery || statusFilter !== 'all' ? 'Inga bedömningar hittades' : 'Inga bedömningar ännu'}
             </h3>
             <p className="text-gray-500 mb-4">
               {searchQuery || statusFilter !== 'all'
-                ? 'Try adjusting your search or filters.'
-                : 'Launch your first 360-degree leadership assessment to get started.'}
+                ? 'Prova att justera din sökning eller filter.'
+                : 'Starta din första 360-graders ledarskaps bedömning för att komma igång.'}
             </p>
             {!searchQuery && statusFilter === 'all' && (
               <button
@@ -282,7 +282,7 @@ export default function LeadershipAssessmentsPage() {
                 }}
                 className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
               >
-                Launch First Assessment
+                Starta första bedömningen
               </button>
             )}
           </div>
@@ -310,12 +310,12 @@ export default function LeadershipAssessmentsPage() {
                       <p className="text-sm text-gray-700 mb-3">{assessment.description}</p>
                     )}
                     <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
-                      <span><strong>Type:</strong> {assessment.assessment_type}</span>
-                      <span><strong>Participants:</strong> {assessment.participants_count}</span>
-                      <span><strong>Completed:</strong> {assessment.completed_count}</span>
-                      <span><strong>Launch Date:</strong> {new Date(assessment.launch_date).toLocaleDateString()}</span>
+                      <span><strong>Typ:</strong> {assessment.assessment_type}</span>
+                      <span><strong>Deltagare:</strong> {assessment.participants_count}</span>
+                      <span><strong>Slutförda:</strong> {assessment.completed_count}</span>
+                      <span><strong>Startdatum:</strong> {new Date(assessment.launch_date).toLocaleDateString()}</span>
                       {assessment.due_date && (
-                        <span><strong>Due Date:</strong> {new Date(assessment.due_date).toLocaleDateString()}</span>
+                        <span><strong>Förfallodatum:</strong> {new Date(assessment.due_date).toLocaleDateString()}</span>
                       )}
                     </div>
                   </div>
@@ -323,14 +323,14 @@ export default function LeadershipAssessmentsPage() {
                     <button
                       onClick={() => handleEdit(assessment)}
                       className="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
-                      title="Edit assessment"
+                      title="Redigera bedömning"
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => handleDelete(assessment.id)}
                       className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                      title="Delete assessment"
+                      title="Radera bedömning"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -349,18 +349,18 @@ export default function LeadershipAssessmentsPage() {
             setShowCreateModal(false);
             resetForm();
           }}
-          title={selectedAssessment ? 'Edit Assessment' : 'Launch New Assessment'}
+          title={selectedAssessment ? 'Redigera bedömning' : 'Starta ny bedömning'}
         >
           <form onSubmit={selectedAssessment ? handleUpdate : handleCreate} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Customer *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Kund *</label>
               <select
                 required
                 value={formData.customer_id}
                 onChange={(e) => setFormData({ ...formData, customer_id: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               >
-                <option value="">Select Customer...</option>
+                <option value="">Välj kund...</option>
                 {customers.map((c) => (
                   <option key={c.id} value={c.id}>{c.company_name}</option>
                 ))}
@@ -368,45 +368,45 @@ export default function LeadershipAssessmentsPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Assessment Name *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Bedömningsnamn *</label>
               <input
                 type="text"
                 required
                 value={formData.assessment_name}
                 onChange={(e) => setFormData({ ...formData, assessment_name: e.target.value })}
-                placeholder="e.g., Q1 2024 Leadership Assessment"
+                placeholder="t.ex. Q1 2024 Ledarskaps bedömning"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Beskrivning</label>
               <textarea
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 rows={3}
-                placeholder="Brief description of assessment objectives..."
+                placeholder="Kort beskrivning av bedömningsmål..."
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Assessment Type</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Bedömningstyp</label>
               <select
                 value={formData.assessment_type}
                 onChange={(e) => setFormData({ ...formData, assessment_type: e.target.value as any })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               >
-                <option value="self">Self Assessment</option>
-                <option value="180">180° (Self + Manager)</option>
-                <option value="360">360° (Multi-rater)</option>
-                <option value="team">Team Assessment</option>
+                <option value="self">Självbedömning</option>
+                <option value="180">180° (Själv + Chef)</option>
+                <option value="360">360° (Flerpartsbedömning)</option>
+                <option value="team">Teamsbedömning</option>
               </select>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Launch Date *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Startdatum *</label>
                 <input
                   type="date"
                   required
@@ -417,7 +417,7 @@ export default function LeadershipAssessmentsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Förfallodatum</label>
                 <input
                   type="date"
                   value={formData.due_date}
@@ -434,10 +434,10 @@ export default function LeadershipAssessmentsPage() {
                 onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               >
-                <option value="draft">Draft</option>
-                <option value="active">Active</option>
-                <option value="completed">Completed</option>
-                <option value="cancelled">Cancelled</option>
+                <option value="draft">Utkast</option>
+                <option value="active">Aktiv</option>
+                <option value="completed">Slutförd</option>
+                <option value="cancelled">Avbruten</option>
               </select>
             </div>
 
@@ -450,10 +450,10 @@ export default function LeadershipAssessmentsPage() {
                 }}
                 className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
               >
-                Cancel
+                Avbryt
               </button>
               <button type="submit" className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700">
-                {selectedAssessment ? 'Update Assessment' : 'Launch Assessment'}
+                {selectedAssessment ? 'Uppdatera bedömning' : 'Starta bedömning'}
               </button>
             </div>
           </form>

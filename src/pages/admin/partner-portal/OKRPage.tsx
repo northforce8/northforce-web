@@ -144,7 +144,7 @@ export default function OKRPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this OKR objective? This will also delete all associated key results. This action cannot be undone.')) {
+    if (!confirm('Är du säker på att du vill radera detta OKR-mål? Detta kommer även att radera alla associerade nyckelresultat. Denna åtgärd kan inte ångras.')) {
       return;
     }
 
@@ -252,11 +252,11 @@ export default function OKRPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="OKR - Objectives & Key Results"
-        description="Set measurable goals and track progress with key results. Align efforts, ensure transparency, and drive accountability."
+        title="OKR - Mål & Nyckelresultat"
+        description="Sätt mätbara mål och följ framsteg med nyckelresultat. Samordna insatser, säkerställ transparens och driv ansvarighet."
         icon={Target}
         action={{
-          label: 'Create Objective',
+          label: 'Skapa mål',
           onClick: () => {
             setSelectedObjective(null);
             setShowModal(true);
@@ -271,7 +271,7 @@ export default function OKRPage() {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Sök..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -286,7 +286,7 @@ export default function OKRPage() {
               <Target className="w-6 h-6 text-primary-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Total Objectives</p>
+              <p className="text-sm text-gray-600">Totalt antal mål</p>
               <p className="text-2xl font-bold text-gray-900">{objectives.length}</p>
             </div>
           </div>
@@ -298,7 +298,7 @@ export default function OKRPage() {
               <CheckCircle2 className="w-6 h-6 text-green-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">On Track</p>
+              <p className="text-sm text-gray-600">På rätt spår</p>
               <p className="text-2xl font-bold text-gray-900">
                 {objectives.filter(o => {
                   const progress = calculateOverallProgress(o.key_results || []);
@@ -315,7 +315,7 @@ export default function OKRPage() {
               <AlertTriangle className="w-6 h-6 text-yellow-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">At Risk</p>
+              <p className="text-sm text-gray-600">Risk</p>
               <p className="text-2xl font-bold text-gray-900">
                 {objectives.filter(o => {
                   const progress = calculateOverallProgress(o.key_results || []);
@@ -332,7 +332,7 @@ export default function OKRPage() {
               <TrendingUp className="w-6 h-6 text-accent-cyan" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Avg Progress</p>
+              <p className="text-sm text-gray-600">Genomsnittlig framsteg</p>
               <p className="text-2xl font-bold text-gray-900">
                 {Math.round(
                   objectives.reduce((sum, o) => sum + calculateOverallProgress(o.key_results || []), 0) /
@@ -349,21 +349,21 @@ export default function OKRPage() {
           searchQuery ? (
             <Card className="p-12 text-center">
               <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Results Found</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Inga resultat hittades</h3>
               <p className="text-gray-600 mb-4">
-                No items match "{searchQuery}". Try a different search term.
+                Inga objekt matchar "{searchQuery}". Prova ett annat sökord.
               </p>
             </Card>
           ) : (
             <Card className="p-12 text-center">
               <Target className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Objectives Yet</h3>
-              <p className="text-gray-600 mb-4">Create your first OKR to start tracking goals and key results.</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Inga mål ännu</h3>
+              <p className="text-gray-600 mb-4">Skapa ditt första OKR för att börja spåra mål och nyckelresultat.</p>
               <button
                 onClick={() => setShowModal(true)}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
-                Create First Objective
+                Skapa första målet
               </button>
             </Card>
           )
@@ -386,7 +386,7 @@ export default function OKRPage() {
                     </div>
                     <p className="text-sm text-gray-600 mb-2">{objective.description}</p>
                     <div className="flex items-center gap-4 text-xs text-gray-500">
-                      <span>Customer: {objective.customer_name}</span>
+                      <span>Kund: {objective.customer_name}</span>
                       <span>•</span>
                       <span>Period: {objective.time_period}</span>
                       <span>•</span>
@@ -397,10 +397,10 @@ export default function OKRPage() {
                     <button
                       onClick={() => navigate(`/admin/partner-portal/okr/${objective.id}`)}
                       className="flex items-center gap-2 px-3 py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                      title="View details and AI insights"
+                      title="Visa detaljer och AI-insikter"
                     >
                       <Eye className="w-4 h-4" />
-                      <span className="text-sm font-medium">View Details</span>
+                      <span className="text-sm font-medium">Visa detaljer</span>
                     </button>
                     <button
                       onClick={() => {
@@ -417,14 +417,14 @@ export default function OKRPage() {
                         setShowModal(true);
                       }}
                       className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                      title="Edit objective"
+                      title="Redigera mål"
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => handleDelete(objective.id)}
                       className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                      title="Delete objective"
+                      title="Radera mål"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -433,7 +433,7 @@ export default function OKRPage() {
 
                 <div className="mb-4">
                   <div className="flex items-center justify-between text-sm mb-2">
-                    <span className="text-gray-600">Overall Progress</span>
+                    <span className="text-gray-600">Totalt framsteg</span>
                     <span className="font-semibold text-gray-900">{overallProgress}%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
@@ -450,7 +450,7 @@ export default function OKRPage() {
 
                 {objective.key_results && objective.key_results.length > 0 && (
                   <div className="space-y-3">
-                    <p className="text-sm font-medium text-gray-700">Key Results</p>
+                    <p className="text-sm font-medium text-gray-700">Nyckelresultat</p>
                     {objective.key_results.map((kr) => {
                       const krProgress = kr.target_value > 0
                         ? Math.min((kr.current_value / kr.target_value) * 100, 100)
@@ -496,12 +496,12 @@ export default function OKRPage() {
           setShowModal(false);
           setSelectedObjective(null);
         }}
-        title={selectedObjective ? 'Edit Objective' : 'Create Objective'}
+        title={selectedObjective ? 'Redigera mål' : 'Skapa mål'}
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Customer
+              Kund
             </label>
             <select
               value={formData.customer_id}
@@ -509,7 +509,7 @@ export default function OKRPage() {
               className="w-full px-3 py-2 border border-gray-300 rounded-lg"
               required
             >
-              <option value="">Select Customer</option>
+              <option value="">Välj kund</option>
               {customers.map((customer) => (
                 <option key={customer.id} value={customer.id}>
                   {customer.name}
@@ -520,7 +520,7 @@ export default function OKRPage() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Objective Title
+              Måltitel
             </label>
             <input
               type="text"
@@ -533,7 +533,7 @@ export default function OKRPage() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Description
+              Beskrivning
             </label>
             <textarea
               value={formData.description}
@@ -546,14 +546,14 @@ export default function OKRPage() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Time Period
+                Tidsperiod
               </label>
               <input
                 type="text"
                 value={formData.time_period}
                 onChange={(e) => setFormData({ ...formData, time_period: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                placeholder="e.g., Q1 2026"
+                placeholder="t.ex. Q1 2026"
                 required
               />
             </div>
@@ -567,10 +567,10 @@ export default function OKRPage() {
                 onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg"
               >
-                <option value="draft">Draft</option>
-                <option value="active">Active</option>
-                <option value="completed">Completed</option>
-                <option value="cancelled">Cancelled</option>
+                <option value="draft">Utkast</option>
+                <option value="active">Aktiv</option>
+                <option value="completed">Slutförd</option>
+                <option value="cancelled">Avbruten</option>
               </select>
             </div>
           </div>
@@ -578,7 +578,7 @@ export default function OKRPage() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Start Date
+                Startdatum
               </label>
               <input
                 type="date"
@@ -591,7 +591,7 @@ export default function OKRPage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                End Date
+                Slutdatum
               </label>
               <input
                 type="date"
@@ -612,13 +612,13 @@ export default function OKRPage() {
               }}
               className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
             >
-              Cancel
+              Avbryt
             </button>
             <button
               type="submit"
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
             >
-              {selectedObjective ? 'Update' : 'Create'} Objective
+              {selectedObjective ? 'Uppdatera' : 'Skapa'} mål
             </button>
           </div>
         </form>
