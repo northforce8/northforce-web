@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FileSignature, Plus, Search, FileText } from 'lucide-react';
+import { FileSignature, Plus, Search, FileText, AlertTriangle } from 'lucide-react';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { ContractStatusBadge } from '../../../components/admin/ContractStatusBadge';
 import { CurrencyDisplay } from '../../../components/admin/CurrencyDisplay';
@@ -15,6 +15,7 @@ export default function ContractsPage() {
   const [customers, setCustomers] = useState<any[]>([]);
   const [templates, setTemplates] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState('all');
   const [typeFilter, setTypeFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -27,6 +28,7 @@ export default function ContractsPage() {
   async function loadData() {
     try {
       setLoading(true);
+      setError(null);
       const filters: any = {};
       if (statusFilter !== 'all') filters.status = statusFilter;
       if (typeFilter !== 'all') filters.type = typeFilter;
@@ -49,15 +51,49 @@ export default function ContractsPage() {
       setContracts(safeContracts);
       setCustomers(customersData || []);
       setTemplates(templatesData || []);
-    } catch (error) {
-      const errorId = logAdminError(error as Error, {
+    } catch (err) {
+      const errorId = logAdminError(err as Error, {
         route: '/admin/partner-portal/contracts',
         action: 'loadData',
       });
-      console.error(`[${errorId}] Error loading data:`, error);
+      console.error(`[${errorId}] Error loading data:`, err);
+      setError(err instanceof Error ? err.message : 'Kunde inte ladda kontrakt. Försök igen.');
     } finally {
       setLoading(false);
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Laddar kontrakt...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-7xl mx-auto p-6">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-red-900 mb-2">Fel vid laddning</h3>
+              <p className="text-red-700 mb-4">{error}</p>
+              <button
+                onClick={loadData}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Försök igen
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const filteredContracts = contracts.filter(contract => {

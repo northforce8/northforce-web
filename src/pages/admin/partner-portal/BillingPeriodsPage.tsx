@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, DollarSign, TrendingUp, AlertCircle, Download, Plus } from 'lucide-react';
+import { Calendar, DollarSign, TrendingUp, AlertCircle, Download, Plus, AlertTriangle } from 'lucide-react';
 import { supabase } from '../../../lib/supabase';
 import { CurrencyDisplay } from '../../../components/admin/CurrencyDisplay';
 import { PageHeader } from '../../../components/admin/PageHeader';
@@ -29,6 +29,7 @@ interface BillingPeriod {
 const BillingPeriodsPage: React.FC = () => {
   const [periods, setPeriods] = useState<BillingPeriod[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
   useEffect(() => {
@@ -38,10 +39,13 @@ const BillingPeriodsPage: React.FC = () => {
   const loadBillingPeriods = async () => {
     if (!supabase) {
       setLoading(false);
+      setError('Supabase är inte konfigurerat.');
       return;
     }
 
     try {
+      setLoading(true);
+      setError(null);
       let query = supabase
         .from('billing_periods')
         .select(`
@@ -54,11 +58,12 @@ const BillingPeriodsPage: React.FC = () => {
         query = query.eq('status', statusFilter);
       }
 
-      const { data, error } = await query;
-      if (error) throw error;
+      const { data, error: dbError } = await query;
+      if (dbError) throw dbError;
       setPeriods(data || []);
-    } catch (error) {
-      console.error('Error loading billing periods:', error);
+    } catch (err) {
+      console.error('Error loading billing periods:', err);
+      setError(err instanceof Error ? err.message : 'Kunde inte ladda faktureringsperioder. Försök igen.');
     } finally {
       setLoading(false);
     }
@@ -68,7 +73,7 @@ const BillingPeriodsPage: React.FC = () => {
     switch (status) {
       case 'draft': return 'bg-gray-100 text-gray-800';
       case 'approved': return 'bg-blue-100 text-blue-800';
-      case 'invoiced': return 'bg-purple-100 text-purple-800';
+      case 'invoiced': return 'bg-primary-100 text-primary-800';
       case 'paid': return 'bg-green-100 text-green-800';
       case 'cancelled': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
@@ -89,10 +94,32 @@ const BillingPeriodsPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="p-6">
-        <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-gray-200 rounded w-1/4"></div>
-          <div className="h-64 bg-gray-200 rounded"></div>
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Laddar faktureringsperioder...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-7xl mx-auto p-6">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-red-900 mb-2">Fel vid laddning</h3>
+              <p className="text-red-700 mb-4">{error}</p>
+              <button
+                onClick={loadBillingPeriods}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Försök igen
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
