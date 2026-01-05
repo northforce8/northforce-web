@@ -161,7 +161,23 @@ const EnterprisePlansPage: React.FC = () => {
             <h1 className="text-2xl font-bold text-gray-900">Kapacitetsplaner</h1>
             <ContextualHelp
               title="Kapacitetsplaner"
-              content="Hantera prenumerationsplaner och prissättning för företag. Definiera krediter per månad, priser och funktioner för varje plannivå."
+              purpose="Hantera prenumerationsplaner och prissättning för företag. Definiera krediter per månad, priser och funktioner för varje plannivå."
+              usage={[
+                "Klicka på 'Skapa plan' för att lägga till en ny kapacitetsplan",
+                "Definiera plannamn, nivå (Starter, Growth, Scale, Custom) och prissättning",
+                "Ange krediter per månad och maximalt antal användare/projekt",
+                "Aktivera eller inaktivera planer efter behov"
+              ]}
+              concepts={[
+                {
+                  term: "Krediter per månad",
+                  definition: "Antal flexibla kapacitetsenheter som ingår i planen"
+                },
+                {
+                  term: "Plannivå",
+                  definition: "Kategorisering av plan: Starter (grundläggande), Growth (tillväxt), Scale (skalning), Custom (anpassad)"
+                }
+              ]}
             />
           </div>
           <p className="text-sm text-gray-500 mt-1">Hantera prenumerationsplaner och prissättning</p>
@@ -199,7 +215,27 @@ const EnterprisePlansPage: React.FC = () => {
               <h3 className="text-lg font-semibold text-gray-900">Förstå krediter</h3>
               <ContextualHelp
                 title="Kreditmodell"
-                content="Krediter är flexibla kapacitetsenheter som kan användas över olika arbetstyper och partners. Varje kredit motsvarar en standardiserad arbetsenhet."
+                purpose="Krediter är flexibla kapacitetsenheter som kan användas över olika arbetstyper och partners. Varje kredit motsvarar en standardiserad arbetsenhet."
+                usage={[
+                  "En kredit har ett referensvärde på cirka 1 500 SEK",
+                  "Krediter förbrukas i olika takt beroende på arbetstyp och komplexitet",
+                  "Allokera krediter flexibelt över kunder, projekt och arbetstyper",
+                  "Överskridna krediter debiteras enligt överförbrukningspris"
+                ]}
+                concepts={[
+                  {
+                    term: "Kreditvärde",
+                    definition: "1 kredit ≈ 1 500 SEK (referensvärde för prissättning)"
+                  },
+                  {
+                    term: "Arbetsmultiplikatorer",
+                    definition: "Olika arbetstyper förbrukar krediter i olika takt baserat på expertis och komplexitet"
+                  },
+                  {
+                    term: "Flexibilitet",
+                    definition: "Krediter kan omfördelas dynamiskt när affärsprioriteringar ändras"
+                  }
+                ]}
               />
             </div>
             <p className="text-sm text-gray-600 mb-3">
