@@ -56,10 +56,10 @@ export default function MarketingCampaignsPage() {
     } catch (err) {
       const errorId = logAdminError(err as Error, {
         context: 'MarketingCampaignsPage.loadData',
-        action: 'Laddar kampanjer och kunder'
+        action: 'Loading campaigns and customers'
       });
       console.error(`[${errorId}] Error loading data:`, err);
-      setError('Kunde inte ladda kampanjer. Försök igen.');
+      setError('Failed to load campaigns. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -86,7 +86,7 @@ export default function MarketingCampaignsPage() {
       setError(null);
       const budgetValue = parseFloat(formData.budget_allocated);
       if (isNaN(budgetValue) || budgetValue < 0) {
-        setError('Ange ett giltigt budgetbelopp.');
+        setError('Please enter a valid budget amount.');
         return;
       }
 
@@ -102,7 +102,7 @@ export default function MarketingCampaignsPage() {
       });
       setShowCreateModal(false);
       resetForm();
-      setSuccess('Marknadsföringskampanj skapad!');
+      setSuccess('Marketing campaign created successfully!');
       await loadData();
     } catch (err) {
       const errorId = logAdminError(err as Error, {
@@ -110,7 +110,7 @@ export default function MarketingCampaignsPage() {
         action: 'Creating marketing campaign'
       });
       console.error(`[${errorId}] Error creating campaign:`, err);
-      setError('Kunde inte skapa kampanj. Försök igen.');
+      setError('Failed to create campaign. Please try again.');
     }
   };
 
@@ -122,7 +122,7 @@ export default function MarketingCampaignsPage() {
       setError(null);
       const budgetValue = parseFloat(formData.budget_allocated);
       if (isNaN(budgetValue) || budgetValue < 0) {
-        setError('Ange ett giltigt budgetbelopp.');
+        setError('Please enter a valid budget amount.');
         return;
       }
 
@@ -132,7 +132,7 @@ export default function MarketingCampaignsPage() {
       });
       setShowCreateModal(false);
       resetForm();
-      setSuccess('Marknadsföringskampanj uppdaterad!');
+      setSuccess('Marketing campaign updated successfully!');
       await loadData();
     } catch (err) {
       const errorId = logAdminError(err as Error, {
@@ -140,19 +140,19 @@ export default function MarketingCampaignsPage() {
         action: 'Updating marketing campaign'
       });
       console.error(`[${errorId}] Error updating campaign:`, err);
-      setError('Kunde inte uppdatera kampanj. Försök igen.');
+      setError('Failed to update campaign. Please try again.');
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Är du säker på att du vill radera denna kampanj? Åtgärden kan inte ångras.')) {
+    if (!confirm('Are you sure you want to delete this campaign? This action cannot be undone.')) {
       return;
     }
 
     try {
       setError(null);
       await enterpriseAPI.deleteMarketingCampaign(id);
-      setSuccess('Marknadsföringskampanj raderad!');
+      setSuccess('Marketing campaign deleted successfully!');
       await loadData();
     } catch (err) {
       const errorId = logAdminError(err as Error, {
@@ -160,7 +160,7 @@ export default function MarketingCampaignsPage() {
         action: 'Deleting marketing campaign'
       });
       console.error(`[${errorId}] Error deleting campaign:`, err);
-      setError('Kunde inte radera kampanj. Försök igen.');
+      setError('Failed to delete campaign. Please try again.');
     }
   };
 
@@ -196,7 +196,7 @@ export default function MarketingCampaignsPage() {
       <div className="flex items-center justify-center h-screen">
         <div className="flex items-center gap-3">
           <RefreshCw className="h-5 w-5 text-primary-600 animate-spin" />
-          <span className="text-gray-600">Laddar kampanjer...</span>
+          <span className="text-gray-600">Loading campaigns...</span>
         </div>
       </div>
     );
@@ -219,7 +219,7 @@ export default function MarketingCampaignsPage() {
         <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
           <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
           <div className="flex-1">
-            <p className="text-red-800 font-medium">Fel</p>
+            <p className="text-red-800 font-medium">Error</p>
             <p className="text-red-700 text-sm mt-1">{error}</p>
           </div>
         </div>
@@ -229,17 +229,17 @@ export default function MarketingCampaignsPage() {
         <div className="p-4 bg-green-50 border border-green-200 rounded-lg flex items-start gap-3">
           <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
           <div className="flex-1">
-            <p className="text-green-800 font-medium">Klart</p>
+            <p className="text-green-800 font-medium">Success</p>
             <p className="text-green-700 text-sm mt-1">{success}</p>
           </div>
         </div>
       )}
 
       <PageHeader
-        title={t('marketing.campaigns.title', 'Marknadsföringskampanjer')}
-        description={t('marketing.campaigns.subtitle', 'Planera, genomför och följ upp marknadsföringskampanjer')}
+        title={t('marketing.campaigns.title', 'Marketing Campaigns')}
+        description={t('marketing.campaigns.subtitle', 'Plan, execute, and track marketing campaign performance')}
         action={{
-          label: 'Skapa Kampanj',
+          label: 'Create Campaign',
           onClick: () => {
             resetForm();
             setShowCreateModal(true);
@@ -251,21 +251,21 @@ export default function MarketingCampaignsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card className="p-6">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-sm text-gray-600">Totalt Kampanjer</p>
+            <p className="text-sm text-gray-600">Total Campaigns</p>
             <Target className="h-5 w-5 text-gray-400" />
           </div>
           <p className="text-3xl font-bold">{stats.total}</p>
         </Card>
         <Card className="p-6">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-sm text-gray-600">Aktiva</p>
+            <p className="text-sm text-gray-600">Active</p>
             <TrendingUp className="h-5 w-5 text-green-500" />
           </div>
           <p className="text-3xl font-bold text-green-600">{stats.active}</p>
         </Card>
         <Card className="p-6">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-sm text-gray-600">Totalt Leads</p>
+            <p className="text-sm text-gray-600">Total Leads</p>
             <Users className="h-5 w-5 text-blue-500" />
           </div>
           <p className="text-3xl font-bold text-blue-600">{stats.totalLeads}</p>
@@ -283,13 +283,13 @@ export default function MarketingCampaignsPage() {
 
       <Card className="p-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-          <h2 className="text-xl font-semibold">Alla Kampanjer</h2>
+          <h2 className="text-xl font-semibold">All Campaigns</h2>
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <div className="relative flex-1 sm:flex-initial">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <input
                 type="text"
-                placeholder="Sök kampanjer..."
+                placeholder="Search campaigns..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full sm:w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
@@ -300,12 +300,12 @@ export default function MarketingCampaignsPage() {
               onChange={(e) => setStatusFilter(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             >
-              <option value="all">Alla Status</option>
-              <option value="planning">Planering</option>
-              <option value="active">Aktiv</option>
-              <option value="completed">Slutförd</option>
-              <option value="paused">Pausad</option>
-              <option value="cancelled">Avbruten</option>
+              <option value="all">All Status</option>
+              <option value="planning">Planning</option>
+              <option value="active">Active</option>
+              <option value="completed">Completed</option>
+              <option value="paused">Paused</option>
+              <option value="cancelled">Cancelled</option>
             </select>
           </div>
         </div>
@@ -314,12 +314,12 @@ export default function MarketingCampaignsPage() {
           <div className="text-center py-12">
             <Target className="w-12 h-12 text-gray-400 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              {searchQuery || statusFilter !== 'all' ? 'Inga kampanjer hittades' : 'Inga kampanjer ännu'}
+              {searchQuery || statusFilter !== 'all' ? 'No campaigns found' : 'No campaigns yet'}
             </h3>
             <p className="text-gray-500 mb-4">
               {searchQuery || statusFilter !== 'all'
-                ? 'Prova att justera din sökning eller filter.'
-                : 'Skapa din första marknadsföringskampanj för att börja följa prestanda.'}
+                ? 'Try adjusting your search or filters.'
+                : 'Create your first marketing campaign to start tracking performance.'}
             </p>
             {!searchQuery && statusFilter === 'all' && (
               <button
@@ -329,7 +329,7 @@ export default function MarketingCampaignsPage() {
                 }}
                 className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
               >
-                Skapa Första Kampanj
+                Create First Campaign
               </button>
             )}
           </div>
@@ -352,7 +352,7 @@ export default function MarketingCampaignsPage() {
                       </span>
                     </div>
                     <p className="text-sm text-gray-600 mb-2">
-                      {(campaign as any).customer?.company_name || 'Okänd Kund'}
+                      {(campaign as any).customer?.company_name || 'Unknown Customer'}
                     </p>
                     {campaign.objective && (
                       <p className="text-sm text-gray-700 mb-3">{campaign.objective}</p>
@@ -363,11 +363,11 @@ export default function MarketingCampaignsPage() {
                         <p className="font-semibold">{campaign.budget_allocated.toLocaleString()} SEK</p>
                       </div>
                       <div>
-                        <p className="text-gray-600">Förbrukat</p>
+                        <p className="text-gray-600">Spent</p>
                         <p className="font-semibold">{campaign.budget_spent.toLocaleString()} SEK</p>
                       </div>
                       <div>
-                        <p className="text-gray-600">Genererade Leads</p>
+                        <p className="text-gray-600">Leads Generated</p>
                         <p className="font-semibold">{campaign.leads_generated}</p>
                       </div>
                       <div>
@@ -380,14 +380,14 @@ export default function MarketingCampaignsPage() {
                     <button
                       onClick={() => handleEdit(campaign)}
                       className="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
-                      title="Redigera kampanj"
+                      title="Edit campaign"
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => handleDelete(campaign.id)}
                       className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                      title="Radera kampanj"
+                      title="Delete campaign"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -406,18 +406,18 @@ export default function MarketingCampaignsPage() {
             setShowCreateModal(false);
             resetForm();
           }}
-          title={selectedCampaign ? 'Redigera Kampanj' : 'Skapa Kampanj'}
+          title={selectedCampaign ? 'Edit Campaign' : 'Create Campaign'}
         >
           <form onSubmit={selectedCampaign ? handleUpdate : handleCreate} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Kund *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Customer *</label>
               <select
                 required
                 value={formData.customer_id}
                 onChange={(e) => setFormData({ ...formData, customer_id: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               >
-                <option value="">Välj Kund...</option>
+                <option value="">Select Customer...</option>
                 {customers.map((c) => (
                   <option key={c.id} value={c.id}>{c.company_name}</option>
                 ))}
@@ -425,42 +425,42 @@ export default function MarketingCampaignsPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Kampanjnamn *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Campaign Name *</label>
               <input
                 type="text"
                 required
                 value={formData.campaign_name}
                 onChange={(e) => setFormData({ ...formData, campaign_name: e.target.value })}
-                placeholder="t.ex. Q1 2024 Varumärkeskännedomskampanj"
+                placeholder="e.g., Q1 2024 Brand Awareness Campaign"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Mål</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Objective</label>
               <textarea
                 value={formData.objective}
                 onChange={(e) => setFormData({ ...formData, objective: e.target.value })}
                 rows={2}
-                placeholder="Kampanjmål..."
+                placeholder="Campaign objective..."
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Målgrupp</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Target Audience</label>
               <input
                 type="text"
                 value={formData.target_audience}
                 onChange={(e) => setFormData({ ...formData, target_audience: e.target.value })}
-                placeholder="t.ex. VD:ar i teknikföretag"
+                placeholder="e.g., CEOs in tech companies"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Startdatum *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Start Date *</label>
                 <input
                   type="date"
                   required
@@ -471,7 +471,7 @@ export default function MarketingCampaignsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Slutdatum</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
                 <input
                   type="date"
                   value={formData.end_date}
@@ -502,11 +502,11 @@ export default function MarketingCampaignsPage() {
                 onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               >
-                <option value="planning">Planering</option>
-                <option value="active">Aktiv</option>
-                <option value="completed">Slutförd</option>
-                <option value="paused">Pausad</option>
-                <option value="cancelled">Avbruten</option>
+                <option value="planning">Planning</option>
+                <option value="active">Active</option>
+                <option value="completed">Completed</option>
+                <option value="paused">Paused</option>
+                <option value="cancelled">Cancelled</option>
               </select>
             </div>
 
@@ -519,10 +519,10 @@ export default function MarketingCampaignsPage() {
                 }}
                 className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
               >
-                Avbryt
+                Cancel
               </button>
               <button type="submit" className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700">
-                {selectedCampaign ? 'Uppdatera Kampanj' : 'Skapa Kampanj'}
+                {selectedCampaign ? 'Update Campaign' : 'Create Campaign'}
               </button>
             </div>
           </form>

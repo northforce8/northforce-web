@@ -36,10 +36,10 @@ export default function BSCPage() {
     } catch (err) {
       const errorId = logAdminError(err as Error, {
         context: 'BSCPage.loadData',
-        action: 'Laddar Balanced Scorecards'
+        action: 'Loading Balanced Scorecards'
       });
       console.error(`[${errorId}] Error loading data:`, err);
-      setError('Kunde inte ladda data. Vänligen försök igen.');
+      setError('Failed to load data. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -70,12 +70,12 @@ export default function BSCPage() {
         action: selectedScorecard ? 'Updating Balanced Scorecard' : 'Creating Balanced Scorecard'
       });
       console.error(`[${errorId}] Error saving scorecard:`, err);
-      setError('Kunde inte spara styrkort. Vänligen försök igen.');
+      setError('Failed to save scorecard. Please try again.');
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Är du säker på att du vill radera detta balanserade styrkort? Detta kan inte ångras.')) {
+    if (!confirm('Are you sure you want to delete this Balanced Scorecard? This action cannot be undone.')) {
       return;
     }
 
@@ -93,15 +93,15 @@ export default function BSCPage() {
         action: 'Deleting Balanced Scorecard'
       });
       console.error(`[${errorId}] Error deleting scorecard:`, err);
-      setError('Kunde inte radera styrkort. Vänligen försök igen.');
+      setError('Failed to delete scorecard. Please try again.');
     }
   };
 
   const perspectives = [
-    { name: 'Finansiellt', color: 'bg-blue-100 text-blue-700' },
-    { name: 'Kund', color: 'bg-green-100 text-green-700' },
-    { name: 'Interna processer', color: 'bg-purple-100 text-purple-700' },
-    { name: 'Lärande & tillväxt', color: 'bg-orange-100 text-orange-700' }
+    { name: 'Financial', color: 'bg-blue-100 text-blue-700' },
+    { name: 'Customer', color: 'bg-green-100 text-green-700' },
+    { name: 'Internal Processes', color: 'bg-purple-100 text-purple-700' },
+    { name: 'Learning & Growth', color: 'bg-orange-100 text-orange-700' }
   ];
 
   const filteredScorecards = scorecards.filter(scorecard => {
@@ -118,7 +118,7 @@ export default function BSCPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-500">Laddar balanserade styrkort...</div>
+        <div className="text-gray-500">Loading Balanced Scorecards...</div>
       </div>
     );
   }
@@ -129,7 +129,7 @@ export default function BSCPage() {
         <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
           <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
           <div className="flex-1">
-            <p className="text-red-800 font-medium">Fel</p>
+            <p className="text-red-800 font-medium">Error</p>
             <p className="text-red-700 text-sm mt-1">{error}</p>
           </div>
         </div>
@@ -137,9 +137,9 @@ export default function BSCPage() {
 
       <PageHeader
         title="Balanced Scorecard"
-        description="Mät organisationens prestanda över finansiella, kund-, interna process- och lärandeperspektiv."
+        description="Measure organizational performance across financial, customer, internal processes, and learning perspectives."
         action={{
-          label: 'Skapa styrkort',
+          label: 'Create Scorecard',
           onClick: () => {
             setSelectedScorecard(null);
             setShowModal(true);
@@ -153,7 +153,7 @@ export default function BSCPage() {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
           <input
             type="text"
-            placeholder="Sök..."
+            placeholder="Search..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -175,23 +175,23 @@ export default function BSCPage() {
           searchQuery ? (
             <Card className="p-12 text-center">
               <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Inga resultat hittades</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Results Found</h3>
               <p className="text-gray-600 mb-4">
-                Inga objekt matchar "{searchQuery}". Prova ett annat sökord.
+                No items match "{searchQuery}". Try a different search term.
               </p>
             </Card>
           ) : (
             <Card className="p-12 text-center">
               <PieChart className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Inga balanserade styrkort än</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Balanced Scorecards Yet</h3>
               <p className="text-gray-600 mb-4">
-                Skapa ditt första styrkort för att mäta prestanda över alla viktiga perspektiv.
+                Create your first scorecard to measure performance across all key perspectives.
               </p>
               <button
                 onClick={() => setShowModal(true)}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
-                Skapa första styrkortet
+                Create First Scorecard
               </button>
             </Card>
           )
@@ -201,7 +201,7 @@ export default function BSCPage() {
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">{scorecard.title}</h3>
-                  <p className="text-sm text-gray-600 mb-2">Kund: {scorecard.customers?.name} | {scorecard.time_period}</p>
+                  <p className="text-sm text-gray-600 mb-2">Customer: {scorecard.customers?.name} | {scorecard.time_period}</p>
                   {scorecard.vision && <p className="text-sm text-gray-500">{scorecard.vision}</p>}
                 </div>
                 <div className="flex items-center gap-2">
@@ -218,14 +218,14 @@ export default function BSCPage() {
                       setShowModal(true);
                     }}
                     className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                    title="Redigera styrkort"
+                    title="Edit scorecard"
                   >
                     <Edit2 className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => handleDelete(scorecard.id)}
                     className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                    title="Radera styrkort"
+                    title="Delete scorecard"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -242,22 +242,22 @@ export default function BSCPage() {
           setShowModal(false);
           setSelectedScorecard(null);
         }}
-        title={selectedScorecard ? 'Redigera balanserat styrkort' : 'Skapa balanserat styrkort'}
+        title={selectedScorecard ? 'Edit Balanced Scorecard' : 'Create Balanced Scorecard'}
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Kund</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Customer</label>
             <select value={formData.customer_id} onChange={(e) => setFormData({ ...formData, customer_id: e.target.value })} className="w-full px-3 py-2 border rounded-lg" required>
-              <option value="">Välj kund</option>
+              <option value="">Select Customer</option>
               {customers.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Titel</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
             <input type="text" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} className="w-full px-3 py-2 border rounded-lg" required />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Tidsperiod</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Time Period</label>
             <input type="text" value={formData.time_period} onChange={(e) => setFormData({ ...formData, time_period: e.target.value })} className="w-full px-3 py-2 border rounded-lg" required />
           </div>
           <div>
@@ -265,7 +265,7 @@ export default function BSCPage() {
             <textarea value={formData.vision} onChange={(e) => setFormData({ ...formData, vision: e.target.value })} className="w-full px-3 py-2 border rounded-lg" rows={2} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Strategi</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Strategy</label>
             <textarea value={formData.strategy} onChange={(e) => setFormData({ ...formData, strategy: e.target.value })} className="w-full px-3 py-2 border rounded-lg" rows={2} />
           </div>
           <div className="flex justify-end gap-3 pt-4">
@@ -277,10 +277,10 @@ export default function BSCPage() {
               }}
               className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
             >
-              Avbryt
+              Cancel
             </button>
             <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-              {selectedScorecard ? 'Uppdatera' : 'Skapa'}
+              {selectedScorecard ? 'Update' : 'Create'}
             </button>
           </div>
         </form>

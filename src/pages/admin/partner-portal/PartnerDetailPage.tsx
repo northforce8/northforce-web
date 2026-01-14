@@ -113,7 +113,7 @@ const PartnerDetailPage: React.FC = () => {
       }
     } catch (err) {
       console.error('Error loading partner data:', err);
-      setError('Kunde inte ladda partnerdata');
+      setError('Failed to load partner data');
     } finally {
       setLoading(false);
     }
@@ -139,7 +139,7 @@ const PartnerDetailPage: React.FC = () => {
       loadData();
     } catch (err) {
       console.error('Error adding work type:', err);
-      setError('Kunde inte lägga till arbetstyp');
+      setError('Failed to add work type');
     }
   };
 
@@ -151,7 +151,7 @@ const PartnerDetailPage: React.FC = () => {
       loadData();
     } catch (err) {
       console.error('Error removing work type:', err);
-      setError('Kunde inte ta bort arbetstyp');
+      setError('Failed to remove work type');
     }
   };
 
@@ -177,7 +177,7 @@ const PartnerDetailPage: React.FC = () => {
       loadData();
     } catch (err) {
       console.error('Error adding capacity:', err);
-      setError('Kunde inte lägga till kapacitetsperiod');
+      setError('Failed to add capacity period');
     }
   };
 
@@ -205,7 +205,7 @@ const PartnerDetailPage: React.FC = () => {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Laddar partnerdetaljer...</p>
+          <p className="text-gray-600">Loading partner details...</p>
         </div>
       </div>
     );
@@ -215,12 +215,12 @@ const PartnerDetailPage: React.FC = () => {
     return (
       <div className="p-6 max-w-7xl mx-auto">
         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-          <p className="text-red-800">{error || 'Partner hittades inte'}</p>
+          <p className="text-red-800">{error || 'Partner not found'}</p>
           <button
             onClick={() => navigate('/admin/partner-portal/partners')}
             className="mt-2 text-red-600 hover:text-red-800 font-medium"
           >
-            Tillbaka till Partners
+            Back to Partners
           </button>
         </div>
       </div>
@@ -255,13 +255,13 @@ const PartnerDetailPage: React.FC = () => {
           className="flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
         >
           <Edit2 className="h-4 w-4 mr-2" />
-          Redigera Partner
+          Edit Partner
         </button>
       </div>
 
       {recommendations.length > 0 && (
         <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
-          <h2 className="text-lg font-semibold text-gray-900 mb-6">Aktiva Rekommendationer</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-6">Active Recommendations</h2>
           <div className="space-y-3">
             {recommendations.map((rec) => (
               <div key={rec.id} className={`p-4 rounded-lg border ${getSeverityColor(rec.severity)}`}>
@@ -276,7 +276,7 @@ const PartnerDetailPage: React.FC = () => {
                     </div>
                     <p className="text-sm mb-2 font-medium">{rec.description}</p>
                     {rec.suggested_action && (
-                      <p className="text-sm font-semibold">Förslag: {rec.suggested_action}</p>
+                      <p className="text-sm font-semibold">Suggested: {rec.suggested_action}</p>
                     )}
                   </div>
                   <button
@@ -294,7 +294,7 @@ const PartnerDetailPage: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-6">Kontaktinformation</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-6">Contact Information</h2>
           <div className="space-y-3">
             <div className="flex items-center text-sm">
               <Mail className="h-4 w-4 text-gray-400 mr-3" />
@@ -313,18 +313,18 @@ const PartnerDetailPage: React.FC = () => {
             <div className="flex items-center text-sm">
               <Calendar className="h-4 w-4 text-gray-400 mr-3" />
               <span className="text-gray-900 font-medium">
-                Anslöt {new Date(partner.onboarding_date || partner.created_at).toLocaleDateString()}
+                Joined {new Date(partner.onboarding_date || partner.created_at).toLocaleDateString()}
               </span>
             </div>
           </div>
         </div>
 
         <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-6">Kapacitet & Användning</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-6">Capacity & Utilization</h2>
           <div className="space-y-4">
             <div>
               <div className="flex justify-between text-sm mb-1">
-                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Nuvarande Användning</span>
+                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Current Utilization</span>
                 <span className="font-semibold text-gray-900">{safeNumber(utilizationPercentage, 0).toFixed(0)}%</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
@@ -354,10 +354,10 @@ const PartnerDetailPage: React.FC = () => {
         </div>
 
         <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-6">Kostnad & Priser</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-6">Cost & Rates</h2>
           <div className="space-y-3">
             <div>
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Nuvarande Timpris</p>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Current Hourly Rate</p>
               <p className="text-2xl font-bold text-gray-900">
                 {partner.hourly_cost_rate || partner.default_hourly_cost} SEK
               </p>
@@ -381,7 +381,7 @@ const PartnerDetailPage: React.FC = () => {
 
       {performanceMetrics && (
         <div className="bg-white rounded-lg border border-gray-200 mb-6 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-6">Prestationsmått</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-6">Performance Metrics</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center p-4 bg-blue-50 rounded-lg">
               <Clock className="h-6 w-6 text-blue-600 mx-auto mb-2" />
@@ -430,17 +430,17 @@ const PartnerDetailPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold text-gray-900">Arbetstypsuppdrag</h2>
+            <h2 className="text-lg font-semibold text-gray-900">Work Type Assignments</h2>
             <button
               onClick={() => setShowAddWorkTypeModal(true)}
               className="flex items-center px-3 py-1 text-sm bg-primary-600 text-white rounded hover:bg-primary-700"
             >
               <Plus className="h-4 w-4 mr-1" />
-              Lägg till
+              Add
             </button>
           </div>
           {workTypeAssignments.length === 0 ? (
-            <p className="text-gray-500 text-center py-8">Inga arbetstyper tilldelade</p>
+            <p className="text-gray-500 text-center py-8">No work types assigned</p>
           ) : (
             <div className="space-y-2">
               {workTypeAssignments.map((assignment) => (
@@ -524,7 +524,7 @@ const PartnerDetailPage: React.FC = () => {
       {showAddWorkTypeModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-md w-full p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Lägg till arbetstyp</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Add Work Type</h2>
             <form onSubmit={handleAddWorkType} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Work Type *</label>
@@ -580,13 +580,13 @@ const PartnerDetailPage: React.FC = () => {
                   onClick={() => setShowAddWorkTypeModal(false)}
                   className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
                 >
-                  Avbryt
+                  Cancel
                 </button>
                 <button
                   type="submit"
                   className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
                 >
-                  Lägg till arbetstyp
+                  Add Work Type
                 </button>
               </div>
             </form>
@@ -597,7 +597,7 @@ const PartnerDetailPage: React.FC = () => {
       {showAddCapacityModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-md w-full p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Lägg till kapacitetsperiod</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Add Capacity Period</h2>
             <form onSubmit={handleAddCapacity} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>

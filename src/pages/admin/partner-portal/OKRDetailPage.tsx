@@ -82,10 +82,10 @@ export default function OKRDetailPage() {
     } catch (err) {
       const errorId = logAdminError(err as Error, {
         context: 'OKRDetailPage.loadObjective',
-        action: 'Laddar OKR-detaljer'
+        action: 'Loading OKR objective detail'
       });
       console.error(`[${errorId}] Error loading objective:`, err);
-      setError(err instanceof Error ? err.message : t('admin.error.load_okr'));
+      setError(err instanceof Error ? err.message : 'Kunde inte ladda OKR-mål. Försök igen.');
     } finally {
       setLoading(false);
     }
@@ -113,7 +113,7 @@ export default function OKRDetailPage() {
   };
 
   const handleDelete = async () => {
-    if (!confirm(t('admin.confirm.delete_okr'))) {
+    if (!confirm('Are you sure you want to delete this OKR objective? This will also delete all associated key results. This action cannot be undone.')) {
       return;
     }
 
@@ -173,7 +173,7 @@ export default function OKRDetailPage() {
       <div className="max-w-7xl mx-auto p-6">
         <div className="text-center py-12 bg-yellow-50 border border-yellow-200 rounded-lg">
           <Target className="w-12 h-12 text-yellow-600 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Målet hittades inte</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">OKR-mål hittades inte</h3>
           <button
             onClick={() => navigate('/admin/partner-portal/okr')}
             className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
@@ -198,7 +198,7 @@ export default function OKRDetailPage() {
           title={objective.title}
           description={`${objective.customer_name} • ${objective.time_period}`}
           action={{
-            label: 'Redigera mål',
+            label: 'Edit Objective',
             onClick: () => setShowEditModal(true),
             icon: Edit2
           }}
@@ -227,17 +227,17 @@ export default function OKRDetailPage() {
                 <span className="font-medium">Start:</span> {objective.start_date}
               </div>
               <div>
-                <span className="font-medium">Slut:</span> {objective.end_date}
+                <span className="font-medium">End:</span> {objective.end_date}
               </div>
               <div>
-                <span className="font-medium">Framsteg:</span> {objective.progress_percentage}%
+                <span className="font-medium">Progress:</span> {objective.progress_percentage}%
               </div>
             </div>
           </div>
           <button
             onClick={handleDelete}
             className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-            title="Radera mål"
+            title="Delete objective"
           >
             <Trash2 className="w-5 h-5" />
           </button>
@@ -263,12 +263,12 @@ export default function OKRDetailPage() {
       <Modal
         isOpen={showEditModal}
         onClose={() => setShowEditModal(false)}
-        title="Redigera mål"
+        title="Edit Objective"
       >
         <form onSubmit={handleUpdate} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Måltitel
+              Objective Title
             </label>
             <input
               type="text"
@@ -281,7 +281,7 @@ export default function OKRDetailPage() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Beskrivning
+              Description
             </label>
             <textarea
               value={formData.description}
@@ -294,14 +294,14 @@ export default function OKRDetailPage() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Tidsperiod
+                Time Period
               </label>
               <input
                 type="text"
                 value={formData.time_period}
                 onChange={(e) => setFormData({ ...formData, time_period: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                placeholder="t.ex. Q1 2026"
+                placeholder="e.g., Q1 2026"
                 required
               />
             </div>
@@ -315,10 +315,10 @@ export default function OKRDetailPage() {
                 onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg"
               >
-                <option value="draft">Utkast</option>
-                <option value="active">Aktiv</option>
-                <option value="completed">Slutförd</option>
-                <option value="cancelled">Avbruten</option>
+                <option value="draft">Draft</option>
+                <option value="active">Active</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
               </select>
             </div>
           </div>
@@ -326,7 +326,7 @@ export default function OKRDetailPage() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Startdatum
+                Start Date
               </label>
               <input
                 type="date"
@@ -339,7 +339,7 @@ export default function OKRDetailPage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Slutdatum
+                End Date
               </label>
               <input
                 type="date"
@@ -357,13 +357,13 @@ export default function OKRDetailPage() {
               onClick={() => setShowEditModal(false)}
               className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
             >
-              Avbryt
+              Cancel
             </button>
             <button
               type="submit"
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
             >
-              Uppdatera mål
+              Update Objective
             </button>
           </div>
         </form>

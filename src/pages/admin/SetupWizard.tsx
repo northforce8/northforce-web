@@ -56,7 +56,7 @@ export const SetupWizard: React.FC = () => {
         });
 
         if (signInError) {
-          throw new Error(`Kunde inte skapa/logga in admin: ${signInError.message}`);
+          throw new Error(`Failed to create/login admin: ${signInError.message}`);
         }
 
         updateStep('admin', {

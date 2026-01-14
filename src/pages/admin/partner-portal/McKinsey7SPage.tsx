@@ -72,7 +72,7 @@ export default function McKinsey7SPage() {
       }
     } catch (err) {
       console.error('Error loading assessments:', err);
-      setError(err instanceof Error ? err.message : t('admin.error.load_mckinsey'));
+      setError(err instanceof Error ? err.message : 'Kunde inte ladda McKinsey 7S-analyser. Försök igen.');
     } finally {
       setLoading(false);
     }
@@ -184,13 +184,13 @@ export default function McKinsey7SPage() {
           <div className="flex items-start gap-3">
             <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-red-900 mb-2">{t('admin.label.error_loading')}</h3>
+              <h3 className="text-lg font-semibold text-red-900 mb-2">Fel vid laddning</h3>
               <p className="text-red-700 mb-4">{error}</p>
               <button
                 onClick={loadAssessments}
                 className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
               >
-                {t('admin.action.try_again')}
+                Försök igen
               </button>
             </div>
           </div>
@@ -216,16 +216,16 @@ export default function McKinsey7SPage() {
       {assessments.length === 0 ? (
         <div className="bg-white rounded-lg shadow p-12 text-center">
           <Target className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Inga analyser än</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">No Assessments Yet</h3>
           <p className="text-gray-500 mb-4">
-            Skapa din första McKinsey 7S-analys för att analysera organisatorisk anpassning
+            Create your first McKinsey 7S assessment to analyze organizational alignment
           </p>
           <button
             onClick={() => setShowCreateModal(true)}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 inline-flex items-center gap-2"
           >
             <Plus className="w-4 h-4" />
-            Skapa analys
+            Create Assessment
           </button>
         </div>
       ) : (
@@ -233,7 +233,7 @@ export default function McKinsey7SPage() {
           {assessments.length > 1 && (
             <div className="bg-white rounded-lg shadow p-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Välj analys
+                Select Assessment
               </label>
               <select
                 value={selectedAssessment?.id || ''}
@@ -261,14 +261,14 @@ export default function McKinsey7SPage() {
                       <TrendingUp className="w-6 h-6 text-blue-600" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Total anpassning</p>
+                      <p className="text-sm text-gray-500">Overall Alignment</p>
                       <p className={`text-2xl font-bold ${getScoreColor(selectedAssessment.overall_alignment_score || 0)}`}>
                         {selectedAssessment.overall_alignment_score || 0}%
                       </p>
                     </div>
                   </div>
                   <p className="text-sm text-gray-600">
-                    Genomsnittlig anpassning över alla sju element
+                    Average alignment across all seven elements
                   </p>
                 </div>
 
@@ -278,14 +278,14 @@ export default function McKinsey7SPage() {
                       <Settings className="w-6 h-6 text-purple-600" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Hårda element</p>
+                      <p className="text-sm text-gray-500">Hard Elements</p>
                       <p className={`text-2xl font-bold ${getScoreColor(selectedAssessment.hard_elements_score || 0)}`}>
                         {selectedAssessment.hard_elements_score || 0}%
                       </p>
                     </div>
                   </div>
                   <p className="text-sm text-gray-600">
-                    Strategi, Struktur, System
+                    Strategy, Structure, Systems
                   </p>
                 </div>
 
@@ -295,28 +295,28 @@ export default function McKinsey7SPage() {
                       <Heart className="w-6 h-6 text-pink-600" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Mjuka element</p>
+                      <p className="text-sm text-gray-500">Soft Elements</p>
                       <p className={`text-2xl font-bold ${getScoreColor(selectedAssessment.soft_elements_score || 0)}`}>
                         {selectedAssessment.soft_elements_score || 0}%
                       </p>
                     </div>
                   </div>
                   <p className="text-sm text-gray-600">
-                    Delade värderingar, Kompetenser, Stil, Personal
+                    Shared Values, Skills, Style, Staff
                   </p>
                 </div>
               </div>
 
               <div className="bg-white rounded-lg shadow p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-lg font-semibold text-gray-900">De 7 S-elementen</h2>
+                  <h2 className="text-lg font-semibold text-gray-900">The 7S Elements</h2>
                   <button
                     onClick={handleGenerateInsights}
                     disabled={generatingInsights || elements.length === 0}
                     className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 flex items-center gap-2"
                   >
                     <Lightbulb className="w-4 h-4" />
-                    {generatingInsights ? 'Genererar...' : 'Generera AI-insikter'}
+                    {generatingInsights ? 'Generating...' : 'Generate AI Insights'}
                   </button>
                 </div>
 
@@ -342,7 +342,7 @@ export default function McKinsey7SPage() {
 
                         <div className="mb-3">
                           <div className="flex items-center justify-between text-sm mb-1">
-                            <span className="text-gray-500">Anpassning</span>
+                            <span className="text-gray-500">Alignment</span>
                             <span className={`font-semibold ${getScoreColor(element.alignment_score || 0)}`}>
                               {element.alignment_score || 0}%
                             </span>
@@ -364,7 +364,7 @@ export default function McKinsey7SPage() {
                         </div>
 
                         <p className="text-xs text-gray-600 line-clamp-2">
-                          {element.current_state || 'Ingen beskrivning än'}
+                          {element.current_state || 'No description yet'}
                         </p>
 
                         {element.improvement_priority !== 'low' && (
@@ -373,7 +373,7 @@ export default function McKinsey7SPage() {
                               element.improvement_priority === 'critical' ? 'text-red-600' : 'text-orange-600'
                             }`}>
                               <AlertTriangle className="w-3 h-3" />
-                              {element.improvement_priority === 'critical' ? 'Kritisk' : element.improvement_priority === 'high' ? 'Hög' : element.improvement_priority === 'medium' ? 'Medel' : 'Låg'} prioritet
+                              {element.improvement_priority} priority
                             </span>
                           </div>
                         )}
@@ -390,18 +390,18 @@ export default function McKinsey7SPage() {
       {showCreateModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg max-w-md w-full p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Skapa McKinsey 7S-analys</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Create McKinsey 7S Assessment</h2>
             <form onSubmit={handleCreateAssessment} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Kund
+                  Customer
                 </label>
                 <select
                   name="customer_id"
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
-                  <option value="">Välj kund</option>
+                  <option value="">Select Customer</option>
                   {customers.map((customer) => (
                     <option key={customer.id} value={customer.id}>
                       {customer.company_name}
@@ -412,26 +412,26 @@ export default function McKinsey7SPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Analystitel
+                  Assessment Title
                 </label>
                 <input
                   type="text"
                   name="title"
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Q1 2024 Organisationsanalys"
+                  placeholder="Q1 2024 Organizational Assessment"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Beskrivning
+                  Description
                 </label>
                 <textarea
                   name="description"
                   rows={3}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Omfattande bedömning av organisatorisk anpassning..."
+                  placeholder="Comprehensive assessment of organizational alignment..."
                 />
               </div>
 
@@ -441,13 +441,13 @@ export default function McKinsey7SPage() {
                   onClick={() => setShowCreateModal(false)}
                   className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
                 >
-                  Avbryt
+                  Cancel
                 </button>
                 <button
                   type="submit"
                   className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                 >
-                  Skapa analys
+                  Create Assessment
                 </button>
               </div>
             </form>

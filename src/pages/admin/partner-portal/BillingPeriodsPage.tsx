@@ -63,7 +63,7 @@ const BillingPeriodsPage: React.FC = () => {
       setPeriods(data || []);
     } catch (err) {
       console.error('Error loading billing periods:', err);
-      setError(err instanceof Error ? err.message : t('admin.error.load_billing_periods'));
+      setError(err instanceof Error ? err.message : 'Kunde inte ladda faktureringsperioder. Försök igen.');
     } finally {
       setLoading(false);
     }
@@ -110,13 +110,13 @@ const BillingPeriodsPage: React.FC = () => {
           <div className="flex items-start gap-3">
             <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-red-900 mb-2">{t('admin.label.error_loading')}</h3>
+              <h3 className="text-lg font-semibold text-red-900 mb-2">Fel vid laddning</h3>
               <p className="text-red-700 mb-4">{error}</p>
               <button
                 onClick={loadBillingPeriods}
                 className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
               >
-                {t('admin.action.try_again')}
+                Försök igen
               </button>
             </div>
           </div>
@@ -128,10 +128,10 @@ const BillingPeriodsPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto p-6">
       <PageHeader
-        title="Faktureringsperioder"
-        description="Hantera faktureringscykler och intäktsspårning"
+        title="Billing Periods"
+        description="Manage billing cycles and revenue tracking"
         action={{
-          label: 'Ny period',
+          label: 'New Period',
           onClick: () => {},
           icon: Plus
         }}
@@ -140,36 +140,36 @@ const BillingPeriodsPage: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Total intäkt</h3>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Total Revenue</h3>
             <DollarSign className="h-5 w-5 text-green-500" />
           </div>
           <p className="text-3xl font-bold text-gray-900">
             <CurrencyDisplay amount={totalRevenue} currencyCode="SEK" />
           </p>
-          <p className="text-xs text-gray-500 mt-1 font-medium">Från betalda perioder</p>
+          <p className="text-xs text-gray-500 mt-1 font-medium">From paid periods</p>
         </div>
 
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Total marginal</h3>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Total Margin</h3>
             <TrendingUp className="h-5 w-5 text-blue-500" />
           </div>
           <p className="text-3xl font-bold text-gray-900">
             <CurrencyDisplay amount={totalMargin} currencyCode="SEK" />
           </p>
           <p className="text-xs text-gray-500 mt-1 font-medium">
-            Snitt {avgMarginPercentage.toFixed(1)}% marginal
+            Avg {avgMarginPercentage.toFixed(1)}% margin
           </p>
         </div>
 
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Aktiva perioder</h3>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Active Periods</h3>
             <Calendar className="h-5 w-5 text-purple-500" />
           </div>
           <p className="text-3xl font-bold text-gray-900">{periods.length}</p>
           <p className="text-xs text-gray-500 mt-1 font-medium">
-            {periods.filter(p => p.status === 'approved').length} godkända
+            {periods.filter(p => p.status === 'approved').length} approved
           </p>
         </div>
       </div>
@@ -177,18 +177,18 @@ const BillingPeriodsPage: React.FC = () => {
       <div className="bg-white rounded-lg border border-gray-200">
         <div className="p-4 border-b border-gray-200">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900">Faktureringsperioder</h2>
+            <h2 className="text-lg font-semibold text-gray-900">Billing Periods</h2>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
             >
-              <option value="all">Alla statusar</option>
-              <option value="draft">Utkast</option>
-              <option value="approved">Godkänd</option>
-              <option value="invoiced">Fakturerad</option>
-              <option value="paid">Betald</option>
-              <option value="cancelled">Avbruten</option>
+              <option value="all">All Status</option>
+              <option value="draft">Draft</option>
+              <option value="approved">Approved</option>
+              <option value="invoiced">Invoiced</option>
+              <option value="paid">Paid</option>
+              <option value="cancelled">Cancelled</option>
             </select>
           </div>
         </div>
@@ -198,25 +198,25 @@ const BillingPeriodsPage: React.FC = () => {
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Kund
+                  Customer
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   Period
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Krediter
+                  Credits
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Intäkt
+                  Revenue
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Marginal
+                  Margin
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   Status
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Faktura
+                  Invoice
                 </th>
               </tr>
             </thead>
@@ -239,7 +239,7 @@ const BillingPeriodsPage: React.FC = () => {
                       {Number(period.credits_consumed).toFixed(1)} / {Number(period.credits_allocated).toFixed(1)}
                     </div>
                     <div className="text-xs text-gray-500">
-                      {Number(period.credits_remaining).toFixed(1)} återstående
+                      {Number(period.credits_remaining).toFixed(1)} remaining
                     </div>
                   </td>
                   <td className="px-6 py-4">
@@ -250,7 +250,7 @@ const BillingPeriodsPage: React.FC = () => {
                       />
                     </div>
                     <div className="text-xs text-gray-500">
-                      Kostnad: <CurrencyDisplay
+                      Cost: <CurrencyDisplay
                         amount={Number(period.internal_cost_sek)}
                         currencyCode={period.customer.currency_code}
                       />
@@ -276,7 +276,7 @@ const BillingPeriodsPage: React.FC = () => {
                     {period.invoice_number ? (
                       <div className="text-sm text-primary-600">{period.invoice_number}</div>
                     ) : (
-                      <span className="text-xs text-gray-400">Ej fakturerad</span>
+                      <span className="text-xs text-gray-400">Not invoiced</span>
                     )}
                   </td>
                 </tr>
@@ -288,7 +288,7 @@ const BillingPeriodsPage: React.FC = () => {
         {periods.length === 0 && (
           <div className="text-center py-12">
             <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-            <p className="text-gray-500">Inga faktureringsperioder hittades</p>
+            <p className="text-gray-500">No billing periods found</p>
           </div>
         )}
       </div>

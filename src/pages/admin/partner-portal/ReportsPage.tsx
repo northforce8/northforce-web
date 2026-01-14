@@ -202,8 +202,8 @@ const ReportsPage: React.FC = () => {
     <div>
       <div className="p-6 max-w-7xl mx-auto">
         <PageHeader
-          title="Rapporter & Analys"
-          description="Omfattande affärsintelligens och dataexport"
+          title="Reports & Analytics"
+          description="Comprehensive business intelligence and data exports"
         />
 
         {/* AI Intelligence - Top Actionable Insights */}
@@ -214,7 +214,7 @@ const ReportsPage: React.FC = () => {
         <Card className="mb-6 p-6">
           <div className="flex items-center gap-2 mb-4">
             <Filter className="w-5 h-5 text-gray-600" />
-            <h2 className="text-lg font-semibold text-gray-900">Filter</h2>
+            <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
@@ -224,19 +224,19 @@ const ReportsPage: React.FC = () => {
                 onChange={(e) => setSelectedPeriod(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
               >
-                <option value="week">Denna vecka</option>
-                <option value="month">Denna månad</option>
-                <option value="quarter">Detta kvartal</option>
+                <option value="week">This Week</option>
+                <option value="month">This Month</option>
+                <option value="quarter">This Quarter</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Kund</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Customer</label>
               <select
                 value={selectedCustomer}
                 onChange={(e) => setSelectedCustomer(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
               >
-                <option value="all">Alla kunder</option>
+                <option value="all">All Customers</option>
                 {customers.map(c => (
                   <option key={c.id} value={c.id}>{c.company_name}</option>
                 ))}
@@ -249,7 +249,7 @@ const ReportsPage: React.FC = () => {
                 onChange={(e) => setSelectedPartner(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
               >
-                <option value="all">Alla partners</option>
+                <option value="all">All Partners</option>
                 {partners.map(p => (
                   <option key={p.id} value={p.id}>{p.partner_name}</option>
                 ))}
@@ -261,7 +261,7 @@ const ReportsPage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-green-800">Total intäkt</span>
+              <span className="text-sm font-medium text-green-800">Total Revenue</span>
               <DollarSign className="w-5 h-5 text-green-600" />
             </div>
             <div className="text-3xl font-bold text-green-900">{(safeNumber(totalRevenue, 0) / 1000).toFixed(0)}k</div>
@@ -270,48 +270,48 @@ const ReportsPage: React.FC = () => {
 
           <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-blue-800">Total marginal</span>
+              <span className="text-sm font-medium text-blue-800">Total Margin</span>
               <PieChart className="w-5 h-5 text-blue-600" />
             </div>
             <div className="text-3xl font-bold text-blue-900">{(safeNumber(totalMargin, 0) / 1000).toFixed(0)}k</div>
-            <div className="text-xs text-blue-700 mt-1">{safeNumber(avgMarginPercentage, 0).toFixed(1)}% medel</div>
+            <div className="text-xs text-blue-700 mt-1">{safeNumber(avgMarginPercentage, 0).toFixed(1)}% avg</div>
           </div>
 
           <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-lg p-4">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-amber-800">Totalt antal timmar</span>
+              <span className="text-sm font-medium text-amber-800">Total Hours</span>
               <Calendar className="w-5 h-5 text-amber-600" />
             </div>
             <div className="text-3xl font-bold text-amber-900">{safeNumber(totalHours, 0).toFixed(0)}</div>
-            <div className="text-xs text-amber-700 mt-1">levererade</div>
+            <div className="text-xs text-amber-700 mt-1">delivered</div>
           </div>
 
           <div className="bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-lg p-4">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-cyan-800">Aktiva partners</span>
+              <span className="text-sm font-medium text-cyan-800">Active Partners</span>
               <Users className="w-5 h-5 text-cyan-600" />
             </div>
             <div className="text-3xl font-bold text-cyan-900">{partnerPerformance.length}</div>
-            <div className="text-xs text-cyan-700 mt-1">under period</div>
+            <div className="text-xs text-cyan-700 mt-1">in period</div>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <div className="bg-white border border-gray-200 rounded-lg p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-900">Marginalanalys</h2>
+              <h2 className="text-xl font-bold text-gray-900">Margin Analysis</h2>
               <button
                 onClick={exportMarginReport}
                 className="flex items-center text-sm text-primary-600 hover:text-primary-700 font-medium"
               >
                 <Download className="w-4 h-4 mr-1" />
-                Exportera
+                Export
               </button>
             </div>
             {marginReports.length === 0 ? (
               <div className="text-center py-8">
                 <PieChart className="w-12 h-12 text-gray-300 mx-auto mb-2" />
-                <p className="text-gray-500 text-sm">Ingen marginaldata för valda filter</p>
+                <p className="text-gray-500 text-sm">No margin data for selected filters</p>
               </div>
             ) : (
               <div className="space-y-3">
@@ -337,15 +337,15 @@ const ReportsPage: React.FC = () => {
                       </div>
                       <div className="grid grid-cols-3 gap-2 text-sm">
                         <div>
-                          <p className="text-gray-500">Intäkt</p>
+                          <p className="text-gray-500">Revenue</p>
                           <p className="font-semibold text-gray-900">{(safeNumber(Number(report.revenue_sek), 0) / 1000).toFixed(0)}k</p>
                         </div>
                         <div>
-                          <p className="text-gray-500">Kostnad</p>
+                          <p className="text-gray-500">Cost</p>
                           <p className="font-semibold text-gray-900">{(safeNumber(Number(report.internal_cost_sek), 0) / 1000).toFixed(0)}k</p>
                         </div>
                         <div>
-                          <p className="text-gray-500">Marginal</p>
+                          <p className="text-gray-500">Margin</p>
                           <p className="font-semibold text-green-600">{(safeNumber(Number(report.margin_sek), 0) / 1000).toFixed(0)}k</p>
                         </div>
                       </div>
@@ -358,19 +358,19 @@ const ReportsPage: React.FC = () => {
 
           <div className="bg-white border border-gray-200 rounded-lg p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-900">Partnerprestanda</h2>
+              <h2 className="text-xl font-bold text-gray-900">Partner Performance</h2>
               <button
                 onClick={exportPartnerPerformance}
                 className="flex items-center text-sm text-primary-600 hover:text-primary-700 font-medium"
               >
                 <Download className="w-4 h-4 mr-1" />
-                Exportera
+                Export
               </button>
             </div>
             {partnerPerformance.length === 0 ? (
               <div className="text-center py-8">
                 <Users className="w-12 h-12 text-gray-300 mx-auto mb-2" />
-                <p className="text-gray-500 text-sm">Ingen prestanda för valda filter</p>
+                <p className="text-gray-500 text-sm">No performance data for selected filters</p>
               </div>
             ) : (
               <div className="space-y-3">
@@ -397,15 +397,15 @@ const ReportsPage: React.FC = () => {
                       </div>
                       <div className="grid grid-cols-3 gap-2 text-sm">
                         <div>
-                          <p className="text-gray-500">Timmar</p>
+                          <p className="text-gray-500">Hours</p>
                           <p className="font-semibold text-gray-900">{safeNumber(Number(perf.total_hours), 0).toFixed(0)}</p>
                         </div>
                         <div>
-                          <p className="text-gray-500">Krediter</p>
+                          <p className="text-gray-500">Credits</p>
                           <p className="font-semibold text-primary-600">{safeNumber(Number(perf.credits_generated), 0).toFixed(0)}</p>
                         </div>
                         <div>
-                          <p className="text-gray-500">Kunder</p>
+                          <p className="text-gray-500">Customers</p>
                           <p className="font-semibold text-gray-900">{perf.customer_count}</p>
                         </div>
                       </div>
@@ -418,23 +418,23 @@ const ReportsPage: React.FC = () => {
         </div>
 
         <div className="bg-white border border-gray-200 rounded-lg p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Kundlönsamhet</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-6">Customer Profitability</h2>
           {marginReports.length === 0 ? (
             <div className="text-center py-8">
               <BarChart3 className="w-12 h-12 text-gray-300 mx-auto mb-2" />
-              <p className="text-gray-500 text-sm">Ingen lönsamhetsdata tillgänglig</p>
+              <p className="text-gray-500 text-sm">No profitability data available</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-gray-200">
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Kund</th>
-                    <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">Intäkt</th>
-                    <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">Kostnad</th>
-                    <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">Marginal</th>
-                    <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">Marginal %</th>
-                    <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">Timmar</th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Customer</th>
+                    <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">Revenue</th>
+                    <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">Cost</th>
+                    <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">Margin</th>
+                    <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">Margin %</th>
+                    <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">Hours</th>
                   </tr>
                 </thead>
                 <tbody>

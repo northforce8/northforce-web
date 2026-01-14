@@ -73,11 +73,11 @@ const CookieBanner = () => {
           <div className="flex-1">
             <div className="flex items-center space-x-3 mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-primary-600"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/><path d="M8.5 8.5v.01"/><path d="M16.5 15.5v.01"/><path d="M10 16c.8.8 2 1.5 3.5 1.5 1.7 0 3-1 4-2.5"/><path d="M7 14c1.5 1 3 2 4.5 2 1.8 0 3.4-1 4.5-2.5"/></svg>
-              <h3 className="font-heading text-xl font-bold text-gray-900">Cookie-inställningar</h3>
+              <h3 className="font-heading text-xl font-bold text-gray-900">Cookie Preferences</h3>
             </div>
             <p className="text-gray-700 text-sm leading-relaxed">
-              Vi använder cookies för att förbättra din upplevelse, analysera webbplatsanvändning och hjälpa till med marknadsföringsinsatser.
-              Du kan anpassa dina preferenser eller acceptera alla cookies.
+              We use cookies to enhance your experience, analyze site usage, and assist in marketing efforts. 
+              You can customize your preferences or accept all cookies.
             </p>
           </div>
           
@@ -86,19 +86,19 @@ const CookieBanner = () => {
               onClick={rejectAll}
               className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
             >
-              Avvisa alla
+              Reject All
             </button>
             <button
               onClick={acceptSelected}
               className="px-6 py-3 bg-gray-100 text-gray-900 rounded-lg hover:bg-gray-200 transition-colors font-medium"
             >
-              Acceptera valda
+              Accept Selected
             </button>
             <button
               onClick={acceptAll}
               className="px-6 py-3 bg-gradient-to-r from-primary-600 to-accent-cyan text-white rounded-lg hover:shadow-glow transition-all duration-300 font-bold"
             >
-              Acceptera alla
+              Accept All
             </button>
           </div>
         </div>
@@ -113,8 +113,8 @@ const CookieBanner = () => {
               className="rounded border-gray-300"
             />
             <div>
-              <span className="font-semibold text-gray-900">Nödvändiga</span>
-              <p className="text-gray-600">Krävs för grundläggande webbplatsfunktionalitet</p>
+              <span className="font-semibold text-gray-900">Necessary</span>
+              <p className="text-gray-600">Required for basic site functionality</p>
             </div>
           </div>
           
@@ -126,8 +126,8 @@ const CookieBanner = () => {
               className="rounded border-gray-300 text-primary-600 focus:ring-primary-600"
             />
             <div>
-              <span className="font-semibold text-gray-900">Analys</span>
-              <p className="text-gray-600">Hjälp oss förbättra vår webbplats</p>
+              <span className="font-semibold text-gray-900">Analytics</span>
+              <p className="text-gray-600">Help us improve our website</p>
             </div>
           </div>
           
@@ -139,8 +139,8 @@ const CookieBanner = () => {
               className="rounded border-gray-300 text-primary-600 focus:ring-primary-600"
             />
             <div>
-              <span className="font-semibold text-gray-900">Marknadsföring</span>
-              <p className="text-gray-600">Personaliserat innehåll och annonser</p>
+              <span className="font-semibold text-gray-900">Marketing</span>
+              <p className="text-gray-600">Personalized content and ads</p>
             </div>
           </div>
         </div>

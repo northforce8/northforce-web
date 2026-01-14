@@ -144,7 +144,7 @@ export default function GrowthPlanDetailPage() {
             className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
             <Plus className="w-5 h-5" />
-            Lägg till mål
+            Add Objective
           </button>
         </PageHeader>
       </div>
@@ -155,11 +155,11 @@ export default function GrowthPlanDetailPage() {
           <p className="text-2xl font-bold capitalize">{plan.status.replace('_', ' ')}</p>
         </Card>
         <Card className="p-6">
-          <h3 className="text-sm font-medium text-gray-600 mb-2">Framsteg</h3>
+          <h3 className="text-sm font-medium text-gray-600 mb-2">Progress</h3>
           <p className="text-2xl font-bold">{plan.overall_progress}%</p>
         </Card>
         <Card className="p-6">
-          <h3 className="text-sm font-medium text-gray-600 mb-2">Mål</h3>
+          <h3 className="text-sm font-medium text-gray-600 mb-2">Objectives</h3>
           <p className="text-2xl font-bold">{plan.objectives?.length || 0}</p>
         </Card>
       </div>
@@ -179,7 +179,7 @@ export default function GrowthPlanDetailPage() {
       )}
 
       <Card className="p-6">
-        <h2 className="text-xl font-semibold mb-4">Mål</h2>
+        <h2 className="text-xl font-semibold mb-4">Objectives</h2>
         {plan.objectives && plan.objectives.length > 0 ? (
           <div className="space-y-4">
             {plan.objectives.map((objective) => (
@@ -190,10 +190,10 @@ export default function GrowthPlanDetailPage() {
                     <p className="text-sm text-gray-600 mt-1">{objective.description}</p>
                     <div className="flex items-center gap-4 mt-3 text-sm">
                       <span className="text-gray-600">
-                        Kategori: <span className="font-medium capitalize">{objective.category.replace('_', ' ')}</span>
+                        Category: <span className="font-medium capitalize">{objective.category.replace('_', ' ')}</span>
                       </span>
                       <span className="text-gray-600">
-                        Framsteg: <span className="font-medium">{objective.progress_percentage}%</span>
+                        Progress: <span className="font-medium">{objective.progress_percentage}%</span>
                       </span>
                       <span className="text-gray-600">
                         Status: <span className="font-medium capitalize">{objective.status.replace('_', ' ')}</span>
@@ -206,7 +206,7 @@ export default function GrowthPlanDetailPage() {
           </div>
         ) : (
           <p className="text-center text-gray-500 py-8">
-            Inga mål ännu. Klicka på "Lägg till mål" för att skapa ditt första.
+            No objectives yet. Click "Add Objective" to create your first one.
           </p>
         )}
       </Card>
@@ -215,11 +215,11 @@ export default function GrowthPlanDetailPage() {
         <Modal
           isOpen={showObjectiveModal}
           onClose={() => setShowObjectiveModal(false)}
-          title="Skapa nytt mål"
+          title="Create New Objective"
         >
           <form onSubmit={handleCreateObjective} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Måltitel *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Objective Title *</label>
               <input
                 type="text"
                 required
@@ -230,7 +230,7 @@ export default function GrowthPlanDetailPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Beskrivning</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
               <textarea
                 value={objectiveData.description}
                 onChange={(e) => setObjectiveData({ ...objectiveData, description: e.target.value })}
@@ -241,24 +241,24 @@ export default function GrowthPlanDetailPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
                 <select
                   value={objectiveData.category}
                   onChange={(e) => setObjectiveData({ ...objectiveData, category: e.target.value as any })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="revenue">Intäkt</option>
-                  <option value="market_share">Marknadsandel</option>
-                  <option value="customer_acquisition">Kundanskaffning</option>
-                  <option value="operational_efficiency">Operationell effektivitet</option>
+                  <option value="revenue">Revenue</option>
+                  <option value="market_share">Market Share</option>
+                  <option value="customer_acquisition">Customer Acquisition</option>
+                  <option value="operational_efficiency">Operational Efficiency</option>
                   <option value="innovation">Innovation</option>
-                  <option value="people">Personal</option>
-                  <option value="other">Annat</option>
+                  <option value="people">People</option>
+                  <option value="other">Other</option>
                 </select>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Prioritet (1-5)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Priority (1-5)</label>
                 <input
                   type="number"
                   min="1"
@@ -276,13 +276,13 @@ export default function GrowthPlanDetailPage() {
                 onClick={() => setShowObjectiveModal(false)}
                 className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
               >
-                Avbryt
+                Cancel
               </button>
               <button
                 type="submit"
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
-                Skapa mål
+                Create Objective
               </button>
             </div>
           </form>

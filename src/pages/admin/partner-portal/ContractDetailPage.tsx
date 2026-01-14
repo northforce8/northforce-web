@@ -91,7 +91,7 @@ export default function ContractDetailPage() {
           );
         } else if (!emailResult.success) {
           console.error('Failed to send contract email:', emailResult);
-          alert('Varning: Kunde inte skicka e-post. Kontraktsstatus kommer ändå att uppdateras.');
+          alert('Warning: Failed to send email. Contract status will still be updated.');
         } else {
           alert(`Contract sent successfully to ${contract.customer.contact_email}`);
         }
@@ -102,7 +102,7 @@ export default function ContractDetailPage() {
       loadContract();
     } catch (error: any) {
       console.error('Error updating status:', error);
-      alert(`Kunde inte uppdatera status: ${error.message}`);
+      alert(`Failed to update status: ${error.message}`);
     }
   }
 
@@ -227,7 +227,7 @@ export default function ContractDetailPage() {
                 downloadPDF(pdfBlob, `contract-${contract.contract_number}.pdf`);
               } catch (error: any) {
                 console.error('Error generating PDF:', error);
-                alert(`Kunde inte generera PDF: ${error.message}`);
+                alert(`Failed to generate PDF: ${error.message}`);
               } finally {
                 setGeneratingPDF(false);
               }
@@ -485,7 +485,7 @@ function EditContractModal({ contract, onClose, onSuccess }: any) {
       onSuccess();
     } catch (error) {
       console.error('Error updating contract:', error);
-      alert('Kunde inte uppdatera kontrakt');
+      alert('Failed to update contract');
     } finally {
       setSaving(false);
     }
@@ -494,7 +494,7 @@ function EditContractModal({ contract, onClose, onSuccess }: any) {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg max-w-3xl w-full p-6 max-h-[90vh] overflow-y-auto">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">Redigera kontrakt</h2>
+        <h2 className="text-lg font-bold text-gray-900 mb-4">Edit Contract</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>

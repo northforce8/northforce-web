@@ -79,7 +79,7 @@ export default function DesignThinkingPage() {
       }
     } catch (err) {
       console.error('Error loading projects:', err);
-      setError(err instanceof Error ? err.message : t('admin.error.load_design_thinking'));
+      setError(err instanceof Error ? err.message : 'Kunde inte ladda Design Thinking-projekt. Försök igen.');
     } finally {
       setLoading(false);
     }
@@ -149,10 +149,10 @@ export default function DesignThinkingPage() {
   };
 
   const createNewProject = async () => {
-    const projectName = prompt('Ange projektnamn:');
+    const projectName = prompt('Enter project name:');
     if (!projectName) return;
 
-    const challenge = prompt('Ange problemformulering:');
+    const challenge = prompt('Enter challenge statement:');
     if (!challenge) return;
 
     try {
@@ -166,7 +166,7 @@ export default function DesignThinkingPage() {
         .single();
 
       if (!profile?.customer_id) {
-        alert('Ingen kund kopplad till användare');
+        alert('No customer associated with user');
         return;
       }
 
@@ -197,7 +197,7 @@ export default function DesignThinkingPage() {
       setSelectedProject(data);
     } catch (error) {
       console.error('Error creating project:', error);
-      alert(t('admin.error.create_project_failed'));
+      alert('Failed to create project');
     }
   };
 
@@ -251,13 +251,13 @@ export default function DesignThinkingPage() {
           <div className="flex items-start gap-3">
             <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-red-900 mb-2">{t('admin.label.error_loading')}</h3>
+              <h3 className="text-lg font-semibold text-red-900 mb-2">Fel vid laddning</h3>
               <p className="text-red-700 mb-4">{error}</p>
               <button
                 onClick={loadProjects}
                 className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
               >
-                {t('admin.action.try_again')}
+                Försök igen
               </button>
             </div>
           </div>
@@ -283,14 +283,14 @@ export default function DesignThinkingPage() {
             className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 flex items-center gap-2"
           >
             {generatingAI ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Brain className="w-4 h-4" />}
-            AI-insikter
+            AI Insights
           </button>
           <button
             onClick={createNewProject}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
           >
             <Plus className="w-4 h-4" />
-            Nytt projekt
+            New Project
           </button>
         </div>
       </div>
@@ -298,16 +298,16 @@ export default function DesignThinkingPage() {
       {projects.length === 0 ? (
         <Card className="p-12 text-center">
           <Lightbulb className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Inga Design Thinking-projekt</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">No Design Thinking Projects</h3>
           <p className="text-gray-600 mb-6">
-            Skapa ditt första projekt för att starta den människocentrerade innovationsprocessen
+            Create your first project to start the human-centered innovation process
           </p>
           <button
             onClick={createNewProject}
             className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 inline-flex items-center gap-2"
           >
             <Plus className="w-5 h-5" />
-            Skapa första projekt
+            Create First Project
           </button>
         </Card>
       ) : (
@@ -345,14 +345,14 @@ export default function DesignThinkingPage() {
                       {selectedProject.status}
                     </Badge>
                     <Badge variant="default">
-                      Fas: {selectedProject.current_phase}
+                      Phase: {selectedProject.current_phase}
                     </Badge>
                   </div>
 
                   <div className="space-y-4">
                     <div>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="text-gray-600">Total framgång</span>
+                        <span className="text-gray-600">Overall Progress</span>
                         <span className="font-medium">{selectedProject.overall_progress}%</span>
                       </div>
                       <ProgressIndicator progress={selectedProject.overall_progress} />
@@ -361,7 +361,7 @@ export default function DesignThinkingPage() {
                 </Card>
 
                 <Card className="p-6">
-                  <h3 className="text-sm font-semibold text-gray-900 mb-4">Snabbstatistik</h3>
+                  <h3 className="text-sm font-semibold text-gray-900 mb-4">Quick Stats</h3>
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
                       <span className="text-gray-600 flex items-center gap-2">
@@ -373,28 +373,28 @@ export default function DesignThinkingPage() {
                     <div className="flex justify-between items-center">
                       <span className="text-gray-600 flex items-center gap-2">
                         <Lightbulb className="w-4 h-4" />
-                        Idéer
+                        Ideas
                       </span>
                       <span className="font-semibold">{ideas.length}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-600 flex items-center gap-2">
                         <Boxes className="w-4 h-4" />
-                        Prototyper
+                        Prototypes
                       </span>
                       <span className="font-semibold">{prototypes.length}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-600 flex items-center gap-2">
                         <TestTube className="w-4 h-4" />
-                        Användartester
+                        User Tests
                       </span>
                       <span className="font-semibold">{userTests.length}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-600 flex items-center gap-2">
                         <MessageSquare className="w-4 h-4" />
-                        Insikter
+                        Insights
                       </span>
                       <span className="font-semibold">{insights.length}</span>
                     </div>
@@ -405,7 +405,7 @@ export default function DesignThinkingPage() {
               <div className="grid grid-cols-1 gap-4">
                 <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                   <Map className="w-5 h-5 text-blue-600" />
-                  Design Thinking-faser
+                  Design Thinking Phases
                 </h3>
 
                 {(['empathize', 'define', 'ideate', 'prototype', 'test'] as DTPhase[]).map((phaseName, index) => {
@@ -438,7 +438,7 @@ export default function DesignThinkingPage() {
 
                             <div className="space-y-2">
                               <div className="flex justify-between text-sm mb-1">
-                                <span className="text-gray-600">Slutförande</span>
+                                <span className="text-gray-600">Completion</span>
                                 <span className="font-medium">{completion}%</span>
                               </div>
                               <ProgressIndicator progress={completion} />
@@ -465,7 +465,7 @@ export default function DesignThinkingPage() {
                           <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
                         )}
                         {isActive && completion < 100 && (
-                          <Badge variant="default">Aktiv</Badge>
+                          <Badge variant="default">Active</Badge>
                         )}
                       </div>
 
@@ -477,13 +477,13 @@ export default function DesignThinkingPage() {
                           </div>
                           <div className="text-center">
                             <div className="text-2xl font-bold text-blue-600">{empathyMaps.length}</div>
-                            <div className="text-xs text-gray-600">Empatikartor</div>
+                            <div className="text-xs text-gray-600">Empathy Maps</div>
                           </div>
                           <div className="text-center">
                             <div className="text-2xl font-bold text-blue-600">
                               {insights.filter(i => i.phase_name === 'empathize').length}
                             </div>
-                            <div className="text-xs text-gray-600">Insikter</div>
+                            <div className="text-xs text-gray-600">Insights</div>
                           </div>
                         </div>
                       )}
@@ -492,19 +492,19 @@ export default function DesignThinkingPage() {
                         <div className="grid grid-cols-3 gap-4 mt-4 pt-4 border-t">
                           <div className="text-center">
                             <div className="text-2xl font-bold text-amber-600">{ideas.length}</div>
-                            <div className="text-xs text-gray-600">Totalt idéer</div>
+                            <div className="text-xs text-gray-600">Total Ideas</div>
                           </div>
                           <div className="text-center">
                             <div className="text-2xl font-bold text-amber-600">
                               {ideas.filter(i => i.status === 'selected').length}
                             </div>
-                            <div className="text-xs text-gray-600">Valda</div>
+                            <div className="text-xs text-gray-600">Selected</div>
                           </div>
                           <div className="text-center">
                             <div className="text-2xl font-bold text-amber-600">
                               {ideas.reduce((sum, i) => sum + i.votes, 0)}
                             </div>
-                            <div className="text-xs text-gray-600">Totalt röster</div>
+                            <div className="text-xs text-gray-600">Total Votes</div>
                           </div>
                         </div>
                       )}
@@ -513,19 +513,19 @@ export default function DesignThinkingPage() {
                         <div className="grid grid-cols-3 gap-4 mt-4 pt-4 border-t">
                           <div className="text-center">
                             <div className="text-2xl font-bold text-purple-600">{prototypes.length}</div>
-                            <div className="text-xs text-gray-600">Prototyper</div>
+                            <div className="text-xs text-gray-600">Prototypes</div>
                           </div>
                           <div className="text-center">
                             <div className="text-2xl font-bold text-purple-600">
                               {prototypes.filter(p => p.fidelity === 'high').length}
                             </div>
-                            <div className="text-xs text-gray-600">Hög återgivning</div>
+                            <div className="text-xs text-gray-600">High Fidelity</div>
                           </div>
                           <div className="text-center">
                             <div className="text-2xl font-bold text-purple-600">
                               {prototypes.filter(p => p.status === 'ready_for_testing').length}
                             </div>
-                            <div className="text-xs text-gray-600">Redo att testa</div>
+                            <div className="text-xs text-gray-600">Ready to Test</div>
                           </div>
                         </div>
                       )}
@@ -534,19 +534,19 @@ export default function DesignThinkingPage() {
                         <div className="grid grid-cols-3 gap-4 mt-4 pt-4 border-t">
                           <div className="text-center">
                             <div className="text-2xl font-bold text-green-600">{userTests.length}</div>
-                            <div className="text-xs text-gray-600">Tester</div>
+                            <div className="text-xs text-gray-600">Tests</div>
                           </div>
                           <div className="text-center">
                             <div className="text-2xl font-bold text-green-600">
                               {userTests.reduce((sum, t) => sum + t.participants_count, 0)}
                             </div>
-                            <div className="text-xs text-gray-600">Deltagare</div>
+                            <div className="text-xs text-gray-600">Participants</div>
                           </div>
                           <div className="text-center">
                             <div className="text-2xl font-bold text-green-600">
                               {userTests.filter(t => t.status === 'completed').length}
                             </div>
-                            <div className="text-xs text-gray-600">Slutförda</div>
+                            <div className="text-xs text-gray-600">Completed</div>
                           </div>
                         </div>
                       )}
@@ -560,9 +560,9 @@ export default function DesignThinkingPage() {
                   insights={aiInsights.overall_assessment}
                   recommendations={aiInsights.next_actions}
                   metrics={{
-                    'Innovationspotential': aiInsights.innovation_potential,
-                    'Problemtydlighet': aiInsights.problem_definition_clarity,
-                    'Idémångfald': aiInsights.ideation_diversity_score,
+                    'Innovation Potential': aiInsights.innovation_potential,
+                    'Problem Clarity': aiInsights.problem_definition_clarity,
+                    'Ideation Diversity': aiInsights.ideation_diversity_score,
                   }}
                   risks={aiInsights.risk_areas}
                 />

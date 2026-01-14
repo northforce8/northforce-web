@@ -948,55 +948,12 @@ const translations: Record<string, Record<Language, string>> = {
   'admin.error.delete_failed': { en: 'Failed to delete. Please try again.', sv: 'Kunde inte radera. Försök igen.' },
   'admin.error.update_failed': { en: 'Failed to update. Please try again.', sv: 'Kunde inte uppdatera. Försök igen.' },
   'admin.error.generic': { en: 'An error occurred. Please try again.', sv: 'Ett fel uppstod. Försök igen.' },
-  'admin.error.session_expired': { en: 'Session expired. Redirecting to login...', sv: 'Session utgången. Omdirigerar till login...' },
-  'admin.error.access_denied': { en: 'Access denied. Your account may not have the right permissions.', sv: 'Åtkomst nekad. Ditt konto kanske inte har rätt behörigheter.' },
-  'admin.error.session_expired_login': { en: 'Session expired. Please log in again.', sv: 'Session utgången. Logga in igen.' },
-  'admin.error.load_customers': { en: 'Failed to load customers. Please try again.', sv: 'Kunde inte ladda kunder. Försök igen.' },
-  'admin.error.load_projects': { en: 'Failed to load projects. Please try again.', sv: 'Kunde inte ladda projekt. Försök igen.' },
-  'admin.error.load_contracts': { en: 'Failed to load contracts. Please try again.', sv: 'Kunde inte ladda kontrakt. Försök igen.' },
-  'admin.error.load_invoices': { en: 'Failed to load invoices. Please try again.', sv: 'Kunde inte ladda fakturor. Försök igen.' },
-  'admin.error.load_billing_periods': { en: 'Failed to load billing periods. Please try again.', sv: 'Kunde inte ladda faktureringsperioder. Försök igen.' },
-  'admin.error.load_credits_dashboard': { en: 'Failed to load credits dashboard. Please try again.', sv: 'Kunde inte ladda kreditdashboard. Försök igen.' },
-  'admin.error.load_capacity': { en: 'Failed to load capacity data', sv: 'Kunde inte ladda kapacitetsdata' },
-  'admin.error.load_business_models': { en: 'Failed to load business models', sv: 'Kunde inte ladda affärsmodeller' },
-  'admin.error.load_best_practices': { en: 'Failed to load best practices', sv: 'Kunde inte ladda bästa praxis' },
-  'admin.error.save_initiative': { en: 'Failed to save initiative. Please try again.', sv: 'Kunde inte spara initiativ. Försök igen.' },
-  'admin.error.delete_initiative': { en: 'Failed to delete initiative. Please try again.', sv: 'Kunde inte ta bort initiativ. Försök igen.' },
-  'admin.error.save_transformation': { en: 'Failed to save transformation. Please try again.', sv: 'Kunde inte spara transformation. Försök igen.' },
-  'admin.error.delete_transformation': { en: 'Failed to delete transformation. Please try again.', sv: 'Kunde inte ta bort transformation. Försök igen.' },
-  'admin.error.create_customer': { en: 'Failed to create customer. Please try again.', sv: 'Kunde inte skapa kund. Försök igen.' },
-  'admin.error.update_customer': { en: 'Failed to update customer. Please try again.', sv: 'Kunde inte uppdatera kund. Försök igen.' },
-  'admin.error.create_project': { en: 'Failed to create project. Please try again.', sv: 'Kunde inte skapa projekt. Försök igen.' },
-  'admin.error.update_project': { en: 'Failed to update project. Please try again.', sv: 'Kunde inte uppdatera projekt. Försök igen.' },
-  'admin.error.delete_project': { en: 'Failed to delete project. Please try again.', sv: 'Kunde inte radera projekt. Försök igen.' },
-  'admin.error.select_customer': { en: 'Please select a customer', sv: 'Välj en kund' },
-  'admin.error.load_design_thinking': { en: 'Failed to load Design Thinking projects. Please try again.', sv: 'Kunde inte ladda Design Thinking-projekt. Försök igen.' },
-  'admin.error.create_project_failed': { en: 'Failed to create project', sv: 'Kunde inte skapa projekt' },
-  'admin.error.load_mckinsey': { en: 'Failed to load McKinsey 7S analyses. Please try again.', sv: 'Kunde inte ladda McKinsey 7S-analyser. Försök igen.' },
-  'admin.error.load_margin_analysis': { en: 'Failed to load margin analysis. Please try again.', sv: 'Kunde inte ladda marginalanalys. Försök igen.' },
-  'admin.error.save_experiment': { en: 'Failed to save experiment. Please try again.', sv: 'Kunde inte spara experiment. Försök igen.' },
-  'admin.error.delete_experiment': { en: 'Failed to delete experiment. Please try again.', sv: 'Kunde inte ta bort experiment. Försök igen.' },
-  'admin.error.generate_recommendations': { en: 'Failed to generate recommendations', sv: 'Kunde inte generera rekommendationer' },
-  'admin.error.network': { en: 'Network error. Check your connection and try again.', sv: 'Nätverksfel. Kontrollera din anslutning och försök igen.' },
-  'admin.error.data_structure': { en: 'Data structure error. Contact support.', sv: 'Datastrukturfel. Kontakta support.' },
-  'admin.error.session_expired_short': { en: 'Session expired. Log in again.', sv: 'Sessionen har gått ut. Logga in igen.' },
-  'admin.error.load_okr': { en: 'Failed to load OKR objectives. Please try again.', sv: 'Kunde inte ladda OKR-mål. Försök igen.' },
-  'admin.error.load_swot': { en: 'Failed to load SWOT analysis. Please try again.', sv: 'Kunde inte ladda SWOT-analys. Försök igen.' },
-  'admin.error.load_bsc': { en: 'Failed to load BSC scorecards. Please try again.', sv: 'Kunde inte ladda BSC-styrkort. Försök igen.' },
-  'admin.error.load_bmc': { en: 'Failed to load business models. Please try again.', sv: 'Kunde inte ladda affärsmodeller. Försök igen.' },
-  'admin.error.load_porter': { en: 'Failed to load Porter analyses. Please try again.', sv: 'Kunde inte ladda Porter-analyser. Försök igen.' },
 
   // Admin Portal - Success Messages
   'admin.success.saved': { en: 'Saved successfully', sv: 'Sparat' },
   'admin.success.deleted': { en: 'Deleted successfully', sv: 'Raderat' },
   'admin.success.updated': { en: 'Updated successfully', sv: 'Uppdaterat' },
   'admin.success.created': { en: 'Created successfully', sv: 'Skapat' },
-  'admin.success.customer_created': { en: 'Customer created', sv: 'Kund skapad' },
-  'admin.success.customer_updated': { en: 'Customer updated', sv: 'Kund uppdaterad' },
-  'admin.success.customer_deleted': { en: 'Customer deleted', sv: 'Kund raderad' },
-  'admin.success.project_created': { en: 'Project created', sv: 'Projekt skapat' },
-  'admin.success.project_updated': { en: 'Project updated', sv: 'Projekt uppdaterat' },
-  'admin.success.project_deleted': { en: 'Project deleted', sv: 'Projekt raderat' },
 
   // Admin Portal - Confirmation Dialogs
   'admin.confirm.title': { en: 'Are you sure?', sv: 'Är du säker?' },
@@ -1011,11 +968,6 @@ const translations: Record<string, Record<Language, string>> = {
   'admin.confirm.no': { en: 'No', sv: 'Nej' },
   'admin.confirm.cancel': { en: 'Cancel', sv: 'Avbryt' },
   'admin.confirm.delete_framework': { en: 'Are you sure you want to delete this item? This action cannot be undone.', sv: 'Är du säker på att du vill radera detta? Denna åtgärd kan inte ångras.' },
-  'admin.confirm.delete_initiative': { en: 'Are you sure you want to delete this initiative? This action cannot be undone.', sv: 'Är du säker på att du vill ta bort detta initiativ? Denna åtgärd kan inte ångras.' },
-  'admin.confirm.delete_transformation': { en: 'Are you sure you want to delete this transformation? This action cannot be undone.', sv: 'Är du säker på att du vill ta bort denna transformation? Denna åtgärd kan inte ångras.' },
-  'admin.confirm.delete_experiment': { en: 'Are you sure you want to delete this experiment? This action cannot be undone.', sv: 'Är du säker på att du vill ta bort detta experiment? Denna åtgärd kan inte ångras.' },
-  'admin.confirm.delete_okr': { en: 'Are you sure you want to delete this OKR objective? This will also delete all associated key results. This action cannot be undone.', sv: 'Är du säker på att du vill radera detta OKR-mål? Detta kommer även att radera alla associerade nyckelresultat. Denna åtgärd kan inte ångras.' },
-  'admin.confirm.delete_swot': { en: 'Are you sure you want to delete this SWOT analysis? This action cannot be undone.', sv: 'Är du säker på att du vill radera denna SWOT-analys? Denna åtgärd kan inte ångras.' },
 
   // Admin Portal - Actions
   'admin.action.save': { en: 'Save', sv: 'Spara' },
@@ -1028,9 +980,6 @@ const translations: Record<string, Record<Language, string>> = {
   'admin.action.search': { en: 'Search', sv: 'Sök' },
   'admin.action.filter': { en: 'Filter', sv: 'Filtrera' },
   'admin.action.export': { en: 'Export', sv: 'Exportera' },
-  'admin.action.try_again': { en: 'Try Again', sv: 'Försök igen' },
-  'admin.action.retry': { en: 'Retry', sv: 'Försök igen' },
-  'admin.action.login_again': { en: 'Log In Again', sv: 'Logga in igen' },
 
   // Admin Portal - Validation
   'admin.validation.required': { en: 'This field is required', sv: 'Detta fält är obligatoriskt' },
@@ -1048,8 +997,6 @@ const translations: Record<string, Record<Language, string>> = {
   'admin.label.country': { en: 'Country', sv: 'Land' },
   'admin.label.created': { en: 'Created', sv: 'Skapad' },
   'admin.label.updated': { en: 'Updated', sv: 'Uppdaterad' },
-  'admin.label.loading': { en: 'Loading...', sv: 'Laddar...' },
-  'admin.label.error_loading': { en: 'Error loading', sv: 'Fel vid laddning' },
   'admin.label.description': { en: 'Description', sv: 'Beskrivning' },
   'admin.label.notes': { en: 'Notes', sv: 'Anteckningar' },
   'admin.label.budget': { en: 'Budget', sv: 'Budget' },
@@ -1377,7 +1324,7 @@ const translations: Record<string, Record<Language, string>> = {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>('sv');
+  const [language, setLanguage] = useState<Language>('en');
 
   const t = (key: string): string => {
     return translations[key]?.[language] || key;

@@ -45,10 +45,10 @@ export default function ADKARPage() {
     } catch (err) {
       const errorId = logAdminError(err as Error, {
         context: 'ADKARPage.loadData',
-        action: 'Laddar förändringsinitiativ'
+        action: 'Loading change initiatives'
       });
       console.error(`[${errorId}] Error loading data:`, err);
-      setError(t('admin.error.load_failed'));
+      setError('Failed to load data. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -86,12 +86,12 @@ export default function ADKARPage() {
         action: selectedInitiative ? 'Updating change initiative' : 'Creating change initiative'
       });
       console.error(`[${errorId}] Error saving initiative:`, err);
-      setError(t('admin.error.save_initiative'));
+      setError('Failed to save initiative. Please try again.');
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm(t('admin.confirm.delete_initiative'))) {
+    if (!confirm('Are you sure you want to delete this initiative? This action cannot be undone.')) {
       return;
     }
     try {
@@ -105,11 +105,11 @@ export default function ADKARPage() {
         action: 'Deleting change initiative'
       });
       console.error(`[${errorId}] Error deleting initiative:`, err);
-      setError(t('admin.error.delete_initiative'));
+      setError('Failed to delete initiative. Please try again.');
     }
   };
 
-  const stages = ['Medvetenhet', 'Vilja', 'Kunskap', 'Förmåga', 'Förstärkning'];
+  const stages = ['Awareness', 'Desire', 'Knowledge', 'Ability', 'Reinforcement'];
 
   const stageGradients = [
     'bg-gradient-to-br from-blue-400 to-blue-500',
@@ -134,7 +134,7 @@ export default function ADKARPage() {
       <div className="flex items-center justify-center h-screen">
         <div className="flex items-center gap-3">
           <RefreshCw className="h-5 w-5 text-primary-600 animate-spin" />
-          <span className="text-gray-600">Laddar förändringsinitiativ...</span>
+          <span className="text-gray-600">Loading Change Initiatives...</span>
         </div>
       </div>
     );
@@ -146,18 +146,18 @@ export default function ADKARPage() {
         <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
           <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
           <div className="flex-1">
-            <p className="text-red-800 font-medium">Fel</p>
+            <p className="text-red-800 font-medium">Error</p>
             <p className="text-red-700 text-sm mt-1">{error}</p>
           </div>
         </div>
       )}
 
       <PageHeader
-        title="Förändringshantering (ADKAR)"
-        description="Bygg medvetenhet, vilja, kunskap, förmåga och förstärkning för att driva framgångsrik organisationsförändring."
+        title="Change Management (ADKAR)"
+        description="Build awareness, desire, knowledge, ability, and reinforcement to drive successful organizational change."
         icon={RefreshCw}
         action={{
-          label: 'Skapa initiativ',
+          label: 'Create Initiative',
           onClick: () => {
             setSelectedInitiative(null);
             setShowModal(true);
@@ -172,7 +172,7 @@ export default function ADKARPage() {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
           <input
             type="text"
-            placeholder="Sök initiativ..."
+            placeholder="Search initiatives..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
@@ -194,23 +194,23 @@ export default function ADKARPage() {
           searchQuery ? (
             <Card className="p-12 text-center">
               <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Inga resultat hittades</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Results Found</h3>
               <p className="text-gray-600 mb-4">
-                Inga objekt matchar "{searchQuery}". Prova en annan sökterm.
+                No items match "{searchQuery}". Try a different search term.
               </p>
             </Card>
           ) : (
             <Card className="p-12 text-center">
               <RefreshCw className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Inga förändringsinitiativ än</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Change Initiatives Yet</h3>
               <p className="text-gray-600 mb-4">
-                Skapa ditt första initiativ för att driva framgångsrik organisationsförändring med ADKAR-ramverket.
+                Create your first initiative to drive successful organizational change using the ADKAR framework.
               </p>
               <button
                 onClick={() => setShowModal(true)}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
-                Skapa första initiativet
+                Create First Initiative
               </button>
             </Card>
           )
@@ -222,11 +222,11 @@ export default function ADKARPage() {
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">{initiative.title}</h3>
                   <p className="text-sm text-gray-600 mb-2">{initiative.description}</p>
                   <div className="flex items-center gap-4 text-xs text-gray-500">
-                    <span>Kund: {initiative.customers?.name}</span>
+                    <span>Customer: {initiative.customers?.name}</span>
                     <span>•</span>
-                    <span>Typ: {initiative.change_type}</span>
+                    <span>Type: {initiative.change_type}</span>
                     <span>•</span>
-                    <span>Framsteg: {initiative.overall_progress}%</span>
+                    <span>Progress: {initiative.overall_progress}%</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -252,14 +252,14 @@ export default function ADKARPage() {
                       setShowModal(true);
                     }}
                     className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                    title="Redigera initiativ"
+                    title="Edit initiative"
                   >
                     <Edit2 className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => handleDelete(initiative.id)}
                     className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                    title="Ta bort initiativ"
+                    title="Delete initiative"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -279,35 +279,35 @@ export default function ADKARPage() {
           setShowModal(false);
           setSelectedInitiative(null);
         }}
-        title={selectedInitiative ? 'Redigera förändringsinitiativ' : 'Skapa förändringsinitiativ'}
+        title={selectedInitiative ? 'Edit Change Initiative' : 'Create Change Initiative'}
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Kund</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Customer</label>
             <select value={formData.customer_id} onChange={(e) => setFormData({ ...formData, customer_id: e.target.value })} className="w-full px-3 py-2 border rounded-lg" required>
-              <option value="">Välj kund</option>
+              <option value="">Select Customer</option>
               {customers.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Titel</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
             <input type="text" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} className="w-full px-3 py-2 border rounded-lg" required />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Beskrivning</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
             <textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="w-full px-3 py-2 border rounded-lg" rows={3} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Typ av förändring</label>
-            <input type="text" value={formData.change_type} onChange={(e) => setFormData({ ...formData, change_type: e.target.value })} className="w-full px-3 py-2 border rounded-lg" placeholder="t.ex. Digital transformation" />
+            <label className="block text-sm font-medium text-gray-700 mb-2">Change Type</label>
+            <input type="text" value={formData.change_type} onChange={(e) => setFormData({ ...formData, change_type: e.target.value })} className="w-full px-3 py-2 border rounded-lg" placeholder="e.g., Digital Transformation" />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Startdatum</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
               <input type="date" value={formData.start_date} onChange={(e) => setFormData({ ...formData, start_date: e.target.value })} className="w-full px-3 py-2 border rounded-lg" required />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Målsättning slutdatum</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Target Completion</label>
               <input type="date" value={formData.target_completion_date} onChange={(e) => setFormData({ ...formData, target_completion_date: e.target.value })} className="w-full px-3 py-2 border rounded-lg" />
             </div>
           </div>
@@ -320,10 +320,10 @@ export default function ADKARPage() {
               }}
               className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
             >
-              Avbryt
+              Cancel
             </button>
             <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-              {selectedInitiative ? 'Uppdatera' : 'Skapa'} initiativ
+              {selectedInitiative ? 'Update' : 'Create'} Initiative
             </button>
           </div>
         </form>

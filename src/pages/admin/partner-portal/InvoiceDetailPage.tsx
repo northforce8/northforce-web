@@ -48,7 +48,7 @@ export default function InvoiceDetailPage() {
       loadInvoice();
     } catch (error) {
       console.error('Error updating status:', error);
-      alert('Kunde inte uppdatera status');
+      alert('Failed to update status');
     }
   }
 
@@ -59,13 +59,13 @@ export default function InvoiceDetailPage() {
       loadInvoice();
     } catch (error) {
       console.error('Error deleting line item:', error);
-      alert('Kunde inte radera radobjekt');
+      alert('Failed to delete line item');
     }
   }
 
   async function handleSendEmail() {
     if (!invoice?.customer?.contact_email) {
-      alert('Kunden har ingen e-postadress');
+      alert('Customer has no email address');
       return;
     }
 
@@ -137,7 +137,7 @@ export default function InvoiceDetailPage() {
       loadInvoice();
     } catch (error: any) {
       console.error('Error sending invoice:', error);
-      alert(`Kunde inte skicka faktura: ${error.message}`);
+      alert(`Failed to send invoice: ${error.message}`);
     } finally {
       setSendingEmail(false);
     }
@@ -240,7 +240,7 @@ export default function InvoiceDetailPage() {
                 downloadPDF(pdfBlob, `invoice-${invoice.invoice_number}.pdf`);
               } catch (error: any) {
                 console.error('Error generating PDF:', error);
-                alert(`Kunde inte generera PDF: ${error.message}`);
+                alert(`Failed to generate PDF: ${error.message}`);
               } finally {
                 setGeneratingPDF(false);
               }
@@ -476,7 +476,7 @@ function AddLineItemModal({ invoiceId, currency, onClose, onSuccess }: any) {
       onSuccess();
     } catch (error) {
       console.error('Error adding line item:', error);
-      alert('Kunde inte lägga till radobjekt');
+      alert('Failed to add line item');
     } finally {
       setSaving(false);
     }
@@ -485,7 +485,7 @@ function AddLineItemModal({ invoiceId, currency, onClose, onSuccess }: any) {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg max-w-md w-full p-6">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">Lägg till radpost</h2>
+        <h2 className="text-lg font-bold text-gray-900 mb-4">Add Line Item</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>

@@ -186,7 +186,7 @@ const LeadManagementPage: React.FC = () => {
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Totala leads</p>
+              <p className="text-sm text-gray-600">Total Leads</p>
               <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
             </div>
             <Users className="h-8 w-8 text-blue-500" />
@@ -196,7 +196,7 @@ const LeadManagementPage: React.FC = () => {
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Nya</p>
+              <p className="text-sm text-gray-600">New</p>
               <p className="text-2xl font-bold text-gray-900">{stats.new}</p>
             </div>
             <Mail className="h-8 w-8 text-blue-500" />
@@ -206,7 +206,7 @@ const LeadManagementPage: React.FC = () => {
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Kvalificerade</p>
+              <p className="text-sm text-gray-600">Qualified</p>
               <p className="text-2xl font-bold text-gray-900">{stats.qualified}</p>
             </div>
             <Star className="h-8 w-8 text-green-500" />
@@ -216,7 +216,7 @@ const LeadManagementPage: React.FC = () => {
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Konverterade</p>
+              <p className="text-sm text-gray-600">Converted</p>
               <p className="text-2xl font-bold text-gray-900">{stats.converted}</p>
             </div>
             <TrendingUp className="h-8 w-8 text-purple-500" />
@@ -235,7 +235,7 @@ const LeadManagementPage: React.FC = () => {
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
-              Alla leads ({allLeads.length})
+              All Leads ({allLeads.length})
             </button>
             <button
               onClick={() => setActiveTab('contact')}
@@ -246,7 +246,7 @@ const LeadManagementPage: React.FC = () => {
               }`}
             >
               <Mail className="h-4 w-4 mr-2" />
-              Kontakter ({contacts.length})
+              Contacts ({contacts.length})
             </button>
             <button
               onClick={() => setActiveTab('booking')}
@@ -257,7 +257,7 @@ const LeadManagementPage: React.FC = () => {
               }`}
             >
               <CalendarIcon className="h-4 w-4 mr-2" />
-              Bokningar ({bookings.length})
+              Bookings ({bookings.length})
             </button>
             <button
               onClick={() => setActiveTab('newsletter')}
@@ -279,7 +279,7 @@ const LeadManagementPage: React.FC = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
               <input
                 type="text"
-                placeholder="Sök leads..."
+                placeholder="Search leads..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
@@ -291,11 +291,11 @@ const LeadManagementPage: React.FC = () => {
               onChange={(e) => setStatusFilter(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
             >
-              <option value="all">Alla statusar</option>
-              <option value="new">Ny</option>
-              <option value="in_progress">Pågående</option>
-              <option value="qualified">Kvalificerad</option>
-              <option value="archived">Arkiverad</option>
+              <option value="all">All Status</option>
+              <option value="new">New</option>
+              <option value="in_progress">In Progress</option>
+              <option value="qualified">Qualified</option>
+              <option value="archived">Archived</option>
             </select>
           </div>
         </div>
@@ -305,28 +305,28 @@ const LeadManagementPage: React.FC = () => {
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Typ
+                  Type
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Kontakt
+                  Contact
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Företag
+                  Company
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   Status
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  AI-poäng
+                  AI Score
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Kund
+                  Customer
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Datum
+                  Date
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Åtgärder
+                  Actions
                 </th>
               </tr>
             </thead>
@@ -364,7 +364,7 @@ const LeadManagementPage: React.FC = () => {
                         </div>
                       </div>
                     ) : (
-                      <span className="text-xs text-gray-400">Ej klassificerad</span>
+                      <span className="text-xs text-gray-400">Not classified</span>
                     )}
                   </td>
                   <td className="px-6 py-4">
@@ -373,7 +373,7 @@ const LeadManagementPage: React.FC = () => {
                         {lead.customer_link.customer.company_name}
                       </span>
                     ) : (
-                      <span className="text-xs text-gray-400">Ej länkad</span>
+                      <span className="text-xs text-gray-400">Not linked</span>
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -384,7 +384,7 @@ const LeadManagementPage: React.FC = () => {
                       to={buildLeadDetailRoute(lead.type, lead.id)}
                       className="text-primary-600 hover:text-primary-900 font-medium"
                     >
-                      Visa
+                      View
                     </Link>
                   </td>
                 </tr>
@@ -396,7 +396,7 @@ const LeadManagementPage: React.FC = () => {
         {filteredLeads.length === 0 && (
           <div className="text-center py-12">
             <Users className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-            <p className="text-gray-500">Inga leads hittades</p>
+            <p className="text-gray-500">No leads found</p>
           </div>
         )}
       </div>

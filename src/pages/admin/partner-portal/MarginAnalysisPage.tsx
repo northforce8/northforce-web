@@ -60,7 +60,7 @@ const MarginAnalysisPage: React.FC = () => {
       setAnalyses(data || []);
     } catch (err) {
       console.error('Error loading margin analysis:', err);
-      setError(err instanceof Error ? err.message : t('admin.error.load_margin_analysis'));
+      setError(err instanceof Error ? err.message : 'Kunde inte ladda marginalanalys. Försök igen.');
     } finally {
       setLoading(false);
     }
@@ -99,13 +99,13 @@ const MarginAnalysisPage: React.FC = () => {
           <div className="flex items-start gap-3">
             <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-red-900 mb-2">{t('admin.label.error_loading')}</h3>
+              <h3 className="text-lg font-semibold text-red-900 mb-2">Fel vid laddning</h3>
               <p className="text-red-700 mb-4">{error}</p>
               <button
-                onClick=  {loadMarginAnalysis}
+                onClick={loadMarginAnalysis}
                 className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
               >
-                {t('admin.action.try_again')}
+                Försök igen
               </button>
             </div>
           </div>
@@ -126,7 +126,7 @@ const MarginAnalysisPage: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-medium text-gray-600">Total intäkt</h3>
+            <h3 className="text-sm font-medium text-gray-600">Total Revenue</h3>
             <DollarSign className="h-5 w-5 text-green-500" />
           </div>
           <p className="text-2xl font-bold text-gray-900">
@@ -136,7 +136,7 @@ const MarginAnalysisPage: React.FC = () => {
 
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-medium text-gray-600">Total kostnad</h3>
+            <h3 className="text-sm font-medium text-gray-600">Total Cost</h3>
             <DollarSign className="h-5 w-5 text-red-500" />
           </div>
           <p className="text-2xl font-bold text-gray-900">
@@ -146,7 +146,7 @@ const MarginAnalysisPage: React.FC = () => {
 
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-medium text-gray-600">Total marginal</h3>
+            <h3 className="text-sm font-medium text-gray-600">Total Margin</h3>
             <TrendingUp className="h-5 w-5 text-blue-500" />
           </div>
           <p className="text-2xl font-bold text-green-600">
@@ -156,7 +156,7 @@ const MarginAnalysisPage: React.FC = () => {
 
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-medium text-gray-600">Snitt marginal %</h3>
+            <h3 className="text-sm font-medium text-gray-600">Avg Margin %</h3>
             <Target className="h-5 w-5 text-primary-600" />
           </div>
           <p className="text-2xl font-bold text-gray-900">
@@ -169,7 +169,7 @@ const MarginAnalysisPage: React.FC = () => {
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
             <TrendingUp className="h-5 w-5 mr-2 text-green-500" />
-            Kunder med högst marginal
+            Top Margin Customers
           </h3>
           <div className="space-y-3">
             {topMarginCustomers.map((analysis) => (
@@ -201,7 +201,7 @@ const MarginAnalysisPage: React.FC = () => {
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
             <TrendingDown className="h-5 w-5 mr-2 text-red-500" />
-            Kunder med lägst marginal
+            Low Margin Customers
           </h3>
           <div className="space-y-3">
             {lowMarginCustomers.map((analysis) => (
@@ -233,7 +233,7 @@ const MarginAnalysisPage: React.FC = () => {
 
       <div className="bg-white rounded-lg border border-gray-200">
         <div className="p-4 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">Detaljerad analys</h2>
+          <h2 className="text-lg font-semibold text-gray-900">Detailed Analysis</h2>
         </div>
 
         <div className="overflow-x-auto">
@@ -241,25 +241,25 @@ const MarginAnalysisPage: React.FC = () => {
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Kund
+                  Customer
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   Period
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Timmar / Krediter
+                  Hours / Credits
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Intäkt
+                  Revenue
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Kostnad
+                  Cost
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Marginal
+                  Margin
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Marginal %
+                  Margin %
                 </th>
               </tr>
             </thead>
@@ -279,7 +279,7 @@ const MarginAnalysisPage: React.FC = () => {
                       {new Date(analysis.analysis_period_start).toLocaleDateString()}
                     </div>
                     <div className="text-xs text-gray-500">
-                      till {new Date(analysis.analysis_period_end).toLocaleDateString()}
+                      to {new Date(analysis.analysis_period_end).toLocaleDateString()}
                     </div>
                   </td>
                   <td className="px-6 py-4">
@@ -287,7 +287,7 @@ const MarginAnalysisPage: React.FC = () => {
                       {Number(analysis.partner_hours).toFixed(1)}h
                     </div>
                     <div className="text-xs text-gray-500">
-                      {Number(analysis.credits_consumed).toFixed(1)} krediter
+                      {Number(analysis.credits_consumed).toFixed(1)} credits
                     </div>
                   </td>
                   <td className="px-6 py-4">
@@ -332,7 +332,7 @@ const MarginAnalysisPage: React.FC = () => {
         {analyses.length === 0 && (
           <div className="text-center py-12">
             <BarChart3 className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-            <p className="text-gray-500">Ingen marginalanalysdata tillgänglig</p>
+            <p className="text-gray-500">No margin analysis data available</p>
           </div>
         )}
       </div>

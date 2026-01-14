@@ -89,7 +89,7 @@ const SettingsPage: React.FC = () => {
 
   const handleCreateWorkType = async () => {
     if (!newWorkType.name || !newWorkType.credits_per_hour) {
-      alert('Namn och Krediter per timme krävs');
+      alert('Name and Credits per Hour are required');
       return;
     }
 
@@ -103,7 +103,7 @@ const SettingsPage: React.FC = () => {
       setTimeout(() => setSaveSuccess(false), 3000);
     } catch (error) {
       console.error('Error creating work type:', error);
-      alert('Kunde inte skapa arbetstyp');
+      alert('Failed to create work type');
     } finally {
       setSaving(false);
     }
@@ -117,8 +117,8 @@ const SettingsPage: React.FC = () => {
     if (updates.is_active === false && usage?.is_used) {
       setShowConfirmDialog({
         show: true,
-        title: 'Inaktivera arbetstyp som används',
-        message: `Denna arbetstyp har använts i ${usage.usage_count} tidrapporter. Senast använd: ${new Date(usage.last_used_date || '').toLocaleDateString()}. Är du säker på att du vill inaktivera den? Den kommer inte längre visas i tidrapporteringsformulär.`,
+        title: 'Deactivate Work Type in Use',
+        message: `This work type has been used in ${usage.usage_count} time entries. Last used: ${new Date(usage.last_used_date || '').toLocaleDateString()}. Are you sure you want to deactivate it? It will no longer appear in time entry forms.`,
         onConfirm: async () => {
           await performWorkTypeUpdate(id, updates);
           setShowConfirmDialog({ ...showConfirmDialog, show: false });
@@ -141,7 +141,7 @@ const SettingsPage: React.FC = () => {
       setTimeout(() => setSaveSuccess(false), 3000);
     } catch (error) {
       console.error('Error updating work type:', error);
-      alert('Kunde inte uppdatera arbetstyp');
+      alert('Failed to update work type');
     } finally {
       setSaving(false);
     }
@@ -175,7 +175,7 @@ const SettingsPage: React.FC = () => {
       setTimeout(() => setSaveSuccess(false), 3000);
     } catch (error) {
       console.error('Error saving settings:', error);
-      alert('Kunde inte spara inställningar');
+      alert('Failed to save settings');
     } finally {
       setSaving(false);
     }
@@ -275,14 +275,14 @@ const SettingsPage: React.FC = () => {
     <div>
       <div className="p-6 max-w-7xl mx-auto">
         <PageHeader
-          title="Inställningar"
-          description="Konfigurera systeminställningar och arbetstyper för Partnerportalen"
+          title="Settings"
+          description="Configure Partner Portal system settings and work types"
         />
 
         {saveSuccess && (
           <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center">
             <Check className="h-5 w-5 text-green-600 mr-3" />
-            <span className="text-green-800 font-medium">Inställningar sparade</span>
+            <span className="text-green-800 font-medium">Settings saved successfully</span>
           </div>
         )}
 
@@ -293,10 +293,10 @@ const SettingsPage: React.FC = () => {
               <div>
                 <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                   <Shield className="h-5 w-5 text-primary-600" />
-                  Kontosäkerhet
+                  Account Security
                 </h2>
                 <p className="text-sm text-gray-600 mt-1">
-                  Hantera ditt kontolösenord och säkerhetsinställningar
+                  Manage your account password and security settings
                 </p>
               </div>
             </div>
@@ -307,8 +307,8 @@ const SettingsPage: React.FC = () => {
               <div className="flex items-center">
                 <Lock className="h-5 w-5 text-gray-400 mr-3" />
                 <div>
-                  <p className="text-sm font-medium text-gray-900">Lösenord</p>
-                  <p className="text-xs text-gray-500 mt-1">Uppdatera ditt kontolösenord</p>
+                  <p className="text-sm font-medium text-gray-900">Password</p>
+                  <p className="text-xs text-gray-500 mt-1">Update your account password</p>
                 </div>
               </div>
               <button
@@ -328,10 +328,10 @@ const SettingsPage: React.FC = () => {
               <div>
                 <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                   <DollarSign className="h-5 w-5 text-primary-600" />
-                  Valuta- och företagsinställningar
+                  Currency & Company Settings
                 </h2>
                 <p className="text-sm text-gray-600 mt-1">
-                  Konfigurera standardvaluta, företagsinformation och visningsinställningar
+                  Configure default currency, company information, and display preferences
                 </p>
               </div>
             </div>
@@ -341,11 +341,11 @@ const SettingsPage: React.FC = () => {
             <div className="p-6 space-y-6">
               {/* Currency Settings */}
               <div className="border-b border-gray-200 pb-6">
-                <h3 className="text-base font-semibold text-gray-900 mb-4">Valutainställningar</h3>
+                <h3 className="text-base font-semibold text-gray-900 mb-4">Currency Settings</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Standardvaluta
+                      Default Currency
                     </label>
                     <select
                       value={systemSettings.default_currency_code}
@@ -365,14 +365,14 @@ const SettingsPage: React.FC = () => {
                     <div className="flex items-start mt-2">
                       <Info className="h-4 w-4 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
                       <p className="text-sm text-gray-600">
-                        Standardvaluta för fakturor, kontrakt och prisvisning
+                        Default currency used for invoices, contracts, and pricing displays
                       </p>
                     </div>
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Tidszon
+                      Time Zone
                     </label>
                     <select
                       value={systemSettings.time_zone}
@@ -397,12 +397,12 @@ const SettingsPage: React.FC = () => {
               <div className="border-b border-gray-200 pb-6">
                 <h3 className="text-base font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <Building2 className="h-5 w-5 text-primary-600" />
-                  Företagsinformation
+                  Company Information
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Företagsnamn
+                      Company Name
                     </label>
                     <input
                       type="text"
@@ -412,13 +412,13 @@ const SettingsPage: React.FC = () => {
                         company_name: e.target.value,
                       })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
-                      placeholder="Ditt företagsnamn"
+                      placeholder="Your Company Name"
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Organisationsnummer
+                      Organization Number
                     </label>
                     <input
                       type="text"
@@ -434,7 +434,7 @@ const SettingsPage: React.FC = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Företagets e-post
+                      Company Email
                     </label>
                     <input
                       type="email"
@@ -450,7 +450,7 @@ const SettingsPage: React.FC = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Företagets telefon
+                      Company Phone
                     </label>
                     <input
                       type="tel"
@@ -474,7 +474,7 @@ const SettingsPage: React.FC = () => {
                   className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <X className="h-4 w-4 mr-2 inline" />
-                  Återställ ändringar
+                  Reset Changes
                 </button>
                 <button
                   onClick={handleSaveTimeEntryRules}
@@ -484,12 +484,12 @@ const SettingsPage: React.FC = () => {
                   {saving ? (
                     <>
                       <Clock className="h-4 w-4 mr-2 animate-spin" />
-                      Sparar...
+                      Saving...
                     </>
                   ) : (
                     <>
                       <Save className="h-4 w-4 mr-2" />
-                      Spara valuta- och företagsinställningar
+                      Save Currency & Company Settings
                     </>
                   )}
                 </button>
@@ -503,9 +503,9 @@ const SettingsPage: React.FC = () => {
           <div className="p-6 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-semibold text-gray-900">Arbetstyper</h2>
+                <h2 className="text-lg font-semibold text-gray-900">Work Types</h2>
                 <p className="text-sm text-gray-600 mt-1">
-                  Hantera arbetsdefinitioner som styr kreditberäkning och tidsrapportering
+                  Manage work type definitions that control credits calculation and time reporting
                 </p>
               </div>
               <div className="flex gap-2">
@@ -514,14 +514,14 @@ const SettingsPage: React.FC = () => {
                   className="flex items-center px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
                 >
                   <History className="h-4 w-4 mr-2" />
-                  Visa historik
+                  View History
                 </button>
                 <button
                   onClick={() => setShowWorkTypeModal(true)}
                   className="flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
                 >
                   <Plus className="h-4 w-4 mr-2" />
-                  Lägg till arbetstyp
+                  Add Work Type
                 </button>
               </div>
             </div>
@@ -547,7 +547,7 @@ const SettingsPage: React.FC = () => {
                           <span className={`px-2 py-1 text-xs font-medium rounded ${
                             type.is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'
                           }`}>
-                            {type.is_active ? 'Aktiv' : 'Inaktiv'}
+                            {type.is_active ? 'Active' : 'Inactive'}
                           </span>
                           {type.category && (
                             <span className={`px-2 py-1 text-xs font-medium rounded capitalize ${getCategoryBadgeColor(type.category)}`}>
@@ -556,12 +556,12 @@ const SettingsPage: React.FC = () => {
                           )}
                           {type.billable && (
                             <span className="px-2 py-1 text-xs font-medium rounded bg-blue-100 text-blue-800">
-                              Fakturerbar
+                              Billable
                             </span>
                           )}
                           {usage?.is_used && (
                             <span className="px-2 py-1 text-xs font-medium rounded bg-amber-100 text-amber-800">
-                              Används ({usage.usage_count} poster)
+                              In Use ({usage.usage_count} entries)
                             </span>
                           )}
                         </div>
@@ -570,21 +570,21 @@ const SettingsPage: React.FC = () => {
                         )}
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                           <div>
-                            <span className="text-xs font-medium text-gray-500">Kreditvikt</span>
+                            <span className="text-xs font-medium text-gray-500">Credits Weight</span>
                             <p className="text-sm font-semibold text-gray-900">{type.credits_per_hour}x</p>
                           </div>
                           <div>
-                            <span className="text-xs font-medium text-gray-500">Kostnadsfaktor</span>
+                            <span className="text-xs font-medium text-gray-500">Cost Factor</span>
                             <p className="text-sm font-semibold text-gray-900">{type.internal_cost_factor}x</p>
                           </div>
                           <div>
-                            <span className="text-xs font-medium text-gray-500">Min. plannivå</span>
+                            <span className="text-xs font-medium text-gray-500">Min. Plan Level</span>
                             <span className={`inline-block px-2 py-1 text-xs font-medium rounded capitalize ${getPlanLevelBadgeColor(type.requires_plan_level)}`}>
                               {type.requires_plan_level}
                             </span>
                           </div>
                           <div>
-                            <span className="text-xs font-medium text-gray-500">Tillåtna planer</span>
+                            <span className="text-xs font-medium text-gray-500">Allowed Plans</span>
                             <div className="flex flex-wrap gap-1 mt-1">
                               {type.allowed_plan_levels.map(level => (
                                 <span key={level} className={`px-1.5 py-0.5 text-xs font-medium rounded capitalize ${getPlanLevelBadgeColor(level)}`}>
@@ -596,7 +596,7 @@ const SettingsPage: React.FC = () => {
                         </div>
                         {type.updated_at && (
                           <p className="text-xs text-gray-500 mt-3">
-                            Senast uppdaterad: {new Date(type.updated_at).toLocaleString()}
+                            Last updated: {new Date(type.updated_at).toLocaleString()}
                           </p>
                         )}
                       </div>
@@ -612,12 +612,12 @@ const SettingsPage: React.FC = () => {
               })}
               {workTypes.length === 0 && (
                 <div className="text-center py-12 text-gray-500">
-                  <p>Inga arbetstyper konfigurerade</p>
+                  <p>No work types configured</p>
                   <button
                     onClick={() => setShowWorkTypeModal(true)}
                     className="mt-4 text-primary-600 hover:text-primary-700 font-medium"
                   >
-                    Lägg till din första arbetstyp
+                    Add your first work type
                   </button>
                 </div>
               )}
@@ -629,9 +629,9 @@ const SettingsPage: React.FC = () => {
           <div className="p-6 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-semibold text-gray-900">Tidsrapporteringsregler</h2>
+                <h2 className="text-lg font-semibold text-gray-900">Time Entry Rules</h2>
                 <p className="text-sm text-gray-600 mt-1">
-                  Konfigurera valideringsregler och begränsningar för tidsrapportering
+                  Configure validation rules and constraints for time reporting
                 </p>
               </div>
               <button
@@ -648,7 +648,7 @@ const SettingsPage: React.FC = () => {
             <div className="p-6 space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Redigeringsfönster (dagar)
+                  Edit Window (Days)
                 </label>
                 <input
                   type="number"
@@ -664,14 +664,14 @@ const SettingsPage: React.FC = () => {
                 <div className="flex items-start mt-2">
                   <Info className="h-4 w-4 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
                   <p className="text-sm text-gray-600">
-                    Partners kan redigera tidrapporter inom detta antal dagar efter skapande. Sätt till 0 för att tillåta redigering när som helst.
+                    Partners can edit time entries within this many days after creation. Set to 0 to allow editing anytime.
                   </p>
                 </div>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Max timmar per dag
+                  Maximum Hours Per Day
                 </label>
                 <input
                   type="number"
@@ -688,7 +688,7 @@ const SettingsPage: React.FC = () => {
                 <div className="flex items-start mt-2">
                   <Info className="h-4 w-4 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
                   <p className="text-sm text-gray-600">
-                    Maximalt antal timmar som kan loggas under en dag per partner.
+                    Maximum hours that can be logged in a single day per partner.
                   </p>
                 </div>
               </div>
@@ -706,10 +706,10 @@ const SettingsPage: React.FC = () => {
                   />
                   <div className="ml-3">
                     <label className="text-sm font-medium text-gray-700">
-                      Kräv projekt för alla tidrapporter
+                      Require project for all time entries
                     </label>
                     <p className="text-sm text-gray-600 mt-1">
-                      När aktiverad måste partners välja ett projekt vid tidsrapportering. Förhindrar tidrapporter utan projekttilldelning.
+                      When enabled, partners must select a project when logging time. Prevents time entries without project assignment.
                     </p>
                   </div>
                 </div>
@@ -726,10 +726,10 @@ const SettingsPage: React.FC = () => {
                   />
                   <div className="ml-3">
                     <label className="text-sm font-medium text-gray-700">
-                      Aktivera fakturerbar/icke-fakturerbar spårning
+                      Enable billable/non-billable tracking
                     </label>
                     <p className="text-sm text-gray-600 mt-1">
-                      Visar fakturerbar-växling i tidsrapporteringsformuläret. Påverkar kreditberäkning och marginalrapportering.
+                      Shows billable toggle in time entry form. Affects credits calculation and margin reporting.
                     </p>
                   </div>
                 </div>
@@ -746,10 +746,10 @@ const SettingsPage: React.FC = () => {
                   />
                   <div className="ml-3">
                     <label className="text-sm font-medium text-gray-700">
-                      Tillåt framtida datum
+                      Allow future dates
                     </label>
                     <p className="text-sm text-gray-600 mt-1">
-                      När aktiverad kan partners logga tid för framtida datum (t.ex. planerat arbete).
+                      When enabled, partners can log time for future dates (e.g., planned work).
                     </p>
                   </div>
                 </div>
@@ -758,7 +758,7 @@ const SettingsPage: React.FC = () => {
               {systemSettings.updated_at && (
                 <div className="pt-4 border-t border-gray-200">
                   <p className="text-sm text-gray-500">
-                    Senast sparad: {new Date(systemSettings.updated_at).toLocaleString()}
+                    Last saved: {new Date(systemSettings.updated_at).toLocaleString()}
                     {systemSettings.settings_version && ` (Version ${systemSettings.settings_version})`}
                   </p>
                 </div>
@@ -773,12 +773,12 @@ const SettingsPage: React.FC = () => {
                   {saving ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                      Sparar...
+                      Saving...
                     </>
                   ) : (
                     <>
                       <Save className="h-4 w-4 mr-2" />
-                      Spara ändringar
+                      Save Changes
                     </>
                   )}
                 </button>
@@ -788,7 +788,7 @@ const SettingsPage: React.FC = () => {
                     className="flex items-center px-6 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
                   >
                     <X className="h-4 w-4 mr-2" />
-                    Återställ
+                    Reset
                   </button>
                 )}
               </div>
@@ -802,39 +802,39 @@ const SettingsPage: React.FC = () => {
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200">
               <h3 className="text-lg font-semibold text-gray-900">
-                {editingWorkType ? 'Redigera arbetstyp' : 'Skapa arbetstyp'}
+                {editingWorkType ? 'Edit Work Type' : 'Create Work Type'}
               </h3>
             </div>
 
             <div className="p-6 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Namn <span className="text-red-500">*</span>
+                  Name <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   value={newWorkType.name}
                   onChange={(e) => setNewWorkType({ ...newWorkType, name: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
-                  placeholder="t.ex. Strategisk planering"
+                  placeholder="e.g., Strategic Planning"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Beskrivning</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
                 <textarea
                   value={newWorkType.description || ''}
                   onChange={(e) => setNewWorkType({ ...newWorkType, description: e.target.value })}
                   rows={3}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
-                  placeholder="Beskriv vad denna arbetstyp inkluderar..."
+                  placeholder="Describe what this work type includes..."
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Kreditvikt (Multiplikator) <span className="text-red-500">*</span>
+                    Credits Weight (Multiplier) <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="number"
@@ -845,12 +845,12 @@ const SettingsPage: React.FC = () => {
                     onChange={(e) => setNewWorkType({ ...newWorkType, credits_per_hour: parseFloat(e.target.value) || 1.0 })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                   />
-                  <p className="text-xs text-gray-500 mt-1">1 timme = X krediter</p>
+                  <p className="text-xs text-gray-500 mt-1">1 hour = X credits</p>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Intern kostnadsfaktor
+                    Internal Cost Factor
                   </label>
                   <input
                     type="number"
@@ -861,29 +861,29 @@ const SettingsPage: React.FC = () => {
                     onChange={(e) => setNewWorkType({ ...newWorkType, internal_cost_factor: parseFloat(e.target.value) || 1.0 })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Partnerkostnadsmultiplikator</p>
+                  <p className="text-xs text-gray-500 mt-1">Partner cost multiplier</p>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Kategori</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
                   <select
                     value={newWorkType.category || 'operational'}
                     onChange={(e) => setNewWorkType({ ...newWorkType, category: e.target.value as any })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                   >
-                    <option value="strategic">Strategisk</option>
-                    <option value="operational">Operativ</option>
-                    <option value="technical">Teknisk</option>
-                    <option value="administrative">Administrativ</option>
-                    <option value="leadership">Ledarskap</option>
+                    <option value="strategic">Strategic</option>
+                    <option value="operational">Operational</option>
+                    <option value="technical">Technical</option>
+                    <option value="administrative">Administrative</option>
+                    <option value="leadership">Leadership</option>
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Lägsta plannivå
+                    Minimum Plan Level
                   </label>
                   <select
                     value={newWorkType.requires_plan_level}
@@ -900,7 +900,7 @@ const SettingsPage: React.FC = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Tillåtna plannivåer
+                  Allowed Plan Levels
                 </label>
                 <div className="grid grid-cols-2 gap-2">
                   {(['starter', 'growth', 'scale', 'custom'] as PlanLevel[]).map(level => (
@@ -938,7 +938,7 @@ const SettingsPage: React.FC = () => {
                     onChange={(e) => setNewWorkType({ ...newWorkType, billable: e.target.checked })}
                     className="h-4 w-4 text-primary-600 rounded focus:ring-primary-600"
                   />
-                  <span className="ml-2 text-sm font-medium text-gray-700">Fakturerbar som standard</span>
+                  <span className="ml-2 text-sm font-medium text-gray-700">Billable by default</span>
                 </label>
 
                 <label className="flex items-center">
@@ -948,7 +948,7 @@ const SettingsPage: React.FC = () => {
                     onChange={(e) => setNewWorkType({ ...newWorkType, is_active: e.target.checked })}
                     className="h-4 w-4 text-primary-600 rounded focus:ring-primary-600"
                   />
-                  <span className="ml-2 text-sm font-medium text-gray-700">Aktiv</span>
+                  <span className="ml-2 text-sm font-medium text-gray-700">Active</span>
                 </label>
               </div>
 
@@ -957,10 +957,10 @@ const SettingsPage: React.FC = () => {
                   <div className="flex">
                     <AlertTriangle className="h-5 w-5 text-amber-600 mr-3 flex-shrink-0 mt-0.5" />
                     <div>
-                      <p className="text-sm font-medium text-amber-800">Arbetstyp används</p>
+                      <p className="text-sm font-medium text-amber-800">Work Type In Use</p>
                       <p className="text-sm text-amber-700 mt-1">
-                        Denna arbetstyp har använts i {workTypeUsageInfo.get(editingWorkType.id)?.usage_count} tidrapporter.
-                        Ändringar kommer påverka kreditberäkning och rapportering.
+                        This work type has been used in {workTypeUsageInfo.get(editingWorkType.id)?.usage_count} time entries.
+                        Changes will affect credits calculation and reporting.
                       </p>
                     </div>
                   </div>
@@ -973,7 +973,7 @@ const SettingsPage: React.FC = () => {
                 onClick={closeModal}
                 className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
               >
-                Avbryt
+                Cancel
               </button>
               <button
                 onClick={() => editingWorkType ? handleUpdateWorkType(editingWorkType.id, newWorkType) : handleCreateWorkType()}
@@ -988,7 +988,7 @@ const SettingsPage: React.FC = () => {
                 ) : (
                   <>
                     <Save className="h-4 w-4 mr-2" />
-                    {editingWorkType ? 'Uppdatera' : 'Skapa'}
+                    {editingWorkType ? 'Update' : 'Create'}
                   </>
                 )}
               </button>
@@ -1002,7 +1002,7 @@ const SettingsPage: React.FC = () => {
           <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
             <div className="p-6 border-b border-gray-200 flex items-center justify-between">
               <h3 className="text-lg font-semibold text-gray-900">
-                {showAuditLog === 'work_types' ? 'Arbetstyper' : 'Tidsrapporteringsregler'} Ändringshistorik
+                {showAuditLog === 'work_types' ? 'Work Types' : 'Time Entry Rules'} Change History
               </h3>
               <button
                 onClick={() => setShowAuditLog(null)}
@@ -1016,7 +1016,7 @@ const SettingsPage: React.FC = () => {
               {auditLog.length === 0 ? (
                 <div className="text-center py-12 text-gray-500">
                   <Clock className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-                  <p>Inga ändringar registrerade ännu</p>
+                  <p>No changes recorded yet</p>
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -1043,12 +1043,12 @@ const SettingsPage: React.FC = () => {
                       </div>
                       {log.changed_by_email && (
                         <p className="text-xs text-gray-500">
-                          Ändrad av: {log.changed_by_email}
+                          Changed by: {log.changed_by_email}
                         </p>
                       )}
                       {log.change_reason && (
                         <p className="text-xs text-gray-600 mt-1">
-                          Anledning: {log.change_reason}
+                          Reason: {log.change_reason}
                         </p>
                       )}
                     </div>
@@ -1079,13 +1079,13 @@ const SettingsPage: React.FC = () => {
                 onClick={() => setShowConfirmDialog({ ...showConfirmDialog, show: false })}
                 className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
               >
-                Avbryt
+                Cancel
               </button>
               <button
                 onClick={showConfirmDialog.onConfirm}
                 className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors"
               >
-                Bekräfta
+                Confirm
               </button>
             </div>
           </div>

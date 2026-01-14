@@ -69,7 +69,7 @@ export default function BestPracticesPage() {
       setPractices(data);
     } catch (err) {
       console.error('Error loading best practices:', err);
-      setError('Kunde inte ladda bästa praxis');
+      setError('Failed to load best practices');
     } finally {
       setLoading(false);
     }
@@ -93,11 +93,11 @@ export default function BestPracticesPage() {
         is_published: true,
         view_count: 0
       });
-      setSuccess('Bästa praxis skapad');
+      setSuccess('Best practice created successfully');
       await loadData();
     } catch (err) {
       console.error('Error creating best practice:', err);
-      setError('Kunde inte skapa bästa praxis');
+      setError('Failed to create best practice');
     }
   };
 
@@ -109,26 +109,26 @@ export default function BestPracticesPage() {
       await enterpriseAPI.updateBestPractice(editingPractice.id, editingPractice);
       setShowEditModal(false);
       setEditingPractice(null);
-      setSuccess('Bästa praxis uppdaterad');
+      setSuccess('Best practice updated successfully');
       await loadData();
     } catch (err) {
       console.error('Error updating best practice:', err);
-      setError('Kunde inte uppdatera bästa praxis');
+      setError('Failed to update best practice');
     }
   };
 
   const handleDelete = async (id: string, title: string) => {
-    if (!confirm(`Är du säker på att du vill radera "${title}"? Detta kan inte ångras.`)) {
+    if (!confirm(`Are you sure you want to delete "${title}"? This action cannot be undone.`)) {
       return;
     }
 
     try {
       await enterpriseAPI.deleteBestPractice(id);
-      setSuccess('Bästa praxis raderad');
+      setSuccess('Best practice deleted successfully');
       await loadData();
     } catch (err) {
       console.error('Error deleting best practice:', err);
-      setError('Kunde inte radera bästa praxis');
+      setError('Failed to delete best practice');
     }
   };
 
@@ -165,7 +165,7 @@ export default function BestPracticesPage() {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Laddar bästa praxis...</p>
+          <p className="text-gray-600">Loading best practices...</p>
         </div>
       </div>
     );
@@ -174,31 +174,31 @@ export default function BestPracticesPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Bästa praxis"
-        description="Kunskapsbas med beprövade metoder, riktlinjer och lärdomar från framgångsrika projekt"
+        title="Best Practices"
+        description="Knowledge base of proven methodologies, guidelines, and lessons learned from successful engagements"
         icon={<Lightbulb className="w-8 h-8" />}
         help={{
-          purpose: 'Bästa praxis fungerar som din organisatoriska kunskapsbas och dokumenterar beprövade tillvägagångssätt, lärdomar och expertvägledning. Bygg institutionell kunskap och accelerera teamets lärande.',
+          purpose: 'Best Practices serves as your organizational knowledge base, documenting proven approaches, lessons learned, and expert guidance. Build institutional knowledge and accelerate team learning.',
           usage: [
-            'Dokumentera framgångsrika tillvägagångssätt och metoder',
-            'Dela lärdomar över organisationen',
-            'Ge vägledning för vanliga scenarier och utmaningar',
-            'Spåra vilka metoder som värderas mest av teamet',
-            'Organisera kunskap per kategori och svårighetsgrad',
-            'Bygg ett sökbart förråd av expertis'
+            'Document successful approaches and methodologies',
+            'Share lessons learned across the organization',
+            'Provide guidance for common scenarios and challenges',
+            'Track which practices are most valued by the team',
+            'Organize knowledge by category and difficulty level',
+            'Build a searchable repository of expertise'
           ],
           concepts: [
             {
-              term: 'Bästa praxis',
-              definition: 'Ett dokumenterat tillvägagångssätt eller metodik som visat sig effektiv genom praktisk tillämpning. Inkluderar när den ska användas, förväntade resultat och steg-för-steg-vägledning.'
+              term: 'Best Practice',
+              definition: 'A documented approach or methodology that has proven effective through practical application. Includes when to use it, expected outcomes, and step-by-step guidance.'
             },
             {
-              term: 'Svårighetsgrad',
-              definition: 'Indikerar komplexitet och erfarenhet som krävs: Nybörjare (nya utövare), Medel (regelbunden användning), Avancerad (specialiserade scenarier), Expert (komplexa specialfall).'
+              term: 'Difficulty Level',
+              definition: 'Indicates the complexity and experience required: Beginner (new practitioners), Intermediate (regular use), Advanced (specialized scenarios), Expert (complex edge cases).'
             },
             {
-              term: 'Kunskapsdelning',
-              definition: 'Förvandla individuell expertis till organisatorisk kunskap som kan nås, läras från och byggas vidare på av hela teamet.'
+              term: 'Knowledge Sharing',
+              definition: 'Transform individual expertise into organizational knowledge that can be accessed, learned from, and built upon by the entire team.'
             }
           ]
         }}
@@ -208,7 +208,7 @@ export default function BestPracticesPage() {
           className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
         >
           <Plus className="w-5 h-5" />
-          Lägg till bästa praxis
+          Add Best Practice
         </button>
       </PageHeader>
 
@@ -231,7 +231,7 @@ export default function BestPracticesPage() {
               <Lightbulb className="w-6 h-6 text-blue-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Totalt antal metoder</p>
+              <p className="text-sm text-gray-600">Total Practices</p>
               <p className="text-2xl font-bold text-gray-900">{practices.length}</p>
             </div>
           </div>
@@ -243,7 +243,7 @@ export default function BestPracticesPage() {
               <Lightbulb className="w-6 h-6 text-green-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Publicerade</p>
+              <p className="text-sm text-gray-600">Published</p>
               <p className="text-2xl font-bold text-gray-900">
                 {practices.filter(p => p.is_published).length}
               </p>
@@ -257,7 +257,7 @@ export default function BestPracticesPage() {
               <Eye className="w-6 h-6 text-purple-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Totalt antal visningar</p>
+              <p className="text-sm text-gray-600">Total Views</p>
               <p className="text-2xl font-bold text-gray-900">
                 {practices.reduce((sum, p) => sum + p.view_count, 0)}
               </p>
@@ -271,7 +271,7 @@ export default function BestPracticesPage() {
               <ThumbsUp className="w-6 h-6 text-orange-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Totalt antal gilla-markeringar</p>
+              <p className="text-sm text-gray-600">Total Likes</p>
               <p className="text-2xl font-bold text-gray-900">
                 {practices.reduce((sum, p) => sum + (p.likes_count || 0), 0)}
               </p>
@@ -286,7 +286,7 @@ export default function BestPracticesPage() {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
             <input
               type="text"
-              placeholder="Sök bästa praxis..."
+              placeholder="Search best practices..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
@@ -299,7 +299,7 @@ export default function BestPracticesPage() {
               onChange={(e) => setFilterCategory(e.target.value)}
               className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
             >
-              <option value="all">Alla kategorier</option>
+              <option value="all">All Categories</option>
               {categories.map((cat) => (
                 <option key={cat} value={cat} className="capitalize">{cat.replace('_', ' ')}</option>
               ))}
@@ -307,16 +307,16 @@ export default function BestPracticesPage() {
           </div>
         </div>
 
-        <h2 className="text-xl font-semibold mb-4">Kunskapsbas</h2>
+        <h2 className="text-xl font-semibold mb-4">Knowledge Base</h2>
         {filteredPractices.length === 0 ? (
           <div className="text-center py-12">
             <Lightbulb className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-500 mb-2">Inga bästa praxis hittades</p>
+            <p className="text-gray-500 mb-2">No best practices found</p>
             <button
               onClick={() => setShowCreateModal(true)}
               className="text-primary-600 hover:text-primary-800 text-sm font-medium"
             >
-              Lägg till din första bästa praxis
+              Add your first best practice
             </button>
           </div>
         ) : (
@@ -329,7 +329,7 @@ export default function BestPracticesPage() {
                       <h3 className="text-lg font-semibold">{practice.practice_title}</h3>
                       {!practice.is_published && (
                         <span className="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">
-                          Utkast
+                          Draft
                         </span>
                       )}
                       <span className={`px-2 py-1 text-xs font-medium rounded capitalize ${
@@ -348,11 +348,11 @@ export default function BestPracticesPage() {
                     <div className="flex items-center gap-4 text-sm text-gray-600">
                       <span className="flex items-center gap-1">
                         <Eye className="h-4 w-4" />
-                        {practice.view_count} visningar
+                        {practice.view_count} views
                       </span>
                       <span className="flex items-center gap-1">
                         <ThumbsUp className="h-4 w-4" />
-                        {practice.likes_count || 0} gilla-markeringar
+                        {practice.likes_count || 0} likes
                       </span>
                     </div>
                   </div>
@@ -360,21 +360,21 @@ export default function BestPracticesPage() {
                     <button
                       onClick={() => handleView(practice)}
                       className="p-2 text-blue-600 hover:text-blue-900 hover:bg-blue-50 rounded transition-colors"
-                      title="Visa detaljer"
+                      title="View details"
                     >
                       <Eye className="h-4 w-4" />
                     </button>
                     <button
                       onClick={() => openEditModal(practice)}
                       className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded transition-colors"
-                      title="Redigera"
+                      title="Edit"
                     >
                       <Edit2 className="h-4 w-4" />
                     </button>
                     <button
                       onClick={() => handleDelete(practice.id, practice.practice_title)}
                       className="p-2 text-red-600 hover:text-red-900 hover:bg-red-50 rounded transition-colors"
-                      title="Radera"
+                      title="Delete"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
@@ -387,7 +387,7 @@ export default function BestPracticesPage() {
       </Card>
 
       {showCreateModal && (
-        <Modal isOpen={showCreateModal} onClose={() => setShowCreateModal(false)} title="Lägg till bästa praxis">
+        <Modal isOpen={showCreateModal} onClose={() => setShowCreateModal(false)} title="Add Best Practice">
           <form onSubmit={handleCreate} className="space-y-4">
             {error && (
               <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
@@ -402,7 +402,7 @@ export default function BestPracticesPage() {
                 required
                 value={formData.practice_title}
                 onChange={(e) => setFormData({ ...formData, practice_title: e.target.value })}
-                placeholder="t.ex. Genomföra effektiva upptäcktsworkshops"
+                placeholder="e.g., Conducting Effective Discovery Workshops"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               />
             </div>
@@ -441,40 +441,40 @@ export default function BestPracticesPage() {
                 required
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Kort översikt över denna bästa praxis..."
+                placeholder="Brief overview of this best practice..."
                 rows={3}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Detaljerad vägledning</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Detailed Guidance</label>
               <textarea
                 value={formData.detailed_guidance}
                 onChange={(e) => setFormData({ ...formData, detailed_guidance: e.target.value })}
-                placeholder="Steg-för-steg-vägledning..."
+                placeholder="Step-by-step guidance..."
                 rows={4}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">När ska den användas</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">When to Use</label>
               <textarea
                 value={formData.when_to_use}
                 onChange={(e) => setFormData({ ...formData, when_to_use: e.target.value })}
-                placeholder="Scenarier där denna metod är mest effektiv..."
+                placeholder="Scenarios where this practice is most effective..."
                 rows={2}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Förväntade resultat</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Expected Outcomes</label>
               <textarea
                 value={formData.expected_outcomes}
                 onChange={(e) => setFormData({ ...formData, expected_outcomes: e.target.value })}
-                placeholder="Vilka resultat ska denna metod leverera..."
+                placeholder="What results should this practice deliver..."
                 rows={2}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               />
@@ -513,7 +513,7 @@ export default function BestPracticesPage() {
                 className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
               />
               <label htmlFor="is_published" className="text-sm text-gray-700">
-                Publicera omedelbart
+                Publish immediately
               </label>
             </div>
 
@@ -532,7 +532,7 @@ export default function BestPracticesPage() {
                 type="submit"
                 className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
               >
-                Lägg till metod
+                Add Practice
               </button>
             </div>
           </form>
@@ -540,7 +540,7 @@ export default function BestPracticesPage() {
       )}
 
       {showEditModal && editingPractice && (
-        <Modal isOpen={showEditModal} onClose={() => setShowEditModal(false)} title="Redigera bästa praxis">
+        <Modal isOpen={showEditModal} onClose={() => setShowEditModal(false)} title="Edit Best Practice">
           <form onSubmit={handleUpdate} className="space-y-4">
             {error && (
               <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
@@ -631,7 +631,7 @@ export default function BestPracticesPage() {
                 className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
               />
               <label htmlFor="is_published_edit" className="text-sm text-gray-700">
-                Publicerad
+                Published
               </label>
             </div>
 
@@ -651,7 +651,7 @@ export default function BestPracticesPage() {
                 type="submit"
                 className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
               >
-                Spara ändringar
+                Save Changes
               </button>
             </div>
           </form>
@@ -659,7 +659,7 @@ export default function BestPracticesPage() {
       )}
 
       {showViewModal && viewingPractice && (
-        <Modal isOpen={showViewModal} onClose={() => {setShowViewModal(false); setViewingPractice(null);}} title="Detaljer för bästa praxis">
+        <Modal isOpen={showViewModal} onClose={() => {setShowViewModal(false); setViewingPractice(null);}} title="Best Practice Details">
           <div className="space-y-4">
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-2">{viewingPractice.practice_title}</h2>
@@ -679,27 +679,27 @@ export default function BestPracticesPage() {
             </div>
 
             <div>
-              <h3 className="font-semibold text-gray-900 mb-1">Beskrivning</h3>
+              <h3 className="font-semibold text-gray-900 mb-1">Description</h3>
               <p className="text-gray-700">{viewingPractice.description}</p>
             </div>
 
             {viewingPractice.detailed_guidance && (
               <div>
-                <h3 className="font-semibold text-gray-900 mb-1">Detaljerad vägledning</h3>
+                <h3 className="font-semibold text-gray-900 mb-1">Detailed Guidance</h3>
                 <p className="text-gray-700 whitespace-pre-wrap">{viewingPractice.detailed_guidance}</p>
               </div>
             )}
 
             {viewingPractice.when_to_use && (
               <div>
-                <h3 className="font-semibold text-gray-900 mb-1">När ska den användas</h3>
+                <h3 className="font-semibold text-gray-900 mb-1">When to Use</h3>
                 <p className="text-gray-700">{viewingPractice.when_to_use}</p>
               </div>
             )}
 
             {viewingPractice.expected_outcomes && (
               <div>
-                <h3 className="font-semibold text-gray-900 mb-1">Förväntade resultat</h3>
+                <h3 className="font-semibold text-gray-900 mb-1">Expected Outcomes</h3>
                 <p className="text-gray-700">{viewingPractice.expected_outcomes}</p>
               </div>
             )}
@@ -720,7 +720,7 @@ export default function BestPracticesPage() {
                 onClick={() => {setShowViewModal(false); setViewingPractice(null);}}
                 className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
               >
-                Stäng
+                Close
               </button>
             </div>
           </div>

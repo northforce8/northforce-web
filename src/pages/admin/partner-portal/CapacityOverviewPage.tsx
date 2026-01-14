@@ -45,7 +45,7 @@ const CapacityOverviewPage: React.FC = () => {
       setRecommendations(recommendationsData);
     } catch (err) {
       console.error('Error loading capacity data:', err);
-      setError(t('admin.error.load_capacity'));
+      setError('Failed to load capacity data');
     } finally {
       setLoading(false);
     }
@@ -58,7 +58,7 @@ const CapacityOverviewPage: React.FC = () => {
       await loadData();
     } catch (err) {
       console.error('Error generating recommendations:', err);
-      setError(t('admin.error.generate_recommendations'));
+      setError('Failed to generate recommendations');
     } finally {
       setGeneratingRecommendations(false);
     }
@@ -118,7 +118,7 @@ const CapacityOverviewPage: React.FC = () => {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Laddar kapacitetsöversikt...</p>
+          <p className="text-gray-600">Loading capacity overview...</p>
         </div>
       </div>
     );
@@ -191,7 +191,7 @@ const CapacityOverviewPage: React.FC = () => {
       {recommendations.length > 0 && (
         <div className="bg-white rounded-lg border border-gray-200 mb-6 p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-6">
-            AI-Drivna Rekommendationer ({recommendations.length})
+            AI-Powered Recommendations ({recommendations.length})
           </h2>
           <div className="space-y-3">
             {recommendations.map((rec) => (
@@ -220,7 +220,7 @@ const CapacityOverviewPage: React.FC = () => {
                     )}
                     {rec.suggested_action && (
                       <p className="text-sm font-medium text-blue-600">
-                        Förslag: {rec.suggested_action}
+                        Suggested: {rec.suggested_action}
                       </p>
                     )}
                   </div>
@@ -228,7 +228,7 @@ const CapacityOverviewPage: React.FC = () => {
                     onClick={() => rec.partner_id && navigate(`/admin/partner-portal/partners/${rec.partner_id}`)}
                     className="ml-4 px-3 py-1 text-sm bg-white border border-gray-300 rounded hover:bg-gray-50"
                   >
-                    Visa Partner
+                    View Partner
                   </button>
                 </div>
               </div>
@@ -239,7 +239,7 @@ const CapacityOverviewPage: React.FC = () => {
 
       <div className="bg-white rounded-lg shadow p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-semibold text-gray-900">Partners Kapacitetsstatus</h2>
+          <h2 className="text-lg font-semibold text-gray-900">Partner Capacity Status</h2>
           <div className="flex gap-2">
             <button
               onClick={() => setFilterUtilization('all')}
@@ -249,7 +249,7 @@ const CapacityOverviewPage: React.FC = () => {
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              Alla
+              All
             </button>
             <button
               onClick={() => setFilterUtilization('overloaded')}
@@ -259,7 +259,7 @@ const CapacityOverviewPage: React.FC = () => {
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              Överbelastad ({stats.overloaded})
+              Overloaded ({stats.overloaded})
             </button>
             <button
               onClick={() => setFilterUtilization('optimal')}
@@ -279,7 +279,7 @@ const CapacityOverviewPage: React.FC = () => {
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              Underutnyttjad ({stats.underutilized})
+              Underutilized ({stats.underutilized})
             </button>
           </div>
         </div>
@@ -287,7 +287,7 @@ const CapacityOverviewPage: React.FC = () => {
         {filteredPartners.length === 0 ? (
           <div className="text-center py-12">
             <BarChart3 className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">Inga partners matchar det valda filtret</p>
+            <p className="text-gray-500">No partners match the selected filter</p>
           </div>
         ) : (
           <div className="space-y-3">

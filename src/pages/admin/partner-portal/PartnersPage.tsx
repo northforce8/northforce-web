@@ -50,7 +50,7 @@ const PartnersPage: React.FC = () => {
       setPartners(data);
     } catch (error) {
       console.error('Error loading partners:', error);
-      setError('Kunde inte ladda partners. Försök igen.');
+      setError('Failed to load partners. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -73,11 +73,11 @@ const PartnersPage: React.FC = () => {
         expertise_areas: [],
         is_active: true,
       });
-      setSuccess('Partner skapad');
+      setSuccess('Partner created successfully');
       await loadData();
     } catch (error) {
       console.error('Error creating partner:', error);
-      setError('Kunde inte skapa partner. Försök igen.');
+      setError('Failed to create partner. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -94,29 +94,29 @@ const PartnersPage: React.FC = () => {
       await partnerPortalApi.partners.update(editingPartner.id, editingPartner);
       setShowEditModal(false);
       setEditingPartner(null);
-      setSuccess('Partner uppdaterad');
+      setSuccess('Partner updated successfully');
       await loadData();
     } catch (error) {
       console.error('Error updating partner:', error);
-      setError('Kunde inte uppdatera partner. Försök igen.');
+      setError('Failed to update partner. Please try again.');
     } finally {
       setSubmitting(false);
     }
   };
 
   const handleDeletePartner = async (id: string, name: string) => {
-    if (!confirm(`Är du säker på att du vill radera partner "${name}"? Detta går inte att ångra.`)) {
+    if (!confirm(`Are you sure you want to delete partner "${name}"? This action cannot be undone.`)) {
       return;
     }
 
     setError(null);
     try {
       await partnerPortalApi.partners.delete(id);
-      setSuccess('Partner raderad');
+      setSuccess('Partner deleted successfully');
       await loadData();
     } catch (error) {
       console.error('Error deleting partner:', error);
-      setError('Kunde inte radera partner. Försök igen.');
+      setError('Failed to delete partner. Please try again.');
     }
   };
 
@@ -144,7 +144,7 @@ const PartnersPage: React.FC = () => {
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Laddar partners...</p>
+            <p className="text-gray-600">Loading partners...</p>
           </div>
         </div>
       </div>
@@ -155,9 +155,9 @@ const PartnersPage: React.FC = () => {
     <div className="space-y-6">
       <PageHeader
         title="Partners"
-        description="Hantera partnerprofiler och uppdrag"
+        description="Manage partner profiles and assignments"
         action={isAdminUser ? {
-          label: 'Lägg till Partner',
+          label: 'Add Partner',
           onClick: () => setShowCreateModal(true),
           icon: Plus,
         } : undefined}
@@ -181,7 +181,7 @@ const PartnersPage: React.FC = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
               <input
                 type="text"
-                placeholder="Sök partners..."
+                placeholder="Search partners..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
@@ -194,9 +194,9 @@ const PartnersPage: React.FC = () => {
                 onChange={(e) => setFilterStatus(e.target.value)}
                 className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
               >
-                <option value="all">Alla Partners</option>
-                <option value="active">Aktiva</option>
-                <option value="inactive">Inaktiva</option>
+                <option value="all">All Partners</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
               </select>
             </div>
           </div>
@@ -205,13 +205,13 @@ const PartnersPage: React.FC = () => {
             {filteredPartners.length === 0 ? (
               <div className="text-center py-12">
                 <Users className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-500 mb-2">Inga partners hittades</p>
+                <p className="text-gray-500 mb-2">No partners found</p>
                 {isAdminUser && (
                   <button
                     onClick={() => setShowCreateModal(true)}
                     className="text-primary-600 hover:text-primary-800 text-sm font-medium"
                   >
-                    Lägg till din första partner
+                    Add your first partner
                   </button>
                 )}
               </div>
@@ -220,10 +220,10 @@ const PartnersPage: React.FC = () => {
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Partner</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kontakt</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contact</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                     {isAdminUser && (
-                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Åtgärder</th>
+                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
                     )}
                   </tr>
                 </thead>
@@ -267,7 +267,7 @@ const PartnersPage: React.FC = () => {
                         <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                           partner.is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
                         }`}>
-                          {partner.is_active ? 'Aktiv' : 'Inaktiv'}
+                          {partner.is_active ? 'Active' : 'Inactive'}
                         </span>
                       </td>
                       {isAdminUser && (
@@ -279,7 +279,7 @@ const PartnersPage: React.FC = () => {
                                 navigate(`/admin/partner-portal/partners/${partner.id}`);
                               }}
                               className="p-1 text-blue-600 hover:text-blue-900"
-                              title="Visa detaljer"
+                              title="View details"
                             >
                               <Eye className="h-4 w-4" />
                             </button>
@@ -289,7 +289,7 @@ const PartnersPage: React.FC = () => {
                                 openEditModal(partner);
                               }}
                               className="p-1 text-primary-600 hover:text-primary-900"
-                              title="Redigera partner"
+                              title="Edit partner"
                             >
                               <Edit2 className="h-4 w-4" />
                             </button>
@@ -299,7 +299,7 @@ const PartnersPage: React.FC = () => {
                                 handleDeletePartner(partner.id, partner.partner_name);
                               }}
                               className="p-1 text-red-600 hover:text-red-900"
-                              title="Radera partner"
+                              title="Delete partner"
                             >
                               <Trash2 className="h-4 w-4" />
                             </button>
@@ -318,7 +318,7 @@ const PartnersPage: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-900">Lägg till Ny Partner</h2>
+              <h2 className="text-xl font-semibold text-gray-900">Add New Partner</h2>
             </div>
             <form onSubmit={handleCreatePartner} className="p-6 space-y-4">
               {error && (
@@ -330,7 +330,7 @@ const PartnersPage: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Fullständigt Namn *
+                    Full Name *
                   </label>
                   <input
                     type="text"
@@ -338,39 +338,39 @@ const PartnersPage: React.FC = () => {
                     value={newPartner.partner_name}
                     onChange={(e) => setNewPartner({ ...newPartner, partner_name: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
-                    placeholder="Anna Andersson"
+                    placeholder="John Doe"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Företag
+                    Company
                   </label>
                   <input
                     type="text"
                     value={newPartner.partner_company}
                     onChange={(e) => setNewPartner({ ...newPartner, partner_company: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
-                    placeholder="Företagsnamn"
+                    placeholder="Company name"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    E-post
+                    Email
                   </label>
                   <input
                     type="email"
                     value={newPartner.email}
                     onChange={(e) => setNewPartner({ ...newPartner, email: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
-                    placeholder="partner@exempel.se"
+                    placeholder="partner@example.com"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Telefon
+                    Phone
                   </label>
                   <input
                     type="tel"
@@ -383,14 +383,14 @@ const PartnersPage: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Titel
+                    Title
                   </label>
                   <input
                     type="text"
                     value={newPartner.title}
                     onChange={(e) => setNewPartner({ ...newPartner, title: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
-                    placeholder="Seniorkonsult"
+                    placeholder="Senior Consultant"
                   />
                 </div>
 
@@ -403,8 +403,8 @@ const PartnersPage: React.FC = () => {
                     onChange={(e) => setNewPartner({ ...newPartner, is_active: e.target.value === 'active' })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                   >
-                    <option value="active">Aktiv</option>
-                    <option value="inactive">Inaktiv</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
                   </select>
                 </div>
               </div>
@@ -419,7 +419,7 @@ const PartnersPage: React.FC = () => {
                   disabled={submitting}
                   className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors disabled:opacity-50"
                 >
-                  Avbryt
+                  Cancel
                 </button>
                 <button
                   type="submit"
@@ -427,7 +427,7 @@ const PartnersPage: React.FC = () => {
                   className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
                 >
                   {submitting && <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>}
-                  {submitting ? 'Skapar...' : 'Skapa Partner'}
+                  {submitting ? 'Creating...' : 'Create Partner'}
                 </button>
               </div>
             </form>
@@ -439,7 +439,7 @@ const PartnersPage: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-900">Redigera Partner</h2>
+              <h2 className="text-xl font-semibold text-gray-900">Edit Partner</h2>
             </div>
             <form onSubmit={handleUpdatePartner} className="p-6 space-y-4">
               {error && (
@@ -451,7 +451,7 @@ const PartnersPage: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Fullständigt Namn *
+                    Full Name *
                   </label>
                   <input
                     type="text"
@@ -464,7 +464,7 @@ const PartnersPage: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Företag
+                    Company
                   </label>
                   <input
                     type="text"
@@ -476,7 +476,7 @@ const PartnersPage: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    E-post
+                    Email
                   </label>
                   <input
                     type="email"
@@ -488,7 +488,7 @@ const PartnersPage: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Telefon
+                    Phone
                   </label>
                   <input
                     type="tel"
@@ -500,7 +500,7 @@ const PartnersPage: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Titel
+                    Title
                   </label>
                   <input
                     type="text"
@@ -519,8 +519,8 @@ const PartnersPage: React.FC = () => {
                     onChange={(e) => setEditingPartner({ ...editingPartner, is_active: e.target.value === 'active' })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                   >
-                    <option value="active">Aktiv</option>
-                    <option value="inactive">Inaktiv</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
                   </select>
                 </div>
               </div>
@@ -536,7 +536,7 @@ const PartnersPage: React.FC = () => {
                   disabled={submitting}
                   className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors disabled:opacity-50"
                 >
-                  Avbryt
+                  Cancel
                 </button>
                 <button
                   type="submit"
@@ -544,7 +544,7 @@ const PartnersPage: React.FC = () => {
                   className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
                 >
                   {submitting && <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>}
-                  {submitting ? 'Sparar...' : 'Spara Ändringar'}
+                  {submitting ? 'Saving...' : 'Save Changes'}
                 </button>
               </div>
             </form>

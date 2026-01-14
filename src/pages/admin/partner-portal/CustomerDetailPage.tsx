@@ -151,7 +151,7 @@ const CustomerDetailPage: React.FC = () => {
       });
     } catch (error) {
       console.error('Error loading customer details:', error);
-      setError('Kunde inte ladda kunddetaljer. Försök igen.');
+      setError('Failed to load customer details. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -170,7 +170,7 @@ const CustomerDetailPage: React.FC = () => {
       await loadData();
     } catch (error) {
       console.error('Error updating field:', error);
-      setError(`Kunde inte uppdatera ${fieldName.replace(/_/g, ' ')}. Försök igen.`);
+      setError(`Failed to update ${fieldName.replace(/_/g, ' ')}. Please try again.`);
     } finally {
       setSubmitting(false);
     }
@@ -210,7 +210,7 @@ const CustomerDetailPage: React.FC = () => {
       await loadData();
     } catch (error) {
       console.error('Error updating credits:', error);
-      setError('Kunde inte uppdatera krediter. Försök igen.');
+      setError('Failed to update credits. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -247,7 +247,7 @@ const CustomerDetailPage: React.FC = () => {
       await loadData();
     } catch (error) {
       console.error('Error creating project:', error);
-      setError('Kunde inte skapa projekt. Försök igen.');
+      setError('Failed to create project. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -278,7 +278,7 @@ const CustomerDetailPage: React.FC = () => {
       await loadData();
     } catch (error) {
       console.error('Error creating note:', error);
-      setError('Kunde inte skapa anteckning. Försök igen.');
+      setError('Failed to create note. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -535,14 +535,14 @@ const CustomerDetailPage: React.FC = () => {
         <div className="max-w-7xl mx-auto p-6">
           <div className="text-center py-12">
             <AlertTriangle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Kund Hittades Inte</h3>
-            <p className="text-gray-600 mb-6">Kunden du söker finns inte.</p>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">Customer Not Found</h3>
+            <p className="text-gray-600 mb-6">The customer you're looking for doesn't exist.</p>
             <button
               onClick={() => navigate('/admin/partner-portal/customers')}
               className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
             >
               <ArrowLeft className="h-4 w-4" />
-              Tillbaka till Kunder
+              Back to Customers
             </button>
           </div>
         </div>
@@ -645,7 +645,7 @@ const CustomerDetailPage: React.FC = () => {
           <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
             <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
             <div className="flex-1">
-              <p className="text-red-800 font-medium">Fel</p>
+              <p className="text-red-800 font-medium">Error</p>
               <p className="text-red-700 text-sm mt-1">{error}</p>
             </div>
             <button onClick={() => setError(null)} className="text-red-600 hover:text-red-800">
@@ -658,7 +658,7 @@ const CustomerDetailPage: React.FC = () => {
           <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-start gap-3">
             <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
             <div className="flex-1">
-              <p className="text-green-800 font-medium">Lyckades</p>
+              <p className="text-green-800 font-medium">Success</p>
               <p className="text-green-700 text-sm mt-1">{success}</p>
             </div>
             <button onClick={() => setSuccess(null)} className="text-green-600 hover:text-green-800">
@@ -1495,7 +1495,7 @@ const CustomerDetailPage: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-gray-900">Lägg till nytt projekt</h2>
+              <h2 className="text-xl font-semibold text-gray-900">Add New Project</h2>
               <button onClick={() => setShowAddProjectModal(false)} className="text-gray-400 hover:text-gray-600">
                 <X className="h-5 w-5" />
               </button>
@@ -1622,14 +1622,14 @@ const CustomerDetailPage: React.FC = () => {
                   disabled={submitting}
                   className="flex-1 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50"
                 >
-                  {submitting ? 'Skapar...' : 'Skapa projekt'}
+                  {submitting ? 'Creating...' : 'Create Project'}
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowAddProjectModal(false)}
                   className="flex-1 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
                 >
-                  Avbryt
+                  Cancel
                 </button>
               </div>
             </form>
@@ -1641,7 +1641,7 @@ const CustomerDetailPage: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-lg w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-gray-900">Lägg till anteckning</h2>
+              <h2 className="text-xl font-semibold text-gray-900">Add Note</h2>
               <button onClick={() => setShowAddNoteModal(false)} className="text-gray-400 hover:text-gray-600">
                 <X className="h-5 w-5" />
               </button>

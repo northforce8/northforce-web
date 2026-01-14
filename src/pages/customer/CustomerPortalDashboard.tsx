@@ -90,7 +90,7 @@ const CustomerPortalDashboard: React.FC = () => {
 
       setRecentActivity(mockActivity);
     } catch (error) {
-      console.error('Kunde inte ladda instrumentpanel:', error);
+      console.error('Failed to load dashboard:', error);
     } finally {
       setLoading(false);
     }

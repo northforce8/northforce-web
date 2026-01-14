@@ -390,7 +390,7 @@ const AdminHealthPage: React.FC = () => {
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Fel</p>
+              <p className="text-sm font-medium text-gray-600">Errors</p>
               <p className="text-3xl font-bold text-red-600">{errorCount}</p>
             </div>
             <XCircle className="h-8 w-8 text-red-600" />
@@ -498,7 +498,7 @@ const AdminHealthPage: React.FC = () => {
                         )}
                         {route.routeAccessible.error && (
                           <p className="text-red-600 mt-2">
-                            <strong>Fel:</strong> {route.routeAccessible.error}
+                            <strong>Error:</strong> {route.routeAccessible.error}
                           </p>
                         )}
                       </div>
@@ -543,7 +543,7 @@ const AdminHealthPage: React.FC = () => {
                           )}
                           {route.dataWiring.error && (
                             <p className="text-red-600 mt-2">
-                              <strong>Databasfel:</strong> {route.dataWiring.error}
+                              <strong>Database Error:</strong> {route.dataWiring.error}
                             </p>
                           )}
                         </div>
@@ -611,7 +611,7 @@ const AdminHealthPage: React.FC = () => {
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-purple-800">
           <div>
-            <p className="font-semibold mb-1">Körtidsfel:</p>
+            <p className="font-semibold mb-1">Runtime Errors:</p>
             <ul className="list-disc list-inside space-y-1 ml-2">
               <li>"X is not defined" (missing imports)</li>
               <li>"Cannot read property of undefined"</li>
@@ -620,7 +620,7 @@ const AdminHealthPage: React.FC = () => {
             </ul>
           </div>
           <div>
-            <p className="font-semibold mb-1">Datafel:</p>
+            <p className="font-semibold mb-1">Data Errors:</p>
             <ul className="list-disc list-inside space-y-1 ml-2">
               <li>Database connection failures</li>
               <li>Missing tables or columns</li>
