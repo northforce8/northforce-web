@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Clock, Building2, FolderKanban, TrendingUp, Calendar, Plus, FileText,
-  AlertTriangle, AlertCircle, Zap, CheckCircle, Info, TrendingDown,
+  AlertTriangle, AlertCircle, Zap, TrendingDown,
   Target, Compass, RefreshCw, Lightbulb, LayoutDashboard
 } from 'lucide-react';
 import { getCurrentUser, isAdmin } from '../../../lib/auth';
@@ -26,7 +26,6 @@ const PartnerDashboard: React.FC = () => {
   const [recentTimeEntries, setRecentTimeEntries] = useState<TimeEntryWithRelations[]>([]);
   const [recentNotes, setRecentNotes] = useState<NoteWithRelations[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [currentPartner, setCurrentPartner] = useState<Partner | null>(null);
   const [alerts, setAlerts] = useState<Array<{
     id: string;
@@ -47,71 +46,26 @@ const PartnerDashboard: React.FC = () => {
     const loadDashboard = async () => {
       try {
         setLoading(true);
-        setError(null);
         const user = await getCurrentUser();
         const userIsAdmin = await isAdmin();
         setIsAdminUser(userIsAdmin);
 
         if (userIsAdmin) {
-          const adminStats = await partnerPortalApi.stats.getAdminStats();
-          const weekStart = new Date();
-          weekStart.setDate(weekStart.getDate() - weekStart.getDay());
-          const weekStats = await partnerPortalApi.stats.getAdminStats(
-            weekStart.toISOString().split('T')[0],
-            new Date().toISOString().split('T')[0]
-          );
-
-          setStats({
-            totalHours: adminStats.totalHours,
-            activeCustomers: adminStats.activeCustomers,
-            activeProjects: adminStats.activeProjects,
-            thisWeekHours: weekStats.totalHours,
-          });
-
-          const timeEntries = await partnerPortalApi.timeEntries.getAll();
-          setRecentTimeEntries(timeEntries.slice(0, 5));
-
-          const notes = await partnerPortalApi.notes.getAll();
-          setRecentNotes(notes.slice(0, 5));
-
-          const customers = await partnerPortalApi.customers.getAll();
-          const recommendations = await partnerPortalApi.recommendations.getAll({ status: 'active' });
-
-          // Load framework data
-          const [okrsResult, swotsResult, changesResult] = await Promise.all([
-            supabase.from('okr_objectives').select('id, status', { count: 'exact' }),
-            supabase.from('swot_analyses').select('id, status', { count: 'exact' }).eq('status', 'in_progress'),
-            supabase.from('change_initiatives').select('id, status', { count: 'exact' }).eq('status', 'in_progress')
-          ]);
-
-          setFrameworkStats({
-            totalOKRs: okrsResult.count || 0,
-            okrsOnTrack: (okrsResult.data || []).filter(o => o.status === 'active').length,
-            activeSWOTs: swotsResult.count || 0,
-            activeChangeInitiatives: changesResult.count || 0,
-          });
-
-          const generatedAlerts = generateAlerts(customers, recommendations);
-          setAlerts(generatedAlerts);
+          // Load admin data with individual try-catch for each widget
+          await loadAdminStats();
+          await loadAdminTimeEntries();
+          await loadAdminNotes();
+          await loadFrameworkStats();
+          await loadAdminAlerts();
         } else {
           if (!user) return;
 
-          const partner = await partnerPortalApi.partners.getByUserId(user.id);
-          if (partner) {
-            setCurrentPartner(partner);
-            const partnerStats = await partnerPortalApi.stats.getPartnerStats(partner.id);
-            setStats(partnerStats);
-
-            const timeEntries = await partnerPortalApi.timeEntries.getAll({ partnerId: partner.id });
-            setRecentTimeEntries(timeEntries.slice(0, 5));
-
-            const notes = await partnerPortalApi.notes.getAll({ partnerId: partner.id });
-            setRecentNotes(notes.slice(0, 5));
-          }
+          // Load partner data with individual try-catch for each widget
+          await loadPartnerData(user.id);
         }
       } catch (err) {
-        console.error('Error loading dashboard:', err);
-        setError(err instanceof Error ? err.message : 'Failed to load dashboard data. Please try again.');
+        console.error('Error initializing dashboard:', err);
+        // Don't block the dashboard - just log the error
       } finally {
         setLoading(false);
       }
@@ -119,6 +73,119 @@ const PartnerDashboard: React.FC = () => {
 
     loadDashboard();
   }, []);
+
+  const loadAdminStats = async () => {
+    try {
+      const adminStats = await partnerPortalApi.stats.getAdminStats();
+      const weekStart = new Date();
+      weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+      const weekStats = await partnerPortalApi.stats.getAdminStats(
+        weekStart.toISOString().split('T')[0],
+        new Date().toISOString().split('T')[0]
+      );
+
+      setStats({
+        totalHours: adminStats.totalHours || 0,
+        activeCustomers: adminStats.activeCustomers || 0,
+        activeProjects: adminStats.activeProjects || 0,
+        thisWeekHours: weekStats.totalHours || 0,
+      });
+    } catch (err) {
+      console.error('Error loading admin stats:', err);
+      // Keep default stats (0, 0, 0, 0) - don't crash the dashboard
+    }
+  };
+
+  const loadAdminTimeEntries = async () => {
+    try {
+      const timeEntries = await partnerPortalApi.timeEntries.getAll();
+      setRecentTimeEntries((timeEntries || []).slice(0, 5));
+    } catch (err) {
+      console.error('Error loading time entries:', err);
+      // Keep empty array - show empty state
+    }
+  };
+
+  const loadAdminNotes = async () => {
+    try {
+      const notes = await partnerPortalApi.notes.getAll();
+      setRecentNotes((notes || []).slice(0, 5));
+    } catch (err) {
+      console.error('Error loading notes:', err);
+      // Keep empty array - show empty state
+    }
+  };
+
+  const loadFrameworkStats = async () => {
+    try {
+      const [okrsResult, swotsResult, changesResult] = await Promise.all([
+        supabase.from('okr_objectives').select('id, status', { count: 'exact' }).then(r => ({ data: r.data || [], count: r.count || 0, error: r.error })),
+        supabase.from('swot_analyses').select('id, status', { count: 'exact' }).eq('status', 'in_progress').then(r => ({ data: r.data || [], count: r.count || 0, error: r.error })),
+        supabase.from('change_initiatives').select('id, status', { count: 'exact' }).eq('status', 'in_progress').then(r => ({ data: r.data || [], count: r.count || 0, error: r.error }))
+      ]);
+
+      setFrameworkStats({
+        totalOKRs: okrsResult.count || 0,
+        okrsOnTrack: (okrsResult.data || []).filter((o: any) => o.status === 'active').length,
+        activeSWOTs: swotsResult.count || 0,
+        activeChangeInitiatives: changesResult.count || 0,
+      });
+    } catch (err) {
+      console.error('Error loading framework stats:', err);
+      // Keep default stats (0, 0, 0, 0) - don't crash the dashboard
+    }
+  };
+
+  const loadAdminAlerts = async () => {
+    try {
+      const [customers, recommendations] = await Promise.all([
+        partnerPortalApi.customers.getAll().catch(() => []),
+        partnerPortalApi.recommendations.getAll({ status: 'active' }).catch(() => [])
+      ]);
+
+      const generatedAlerts = generateAlerts(customers || [], recommendations || []);
+      setAlerts(generatedAlerts);
+    } catch (err) {
+      console.error('Error loading alerts:', err);
+      // Keep empty alerts - don't crash the dashboard
+    }
+  };
+
+  const loadPartnerData = async (userId: string) => {
+    try {
+      const partner = await partnerPortalApi.partners.getByUserId(userId);
+      if (partner) {
+        setCurrentPartner(partner);
+
+        // Load partner stats with safe defaults
+        try {
+          const partnerStats = await partnerPortalApi.stats.getPartnerStats(partner.id);
+          setStats(partnerStats || { totalHours: 0, activeCustomers: 0, activeProjects: 0, thisWeekHours: 0 });
+        } catch (err) {
+          console.error('Error loading partner stats:', err);
+        }
+
+        // Load partner time entries with safe defaults
+        try {
+          const timeEntries = await partnerPortalApi.timeEntries.getAll({ partnerId: partner.id });
+          setRecentTimeEntries((timeEntries || []).slice(0, 5));
+        } catch (err) {
+          console.error('Error loading partner time entries:', err);
+        }
+
+        // Load partner notes with safe defaults
+        try {
+          const notes = await partnerPortalApi.notes.getAll({ partnerId: partner.id });
+          setRecentNotes((notes || []).slice(0, 5));
+        } catch (err) {
+          console.error('Error loading partner notes:', err);
+        }
+      }
+    } catch (err) {
+      console.error('Error loading partner data:', err);
+      // Don't crash - just log the error
+    }
+  };
 
   const generateAlerts = (customers: Customer[], recommendations: Recommendation[]) => {
     const alerts: Array<{
@@ -139,18 +206,22 @@ const PartnerDashboard: React.FC = () => {
         alerts.push({
           id: `credits-critical-${customer.id}`,
           type: 'critical',
-          title: `Kritiskt: ${customer.company_name} - Krediter slut`,
-          description: `Endast ${safeNumber(customer.credits_balance, 0).toFixed(1)} krediter kvar (${safeNumber(creditsPercentage, 0).toFixed(0)}%). Omedelbar åtgärd krävs.`,
-          action: { label: 'Lägg till krediter', link: `/admin/partner-portal/customers/${customer.id}` },
+          title: t('dashboard.alerts.credits_critical').replace('{customer}', customer.company_name),
+          description: t('dashboard.alerts.credits_critical_desc')
+            .replace('{credits}', safeNumber(customer.credits_balance, 0).toFixed(1))
+            .replace('{percentage}', safeNumber(creditsPercentage, 0).toFixed(0)),
+          action: { label: t('dashboard.alerts.add_credits'), link: `/admin/partner-portal/customers/${customer.id}` },
           icon: <AlertTriangle className="h-5 w-5" />,
         });
       } else if (creditsPercentage < 20) {
         alerts.push({
           id: `credits-low-${customer.id}`,
           type: 'warning',
-          title: `${customer.company_name} - Lågt kreditsaldo`,
-          description: `${safeNumber(customer.credits_balance, 0).toFixed(1)} krediter kvar (${safeNumber(creditsPercentage, 0).toFixed(0)}%). Överväg påfyllning.`,
-          action: { label: 'Hantera krediter', link: `/admin/partner-portal/customers/${customer.id}` },
+          title: t('dashboard.alerts.credits_low').replace('{customer}', customer.company_name),
+          description: t('dashboard.alerts.credits_low_desc')
+            .replace('{credits}', safeNumber(customer.credits_balance, 0).toFixed(1))
+            .replace('{percentage}', safeNumber(creditsPercentage, 0).toFixed(0)),
+          action: { label: t('dashboard.alerts.manage_credits'), link: `/admin/partner-portal/customers/${customer.id}` },
           icon: <AlertCircle className="h-5 w-5" />,
         });
       }
@@ -159,9 +230,9 @@ const PartnerDashboard: React.FC = () => {
         alerts.push({
           id: `overdelivery-${customer.id}`,
           type: customer.overdelivery_risk_level === 'critical' ? 'critical' : 'warning',
-          title: `${customer.company_name} - Hög överleveransrisk`,
-          description: `Nuvarande förbrukningshastighet överstiger allokering. Omfattningsgranskning rekommenderas.`,
-          action: { label: 'Visa detaljer', link: `/admin/partner-portal/customers/${customer.id}` },
+          title: t('dashboard.alerts.overdelivery').replace('{customer}', customer.company_name),
+          description: t('dashboard.alerts.overdelivery_desc'),
+          action: { label: t('dashboard.alerts.view_details'), link: `/admin/partner-portal/customers/${customer.id}` },
           icon: <TrendingDown className="h-5 w-5" />,
         });
       }
@@ -170,9 +241,9 @@ const PartnerDashboard: React.FC = () => {
         alerts.push({
           id: `blocked-${customer.id}`,
           type: 'critical',
-          title: `${customer.company_name} - Projekt blockerat`,
-          description: `Samarbetet är blockerat. Omedelbar uppmärksamhet krävs för att låsa upp framsteg.`,
-          action: { label: 'Visa detaljer', link: `/admin/partner-portal/customers/${customer.id}` },
+          title: t('dashboard.alerts.blocked').replace('{customer}', customer.company_name),
+          description: t('dashboard.alerts.blocked_desc'),
+          action: { label: t('dashboard.alerts.view_details'), link: `/admin/partner-portal/customers/${customer.id}` },
           icon: <AlertTriangle className="h-5 w-5" />,
         });
       }
@@ -183,9 +254,9 @@ const PartnerDashboard: React.FC = () => {
         alerts.push({
           id: `rec-${rec.id}`,
           type: rec.priority === 'critical' ? 'critical' : 'warning',
-          title: rec.title || 'Untitled Recommendation',
+          title: rec.title || 'Recommendation',
           description: rec.description || '',
-          action: (rec.customer && rec.customer_id) ? { label: 'Visa kund', link: `/admin/partner-portal/customers/${rec.customer_id}` } : undefined,
+          action: (rec.customer && rec.customer_id) ? { label: t('dashboard.alerts.view_customer'), link: `/admin/partner-portal/customers/${rec.customer_id}` } : undefined,
           icon: <Zap className="h-5 w-5" />,
         });
       }
@@ -214,26 +285,6 @@ const PartnerDashboard: React.FC = () => {
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
             <p className="text-gray-600">{t('dashboard.loading')}</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div>
-        <div className="flex items-center justify-center h-screen">
-          <div className="text-center max-w-md">
-            <AlertCircle className="h-12 w-12 text-red-600 mx-auto mb-4" />
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">Failed to Load Dashboard</h2>
-            <p className="text-gray-600 mb-4">{error}</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
-            >
-              Retry
-            </button>
           </div>
         </div>
       </div>
@@ -451,16 +502,16 @@ const PartnerDashboard: React.FC = () => {
                   {recentTimeEntries.map((entry) => (
                     <div key={entry.id} className="flex items-start justify-between pb-4 border-b border-gray-100 last:border-0">
                       <div className="flex-1">
-                        <p className="font-medium text-gray-900">{entry.customer?.company_name}</p>
-                        <p className="text-sm text-gray-600 mt-1">{entry.description}</p>
+                        <p className="font-medium text-gray-900">{entry.customer?.company_name || 'N/A'}</p>
+                        <p className="text-sm text-gray-600 mt-1">{entry.description || ''}</p>
                         <div className="flex items-center mt-2 text-xs text-gray-500">
                           <Calendar className="h-3 w-3 mr-1" />
                           {formatDate(entry.date)}
                           <span className="mx-2">•</span>
-                          {entry.work_type?.name}
+                          {entry.work_type?.name || 'N/A'}
                         </div>
                       </div>
-                      <span className="text-sm font-semibold text-gray-900 ml-4">{entry.hours}h</span>
+                      <span className="text-sm font-semibold text-gray-900 ml-4">{entry.hours || 0}h</span>
                     </div>
                   ))}
                 </div>
@@ -501,12 +552,12 @@ const PartnerDashboard: React.FC = () => {
                     <div key={note.id} className="pb-4 border-b border-gray-100 last:border-0">
                       <div className="flex items-start justify-between mb-2">
                         <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-blue-100 text-blue-800">
-                          {note.note_type}
+                          {note.note_type || 'Note'}
                         </span>
                         <span className="text-xs text-gray-500">{formatDate(note.created_at)}</span>
                       </div>
-                      <p className="text-sm text-gray-600 mb-2 line-clamp-2">{note.content}</p>
-                      <p className="text-xs font-medium text-gray-900">{note.customer?.company_name}</p>
+                      <p className="text-sm text-gray-600 mb-2 line-clamp-2">{note.content || ''}</p>
+                      <p className="text-xs font-medium text-gray-900">{note.customer?.company_name || 'N/A'}</p>
                     </div>
                   ))}
                 </div>
