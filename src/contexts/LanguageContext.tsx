@@ -358,6 +358,13 @@ const translations: Record<string, Record<Language, string>> = {
   'dashboard.links.time': { en: 'Time Reporting', sv: 'Tidsrapportering' },
   'dashboard.links.time_desc': { en: 'Log and track your hours', sv: 'Logga och spåra dina timmar' },
 
+  // Build marker for deployment verification
+  'dashboard.build_marker': { en: 'Build', sv: 'Byggversion' },
+
+  // Fallback values
+  'common.not_available': { en: 'N/A', sv: 'Ej tillg.' },
+  'common.note': { en: 'Note', sv: 'Anteckning' },
+
   'audit.credentials.title': { en: 'Enterprise-Grade', sv: 'Företagsklass' },
   'audit.credentials.title_highlight': { en: 'Strategy', sv: 'strategi' },
   'audit.credentials.subtitle': { en: 'Our strategic advisory combines Fortune 500 methodology with growth-stage execution speed. Built for businesses serious about scaling.', sv: 'Vår strategiska rådgivning kombinerar Fortune 500-metodik med snabb exekvering i tillväxtfas. Byggd för företag som är seriösa om skalning.' },

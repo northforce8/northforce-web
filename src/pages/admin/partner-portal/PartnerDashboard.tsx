@@ -502,13 +502,13 @@ const PartnerDashboard: React.FC = () => {
                   {recentTimeEntries.map((entry) => (
                     <div key={entry.id} className="flex items-start justify-between pb-4 border-b border-gray-100 last:border-0">
                       <div className="flex-1">
-                        <p className="font-medium text-gray-900">{entry.customer?.company_name || 'N/A'}</p>
+                        <p className="font-medium text-gray-900">{entry.customer?.company_name || t('common.not_available')}</p>
                         <p className="text-sm text-gray-600 mt-1">{entry.description || ''}</p>
                         <div className="flex items-center mt-2 text-xs text-gray-500">
                           <Calendar className="h-3 w-3 mr-1" />
                           {formatDate(entry.date)}
                           <span className="mx-2">•</span>
-                          {entry.work_type?.name || 'N/A'}
+                          {entry.work_type?.name || t('common.not_available')}
                         </div>
                       </div>
                       <span className="text-sm font-semibold text-gray-900 ml-4">{entry.hours || 0}h</span>
@@ -552,12 +552,12 @@ const PartnerDashboard: React.FC = () => {
                     <div key={note.id} className="pb-4 border-b border-gray-100 last:border-0">
                       <div className="flex items-start justify-between mb-2">
                         <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-blue-100 text-blue-800">
-                          {note.note_type || 'Note'}
+                          {note.note_type || t('common.note')}
                         </span>
                         <span className="text-xs text-gray-500">{formatDate(note.created_at)}</span>
                       </div>
                       <p className="text-sm text-gray-600 mb-2 line-clamp-2">{note.content || ''}</p>
-                      <p className="text-xs font-medium text-gray-900">{note.customer?.company_name || 'N/A'}</p>
+                      <p className="text-xs font-medium text-gray-900">{note.customer?.company_name || t('common.not_available')}</p>
                     </div>
                   ))}
                 </div>
@@ -593,6 +593,13 @@ const PartnerDashboard: React.FC = () => {
             <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('dashboard.links.time')}</h3>
             <p className="text-sm text-gray-600">{t('dashboard.links.time_desc')}</p>
           </Link>
+        </div>
+
+        {/* Build marker for deployment verification */}
+        <div className="mt-8 text-center">
+          <p className="text-xs text-gray-400">
+            {t('dashboard.build_marker')}: 588-{new Date().toISOString().slice(0, 16).replace('T', ' ')}
+          </p>
         </div>
       </div>
     </div>
