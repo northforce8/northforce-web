@@ -4,9 +4,11 @@ import { isAdmin } from '../../../lib/auth';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { PAGE_HELP_CONTENT } from '../../../lib/page-help-content';
+import { useLanguage } from '../../../contexts/LanguageContext';
 import type { Project, Customer, Partner } from '../../../lib/partner-portal-types';
 
 const ProjectsPage: React.FC = () => {
+  const { t } = useLanguage();
   const [projects, setProjects] = useState<Project[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [partners, setPartners] = useState<Partner[]>([]);
@@ -62,10 +64,10 @@ const ProjectsPage: React.FC = () => {
       console.error('Error loading projects:', error);
       const errorMsg = error instanceof Error ? error.message : String(error);
       if (errorMsg.includes('RLS') || errorMsg.includes('Auth')) {
-        setError('Access denied or session expired. Please log in again.');
-        setTimeout(() => window.location.href = '/admin/login', 2000);
+        setError(t('projects.error.auth'));
+        setTimeout(() => window.location.href = '/admin-login', 2000);
       } else {
-        setError('Failed to load projects. Please try again.');
+        setError(t('projects.error.load'));
       }
     } finally {
       setLoading(false);
@@ -202,11 +204,11 @@ const ProjectsPage: React.FC = () => {
     <div>
       <div className="p-6 max-w-7xl mx-auto">
         <PageHeader
-          title="Projects"
-          description="Manage customer projects and deliveries"
+          title={t('projects.title')}
+          description={t('projects.description')}
           icon={FolderKanban}
           action={isAdminUser ? {
-            label: 'Add Project',
+            label: t('projects.add'),
             onClick: () => setShowCreateModal(true),
             icon: Plus
           } : undefined}
@@ -231,7 +233,7 @@ const ProjectsPage: React.FC = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search projects..."
+                placeholder={t('projects.search')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
@@ -244,12 +246,12 @@ const ProjectsPage: React.FC = () => {
                 onChange={(e) => setFilterStatus(e.target.value)}
                 className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
               >
-                <option value="all">All Statuses</option>
-                <option value="planning">Planning</option>
-                <option value="active">Active</option>
-                <option value="on_hold">On Hold</option>
-                <option value="completed">Completed</option>
-                <option value="cancelled">Cancelled</option>
+                <option value="all">{t('projects.filter.status')}</option>
+                <option value="planning">{t('projects.status.planning')}</option>
+                <option value="active">{t('projects.status.active')}</option>
+                <option value="on_hold">{t('projects.status.on_hold')}</option>
+                <option value="completed">{t('projects.status.completed')}</option>
+                <option value="cancelled">{t('projects.status.cancelled')}</option>
               </select>
 
               <select
@@ -257,7 +259,7 @@ const ProjectsPage: React.FC = () => {
                 onChange={(e) => setFilterCustomer(e.target.value)}
                 className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
               >
-                <option value="all">All Customers</option>
+                <option value="all">{t('projects.filter.customer')}</option>
                 {customers.map(customer => (
                   <option key={customer.id} value={customer.id}>
                     {customer.company_name}
@@ -271,13 +273,13 @@ const ProjectsPage: React.FC = () => {
             {filteredProjects.length === 0 ? (
               <div className="text-center py-12">
                 <FolderKanban className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-500 mb-2">No projects found</p>
+                <p className="text-gray-500 mb-2">{t('projects.empty')}</p>
                 {isAdminUser && (
                   <button
                     onClick={() => setShowCreateModal(true)}
                     className="text-primary-600 hover:text-primary-800 text-sm font-medium"
                   >
-                    Create your first project
+                    {t('projects.empty.create')}
                   </button>
                 )}
               </div>
@@ -633,6 +635,13 @@ const ProjectsPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Build marker for deployment verification */}
+      <div className="mt-8 text-center pb-4">
+        <p className="text-xs text-gray-400">
+          {t('projects.build_marker')}: 589-{new Date().toISOString().slice(0, 16).replace('T', ' ')}
+        </p>
+      </div>
     </div>
   );
 };

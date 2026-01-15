@@ -3,6 +3,7 @@ import { Plus, FileText, Eye, Edit2, Trash2, X, Save, AlertCircle, AlertTriangle
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { PAGE_HELP_CONTENT } from '../../../lib/page-help-content';
+import { useLanguage } from '../../../contexts/LanguageContext';
 import type { NoteWithRelations, Customer, Project } from '../../../lib/partner-portal-types';
 
 interface NoteFormData {
@@ -14,6 +15,7 @@ interface NoteFormData {
 }
 
 const NotesPage: React.FC = () => {
+  const { t } = useLanguage();
   const [notes, setNotes] = useState<NoteWithRelations[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
@@ -53,7 +55,7 @@ const NotesPage: React.FC = () => {
       setProjects(projectsData);
     } catch (err: any) {
       console.error('Error loading data:', err);
-      setError(err instanceof Error ? err.message : 'Kunde inte ladda anteckningar. Försök igen.');
+      setError(err instanceof Error ? err.message : t('notes.error.load'));
     } finally {
       setLoading(false);
     }
@@ -238,11 +240,11 @@ const NotesPage: React.FC = () => {
       )}
 
       <PageHeader
-        title="Notes"
-        description="Collaboration and documentation"
+        title={t('notes.title')}
+        description={t('notes.description')}
         icon={FileText}
         action={{
-          label: 'Add Note',
+          label: t('notes.add'),
           onClick: openAddModal,
           icon: Plus,
         }}
@@ -620,6 +622,13 @@ const NotesPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Build marker for deployment verification */}
+      <div className="mt-8 text-center pb-4">
+        <p className="text-xs text-gray-400">
+          {t('notes.build_marker')}: 589-{new Date().toISOString().slice(0, 16).replace('T', ' ')}
+        </p>
+      </div>
     </div>
   );
 };

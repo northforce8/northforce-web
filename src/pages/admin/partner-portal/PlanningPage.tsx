@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, ChevronLeft, ChevronRight, Plus, AlertTriangle, User, Building2, FolderKanban } from 'lucide-react';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { supabase } from '../../../lib/supabase';
+import { useLanguage } from '../../../contexts/LanguageContext';
 import CapacityConflictsAI from '../../../components/admin/CapacityConflictsAI';
 
 type ViewMode = 'week' | 'month' | 'quarter';
@@ -23,6 +24,7 @@ interface CapacityEntry {
 }
 
 export default function PlanningPage() {
+  const { t } = useLanguage();
   const [viewMode, setViewMode] = useState<ViewMode>('month');
   const [currentDate, setCurrentDate] = useState(new Date());
   const [capacityEntries, setCapacityEntries] = useState<CapacityEntry[]>([]);
@@ -59,7 +61,7 @@ export default function PlanningPage() {
       detectConflicts(entriesData);
     } catch (err) {
       console.error('Error loading planning data:', err);
-      setError(err instanceof Error ? err.message : 'Kunde inte ladda planeringsdata. Försök igen.');
+      setError(err instanceof Error ? err.message : t('planning.error.load'));
     } finally {
       setLoading(false);
     }
@@ -560,6 +562,13 @@ function CreateCapacityModal({ partners, customers, projects, onClose, onSuccess
             </button>
           </div>
         </form>
+      </div>
+
+      {/* Build marker for deployment verification */}
+      <div className="mt-8 text-center pb-4">
+        <p className="text-xs text-gray-400">
+          {t('planning.build_marker')}: 589-{new Date().toISOString().slice(0, 16).replace('T', ' ')}
+        </p>
       </div>
     </div>
   );

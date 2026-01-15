@@ -5,9 +5,11 @@ import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { safeNumber, safeDivide } from '../../../lib/data-validators';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { PAGE_HELP_CONTENT } from '../../../lib/page-help-content';
+import { useLanguage } from '../../../contexts/LanguageContext';
 import type { TimeEntryWithRelations, Customer, Project, WorkType, Partner } from '../../../lib/partner-portal-types';
 
 const TimeReportingPage: React.FC = () => {
+  const { t } = useLanguage();
   const [timeEntries, setTimeEntries] = useState<TimeEntryWithRelations[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
@@ -75,7 +77,7 @@ const TimeReportingPage: React.FC = () => {
       }
     } catch (err) {
       console.error('Error loading data:', err);
-      setError(err instanceof Error ? err.message : 'Kunde inte ladda tidsrapportering. Försök igen.');
+      setError(err instanceof Error ? err.message : t('time.error.load'));
     } finally {
       setLoading(false);
     }
@@ -198,11 +200,11 @@ const TimeReportingPage: React.FC = () => {
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
       <PageHeader
-        title="Time Reporting"
-        description="Track and manage your work hours"
+        title={t('time.title')}
+        description={t('time.description')}
         icon={Clock}
         action={{
-          label: 'Report Time',
+          label: t('time.add'),
           onClick: () => setShowCreateModal(true),
           icon: Plus,
         }}
@@ -220,7 +222,7 @@ const TimeReportingPage: React.FC = () => {
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                This Week
+                {t('time.period.week')}
               </button>
               <button
                 onClick={() => setSelectedPeriod('month')}
@@ -230,7 +232,7 @@ const TimeReportingPage: React.FC = () => {
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                This Month
+                {t('time.period.month')}
               </button>
             </div>
           </div>
@@ -570,6 +572,13 @@ const TimeReportingPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Build marker for deployment verification */}
+      <div className="mt-8 text-center pb-4">
+        <p className="text-xs text-gray-400">
+          {t('time.build_marker')}: 589-{new Date().toISOString().slice(0, 16).replace('T', ' ')}
+        </p>
+      </div>
     </div>
   );
 };
