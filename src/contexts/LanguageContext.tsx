@@ -1577,8 +1577,8 @@ const translations: Record<string, Record<Language, string>> = {
   'admin.frameworks.select': { en: 'Select a framework to get started', sv: 'Välj ett ramverk för att komma igång' },
 
   // Build Version Footer
-  'build.version': { en: 'Build v2025.01.15', sv: 'Version 2025.01.15' },
-  'build.version_short': { en: 'v2025.01.15', sv: 'v2025.01.15' },
+  'build.version': { en: 'Build 2025.01.15-1411', sv: 'Byggversion 2025.01.15-1411' },
+  'build.version_short': { en: 'v2025.01.15-1411', sv: 'v2025.01.15-1411' },
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
