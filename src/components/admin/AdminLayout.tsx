@@ -43,6 +43,7 @@ import { useLanguage } from '../../contexts/LanguageContext';
 
 const AdminLayout: React.FC = () => {
   const [user, setUser] = useState<AdminUser | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
   const location = useLocation();
@@ -50,20 +51,39 @@ const AdminLayout: React.FC = () => {
   const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
+    let isMounted = true;
     const loadUser = async () => {
       try {
+        setAuthLoading(true);
+        await new Promise(resolve => setTimeout(resolve, 100));
         const currentUser = await getCurrentUser();
+        if (!isMounted) return;
         if (!currentUser) {
-          navigate('/admin-login');
+          setAuthLoading(false);
+          setTimeout(() => {
+            if (isMounted) {
+              navigate('/admin-login');
+            }
+          }, 500);
           return;
         }
         setUser(currentUser);
+        setAuthLoading(false);
       } catch (error) {
         console.error('Error loading user:', error);
-        navigate('/admin-login');
+        if (!isMounted) return;
+        setAuthLoading(false);
+        setTimeout(() => {
+          if (isMounted) {
+            navigate('/admin-login');
+          }
+        }, 500);
       }
     };
     loadUser();
+    return () => {
+      isMounted = false;
+    };
   }, [navigate]);
 
   const handleSignOut = async () => {
@@ -156,12 +176,12 @@ const AdminLayout: React.FC = () => {
     }))
     .filter(group => group.roles.includes(user?.role || '') && group.items.length > 0);
 
-  if (!user) {
+  if (authLoading || !user) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
+          <p className="text-gray-600">{authLoading ? 'Loading...' : 'Redirecting...'}</p>
         </div>
       </div>
     );
