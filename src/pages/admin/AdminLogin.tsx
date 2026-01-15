@@ -117,6 +117,12 @@ const AdminLogin = () => {
               Secure admin access for NorthForce team members only
             </p>
           </div>
+
+          <div className="mt-6 pt-4 border-t border-gray-200">
+            <p className="text-center text-xs text-gray-400">
+              Build v2025.01.15.{new Date().getTime()} | {new Date().toISOString()}
+            </p>
+          </div>
         </div>
       </div>
     </div>

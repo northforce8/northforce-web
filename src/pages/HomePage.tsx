@@ -607,6 +607,14 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+
+      <div className="bg-gray-900 py-2 border-t border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-center text-xs text-gray-500">
+            Build v2025.01.15.{new Date().getTime()} | Deployed: {new Date().toISOString()}
+          </p>
+        </div>
+      </div>
     </div>
   );
 };
