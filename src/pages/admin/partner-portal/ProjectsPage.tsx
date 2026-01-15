@@ -65,10 +65,12 @@ const ProjectsPage: React.FC = () => {
       const errorMsg = error instanceof Error ? error.message : String(error);
       if (errorMsg.includes('RLS') || errorMsg.includes('Auth')) {
         setError(t('projects.error.auth'));
-        setTimeout(() => window.location.href = '/admin-login', 2000);
       } else {
         setError(t('projects.error.load'));
       }
+      setProjects([]);
+      setCustomers([]);
+      setPartners([]);
     } finally {
       setLoading(false);
     }
