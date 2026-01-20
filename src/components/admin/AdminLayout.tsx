@@ -58,27 +58,23 @@ const AdminLayout: React.FC = () => {
         await new Promise(resolve => setTimeout(resolve, 100));
         const currentUser = await getCurrentUser();
         if (!isMounted) return;
-        if (!currentUser) {
-          setAuthLoading(false);
-          setTimeout(() => {
-            if (isMounted) {
-              navigate('/admin-login');
-            }
-          }, 500);
-          return;
-        }
+      if (!currentUser) {
+  // No redirect here – keep layout stable and let pages render empty state
+  setUser(null);
+  setAuthLoading(false);
+  return;
+}
         setUser(currentUser);
         setAuthLoading(false);
-      } catch (error) {
-        console.error('Error loading user:', error);
-        if (!isMounted) return;
-        setAuthLoading(false);
-        setTimeout(() => {
-          if (isMounted) {
-            navigate('/admin-login');
-          }
-        }, 500);
-      }
+   } catch (error) {
+  console.error('Error loading user:', error);
+  if (!isMounted) return;
+
+  // Do not redirect on errors – keep UI stable and show empty/error state
+  setUser(null);
+  setAuthLoading(false);
+}
+
     };
     loadUser();
     return () => {
