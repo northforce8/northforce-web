@@ -314,7 +314,8 @@ const CapacityOverviewPage: React.FC = () => {
                       </p>
                       {partner.work_types && partner.work_types.length > 0 && (
                         <div className="flex gap-1 mt-2 flex-wrap">
-                          {partner.work_types.slice(0, 3).map((wt, i) => (
+              {filteredPartners.map((partner) => {
+
                             <span key={i} className="px-2 py-0.5 text-xs bg-blue-100 text-blue-700 rounded">
                               {wt}
                             </span>
