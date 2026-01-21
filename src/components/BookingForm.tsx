@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { getAvailableSlots, createCalendarEvent } from '../lib/calendar-service';
 import { saveBookingSubmission } from '../lib/supabase';
 import { sendBookingNotification } from '../lib/email-service';
+import { useLanguage } from '../contexts/LanguageContext';
 import type { AvailableSlot } from '../lib/calendar-service';
 
 const BookingForm = () => {
+  const { t } = useLanguage();
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -14,7 +17,7 @@ const BookingForm = () => {
     preferredTime: '',
     message: ''
   });
-  
+
   const [availableSlots, setAvailableSlots] = useState<AvailableSlot[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
@@ -71,12 +74,12 @@ const BookingForm = () => {
         message: formData.message,
         calendar_event_id: calendarEventId
       });
-      
+
       // Send email notification
       await sendBookingNotification(submission);
-      
+
       setSubmitStatus('success');
-      
+
       // Reset form
       setFormData({
         name: '',
@@ -87,7 +90,7 @@ const BookingForm = () => {
         preferredTime: '',
         message: ''
       });
-      
+
     } catch (error) {
       console.error('Error booking meeting:', error);
       setSubmitStatus('error');
@@ -101,16 +104,17 @@ const BookingForm = () => {
   return (
     <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-card p-8">
       <div className="text-center mb-8">
-        <h2 className="font-heading text-3xl font-black text-gray-900 mb-4">Book a Strategy Call</h2>
-        <p className="text-gray-600">Schedule a consultation to discuss your business automation needs.</p>
+        <h2 className="font-heading text-3xl font-black text-gray-900 mb-4">
+          {t('form.booking.title')}
+        </h2>
+        <p className="text-gray-600">{t('hero.cta_audit')}</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-              {/* <User className="h-4 w-4 inline mr-2" /> */} {/* Removed for brevity, assuming User icon is not directly used in label */}
-              Your Name *
+              {t('form.label.name')} *
             </label>
             <input
               type="text"
@@ -120,13 +124,13 @@ const BookingForm = () => {
               value={formData.name}
               onChange={handleInputChange}
               className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 transition-all"
-              placeholder="Enter your full name"
+              placeholder={t('form.placeholder.name')}
             />
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2"> {/* <Mail className="h-4 w-4 inline mr-2" /> */}
-              Email Address *
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              {t('form.label.email')} *
             </label>
             <input
               type="email"
@@ -136,15 +140,14 @@ const BookingForm = () => {
               value={formData.email}
               onChange={handleInputChange}
               className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 transition-all"
-              placeholder="your@email.com"
+              placeholder={t('form.placeholder.email')}
             />
           </div>
         </div>
 
         <div>
           <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">
-            {/* <Building2 className="h-4 w-4 inline mr-2" /> */} {/* Removed for brevity, assuming Building2 icon is not directly used in label */}
-            Company Name
+            {t('form.label.company')}
           </label>
           <input
             type="text"
@@ -153,14 +156,13 @@ const BookingForm = () => {
             value={formData.company}
             onChange={handleInputChange}
             className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 transition-all"
-            placeholder="Your company name"
+            placeholder={t('form.placeholder.company')}
           />
         </div>
 
         <div>
           <label htmlFor="meetingType" className="block text-sm font-medium text-gray-700 mb-2">
-            {/* <Clock className="h-4 w-4 inline mr-2" /> */} {/* Removed for brevity, assuming Clock icon is not directly used in label */}
-            Meeting Duration *
+            {t('form.booking.meeting_type')} *
           </label>
           <select
             id="meetingType"
@@ -170,17 +172,16 @@ const BookingForm = () => {
             onChange={handleInputChange}
             className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 transition-all"
           >
-            <option value="30">30 minutes - Quick consultation</option>
-            <option value="45">45 minutes - Detailed discussion</option>
-            <option value="60">60 minutes - Comprehensive strategy session</option>
+            <option value="30">{t('form.booking.30min')}</option>
+            <option value="45">{t('form.booking.45min')}</option>
+            <option value="60">{t('form.booking.60min')}</option>
           </select>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label htmlFor="preferredDate" className="block text-sm font-medium text-gray-700 mb-2">
-              {/* <Calendar className="h-4 w-4 inline mr-2" /> */} {/* Removed for brevity, assuming Calendar icon is not directly used in label */}
-              Preferred Date *
+              {t('form.booking.preferred_date')} *
             </label>
             <input
               type="date"
@@ -195,8 +196,8 @@ const BookingForm = () => {
           </div>
 
           <div>
-            <label htmlFor="preferredTime" className="block text-sm font-medium text-gray-700 mb-2"> {/* <Clock className="h-4 w-4 inline mr-2" /> */}
-              Preferred Time *
+            <label htmlFor="preferredTime" className="block text-sm font-medium text-gray-700 mb-2">
+              {t('form.booking.preferred_time')} *
             </label>
             <select
               id="preferredTime"
@@ -207,7 +208,12 @@ const BookingForm = () => {
               className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 transition-all"
               disabled={!formData.preferredDate}
             >
-              <option value="">Select a time</option>
+              <option value="">
+                {!formData.preferredDate ? t('form.booking.select_date') : t('common.select')}
+              </option>
+              {availableSlots.length === 0 && formData.preferredDate && (
+                <option value="" disabled>{t('form.booking.no_slots')}</option>
+              )}
               {availableSlots.map((slot) => (
                 <option key={`${slot.date}-${slot.time}`} value={slot.time}>
                   {slot.time} (Europe/Stockholm)
@@ -219,8 +225,7 @@ const BookingForm = () => {
 
         <div>
           <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-            {/* <MessageSquare className="h-4 w-4 inline mr-2" /> */} {/* Removed for brevity, assuming MessageSquare icon is not directly used in label */}
-            Additional Information
+            {t('form.label.message')}
           </label>
           <textarea
             id="message"
@@ -229,19 +234,19 @@ const BookingForm = () => {
             value={formData.message}
             onChange={handleInputChange}
             className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 transition-all resize-none"
-            placeholder="Tell us about your business challenges or specific topics you'd like to discuss..."
+            placeholder={t('form.placeholder.message')}
           ></textarea>
         </div>
 
         {submitStatus === 'success' && (
           <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6">
-            Meeting booked successfully! You'll receive a calendar invitation shortly.
+            {t('form.success.booking.message')}
           </div>
         )}
-        
+
         {submitStatus === 'error' && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
-            There was an error booking your meeting. Please try again.
+            {t('form.error.submit')}
           </div>
         )}
 
@@ -250,11 +255,11 @@ const BookingForm = () => {
           disabled={isLoading}
           className="w-full bg-gradient-to-r from-primary-600 to-primary-800 text-white py-4 rounded-2xl hover:shadow-glow transition-all duration-300 font-bold text-lg transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading ? 'Booking Meeting...' : 'Book Strategy Call'}
+          {isLoading ? t('form.button.booking') : t('form.button.book')}
         </button>
 
         <p className="text-sm text-gray-600 text-center">
-          All times are in Europe/Stockholm timezone. You'll receive a calendar invitation after booking.
+          {t('contact.gdpr')}
         </p>
       </form>
     </div>

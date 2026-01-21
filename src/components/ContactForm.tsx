@@ -9,7 +9,7 @@ interface ContactFormProps {
 }
 
 const ContactForm: React.FC<ContactFormProps> = ({ variant = 'default', className = '' }) => {
-  const { language } = useLanguage();
+  const { t } = useLanguage();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -78,12 +78,12 @@ const ContactForm: React.FC<ContactFormProps> = ({ variant = 'default', classNam
         {/* Contact Information */}
         <div>
           <h3 className="font-heading text-lg font-bold text-gray-900 mb-6 pb-3 border-b border-gray-200">
-            {language === 'sv' ? 'Kontaktinformation' : 'Contact Information'}
+            {t('form.contact.title')}
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label htmlFor="name" className={labelClass}>
-                {language === 'sv' ? 'Namn' : 'Name'} *
+                {t('form.label.name')} *
               </label>
               <input
                 type="text"
@@ -93,13 +93,13 @@ const ContactForm: React.FC<ContactFormProps> = ({ variant = 'default', classNam
                 value={formData.name}
                 onChange={handleInputChange}
                 className={inputClass}
-                placeholder={language === 'sv' ? 'Förnamn Efternamn' : 'First Last'}
+                placeholder={t('form.placeholder.name')}
               />
             </div>
 
             <div>
               <label htmlFor="email" className={labelClass}>
-                {language === 'sv' ? 'E-post' : 'Email'} *
+                {t('form.label.email')} *
               </label>
               <input
                 type="email"
@@ -109,7 +109,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ variant = 'default', classNam
                 value={formData.email}
                 onChange={handleInputChange}
                 className={inputClass}
-                placeholder={language === 'sv' ? 'namn@företag.se' : 'name@company.com'}
+                placeholder={t('form.placeholder.email')}
               />
             </div>
           </div>
@@ -118,12 +118,12 @@ const ContactForm: React.FC<ContactFormProps> = ({ variant = 'default', classNam
         {/* Company Information */}
         <div>
           <h3 className="font-heading text-lg font-bold text-gray-900 mb-6 pb-3 border-b border-gray-200">
-            {language === 'sv' ? 'Företagsinformation' : 'Company Information'}
+            {t('form.contact.business_info')}
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label htmlFor="company" className={labelClass}>
-                {language === 'sv' ? 'Företag' : 'Company'} *
+                {t('form.label.company')} *
               </label>
               <input
                 type="text"
@@ -133,13 +133,13 @@ const ContactForm: React.FC<ContactFormProps> = ({ variant = 'default', classNam
                 value={formData.company}
                 onChange={handleInputChange}
                 className={inputClass}
-                placeholder={language === 'sv' ? 'Företagsnamn' : 'Company name'}
+                placeholder={t('form.placeholder.company')}
               />
             </div>
 
             <div>
               <label htmlFor="role" className={labelClass}>
-                {language === 'sv' ? 'Din Roll' : 'Your Role'} *
+                {t('form.label.role')} *
               </label>
               <select
                 id="role"
@@ -149,22 +149,20 @@ const ContactForm: React.FC<ContactFormProps> = ({ variant = 'default', classNam
                 onChange={handleInputChange}
                 className={inputClass}
               >
-                <option value="">{language === 'sv' ? 'Välj roll' : 'Select role'}</option>
-                <option value="ceo">{language === 'sv' ? 'VD / CEO' : 'CEO / Managing Director'}</option>
-                <option value="cfo">{language === 'sv' ? 'CFO / Ekonomichef' : 'CFO / Finance Director'}</option>
-                <option value="cmo">{language === 'sv' ? 'CMO / Marknadschef' : 'CMO / Marketing Director'}</option>
-                <option value="coo">{language === 'sv' ? 'COO / Driftchef' : 'COO / Operations Director'}</option>
-                <option value="founder">{language === 'sv' ? 'Grundare / Ägare' : 'Founder / Owner'}</option>
-                <option value="vp">{language === 'sv' ? 'VP / Vice President' : 'VP / Vice President'}</option>
-                <option value="director">{language === 'sv' ? 'Direktör / Head of' : 'Director / Head of'}</option>
-                <option value="other">{language === 'sv' ? 'Annan ledande position' : 'Other leadership position'}</option>
+                <option value="">{t('form.role.select')}</option>
+                <option value="ceo">{t('form.role.ceo')}</option>
+                <option value="cmo">{t('form.role.cmo')}</option>
+                <option value="coo">{t('form.role.coo')}</option>
+                <option value="cfo">{t('form.role.cfo')}</option>
+                <option value="sales">{t('form.role.sales')}</option>
+                <option value="other">{t('form.role.other')}</option>
               </select>
             </div>
           </div>
 
           <div className="mt-6">
             <label htmlFor="revenue" className={labelClass}>
-              {language === 'sv' ? 'Årlig omsättning (ungefär)' : 'Annual Revenue (approximate)'}
+              {t('form.label.revenue')}
             </label>
             <select
               id="revenue"
@@ -173,12 +171,12 @@ const ContactForm: React.FC<ContactFormProps> = ({ variant = 'default', classNam
               onChange={handleInputChange}
               className={inputClass}
             >
-              <option value="">{language === 'sv' ? 'Välj intervall' : 'Select range'}</option>
-              <option value="0-10m">{language === 'sv' ? '0-10 MSEK' : '0-10M SEK'}</option>
-              <option value="10-50m">{language === 'sv' ? '10-50 MSEK' : '10-50M SEK'}</option>
-              <option value="50-100m">{language === 'sv' ? '50-100 MSEK' : '50-100M SEK'}</option>
-              <option value="100-500m">{language === 'sv' ? '100-500 MSEK' : '100-500M SEK'}</option>
-              <option value="500m+">{language === 'sv' ? '500+ MSEK' : '500M+ SEK'}</option>
+              <option value="">{t('form.revenue.select')}</option>
+              <option value="0-10m">{t('form.revenue.0_10')}</option>
+              <option value="10-50m">{t('form.revenue.10_50')}</option>
+              <option value="50-100m">{t('form.revenue.50_100')}</option>
+              <option value="100-500m">{t('form.revenue.100_500')}</option>
+              <option value="500m+">{t('form.revenue.500+')}</option>
             </select>
           </div>
         </div>
@@ -186,12 +184,12 @@ const ContactForm: React.FC<ContactFormProps> = ({ variant = 'default', classNam
         {/* Challenge & Context */}
         <div>
           <h3 className="font-heading text-lg font-bold text-gray-900 mb-6 pb-3 border-b border-gray-200">
-            {language === 'sv' ? 'Er Situation' : 'Your Situation'}
+            {t('form.contact.needs')}
           </h3>
 
           <div className="mb-6">
             <label htmlFor="challenge" className={labelClass}>
-              {language === 'sv' ? 'Primär Utmaning' : 'Primary Challenge'} *
+              {t('form.label.challenge')} *
             </label>
             <select
               id="challenge"
@@ -201,21 +199,19 @@ const ContactForm: React.FC<ContactFormProps> = ({ variant = 'default', classNam
               onChange={handleInputChange}
               className={inputClass}
             >
-              <option value="">{language === 'sv' ? 'Välj huvudutmaning' : 'Select main challenge'}</option>
-              <option value="growth-stagnation">{language === 'sv' ? 'Tillväxt har planat ut' : 'Growth has plateaued'}</option>
-              <option value="scaling">{language === 'sv' ? 'Skalningsutmaningar' : 'Scaling challenges'}</option>
-              <option value="go-to-market">{language === 'sv' ? 'Go-to-market ineffektivitet' : 'Go-to-market inefficiency'}</option>
-              <option value="capacity">{language === 'sv' ? 'Kapacitetsbegränsningar i teamet' : 'Team capacity constraints'}</option>
-              <option value="fragmentation">{language === 'sv' ? 'Fragmenterade leverantörer/system' : 'Fragmented vendors/systems'}</option>
-              <option value="profitability">{language === 'sv' ? 'Lönsamhetsutmaningar' : 'Profitability challenges'}</option>
-              <option value="organization">{language === 'sv' ? 'Organisatoriska problem' : 'Organizational issues'}</option>
-              <option value="other">{language === 'sv' ? 'Annat / Flera områden' : 'Other / Multiple areas'}</option>
+              <option value="">{t('form.challenge.select')}</option>
+              <option value="growth">{t('form.challenge.growth')}</option>
+              <option value="sales">{t('form.challenge.sales')}</option>
+              <option value="marketing">{t('form.challenge.marketing')}</option>
+              <option value="operations">{t('form.challenge.operations')}</option>
+              <option value="scaling">{t('form.challenge.scaling')}</option>
+              <option value="competition">{t('form.challenge.competition')}</option>
             </select>
           </div>
 
           <div>
             <label htmlFor="message" className={labelClass}>
-              {language === 'sv' ? 'Beskriv Er Situation' : 'Describe Your Situation'}
+              {t('form.label.message')}
             </label>
             <textarea
               id="message"
@@ -224,9 +220,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ variant = 'default', classNam
               value={formData.message}
               onChange={handleInputChange}
               className={inputClass + ' resize-none'}
-              placeholder={language === 'sv'
-                ? 'Vad är er viktigaste utmaning just nu? Vad har ni provat tidigare? Vad är målet på 12-24 månaders sikt?'
-                : 'What is your most important challenge right now? What have you tried before? What is the goal in 12-24 months?'}
+              placeholder={t('form.placeholder.message')}
             ></textarea>
           </div>
         </div>
@@ -234,12 +228,10 @@ const ContactForm: React.FC<ContactFormProps> = ({ variant = 'default', classNam
         {submitStatus === 'success' && (
           <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-6">
             <p className="font-heading text-emerald-800 font-semibold mb-2">
-              {language === 'sv' ? 'Tack för ditt meddelande!' : 'Thank you for your message!'}
+              {t('form.success.contact.title')}
             </p>
             <p className="text-emerald-700 text-sm">
-              {language === 'sv'
-                ? 'Vi återkommer inom 24 timmar för att schemalägga en strategidialog.'
-                : 'We will get back to you within 24 hours to schedule a strategy discussion.'}
+              {t('form.success.contact.message')}
             </p>
           </div>
         )}
@@ -247,27 +239,21 @@ const ContactForm: React.FC<ContactFormProps> = ({ variant = 'default', classNam
         {submitStatus === 'error' && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-6">
             <p className="text-red-700 text-sm">
-              {language === 'sv'
-                ? 'Ett fel uppstod. Vänligen försök igen eller kontakta oss direkt på contact@northforce.io'
-                : 'An error occurred. Please try again or contact us directly at contact@northforce.io'}
+              {t('form.error.submit')}
             </p>
           </div>
         )}
 
         <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-gray-200">
           <p className="text-sm text-gray-600 text-center sm:text-left">
-            {language === 'sv'
-              ? 'Vi behandlar dina uppgifter konfidentiellt enligt GDPR.'
-              : 'We handle your information confidentially according to GDPR.'}
+            {t('contact.gdpr')}
           </p>
           <button
             type="submit"
             disabled={isSubmitting}
             className="w-full sm:w-auto bg-gradient-to-r from-primary-600 to-accent-cyan text-white px-10 py-4 rounded-lg font-bold text-base hover:shadow-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
           >
-            {isSubmitting
-              ? (language === 'sv' ? 'Skickar...' : 'Sending...')
-              : (language === 'sv' ? 'Skicka Förfrågan' : 'Submit Inquiry')}
+            {isSubmitting ? t('form.button.submitting') : t('form.button.submit')}
           </button>
         </div>
       </form>
