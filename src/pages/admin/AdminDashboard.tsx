@@ -27,14 +27,8 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkAuth = async () => {
+    const loadData = async () => {
       try {
-        const isAuth = await isAdminAuthenticated();
-        if (!isAuth) {
-          navigate('/admin-login');
-          return;
-        }
-
         const allSubmissions = await getAllSubmissions();
         setSubmissions(allSubmissions);
         setFilteredSubmissions(allSubmissions);
@@ -45,7 +39,7 @@ const AdminDashboard = () => {
       }
     };
 
-    checkAuth();
+    loadData();
   }, [navigate]);
 
   useEffect(() => {

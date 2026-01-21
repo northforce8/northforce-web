@@ -61,7 +61,10 @@ const EnterpriseDashboard: React.FC = () => {
       const user = await getCurrentUser();
       if (!user) {
         setErrorType('Auth');
-        setError('Session expired. Please log in again.');
+        setError('Unable to load user data.');
+        setCustomers([]);
+        setRecommendations([]);
+        setLoading(false);
         return;
       }
 
@@ -238,21 +241,12 @@ const EnterpriseDashboard: React.FC = () => {
               </h3>
               <p className="text-red-700 mb-4">{error}</p>
               <div className="flex gap-3">
-                {(isAuthError || isRLSError) ? (
-                  <button
-                    onClick={() => window.location.href = '/admin/login'}
-                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-                  >
-                    Log in again
-                  </button>
-                ) : (
-                  <button
-                    onClick={loadDashboard}
-                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-                  >
-                    Try again
-                  </button>
-                )}
+                <button
+                  onClick={loadDashboard}
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                >
+                  Try again
+                </button>
               </div>
             </div>
           </div>

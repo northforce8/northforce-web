@@ -57,13 +57,9 @@ export default function InvoicesPage() {
         action: 'loadData',
       });
       console.error(`[${errorId}] Error loading data:`, err);
-      const errorMsg = err instanceof Error ? err.message : String(err);
-      if (errorMsg.includes('RLS') || errorMsg.includes('Auth')) {
-        setError('Access denied or session expired. Redirecting to login...');
-        setTimeout(() => window.location.href = '/admin/login', 2000);
-      } else {
-        setError(err instanceof Error ? err.message : 'Kunde inte ladda fakturor. Försök igen.');
-      }
+      setError(err instanceof Error ? err.message : 'Kunde inte ladda fakturor. Försök igen.');
+      setInvoices([]);
+      setCustomers([]);
     } finally {
       setLoading(false);
     }
