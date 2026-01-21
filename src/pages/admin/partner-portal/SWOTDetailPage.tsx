@@ -551,7 +551,7 @@ export default function SWOTDetailPage() {
                       <div className="flex items-center gap-2 flex-wrap">
                         {item.impact_level && (
                           <span className={`px-2 py-1 text-xs font-medium rounded ${getImpactColor(item.impact_level)}`}>
-                            {item.impact_level.toUpperCase()}
+{(item.impact_level || '').toUpperCase()}
                           </span>
                         )}
                         {item.actionable && (
