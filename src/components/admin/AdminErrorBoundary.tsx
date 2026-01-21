@@ -106,119 +106,11 @@ Build: 2025.01.15-1411
     window.location.href = ADMIN_ROUTES.DASHBOARD;
   };
 
-import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
-import { ADMIN_ROUTES } from '../../lib/admin-routes';
-import { logAdminError } from '../../lib/admin-error-logger';
-
-interface Props {
-  children: ReactNode;
-}
-
-interface State {
-  hasError: boolean;
-  error: Error | null;
-  errorInfo: ErrorInfo | null;
-  route: string;
-  errorId: string | null;
-  language: string;
-  userAgent: string;
-  timestamp: string;
-  copied: boolean;
-}
-
-class AdminErrorBoundary extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      hasError: false,
-      error: null,
-      errorInfo: null,
-      route: window.location.pathname,
-      errorId: null,
-      language: localStorage.getItem('language') || 'en',
-      userAgent: navigator.userAgent,
-      timestamp: new Date().toISOString(),
-      copied: false,
-    };
-  }
-
-  static getDerivedStateFromError(error: Error): Partial<State> {
-    return {
-      hasError: true,
-      error,
-      route: window.location.pathname,
-      language: localStorage.getItem('language') || 'en',
-      userAgent: navigator.userAgent,
-      timestamp: new Date().toISOString(),
-    };
-  }
-
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    const errorId = logAdminError(error, {
-      route: window.location.pathname,
-      componentStack: errorInfo.componentStack,
-      language: localStorage.getItem('language') || 'en',
-      userAgent: navigator.userAgent,
-    });
-
-    console.error('=== ADMIN PORTAL ERROR CAPTURED ===');
-    console.error('Error ID:', errorId);
-    console.error('Route:', window.location.pathname);
-    console.error('Language:', localStorage.getItem('language'));
-    console.error('Error:', error);
-    console.error('Error Stack:', error.stack);
-    console.error('Component Stack:', errorInfo.componentStack);
-    console.error('===================================');
-
-    this.setState({
-      error,
-      errorInfo,
-      route: window.location.pathname,
-      errorId,
-    });
-  }
-
-  copyErrorDetails = () => {
-    const errorDetails = `
-=== ADMIN PORTAL ERROR REPORT ===
-Error ID: ${this.state.errorId || 'N/A'}
-Timestamp: ${this.state.timestamp}
-Route: ${this.state.route}
-Language: ${this.state.language}
-User Agent: ${this.state.userAgent}
-
-Error Message: ${this.state.error?.message || 'Unknown'}
-
-Error Stack:
-${this.state.error?.stack || 'No stack trace available'}
-
-Component Stack:
-${this.state.errorInfo?.componentStack || 'No component stack available'}
-
-Build: 2025.01.15-1411
-===================================
-    `.trim();
-
-    navigator.clipboard.writeText(errorDetails).then(() => {
-      this.setState({ copied: true });
-      setTimeout(() => this.setState({ copied: false }), 2000);
-    });
-  };
-
-  handleReload = () => {
-    window.location.reload();
-  };
-
-  handleGoHome = () => {
-    window.location.href = ADMIN_ROUTES.DASHBOARD;
-  };
-
   render() {
     if (this.state.hasError) {
       // In production, render nothing (silently catch errors)
       if (import.meta.env.PROD) return null;
-      
+
       // In development, show the default error UI
       return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
@@ -328,8 +220,5 @@ Build: 2025.01.15-1411
     return this.props.children;
   }
 }
-
-export default AdminErrorBoundary;
-
 
 export default AdminErrorBoundary;
