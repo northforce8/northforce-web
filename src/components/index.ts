@@ -13,3 +13,4 @@ export { default as CookieBanner } from './CookieBanner';
 export { default as Analytics } from './Analytics';
 export { default as SocialIcons } from './SocialIcons';
 export { default as HeroMark } from './HeroMark';
+export { default as LanguageSwitcher } from './LanguageSwitcher';
