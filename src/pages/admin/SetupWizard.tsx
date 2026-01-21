@@ -141,7 +141,8 @@ export const SetupWizard: React.FC = () => {
           const testProjects = [
             {
               project_name: 'Website Redesign',
-              customer_id: customers[0].id,
+        customer_id: customers?.[0]?.id || '',
+
               status: 'active',
               project_type: 'Implementation',
               estimated_hours: 120,
