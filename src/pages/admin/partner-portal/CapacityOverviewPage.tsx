@@ -194,7 +194,8 @@ const CapacityOverviewPage: React.FC = () => {
             AI-Powered Recommendations ({recommendations.length})
           </h2>
           <div className="space-y-3">
-            {recommendations.map((rec) => (
+   {(recommendations || []).map((rec) => (
+
               <div key={rec.id} className={`p-4 rounded-lg border ${getSeverityColor(rec.severity)}`}>
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
@@ -291,7 +292,7 @@ const CapacityOverviewPage: React.FC = () => {
           </div>
         ) : (
           <div className="space-y-3">
-            {filteredPartners.map((partner) => {
+            {filteredPartners(partner) => {
               const utilization = partner.utilization_percentage;
               return (
                 <div
