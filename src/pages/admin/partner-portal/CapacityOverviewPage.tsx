@@ -292,7 +292,7 @@ const CapacityOverviewPage: React.FC = () => {
           </div>
         ) : (
           <div className="space-y-3">
-            {filteredPartners(partner) => {
+{(filteredPartners || []).map((partner) => {
               const utilization = partner.utilization_percentage;
               return (
                 <div
