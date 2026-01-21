@@ -125,7 +125,7 @@ export default function BSCPage() {
 
   return (
     <div className="space-y-6">
-      {error && (
+      {!import.meta.env.PROD && error && (
         <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
           <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
           <div className="flex-1">

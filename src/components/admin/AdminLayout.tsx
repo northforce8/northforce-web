@@ -65,7 +65,8 @@ const AdminLayout: React.FC = () => {
       console.error('Stack:', event.error?.stack);
       console.error('===========================');
 
-      const errorMessage = `
+      if (import.meta.env.DEV) {
+        const errorMessage = `
 Window Error Captured:
 Message: ${event.message}
 Source: ${event.filename}:${event.lineno}:${event.colno}
@@ -73,9 +74,9 @@ Route: ${window.location.pathname}
 Language: ${localStorage.getItem('language') || 'en'}
 Stack: ${event.error?.stack || 'No stack available'}
 Build: 2025.01.15-1411
-      `.trim();
-
-      setGlobalError(errorMessage);
+        `.trim();
+        setGlobalError(errorMessage);
+      }
     };
 
     const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
@@ -84,15 +85,16 @@ Build: 2025.01.15-1411
       console.error('Promise:', event.promise);
       console.error('===================================');
 
-      const errorMessage = `
+      if (import.meta.env.DEV) {
+        const errorMessage = `
 Unhandled Promise Rejection:
 Reason: ${event.reason}
 Route: ${window.location.pathname}
 Language: ${localStorage.getItem('language') || 'en'}
 Build: 2025.01.15-1411
-      `.trim();
-
-      setGlobalError(errorMessage);
+        `.trim();
+        setGlobalError(errorMessage);
+      }
     };
 
     window.addEventListener('error', handleWindowError);

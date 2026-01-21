@@ -32,6 +32,11 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const showToast = useCallback((type: ToastType, message: string, duration: number = 5000) => {
+    if (import.meta.env.PROD && (type === 'error' || type === 'warning')) {
+      console.error(`Toast (${type}):`, message);
+      return;
+    }
+
     const id = Math.random().toString(36).substr(2, 9);
     const toast: Toast = { id, type, message, duration };
 
