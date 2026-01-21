@@ -27,17 +27,16 @@ export const signIn = async (email: string, password: string): Promise<AdminUser
     }
 
     if (data.user) {
-      const userRole = data.user.app_metadata?.role || data.user.user_metadata?.role;
       const adminEmails = ['ps@northforce.io', 'admin@northforce.io'];
       const isAdminEmail = adminEmails.includes(data.user.email?.toLowerCase() || '');
 
-      const finalRole = isAdminEmail ? 'admin' : (userRole || 'admin');
-
-      if (finalRole !== 'admin' && finalRole !== 'partner') {
-        console.warn('User does not have valid role');
+      if (!isAdminEmail) {
+        console.warn('User email not in allowlist');
         await supabase.auth.signOut();
         return null;
       }
+
+      const finalRole = 'admin';
 
       try {
         await supabase
@@ -113,16 +112,15 @@ export const getCurrentUser = async (): Promise<AdminUser | null> => {
     }
 
     if (user) {
-      const userRole = user.app_metadata?.role || user.user_metadata?.role;
       const adminEmails = ['ps@northforce.io', 'admin@northforce.io'];
       const isAdminEmail = adminEmails.includes(user.email?.toLowerCase() || '');
 
-      const finalRole = isAdminEmail ? 'admin' : (userRole || 'admin');
-
-      if (finalRole !== 'admin' && finalRole !== 'partner') {
-        console.warn('User does not have valid role');
+      if (!isAdminEmail) {
+        console.warn('User email not in allowlist');
         return null;
       }
+
+      const finalRole = 'admin';
 
       let userName = user.email?.split('@')[0];
       try {

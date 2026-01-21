@@ -93,27 +93,6 @@ export default function GrowthPlanDetailPage() {
     );
   }
 
-  if (error) {
-    return (
-      <div className="max-w-7xl mx-auto p-6">
-        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
-          <div className="flex items-start gap-3">
-            <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
-            <div className="flex-1">
-              <h3 className="text-lg font-semibold text-red-900 mb-2">Fel vid laddning</h3>
-              <p className="text-red-700 mb-4">{error}</p>
-              <button
-                onClick={loadPlan}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-              >
-                Försök igen
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   if (!plan) {
     return (

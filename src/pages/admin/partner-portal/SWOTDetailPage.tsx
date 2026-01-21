@@ -211,35 +211,6 @@ export default function SWOTDetailPage() {
     );
   }
 
-  if (error) {
-    return (
-      <AdminLayout>
-        <div className="max-w-7xl mx-auto p-6">
-          <div className="bg-red-50 border border-red-200 rounded-lg p-6">
-            <div className="flex items-start gap-3">
-              <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold text-red-900 mb-2">Fel vid laddning</h3>
-                <p className="text-red-700 mb-4">{error}</p>
-                <button
-                  onClick={loadAnalysis}
-                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors mr-2"
-                >
-                  Försök igen
-                </button>
-                <button
-                  onClick={() => navigate('/admin/partner-portal/swot')}
-                  className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
-                >
-                  Tillbaka till översikt
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </AdminLayout>
-    );
-  }
 
   if (!analysis) {
     return (
