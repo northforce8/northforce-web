@@ -3,8 +3,11 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Globe, Users, Zap, Target, CheckCircle } from 'lucide-react';
 import CtaSection from '../components/CtaSection';
 import SEOHead from '../components/SEOHead';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const CareersPage = () => {
+  const { t } = useLanguage();
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebPage",
@@ -40,35 +43,33 @@ const CareersPage = () => {
   const values = [
     {
       icon: <Target className="h-8 w-8" />,
-      title: "Precision",
-      description: "We believe in getting things right the first time. Quality over quantity, always."
+      title: t('careers.values.precision.title'),
+      description: t('careers.values.precision.desc')
     },
     {
       icon: <Users className="h-8 w-8" />,
-      title: "Transparency",
-      description: "Open communication, honest feedback, and clear expectations at every level."
+      title: t('careers.values.transparency.title'),
+      description: t('careers.values.transparency.desc')
     },
     {
       icon: <Zap className="h-8 w-8" />,
-      title: "Innovation",
-      description: "We push boundaries and find better ways to solve complex business problems."
+      title: t('careers.values.growth.title'),
+      description: t('careers.values.growth.desc')
     },
     {
       icon: <Globe className="h-8 w-8" />,
-      title: "Global Impact",
-      description: "Nordic values with global reach. We help businesses worldwide achieve excellence."
+      title: t('careers.values.balance.title'),
+      description: t('careers.values.balance.desc')
     }
   ];
 
   const benefits = [
-    "Competitive salary with performance bonuses",
-    "Comprehensive health and wellness benefits",
-    "Flexible work arrangements and remote options",
-    "Professional development and conference funding",
-    "Latest tools and technology for your work",
-    "Generous vacation policy and sabbatical options",
-    "Equity participation for senior roles",
-    "Nordic work-life balance culture"
+    t('careers.benefits.remote'),
+    t('careers.benefits.equipment'),
+    t('careers.benefits.learning'),
+    t('careers.benefits.health'),
+    t('careers.benefits.ownership'),
+    t('careers.benefits.team')
   ];
 
   const openPositions = [
@@ -164,16 +165,10 @@ const CareersPage = () => {
           </div>
 
           <h1 className="font-heading text-5xl lg:text-7xl font-black mb-8 tracking-tight">
-            Join the NorthForce{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-purple to-accent-cyan">
-              Team
-            </span>
+            {t('careers.title')}
           </h1>
           <p className="font-body text-xl text-white/80 leading-relaxed max-w-2xl mx-auto mb-6">
-            Build systems that transform businesses. Work with cutting-edge technology. Make a meaningful impact on organizations worldwide.
-          </p>
-          <p className="font-body text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-accent-cyan to-accent-emerald">
-            Nordic precision meets global ambition.
+            {t('careers.subtitle')}
           </p>
         </div>
       </section>
@@ -183,11 +178,8 @@ const CareersPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="font-heading text-5xl lg:text-7xl font-black text-gray-900 mb-8 tracking-tight leading-tight">
-              Our Values
+              {t('careers.values.title')}
             </h2>
-            <p className="font-body text-2xl lg:text-3xl text-gray-700 max-w-4xl mx-auto font-medium leading-relaxed">
-              These principles guide everything we do, from client work to how we treat each other.
-            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -233,12 +225,8 @@ const CareersPage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="font-heading text-5xl lg:text-7xl font-black text-gray-900 mb-10 tracking-tight leading-tight">
-                Why Join NorthForce?
+                {t('careers.benefits.title')}
               </h2>
-              <p className="font-body text-2xl text-gray-700 mb-10 font-medium leading-relaxed">
-                We invest in our people because they're our most important asset. 
-                Your growth is our growth.
-              </p>
               
               <ul className="space-y-6">
                 {benefits.map((benefit, index) => (
@@ -282,11 +270,8 @@ const CareersPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="font-heading text-5xl lg:text-7xl font-black text-gray-900 mb-8 tracking-tight leading-tight">
-              Open Positions
+              {t('careers.openings.title')}
             </h2>
-            <p className="font-body text-2xl lg:text-3xl text-gray-700 max-w-4xl mx-auto font-medium leading-relaxed">
-              Join our growing team and help shape the future of business automation.
-            </p>
           </div>
 
           <div className="space-y-8">

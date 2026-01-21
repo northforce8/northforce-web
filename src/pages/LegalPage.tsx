@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Shield, Eye, Cookie } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const LegalPage = () => {
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState('terms');
 
   const structuredData = {
@@ -23,9 +25,9 @@ const LegalPage = () => {
   };
 
   const tabs = [
-    { id: 'terms', label: 'Terms of Service', icon: <Shield className="h-5 w-5" /> },
-    { id: 'privacy', label: 'Privacy Policy', icon: <Eye className="h-5 w-5" /> },
-    { id: 'cookies', label: 'Cookie Policy', icon: <Cookie className="h-5 w-5" /> }
+    { id: 'terms', label: t('legal.tabs.terms'), icon: <Shield className="h-5 w-5" /> },
+    { id: 'privacy', label: t('legal.tabs.privacy'), icon: <Eye className="h-5 w-5" /> },
+    { id: 'cookies', label: t('legal.tabs.cookies'), icon: <Cookie className="h-5 w-5" /> }
   ];
 
   return (
@@ -46,9 +48,9 @@ const LegalPage = () => {
       <section className="bg-gradient-to-b from-gray-50 to-white py-20"> {/* Unique background */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="font-heading text-6xl lg:text-8xl font-black text-gray-900 mb-12 tracking-tight leading-none">Legal Information</h1>
+            <h1 className="font-heading text-6xl lg:text-8xl font-black text-gray-900 mb-12 tracking-tight leading-none">{t('legal.title')}</h1>
             <p className="font-body text-2xl lg:text-3xl text-gray-700 mb-16 max-w-4xl mx-auto font-medium leading-relaxed">
-              Transparency in all our policies and procedures. Clear terms, honest privacy practices, and straightforward cookie usage.
+              {t('legal.subtitle')}
             </p>
           </div>
         </div>
@@ -81,9 +83,9 @@ const LegalPage = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {activeTab === 'terms' && (
             <div className="prose prose-lg max-w-none">
-              <h2 className="font-heading text-5xl font-black text-gray-900 mb-10 tracking-tight">Terms of Service</h2>
+              <h2 className="font-heading text-5xl font-black text-gray-900 mb-10 tracking-tight">{t('legal.terms.title')}</h2>
               <p className="font-body text-gray-700 text-xl font-medium mb-10">
-                <strong>Last updated:</strong> December 15, 2024
+                <strong>{t('legal.terms.updated')}:</strong> December 15, 2024
               </p>
 
               <div className="space-y-8">
@@ -181,9 +183,9 @@ const LegalPage = () => {
 
           {activeTab === 'privacy' && (
             <div className="prose prose-lg max-w-none">
-             <h2 className="font-heading text-5xl font-black text-gray-900 mb-10 tracking-tight">Privacy Policy</h2>
+             <h2 className="font-heading text-5xl font-black text-gray-900 mb-10 tracking-tight">{t('legal.privacy.title')}</h2>
              <p className="font-body text-gray-700 text-xl font-medium mb-10">
-                <strong>Last updated:</strong> December 15, 2024
+                <strong>{t('legal.terms.updated')}:</strong> December 15, 2024
               </p>
 
               <div className="space-y-8">
@@ -289,9 +291,9 @@ const LegalPage = () => {
 
           {activeTab === 'cookies' && (
             <div className="prose prose-lg max-w-none">
-             <h2 className="font-heading text-5xl font-black text-gray-900 mb-10 tracking-tight">Cookie Policy</h2>
+             <h2 className="font-heading text-5xl font-black text-gray-900 mb-10 tracking-tight">{t('legal.cookies.title')}</h2>
              <p className="font-body text-gray-700 text-xl font-medium mb-10">
-                <strong>Last updated:</strong> December 15, 2024
+                <strong>{t('legal.terms.updated')}:</strong> December 15, 2024
               </p>
 
               <div className="space-y-8">

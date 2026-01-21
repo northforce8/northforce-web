@@ -4,8 +4,11 @@ import { ArrowRight, Target, Users, BarChart3, Calendar, CheckCircle, Zap, Brain
 import HeroSection from '../components/HeroSection';
 import CtaSection from '../components/CtaSection';
 import SEOHead from '../components/SEOHead';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const CMOPlusSystemPage = () => {
+  const { t } = useLanguage();
+
   const whatYouGet = [
     "Strategy & leadership: ICP, messaging, channel selection, calendars",
     "Content & SEO: pillar articles, repurpose to LinkedIn, carousels, video",
@@ -17,17 +20,17 @@ const CMOPlusSystemPage = () => {
 
   const packages = [
     {
-      name: "Launch",
+      name: t('cmoplus.packages.launch'),
       description: "1 channel, 2 campaigns, 4–6 publications/month",
       goal: "Target 2–3 meetings/month"
     },
     {
-      name: "Growth", 
+      name: t('cmoplus.packages.growth'),
       description: "2–3 channels, 8–12 publications/month, email + SEO",
       goal: "Target 4–6 meetings/month"
     },
     {
-      name: "Scale",
+      name: t('cmoplus.packages.scale'),
       description: "Multi-channel, webinar, SEO, lead magnets",
       goal: "Target 8–12 meetings/month"
     }
@@ -115,9 +118,9 @@ const CMOPlusSystemPage = () => {
       />
       
       <HeroSection
-        title="On-Demand "
-        titleHighlight="CMO"
-        subtitle="Strategic leadership + an execution engine. One subscription. Weekly cadence. Real results."
+        title={t('cmoplus.title')}
+        titleHighlight=""
+        subtitle={t('cmoplus.subtitle')}
         backgroundVariant="homepage"
         extraContent={
           <>

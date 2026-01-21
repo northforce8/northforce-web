@@ -3,8 +3,11 @@ import { ArrowRight, Target, Cog, Users, Fuel as Funnel, Bot, Inbox, Share2, Che
 import HeroSection from '../components/HeroSection';
 import CtaSection from '../components/CtaSection';
 import SEOHead from '../components/SEOHead';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const SystemsPage = () => {
+  const { t } = useLanguage();
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -27,55 +30,55 @@ const SystemsPage = () => {
     {
       icon: <Cog className="h-10 w-10" />,
       iconColor: "text-accent-cyan",
-      title: "Automation System",
-      problem: "Manual tasks drain time and create bottlenecks",
-      solution: "End-to-end automation that maps and streamlines key workflows",
-      result: "Faster flow, fewer errors, and scalable operations without adding staff",
+      title: t('systems.automation.title'),
+      problem: t('systems.automation.problem'),
+      solution: t('systems.automation.solution'),
+      result: t('systems.automation.result'),
       features: ["Workflow mapping", "Process automation", "Error reduction", "Scalable operations"]
     },
     {
       icon: <Users className="h-10 w-10" />,
       iconColor: "text-accent-purple",
-      title: "CRM & Contact System",
-      problem: "Scattered data causes missed deals and poor follow-up",
-      solution: "Unified pipeline with centralized contact and deal management",
-      result: "Predictable sales, stronger relationships, and higher win rates",
+      title: t('systems.crm.title'),
+      problem: t('systems.crm.problem'),
+      solution: t('systems.crm.solution'),
+      result: t('systems.crm.result'),
       features: ["Contact management", "Deal tracking", "Pipeline visibility", "Relationship building"]
     },
     {
       icon: <Funnel className="h-10 w-10" />,
       iconColor: "text-accent-emerald",
-      title: "Funnel & Web System",
-      problem: "Random websites fail to convert visitors into customers",
-      solution: "Conversion-optimized funnels and strategic websites built for growth",
-      result: "Qualified leads, steady sales, and measurable revenue lift",
+      title: t('systems.funnel.title'),
+      problem: t('systems.funnel.problem'),
+      solution: t('systems.funnel.solution'),
+      result: t('systems.funnel.result'),
       features: ["Conversion optimization", "Lead generation", "Revenue tracking", "Growth metrics"]
     },
     {
       icon: <Bot className="h-10 w-10" />,
       iconColor: "text-accent-amber",
-      title: "AI Assistant System",
-      problem: "Customers wait too long for answers and drop off",
-      solution: "AI agents that respond, qualify, and book meetings instantly",
-      result: "24/7 lead capture, faster trust, and higher customer satisfaction",
+      title: t('systems.ai.title'),
+      problem: t('systems.ai.problem'),
+      solution: t('systems.ai.solution'),
+      result: t('systems.ai.result'),
       features: ["24/7 availability", "Lead qualification", "Meeting booking", "Customer support"]
     },
     {
       icon: <Inbox className="h-10 w-10" />,
       iconColor: "text-accent-rose",
-      title: "Unified Inbox & Reviews System",
-      problem: "Messages scattered across channels, reviews ignored",
-      solution: "Centralized inbox with integrated review management system",
-      result: "No missed leads, higher Google trust, and stronger online reputation",
+      title: t('systems.inbox.title'),
+      problem: t('systems.inbox.problem'),
+      solution: t('systems.inbox.solution'),
+      result: t('systems.inbox.result'),
       features: ["Centralized messaging", "Review management", "Reputation monitoring", "Response automation"]
     },
     {
       icon: <Share2 className="h-10 w-10" />,
       iconColor: "text-primary-600",
-      title: "Social Flow System",
-      problem: "Irregular posting and weak presence kills reach",
-      solution: "Automated social content flow with built-in scheduling",
-      result: "Consistent visibility, stronger brand presence, and steady engagement",
+      title: t('systems.social.title'),
+      problem: t('systems.social.problem'),
+      solution: t('systems.social.solution'),
+      result: t('systems.social.result'),
       features: ["Content scheduling", "Brand consistency", "Engagement tracking", "Multi-platform management"]
     }
   ];
@@ -113,9 +116,9 @@ const SystemsPage = () => {
       />
       
       <HeroSection
-        title="Six Core "
-        titleHighlight="Systems"
-        subtitle="Each system solves a specific business problem with measurable outcomes."
+        title={t('systems.title')}
+        titleHighlight=""
+        subtitle={t('systems.subtitle')}
         icon={<Target className="h-12 w-12 text-accent-cyan" />}
         backgroundVariant="subpage"
       />

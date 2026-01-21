@@ -3,8 +3,11 @@ import { ArrowRight, Code, Search, Zap, Globe, BarChart3, Brain, Sparkles } from
 import HeroSection from '../components/HeroSection';
 import CtaSection from '../components/CtaSection';
 import SEOHead from '../components/SEOHead';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const ServicesPage = () => {
+  const { t } = useLanguage();
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -27,50 +30,50 @@ const ServicesPage = () => {
     {
       icon: <Code className="h-10 w-10" />,
       iconColor: "text-accent-cyan",
-      title: "Custom Development",
-      problem: "Standard tools can't cover unique processes.",
-      solution: "Tailored platforms and applications designed around your exact workflows.",
-      result: "Scalable digital assets that give you long-term competitive edge."
+      title: t('services.development.title'),
+      problem: t('services.development.problem'),
+      solution: t('services.development.solution'),
+      result: t('services.development.result')
     },
     {
       icon: <Search className="h-10 w-10" />,
       iconColor: "text-accent-purple",
-      title: "SEO & Visibility Systems",
-      problem: "Low visibility makes strong companies invisible online.",
-      solution: "Structured SEO, E-E-A-T optimization, and listings that boost trust signals.",
-      result: "Higher rankings, more inbound leads, and credibility that compounds over time."
+      title: t('services.seo.title'),
+      problem: t('services.seo.problem'),
+      solution: t('services.seo.solution'),
+      result: t('services.seo.result')
     },
     {
       icon: <Zap className="h-10 w-10" />,
       iconColor: "text-accent-emerald",
-      title: "System Integrations",
-      problem: "Disconnected tools create silos and wasted effort.",
-      solution: "Secure, enterprise-grade integrations that unify data and processes.",
-      result: "One source of truth, faster operations, and stronger customer experience."
+      title: t('services.integrations.title'),
+      problem: t('services.integrations.problem'),
+      solution: t('services.integrations.solution'),
+      result: t('services.integrations.result')
     },
     {
       icon: <Globe className="h-10 w-10" />,
       iconColor: "text-accent-amber",
-      title: "Funnels & Strategic Websites",
-      problem: "Websites without structure don't generate sales.",
-      solution: "High-converting funnels and websites built as growth engines.",
-      result: "Consistent lead flow, measurable ROI, and predictable revenue."
+      title: t('services.funnels.title'),
+      problem: t('services.funnels.problem'),
+      solution: t('services.funnels.solution'),
+      result: t('services.funnels.result')
     },
     {
       icon: <BarChart3 className="h-10 w-10" />,
       iconColor: "text-accent-rose",
-      title: "Business Process Automation",
-      problem: "Manual tasks drain resources and slow teams.",
-      solution: "Automating repetitive processes across sales, marketing, and support.",
-      result: "Cost savings, improved efficiency, and more time for growth activities."
+      title: t('services.automation.title'),
+      problem: t('services.automation.problem'),
+      solution: t('services.automation.solution'),
+      result: t('services.automation.result')
     },
     {
       icon: <Brain className="h-10 w-10" />,
       iconColor: "text-primary-600",
-      title: "AI-Powered Agent Solutions",
-      problem: "Customers demand instant responses but humans can't be online 24/7.",
-      solution: "AI-driven chat and voice agents that qualify leads, support clients, and book meetings.",
-      result: "24/7 coverage, higher customer satisfaction, and better lead conversion."
+      title: t('services.ai.title'),
+      problem: t('services.ai.problem'),
+      solution: t('services.ai.solution'),
+      result: t('services.ai.result')
     }
   ];
 
@@ -89,9 +92,9 @@ const ServicesPage = () => {
       />
       
       <HeroSection
-        title="Six Execution "
-        titleHighlight="Capabilities"
-        subtitle="How we deliver systems that drive measurable business outcomes."
+        title={t('services.title')}
+        titleHighlight=""
+        subtitle={t('services.subtitle')}
         icon={<Sparkles className="h-12 w-12 text-accent-purple" />}
         backgroundVariant="subpage"
       />

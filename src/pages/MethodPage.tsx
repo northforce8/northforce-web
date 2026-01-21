@@ -3,8 +3,11 @@ import { ArrowRight, Target, Sparkles, Shield, CheckCircle } from 'lucide-react'
 import HeroSection from '../components/HeroSection';
 import CtaSection from '../components/CtaSection';
 import SEOHead from '../components/SEOHead';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const MethodPage = () => {
+  const { t } = useLanguage();
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -27,29 +30,29 @@ const MethodPage = () => {
     {
       icon: <Target className="h-12 w-12" />,
       iconColor: "text-accent-cyan",
-      title: "System Delivery Cycle",
-      subtitle: "6A Framework",
-      description: "Assess, Align, Architect, Assemble, Activate, Amplify",
-      details: "Structured approach to implementing and optimizing business systems with measurable milestones at each phase.",
-      outcome: "Predictable delivery, measurable results, systematic excellence"
+      title: t('method.delivery.title'),
+      subtitle: t('method.delivery.subtitle'),
+      description: t('method.delivery.description'),
+      details: t('method.delivery.details'),
+      outcome: t('method.delivery.outcome')
     },
     {
       icon: <Sparkles className="h-12 w-12" />,
       iconColor: "text-accent-purple",
-      title: "Leverage-by-Design",
-      subtitle: "Exponential Growth Model",
-      description: "Building systems that multiply your efforts and compound over time",
-      details: "Every component is designed to create leverage, turning linear inputs into exponential outputs through intelligent automation.",
-      outcome: "Scalable growth, sustainable competitive advantage, maximum ROI"
+      title: t('method.leverage.title'),
+      subtitle: t('method.leverage.subtitle'),
+      description: t('method.leverage.description'),
+      details: t('method.leverage.details'),
+      outcome: t('method.leverage.outcome')
     },
     {
       icon: <Shield className="h-12 w-12" />,
       iconColor: "text-accent-emerald",
-      title: "System Partner Model",
-      subtitle: "Long-term Success Framework",
-      description: "Continuous optimization and strategic evolution partnership",
-      details: "Beyond implementation - ongoing partnership that ensures your systems evolve with your business and market changes.",
-      outcome: "Continuous improvement, strategic evolution, sustained growth"
+      title: t('method.partner.title'),
+      subtitle: t('method.partner.subtitle'),
+      description: t('method.partner.description'),
+      details: t('method.partner.details'),
+      outcome: t('method.partner.outcome')
     }
   ];
 
@@ -107,9 +110,9 @@ const MethodPage = () => {
       />
       
       <HeroSection
-        title="Our Proven "
-        titleHighlight="Method"
-        subtitle="Three integrated models that ensure maximum impact and long-term success."
+        title={t('method.title')}
+        titleHighlight=""
+        subtitle={t('method.subtitle')}
         icon={<Target className="h-12 w-12 text-accent-cyan" />}
         backgroundVariant="subpage"
       />
