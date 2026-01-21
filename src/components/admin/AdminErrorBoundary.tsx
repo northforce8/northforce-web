@@ -106,15 +106,13 @@ Build: 2025.01.15-1411
     window.location.href = ADMIN_ROUTES.DASHBOARD;
   };
 
-  render() {
-   render() {
+render() {
   if (this.state.hasError) {
-    const isProduction = import.meta.env.PROD;
-    if (isProduction) return null;
-    return ( /* error UI */ );
+    if (import.meta.env.PROD) return null;
   }
   return this.props.children;
 }
+
 
         <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
           <div className="max-w-4xl w-full">
