@@ -107,14 +107,15 @@ Build: 2025.01.15-1411
   };
 
   render() {
-    if (this.state.hasError) {
-      const isProduction = import.meta.env.PROD;
+   render() {
+  if (this.state.hasError) {
+    const isProduction = import.meta.env.PROD;
+    if (isProduction) return null;
+    return ( /* error UI */ );
+  }
+  return this.props.children;
+}
 
-      if (isProduction) {
-        return null;
-      }
-
-      return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
           <div className="max-w-4xl w-full">
             <div className="bg-white rounded-lg shadow-lg p-8">
