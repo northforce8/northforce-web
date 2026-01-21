@@ -292,7 +292,7 @@ const AdminLayout: React.FC = () => {
               title={language === 'en' ? 'Switch to Swedish' : 'Växla till engelska'}
             >
               <Globe className="h-4 w-4 mr-2" />
-              {language.toUpperCase()}
+{(language || 'en').toUpperCase()}
             </button>
 
             <button
