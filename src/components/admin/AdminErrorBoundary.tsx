@@ -108,6 +108,40 @@ Build: 2025.01.15-1411
 
   render() {
     if (this.state.hasError) {
+      const isProduction = import.meta.env.PROD;
+
+      if (isProduction) {
+        return (
+          <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+            <div className="max-w-md w-full">
+              <div className="bg-white rounded-lg shadow-lg p-8">
+                <div className="flex flex-col items-center text-center">
+                  <AlertTriangle className="h-16 w-16 text-red-600 mb-4" />
+                  <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                    Something went wrong
+                  </h1>
+                  <p className="text-gray-600 mb-6">
+                    The application encountered an unexpected error. Please try reloading the page.
+                  </p>
+                  {this.state.errorId && (
+                    <p className="text-sm text-gray-500 mb-6 font-mono">
+                      Error ID: {this.state.errorId}
+                    </p>
+                  )}
+                  <button
+                    onClick={this.handleReload}
+                    className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+                  >
+                    <RefreshCw className="h-5 w-5" />
+                    Reload Page
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
       return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
           <div className="max-w-4xl w-full">
