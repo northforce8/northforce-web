@@ -33,7 +33,10 @@ import {
   Briefcase,
   Lightbulb,
   ChevronRight,
-  ChevronDown
+  ChevronDown,
+  AlertTriangle,
+  RefreshCw,
+  Home
 } from 'lucide-react';
 import { getCurrentUser, signOut } from '../../lib/auth';
 import type { AdminUser } from '../../lib/auth';
@@ -46,9 +49,60 @@ const AdminLayout: React.FC = () => {
   const [authLoading, setAuthLoading] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
+  const [globalError, setGlobalError] = useState<string | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { language, setLanguage, t } = useLanguage();
+
+  useEffect(() => {
+    const handleWindowError = (event: ErrorEvent) => {
+      console.error('=== WINDOW ERROR CAPTURED ===');
+      console.error('Message:', event.message);
+      console.error('Source:', event.filename);
+      console.error('Line:', event.lineno);
+      console.error('Column:', event.colno);
+      console.error('Error:', event.error);
+      console.error('Stack:', event.error?.stack);
+      console.error('===========================');
+
+      const errorMessage = `
+Window Error Captured:
+Message: ${event.message}
+Source: ${event.filename}:${event.lineno}:${event.colno}
+Route: ${window.location.pathname}
+Language: ${localStorage.getItem('language') || 'en'}
+Stack: ${event.error?.stack || 'No stack available'}
+Build: 2025.01.15-1411
+      `.trim();
+
+      setGlobalError(errorMessage);
+    };
+
+    const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
+      console.error('=== UNHANDLED PROMISE REJECTION ===');
+      console.error('Reason:', event.reason);
+      console.error('Promise:', event.promise);
+      console.error('===================================');
+
+      const errorMessage = `
+Unhandled Promise Rejection:
+Reason: ${event.reason}
+Route: ${window.location.pathname}
+Language: ${localStorage.getItem('language') || 'en'}
+Build: 2025.01.15-1411
+      `.trim();
+
+      setGlobalError(errorMessage);
+    };
+
+    window.addEventListener('error', handleWindowError);
+    window.addEventListener('unhandledrejection', handleUnhandledRejection);
+
+    return () => {
+      window.removeEventListener('error', handleWindowError);
+      window.removeEventListener('unhandledrejection', handleUnhandledRejection);
+    };
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -171,6 +225,54 @@ const AdminLayout: React.FC = () => {
       items: group.items.filter(item => item.roles.includes(user?.role || ''))
     }))
     .filter(group => group.roles.includes(user?.role || '') && group.items.length > 0);
+
+  if (globalError) {
+    return (
+      <div className="min-h-screen bg-red-900 flex items-center justify-center p-6">
+        <div className="max-w-4xl w-full bg-white rounded-lg shadow-2xl p-8">
+          <div className="flex items-center gap-4 mb-6">
+            <AlertTriangle className="h-12 w-12 text-red-600 flex-shrink-0" />
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">
+                Fatal Admin Error - White Screen Prevented
+              </h1>
+              <p className="text-gray-600 mt-1">
+                Window-level error captured outside React
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-red-50 border-2 border-red-300 rounded-lg p-5 mb-6">
+            <h2 className="text-base font-bold text-red-900 mb-3 uppercase tracking-wide">
+              Error Details
+            </h2>
+            <div className="p-4 bg-gray-900 rounded-lg border border-gray-700 overflow-auto max-h-96">
+              <pre className="text-xs text-green-400 whitespace-pre-wrap font-mono">
+                {globalError}
+              </pre>
+            </div>
+          </div>
+
+          <div className="flex gap-3">
+            <button
+              onClick={() => window.location.reload()}
+              className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+            >
+              <RefreshCw className="h-5 w-5" />
+              Reload Page
+            </button>
+            <button
+              onClick={() => window.location.href = ADMIN_ROUTES.DASHBOARD}
+              className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors font-medium"
+            >
+              <Home className="h-5 w-5" />
+              Go to Dashboard
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (authLoading || !user) {
     return (
