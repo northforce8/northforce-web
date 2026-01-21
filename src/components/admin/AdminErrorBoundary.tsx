@@ -108,10 +108,10 @@ Build: 2025.01.15-1411
 
 render() {
 if (this.state.hasError) {
-    if (import.meta.env.PROD) {
-        // Inget UI visas i produktion, gör ingen rendering
-        return null;
-    }
+  if (import.meta.env.PROD) return null;
+  return this.props.children;
+}
+
     // Annars, rendera normalt i devläge (det här gör inget om det inte är produktion)
     return this.props.children;
 }
