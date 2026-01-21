@@ -282,7 +282,8 @@ const AdminLayout: React.FC = () => {
             <div className="flex items-center mb-3">
               <div className="flex-1">
 <p className="text-sm font-medium text-gray-900">{user?.name || user?.email || ''}</p>
-                <p className="text-xs text-gray-500 capitalize">{user.role}</p>
+<p className="text-xs text-gray-500 capitalize">{user?.role || ''}</p>
+
               </div>
             </div>
 
