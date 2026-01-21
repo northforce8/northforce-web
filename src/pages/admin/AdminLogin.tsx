@@ -47,7 +47,7 @@ const AdminLogin = () => {
               title={language === 'en' ? 'Switch to Swedish' : 'Växla till engelska'}
             >
               <Globe className="h-4 w-4 text-gray-700" />
-              <span className="text-sm font-medium text-gray-700">{language.toUpperCase()}</span>
+{(language || 'en').toUpperCase()}
             </button>
           </div>
 
