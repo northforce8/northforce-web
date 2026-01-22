@@ -9,8 +9,10 @@ import { useToast } from '../../../contexts/ToastContext';
 import { logAdminError } from '../../../lib/admin-error-logger';
 import { safeString } from '../../../lib/data-validators';
 import { Modal } from '../../../components/admin/ui/Modal';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 export default function ContractsPage() {
+  const { t } = useLanguage();
   const [contracts, setContracts] = useState<any[]>([]);
   const [customers, setCustomers] = useState<any[]>([]);
   const [templates, setTemplates] = useState<any[]>([]);
@@ -71,7 +73,7 @@ export default function ContractsPage() {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Laddar kontrakt...</p>
+          <p className="text-gray-600">{t('admin.loading.contracts')}</p>
         </div>
       </div>
     );
@@ -98,10 +100,10 @@ export default function ContractsPage() {
   return (
     <div className="max-w-7xl mx-auto p-6">
       <PageHeader
-        title="Contracts"
-        description="Manage customer contracts and agreements"
+        title={t('admin.contracts.title')}
+        description={t('admin.contracts.description')}
         action={{
-          label: 'Create Contract',
+          label: t('admin.contracts.add'),
           onClick: () => setShowCreateModal(true),
           icon: Plus,
         }}

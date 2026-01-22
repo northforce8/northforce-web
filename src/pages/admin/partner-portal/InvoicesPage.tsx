@@ -10,8 +10,10 @@ import { safeString, safeNumber } from '../../../lib/data-validators';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { Modal } from '../../../components/admin/ui/Modal';
 import { PAGE_HELP_CONTENT } from '../../../lib/page-help-content';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 export default function InvoicesPage() {
+  const { t } = useLanguage();
   const [invoices, setInvoices] = useState<any[]>([]);
   const [customers, setCustomers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -70,7 +72,7 @@ export default function InvoicesPage() {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Laddar fakturor...</p>
+          <p className="text-gray-600">{t('admin.loading.invoices')}</p>
         </div>
       </div>
     );
@@ -97,11 +99,11 @@ export default function InvoicesPage() {
   return (
     <div className="max-w-7xl mx-auto p-6">
       <PageHeader
-        title="Invoices"
-        description="Manage customer invoices and billing"
+        title={t('admin.invoices.title')}
+        description={t('admin.invoices.description')}
         icon={FileText}
         action={{
-          label: 'Create Invoice',
+          label: t('admin.invoices.add'),
           onClick: () => setShowCreateModal(true),
           icon: Plus
         }}
