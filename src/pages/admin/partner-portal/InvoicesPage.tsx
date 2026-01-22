@@ -59,7 +59,7 @@ export default function InvoicesPage() {
         action: 'loadData',
       });
       console.error(`[${errorId}] Error loading data:`, err);
-      setError(err instanceof Error ? err.message : 'Kunde inte ladda fakturor. Försök igen.');
+      setError(err instanceof Error ? err.message : t('admin.error.failed_load_invoices'));
       setInvoices([]);
       setCustomers([]);
     } finally {
@@ -116,14 +116,14 @@ export default function InvoicesPage() {
           className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium"
         >
           <DollarSign className="h-5 w-5" />
-          Generate from Time
+          {t('admin.invoices.generate_from_time')}
         </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Total Invoiced</h3>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">{t('admin.invoices.total_invoiced')}</h3>
             <FileText className="h-5 w-5 text-gray-400" />
           </div>
           <p className="text-3xl font-bold text-gray-900">
@@ -133,7 +133,7 @@ export default function InvoicesPage() {
 
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Paid</h3>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">{t('admin.invoices.paid')}</h3>
             <DollarSign className="h-5 w-5 text-green-500" />
           </div>
           <p className="text-3xl font-bold text-green-600">
@@ -143,7 +143,7 @@ export default function InvoicesPage() {
 
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Overdue</h3>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">{t('admin.invoices.overdue')}</h3>
             <FileText className="h-5 w-5 text-red-500" />
           </div>
           <p className="text-3xl font-bold text-red-600">
@@ -160,7 +160,7 @@ export default function InvoicesPage() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Search invoices..."
+                  placeholder={t('admin.invoices.search_placeholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -173,19 +173,19 @@ export default function InvoicesPage() {
                 onChange={(e) => setStatusFilter(e.target.value)}
                 className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500"
               >
-                <option value="all">All Status</option>
-                <option value="draft">Draft</option>
-                <option value="sent">Sent</option>
-                <option value="paid">Paid</option>
-                <option value="overdue">Overdue</option>
-                <option value="cancelled">Cancelled</option>
+                <option value="all">{t('admin.invoices.status_all')}</option>
+                <option value="draft">{t('admin.invoices.status_draft')}</option>
+                <option value="sent">{t('admin.invoices.status_sent')}</option>
+                <option value="paid">{t('admin.invoices.status_paid')}</option>
+                <option value="overdue">{t('admin.invoices.status_overdue')}</option>
+                <option value="cancelled">{t('admin.invoices.status_cancelled')}</option>
               </select>
               <select
                 value={customerFilter}
                 onChange={(e) => setCustomerFilter(e.target.value)}
                 className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500"
               >
-                <option value="all">All Customers</option>
+                <option value="all">{t('admin.invoices.all_customers')}</option>
                 {customers.map((customer) => (
                   <option key={customer.id} value={customer.id}>
                     {customer.company_name || 'Unknown'}
@@ -197,7 +197,7 @@ export default function InvoicesPage() {
         </div>
 
         {loading ? (
-          <div className="p-12 text-center text-gray-500">Loading invoices...</div>
+          <div className="p-12 text-center text-gray-500">{t('admin.loading.invoices')}</div>
         ) : filteredInvoices.length === 0 ? (
           <div className="p-12 text-center">
             <FileText className="mx-auto h-12 w-12 text-gray-400" />

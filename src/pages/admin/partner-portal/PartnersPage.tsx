@@ -51,7 +51,7 @@ const PartnersPage: React.FC = () => {
       setPartners(data);
     } catch (error) {
       console.error('Error loading partners:', error);
-      setError('Failed to load partners. Please try again.');
+      setError(t('admin.error.failed_load_partners'));
     } finally {
       setLoading(false);
     }
@@ -74,11 +74,11 @@ const PartnersPage: React.FC = () => {
         expertise_areas: [],
         is_active: true,
       });
-      setSuccess('Partner created successfully');
+      setSuccess(t('admin.success.partner_created'));
       await loadData();
     } catch (error) {
       console.error('Error creating partner:', error);
-      setError('Failed to create partner. Please try again.');
+      setError(t('admin.error.failed_partner_create'));
     } finally {
       setSubmitting(false);
     }
@@ -95,29 +95,29 @@ const PartnersPage: React.FC = () => {
       await partnerPortalApi.partners.update(editingPartner.id, editingPartner);
       setShowEditModal(false);
       setEditingPartner(null);
-      setSuccess('Partner updated successfully');
+      setSuccess(t('admin.success.partner_updated'));
       await loadData();
     } catch (error) {
       console.error('Error updating partner:', error);
-      setError('Failed to update partner. Please try again.');
+      setError(t('admin.error.failed_partner_update'));
     } finally {
       setSubmitting(false);
     }
   };
 
   const handleDeletePartner = async (id: string, name: string) => {
-    if (!confirm(`Are you sure you want to delete partner "${name}"? This action cannot be undone.`)) {
+    if (!confirm(t('admin.confirm.delete_partner', { name }))) {
       return;
     }
 
     setError(null);
     try {
       await partnerPortalApi.partners.delete(id);
-      setSuccess('Partner deleted successfully');
+      setSuccess(t('admin.success.partner_deleted'));
       await loadData();
     } catch (error) {
       console.error('Error deleting partner:', error);
-      setError('Failed to delete partner. Please try again.');
+      setError(t('admin.error.failed_partner_update'));
     }
   };
 
@@ -145,7 +145,7 @@ const PartnersPage: React.FC = () => {
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading partners...</p>
+            <p className="text-gray-600">{t('admin.loading.partners')}</p>
           </div>
         </div>
       </div>
@@ -155,10 +155,10 @@ const PartnersPage: React.FC = () => {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Partners"
-        description="Manage partner profiles and assignments"
+        title={t('admin.partners.title')}
+        description={t('admin.partners.description')}
         action={isAdminUser ? {
-          label: 'Add Partner',
+          label: t('admin.partners.add'),
           onClick: () => setShowCreateModal(true),
           icon: Plus,
         } : undefined}
@@ -182,7 +182,7 @@ const PartnersPage: React.FC = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search partners..."
+                placeholder={t('admin.partners.search_placeholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
@@ -195,9 +195,9 @@ const PartnersPage: React.FC = () => {
                 onChange={(e) => setFilterStatus(e.target.value)}
                 className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
               >
-                <option value="all">All Partners</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
+                <option value="all">{t('admin.partners.filter_all')}</option>
+                <option value="active">{t('admin.partners.filter_active')}</option>
+                <option value="inactive">{t('admin.partners.filter_inactive')}</option>
               </select>
             </div>
           </div>

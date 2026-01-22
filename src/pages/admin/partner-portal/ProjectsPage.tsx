@@ -79,7 +79,7 @@ const ProjectsPage: React.FC = () => {
   const handleCreateProject = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newProject.customer_id) {
-      setError('Please select a customer');
+      setError(t('admin.error.validation_customer_required'));
       return;
     }
 
@@ -103,11 +103,11 @@ const ProjectsPage: React.FC = () => {
         start_date: '',
         target_end_date: '',
       });
-      setSuccess('Project created successfully');
+      setSuccess(t('admin.success.project_created'));
       await loadData();
     } catch (error) {
       console.error('Error creating project:', error);
-      setError('Failed to create project. Please try again.');
+      setError(t('admin.error.failed_project_create'));
     } finally {
       setSubmitting(false);
     }
@@ -124,29 +124,29 @@ const ProjectsPage: React.FC = () => {
       await partnerPortalApi.projects.update(editingProject.id, editingProject);
       setShowEditModal(false);
       setEditingProject(null);
-      setSuccess('Project updated successfully');
+      setSuccess(t('admin.success.project_updated'));
       await loadData();
     } catch (error) {
       console.error('Error updating project:', error);
-      setError('Failed to update project. Please try again.');
+      setError(t('admin.error.failed_project_update'));
     } finally {
       setSubmitting(false);
     }
   };
 
   const handleDeleteProject = async (id: string, name: string) => {
-    if (!confirm(`Are you sure you want to delete project "${name}"? This action cannot be undone.`)) {
+    if (!confirm(t('admin.confirm.delete_project', { name }))) {
       return;
     }
 
     setError(null);
     try {
       await partnerPortalApi.projects.delete(id);
-      setSuccess('Project deleted successfully');
+      setSuccess(t('admin.success.project_deleted'));
       await loadData();
     } catch (error) {
       console.error('Error deleting project:', error);
-      setError('Failed to delete project. Please try again.');
+      setError(t('admin.error.failed_project_update'));
     }
   };
 
@@ -195,7 +195,7 @@ const ProjectsPage: React.FC = () => {
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading projects...</p>
+            <p className="text-gray-600">{t('admin.loading.projects')}</p>
           </div>
         </div>
       </div>
