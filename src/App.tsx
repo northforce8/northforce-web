@@ -81,13 +81,21 @@ import OKRDetailPage from './pages/admin/partner-portal/OKRDetailPage';
 import SWOTPage from './pages/admin/partner-portal/SWOTPage';
 import SWOTDetailPage from './pages/admin/partner-portal/SWOTDetailPage';
 import PorterPage from './pages/admin/partner-portal/PorterPage';
+import PorterDetailPage from './pages/admin/partner-portal/PorterDetailPage';
 import BMCPage from './pages/admin/partner-portal/BMCPage';
+import BMCDetailPage from './pages/admin/partner-portal/BMCDetailPage';
 import BSCPage from './pages/admin/partner-portal/BSCPage';
+import BSCDetailPage from './pages/admin/partner-portal/BSCDetailPage';
 import ADKARPage from './pages/admin/partner-portal/ADKARPage';
+import ADKARDetailPage from './pages/admin/partner-portal/ADKARDetailPage';
 import AgilePage from './pages/admin/partner-portal/AgilePage';
+import AgileDetailPage from './pages/admin/partner-portal/AgileDetailPage';
 import McKinsey7SPage from './pages/admin/partner-portal/McKinsey7SPage';
+import McKinsey7SDetailPage from './pages/admin/partner-portal/McKinsey7SDetailPage';
 import LeanStartupPage from './pages/admin/partner-portal/LeanStartupPage';
+import LeanStartupDetailPage from './pages/admin/partner-portal/LeanStartupDetailPage';
 import DesignThinkingPage from './pages/admin/partner-portal/DesignThinkingPage';
+import DesignThinkingDetailPage from './pages/admin/partner-portal/DesignThinkingDetailPage';
 
 // Customer Portal Pages
 import CustomerLogin from './pages/customer/CustomerLogin';
@@ -201,13 +209,21 @@ function App() {
           <Route path="strategic-frameworks/swot" element={<SWOTPage />} />
           <Route path="strategic-frameworks/swot/:id" element={<SWOTDetailPage />} />
           <Route path="strategic-frameworks/porter" element={<PorterPage />} />
+          <Route path="strategic-frameworks/porter/:id" element={<PorterDetailPage />} />
           <Route path="strategic-frameworks/bmc" element={<BMCPage />} />
+          <Route path="strategic-frameworks/bmc/:id" element={<BMCDetailPage />} />
           <Route path="strategic-frameworks/bsc" element={<BSCPage />} />
+          <Route path="strategic-frameworks/bsc/:id" element={<BSCDetailPage />} />
           <Route path="strategic-frameworks/adkar" element={<ADKARPage />} />
+          <Route path="strategic-frameworks/adkar/:id" element={<ADKARDetailPage />} />
           <Route path="strategic-frameworks/agile" element={<AgilePage />} />
+          <Route path="strategic-frameworks/agile/:id" element={<AgileDetailPage />} />
           <Route path="strategic-frameworks/mckinsey-7s" element={<McKinsey7SPage />} />
+          <Route path="strategic-frameworks/mckinsey-7s/:id" element={<McKinsey7SDetailPage />} />
           <Route path="strategic-frameworks/lean-startup" element={<LeanStartupPage />} />
+          <Route path="strategic-frameworks/lean-startup/:id" element={<LeanStartupDetailPage />} />
           <Route path="strategic-frameworks/design-thinking" element={<DesignThinkingPage />} />
+          <Route path="strategic-frameworks/design-thinking/:id" element={<DesignThinkingDetailPage />} />
 
           <Route path="settings" element={<SettingsPage />} />
           <Route path="health" element={<AdminHealthPage />} />
