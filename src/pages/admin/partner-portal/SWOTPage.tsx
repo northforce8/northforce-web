@@ -5,6 +5,7 @@ import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
 import { supabase } from '../../../lib/supabase';
 import { logAdminError } from '../../../lib/admin-error-logger';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface SWOTAnalysis {
   id: string;
@@ -26,6 +27,7 @@ interface SWOTItem {
 }
 
 export default function SWOTPage() {
+  const { t } = useLanguage();
   const [analyses, setAnalyses] = useState<SWOTAnalysis[]>([]);
   const [customers, setCustomers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -173,7 +175,7 @@ export default function SWOTPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-500">Loading SWOT analyses...</div>
+        <div className="text-gray-500">{t('admin.loading.swot')}</div>
       </div>
     );
   }
@@ -191,10 +193,10 @@ export default function SWOTPage() {
       )}
 
       <PageHeader
-        title="SWOT Analysis"
-        description="Assess internal strengths and weaknesses, external opportunities and threats to inform strategic decisions."
+        title={t('admin.swot.title')}
+        description={t('admin.swot.description')}
         action={{
-          label: 'Create SWOT Analysis',
+          label: t('admin.swot.add'),
           onClick: () => {
             setSelectedAnalysis(null);
             setShowModal(true);
@@ -208,7 +210,7 @@ export default function SWOTPage() {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
           <input
             type="text"
-            placeholder="Search..."
+            placeholder={t('admin.search')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -219,7 +221,7 @@ export default function SWOTPage() {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {['strength', 'weakness', 'opportunity', 'threat'].map((category) => (
           <Card key={category} className="p-6">
-            <p className="text-sm text-gray-600 capitalize mb-2">{category}s</p>
+            <p className="text-sm text-gray-600 capitalize mb-2">{t(`admin.swot.${category}s`)}</p>
             <p className="text-2xl font-bold text-gray-900">
               {analyses.reduce((sum, a) => sum + getCategoryCount(a.items, category), 0)}
             </p>
@@ -232,23 +234,23 @@ export default function SWOTPage() {
           searchQuery ? (
             <Card className="p-12 text-center">
               <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Results Found</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('admin.no_results')}</h3>
               <p className="text-gray-600 mb-4">
-                No items match "{searchQuery}". Try a different search term.
+                {t('admin.no_results_for')} "{searchQuery}". {t('admin.try_different_search')}
               </p>
             </Card>
           ) : (
             <Card className="p-12 text-center">
               <TrendingUp className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No SWOT Analyses Yet</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('admin.swot.empty')}</h3>
               <p className="text-gray-600 mb-4">
-                Create your first SWOT analysis to assess strengths, weaknesses, opportunities, and threats.
+                {t('admin.swot.empty.description')}
               </p>
               <button
                 onClick={() => setShowModal(true)}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
-                Create First Analysis
+                {t('admin.swot.empty.create')}
               </button>
             </Card>
           )
@@ -260,9 +262,9 @@ export default function SWOTPage() {
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">{analysis.title}</h3>
                   <p className="text-sm text-gray-600 mb-2">{analysis.description}</p>
                   <div className="flex items-center gap-4 text-xs text-gray-500">
-                    <span>Customer: {analysis.customer_name}</span>
+                    <span>{t('admin.table.customer')}: {analysis.customer_name}</span>
                     <span>•</span>
-                    <span>Context: {analysis.context}</span>
+                    <span>{t('admin.swot.context')}: {analysis.context}</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -279,14 +281,14 @@ export default function SWOTPage() {
                       setShowModal(true);
                     }}
                     className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                    title="Edit analysis"
+                    title={t('admin.edit')}
                   >
                     <Edit2 className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => handleDelete(analysis.id)}
                     className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                    title="Delete analysis"
+                    title={t('admin.delete')}
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -296,7 +298,7 @@ export default function SWOTPage() {
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 {['strength', 'weakness', 'opportunity', 'threat'].map((category) => (
                   <div key={category} className={`p-3 rounded-lg ${getCategoryColor(category)}`}>
-                    <p className="text-xs font-medium uppercase mb-1">{category}s</p>
+                    <p className="text-xs font-medium uppercase mb-1">{t(`admin.swot.${category}s`)}</p>
                     <p className="text-2xl font-bold">{getCategoryCount(analysis.items, category)}</p>
                   </div>
                 ))}
@@ -312,18 +314,18 @@ export default function SWOTPage() {
           setShowModal(false);
           setSelectedAnalysis(null);
         }}
-        title={selectedAnalysis ? 'Edit SWOT Analysis' : 'Create SWOT Analysis'}
+        title={selectedAnalysis ? t('admin.swot.edit') : t('admin.swot.create')}
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Customer</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{t('admin.table.customer')}</label>
             <select
               value={formData.customer_id}
               onChange={(e) => setFormData({ ...formData, customer_id: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg"
               required
             >
-              <option value="">Select Customer</option>
+              <option value="">{t('admin.select_customer')}</option>
               {customers.map((c) => (
                 <option key={c.id} value={c.id}>{c.name}</option>
               ))}
@@ -331,7 +333,7 @@ export default function SWOTPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{t('admin.title')}</label>
             <input
               type="text"
               value={formData.title}
@@ -342,7 +344,7 @@ export default function SWOTPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{t('admin.description')}</label>
             <textarea
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -352,13 +354,13 @@ export default function SWOTPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Context</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{t('admin.swot.context')}</label>
             <input
               type="text"
               value={formData.context}
               onChange={(e) => setFormData({ ...formData, context: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-              placeholder="e.g., Market expansion, Product launch"
+              placeholder={t('admin.swot.context_placeholder')}
             />
           </div>
 
@@ -371,13 +373,13 @@ export default function SWOTPage() {
               }}
               className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
             >
-              Cancel
+              {t('admin.cancel')}
             </button>
             <button
               type="submit"
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
             >
-              {selectedAnalysis ? 'Update' : 'Create'} Analysis
+              {selectedAnalysis ? t('admin.update') : t('admin.create')}
             </button>
           </div>
         </form>
