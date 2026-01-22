@@ -60,7 +60,7 @@ export default function PorterPage() {
         action: 'Loading Porter analyses'
       });
       console.error(`[${errorId}] Error loading data:`, err);
-      setError('Failed to load data. Please try again.');
+      setError(t('admin.error.failed_load_data'));
     } finally {
       setLoading(false);
     }
@@ -97,7 +97,7 @@ export default function PorterPage() {
         action: selectedAnalysis ? 'Updating Porter analysis' : 'Creating Porter analysis'
       });
       console.error(`[${errorId}] Error saving analysis:`, err);
-      setError('Failed to save analysis. Please try again.');
+      setError(t('admin.error.failed_save_analysis'));
     }
   };
 
@@ -116,7 +116,7 @@ export default function PorterPage() {
         action: 'Deleting Porter analysis'
       });
       console.error(`[${errorId}] Error deleting analysis:`, err);
-      setError('Failed to delete analysis. Please try again.');
+      setError(t('admin.error.failed_delete_analysis'));
     }
   };
 

@@ -59,7 +59,7 @@ const SupportPage: React.FC = () => {
       setPartners(partnersData);
     } catch (err) {
       console.error('Error loading support data:', err);
-      setError(err instanceof Error ? err.message : 'Kunde inte ladda supportdata. Försök igen.');
+      setError(err instanceof Error ? err.message : t('admin.error.failed_load_support'));
     } finally {
       setLoading(false);
     }
@@ -192,7 +192,7 @@ const SupportPage: React.FC = () => {
     <div>
       <div className="p-6 max-w-7xl mx-auto space-y-8">
         <PageHeader
-          title="Support & SLA-hantering"
+          title={t('admin.support.title')}
           description="Spåra ärenden och övervaka servicenivåavtal"
           icon={MessageSquare}
           action={{
@@ -353,7 +353,7 @@ const SupportPage: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-900">Create Support Ticket</h2>
+              <h2 className="text-xl font-semibold text-gray-900">{t('admin.support.create_ticket')}</h2>
             </div>
             <form onSubmit={handleCreateTicket} className="p-6 space-y-4">
               <div>

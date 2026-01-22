@@ -41,7 +41,7 @@ export default function BMCPage() {
         action: 'Loading business model canvases'
       });
       console.error(`[${errorId}] Error loading data:`, err);
-      setError('Failed to load data. Please try again.');
+      setError(t('admin.error.failed_load_data'));
     } finally {
       setLoading(false);
     }
@@ -71,7 +71,7 @@ export default function BMCPage() {
         action: selectedCanvas ? 'Updating business model canvas' : 'Creating business model canvas'
       });
       console.error(`[${errorId}] Error saving canvas:`, err);
-      setError('Failed to save canvas. Please try again.');
+      setError(t('admin.error.failed_save_canvas'));
     }
   };
 
@@ -90,7 +90,7 @@ export default function BMCPage() {
         action: 'Deleting business model canvas'
       });
       console.error(`[${errorId}] Error deleting canvas:`, err);
-      setError('Failed to delete canvas. Please try again.');
+      setError(t('admin.error.failed_delete_canvas'));
     }
   };
 

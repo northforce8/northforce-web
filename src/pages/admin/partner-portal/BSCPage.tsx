@@ -41,7 +41,7 @@ export default function BSCPage() {
         action: 'Loading Balanced Scorecards'
       });
       console.error(`[${errorId}] Error loading data:`, err);
-      setError('Failed to load data. Please try again.');
+      setError(t('admin.error.failed_load_data'));
     } finally {
       setLoading(false);
     }
@@ -72,7 +72,7 @@ export default function BSCPage() {
         action: selectedScorecard ? 'Updating Balanced Scorecard' : 'Creating Balanced Scorecard'
       });
       console.error(`[${errorId}] Error saving scorecard:`, err);
-      setError('Failed to save scorecard. Please try again.');
+      setError(t('admin.error.failed_save_scorecard'));
     }
   };
 
@@ -95,7 +95,7 @@ export default function BSCPage() {
         action: 'Deleting Balanced Scorecard'
       });
       console.error(`[${errorId}] Error deleting scorecard:`, err);
-      setError('Failed to delete scorecard. Please try again.');
+      setError(t('admin.error.failed_delete_scorecard'));
     }
   };
 

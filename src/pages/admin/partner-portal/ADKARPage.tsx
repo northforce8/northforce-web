@@ -50,7 +50,7 @@ export default function ADKARPage() {
         action: 'Loading change initiatives'
       });
       console.error(`[${errorId}] Error loading data:`, err);
-      setError('Failed to load data. Please try again.');
+      setError(t('admin.error.failed_load_data'));
     } finally {
       setLoading(false);
     }
@@ -88,7 +88,7 @@ export default function ADKARPage() {
         action: selectedInitiative ? 'Updating change initiative' : 'Creating change initiative'
       });
       console.error(`[${errorId}] Error saving initiative:`, err);
-      setError('Failed to save initiative. Please try again.');
+      setError(t('admin.error.failed_save_initiative'));
     }
   };
 
@@ -107,7 +107,7 @@ export default function ADKARPage() {
         action: 'Deleting change initiative'
       });
       console.error(`[${errorId}] Error deleting initiative:`, err);
-      setError('Failed to delete initiative. Please try again.');
+      setError(t('admin.error.failed_delete_initiative'));
     }
   };
 

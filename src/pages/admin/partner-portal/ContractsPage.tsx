@@ -59,7 +59,7 @@ export default function ContractsPage() {
         action: 'loadData',
       });
       console.error(`[${errorId}] Error loading data:`, err);
-      setError(err instanceof Error ? err.message : 'Kunde inte ladda kontrakt. Försök igen.');
+      setError(err instanceof Error ? err.message : t('admin.error.failed_load_contracts'));
       setContracts([]);
       setCustomers([]);
       setTemplates([]);
@@ -180,7 +180,7 @@ export default function ContractsPage() {
         </div>
 
         {loading ? (
-          <div className="p-12 text-center text-gray-500">Loading contracts...</div>
+          <div className="p-12 text-center text-gray-500">{t('admin.loading.contracts')}</div>
         ) : filteredContracts.length === 0 ? (
           <div className="p-12 text-center">
             <FileText className="mx-auto h-12 w-12 text-gray-400" />
@@ -316,7 +316,7 @@ function CreateContractModal({ customers, templates, onClose, onSuccess }: any) 
       onSuccess();
     } catch (error: any) {
       console.error('Error creating contract:', error);
-      toast.error(error.message || 'Failed to create contract');
+      toast.error(error.message || t('admin.error.failed_contract_create'));
     } finally {
       setSaving(false);
     }

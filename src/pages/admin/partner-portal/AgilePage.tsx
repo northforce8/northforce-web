@@ -64,7 +64,7 @@ export default function AgilePage() {
         action: 'Loading agile transformations'
       });
       console.error(`[${errorId}] Error loading data:`, err);
-      setError('Failed to load data. Please try again.');
+      setError(t('admin.error.failed_load_data'));
     } finally {
       setLoading(false);
     }
@@ -105,7 +105,7 @@ export default function AgilePage() {
         action: selectedTransformation ? 'Updating agile transformation' : 'Creating agile transformation'
       });
       console.error(`[${errorId}] Error saving transformation:`, err);
-      setError('Failed to save transformation. Please try again.');
+      setError(t('admin.error.failed_save_transformation'));
     }
   };
 
@@ -127,7 +127,7 @@ export default function AgilePage() {
         action: 'Deleting agile transformation'
       });
       console.error(`[${errorId}] Error deleting transformation:`, err);
-      setError('Failed to delete transformation. Please try again.');
+      setError(t('admin.error.failed_delete_transformation'));
     }
   };
 

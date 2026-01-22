@@ -88,7 +88,7 @@ export default function SWOTPage() {
         action: 'Loading SWOT analyses'
       });
       console.error(`[${errorId}] Error loading data:`, err);
-      setError('Failed to load data. Please try again.');
+      setError(t('admin.error.failed_load_data'));
     } finally {
       setLoading(false);
     }
@@ -120,7 +120,7 @@ export default function SWOTPage() {
         action: selectedAnalysis ? 'Updating SWOT analysis' : 'Creating SWOT analysis'
       });
       console.error(`[${errorId}] Error saving analysis:`, err);
-      setError('Failed to save analysis. Please try again.');
+      setError(t('admin.error.failed_save_analysis'));
     }
   };
 
@@ -143,7 +143,7 @@ export default function SWOTPage() {
         action: 'Deleting SWOT analysis'
       });
       console.error(`[${errorId}] Error deleting analysis:`, err);
-      setError('Failed to delete analysis. Please try again.');
+      setError(t('admin.error.failed_delete_analysis'));
     }
   };
 

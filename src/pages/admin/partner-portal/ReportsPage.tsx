@@ -185,7 +185,7 @@ const ReportsPage: React.FC = () => {
     <div>
       <div className="p-6 max-w-7xl mx-auto">
         <PageHeader
-          title="Reports & Analytics"
+          title={t('admin.reports.title')}
           description="Comprehensive business intelligence and data exports"
         />
 

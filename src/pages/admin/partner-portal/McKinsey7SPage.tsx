@@ -74,7 +74,7 @@ export default function McKinsey7SPage() {
       }
     } catch (err) {
       console.error('Error loading assessments:', err);
-      setError(err instanceof Error ? err.message : 'Kunde inte ladda McKinsey 7S-analyser. Försök igen.');
+      setError(err instanceof Error ? err.message : t('admin.error.failed_load_mckinsey'));
     } finally {
       setLoading(false);
     }

@@ -204,7 +204,7 @@ export default function PlanningPage() {
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
       <PageHeader
-        title="Calendar & Planning"
+        title={t('admin.planning.title')}
         description="Schedule and allocate partner capacity"
         icon={Calendar}
         action={{
@@ -266,7 +266,7 @@ export default function PlanningPage() {
         </div>
 
         {loading ? (
-          <div className="p-12 text-center text-gray-500">Loading calendar...</div>
+          <div className="p-12 text-center text-gray-500">{t('admin.loading.calendar')}</div>
         ) : (
           <div className="p-4">
             <div className="space-y-2">

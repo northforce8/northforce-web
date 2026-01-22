@@ -68,7 +68,7 @@ const SettingsPage: React.FC = () => {
       setWorkTypeUsageInfo(usageMap);
     } catch (err) {
       console.error('Error loading settings:', err);
-      setError(err instanceof Error ? err.message : 'Kunde inte ladda inställningar. Försök igen.');
+      setError(err instanceof Error ? err.message : t('admin.error.failed_load_settings'));
     } finally {
       setLoading(false);
     }
@@ -103,7 +103,7 @@ const SettingsPage: React.FC = () => {
       setTimeout(() => setSaveSuccess(false), 3000);
     } catch (error) {
       console.error('Error creating work type:', error);
-      alert('Failed to create work type');
+      alert(t('admin.error.failed_work_type_create'));
     } finally {
       setSaving(false);
     }
@@ -141,7 +141,7 @@ const SettingsPage: React.FC = () => {
       setTimeout(() => setSaveSuccess(false), 3000);
     } catch (error) {
       console.error('Error updating work type:', error);
-      alert('Failed to update work type');
+      alert(t('admin.error.failed_work_type_update'));
     } finally {
       setSaving(false);
     }
@@ -175,7 +175,7 @@ const SettingsPage: React.FC = () => {
       setTimeout(() => setSaveSuccess(false), 3000);
     } catch (error) {
       console.error('Error saving settings:', error);
-      alert('Failed to save settings');
+      alert(t('admin.error.failed_save_settings'));
     } finally {
       setSaving(false);
     }
@@ -254,14 +254,14 @@ const SettingsPage: React.FC = () => {
     <div>
       <div className="p-6 max-w-7xl mx-auto">
         <PageHeader
-          title="Settings"
+          title={t('admin.settings.title')}
           description="Configure Partner Portal system settings and work types"
         />
 
         {saveSuccess && (
           <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center">
             <Check className="h-5 w-5 text-green-600 mr-3" />
-            <span className="text-green-800 font-medium">Settings saved successfully</span>
+            <span className="text-green-800 font-medium">{t('admin.success.settings_saved')}</span>
           </div>
         )}
 
