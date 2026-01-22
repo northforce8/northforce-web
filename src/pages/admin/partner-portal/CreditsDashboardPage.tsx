@@ -19,6 +19,7 @@ import type { Customer } from '../../../lib/partner-portal-types';
 import { CreditsWithMoneyDisplay, PlanPricingCard } from '../../../components/admin/CreditsWithMoneyDisplay';
 import { creditsToMoney, formatCurrency } from '../../../lib/credits-pricing-config';
 import BurnRateForecastAI from '../../../components/admin/BurnRateForecastAI';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface CustomerCreditsStatus {
   customer: Customer;

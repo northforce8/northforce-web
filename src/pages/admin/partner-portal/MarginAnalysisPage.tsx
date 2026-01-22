@@ -4,6 +4,7 @@ import { supabase } from '../../../lib/supabase';
 import { CurrencyDisplay } from '../../../components/admin/CurrencyDisplay';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { PAGE_HELP_CONTENT } from '../../../lib/page-help-content';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface MarginAnalysis {
   id: string;

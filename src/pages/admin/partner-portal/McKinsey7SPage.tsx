@@ -8,6 +8,7 @@ import type {
 import { generateMcKinsey7SInsights } from '../../../lib/mckinsey-ai-service';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { PAGE_HELP_CONTENT } from '../../../lib/page-help-content';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 const ELEMENT_ICONS = {
   strategy: Target,
@@ -20,6 +21,7 @@ const ELEMENT_ICONS = {
 };
 
 export default function McKinsey7SPage() {
+  const { t } = useLanguage();
   const [assessments, setAssessments] = useState<McKinsey7SAssessment[]>([]);
   const [selectedAssessment, setSelectedAssessment] = useState<McKinsey7SAssessment | null>(null);
   const [elements, setElements] = useState<McKinsey7SElement[]>([]);

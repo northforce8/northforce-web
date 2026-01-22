@@ -27,6 +27,7 @@ import type {
   DTPhase,
 } from '../../../lib/design-thinking-types';
 import { DT_PHASE_LABELS, DT_PHASE_DESCRIPTIONS } from '../../../lib/design-thinking-types';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 const PHASE_ICONS: Record<DTPhase, typeof Heart> = {
   empathize: Heart,
@@ -37,6 +38,7 @@ const PHASE_ICONS: Record<DTPhase, typeof Heart> = {
 };
 
 export default function DesignThinkingPage() {
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

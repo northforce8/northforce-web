@@ -7,8 +7,10 @@ import { supabase } from '../../../lib/supabase';
 import { logAdminError } from '../../../lib/admin-error-logger';
 import type { AgileTransformation } from '../../../lib/agile-types';
 import { AGILE_FRAMEWORKS, TRANSFORMATION_SCOPES } from '../../../lib/agile-types';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 export default function AgilePage() {
+  const { t } = useLanguage();
   const [transformations, setTransformations] = useState<AgileTransformation[]>([]);
   const [customers, setCustomers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -175,7 +177,7 @@ export default function AgilePage() {
       )}
 
       <PageHeader
-        title="Agile Transformation"
+        title={t('admin.nav.agile_transformation')}
         description="Manage and track your organization's agile transformation journey"
         action={{
           label: 'Create Transformation',

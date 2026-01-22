@@ -5,8 +5,10 @@ import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
 import { supabase } from '../../../lib/supabase';
 import { logAdminError } from '../../../lib/admin-error-logger';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 export default function BMCPage() {
+  const { t } = useLanguage();
   const [canvases, setCanvases] = useState<any[]>([]);
   const [customers, setCustomers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -127,7 +129,7 @@ export default function BMCPage() {
       )}
 
       <PageHeader
-        title="Business Model Canvas"
+        title={t('admin.nav.business_model_canvas')}
         description="Design and iterate your business model across nine building blocks to ensure a robust and adaptable strategy."
         action={{
           label: 'Create Canvas',

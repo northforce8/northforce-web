@@ -6,6 +6,7 @@ import type { EnterprisePlan, PlanLevel } from '../../../lib/partner-portal-type
 import { normalizeArray, normalizeEnterprisePlan } from '../../../lib/data-validators';
 import { logAdminError } from '../../../lib/admin-error-logger';
 import { ContextualHelp } from '../../../components/admin/ContextualHelp';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 const EnterprisePlansPage: React.FC = () => {
   const [plans, setPlans] = useState<EnterprisePlan[]>([]);

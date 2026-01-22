@@ -5,6 +5,7 @@ import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
 import { supabase } from '../../../lib/supabase';
 import { logAdminError } from '../../../lib/admin-error-logger';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface Analysis {
   id: string;
@@ -21,6 +22,7 @@ interface Analysis {
 }
 
 export default function PorterPage() {
+  const { t } = useLanguage();
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [customers, setCustomers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -158,7 +160,7 @@ export default function PorterPage() {
       )}
 
       <PageHeader
-        title="Porter's Five Forces"
+        title={t('admin.nav.porters_five_forces')}
         description="Analyze competitive forces in your industry to develop strategies that protect and enhance market position."
         action={{
           label: 'Create Analysis',

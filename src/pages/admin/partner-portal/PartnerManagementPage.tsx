@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
+import { useLanguage } from '../../../contexts/LanguageContext';
 import type {
   Partner,
   PartnerCostRate,

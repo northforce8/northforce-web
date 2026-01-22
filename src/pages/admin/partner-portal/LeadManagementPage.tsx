@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { supabase } from '../../../lib/supabase';
 import { buildLeadDetailRoute } from '../../../lib/admin-routes';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface Lead {
   id: string;

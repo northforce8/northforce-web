@@ -6,8 +6,10 @@ import { Modal } from '../../../components/admin/ui/Modal';
 import { supabase } from '../../../lib/supabase';
 import { logAdminError } from '../../../lib/admin-error-logger';
 import { PAGE_HELP_CONTENT } from '../../../lib/page-help-content';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 export default function ADKARPage() {
+  const { t } = useLanguage();
   const [initiatives, setInitiatives] = useState<any[]>([]);
   const [customers, setCustomers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);

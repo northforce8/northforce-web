@@ -24,6 +24,7 @@ import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { getCurrentUser } from '../../../lib/auth';
 import { logAdminError } from '../../../lib/admin-error-logger';
 import { safeNumber, safeDivide, safeString } from '../../../lib/data-validators';
+import { useLanguage } from '../../../contexts/LanguageContext';
 import type {
   Customer,
   Recommendation,

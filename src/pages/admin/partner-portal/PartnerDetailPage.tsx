@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { safeNumber } from '../../../lib/data-validators';
+import { useLanguage } from '../../../contexts/LanguageContext';
 import type {
   Partner,
   PartnerRole,

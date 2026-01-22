@@ -16,6 +16,7 @@ import { safeNumber } from '../../../lib/data-validators';
 import ReportsInsightsAI from '../../../components/admin/ReportsInsightsAI';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
+import { useLanguage } from '../../../contexts/LanguageContext';
 import type {
   MarginAnalysis,
   PartnerPerformance,

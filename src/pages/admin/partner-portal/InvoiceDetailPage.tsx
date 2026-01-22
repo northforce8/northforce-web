@@ -8,8 +8,10 @@ import { InvoicePDFPreview } from '../../../components/admin/InvoicePDFPreview';
 import InvoiceValidationAI from '../../../components/admin/InvoiceValidationAI';
 import { generateInvoicePDF, downloadPDF } from '../../../lib/pdf-service';
 import { useToast } from '../../../contexts/ToastContext';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 export default function InvoiceDetailPage() {
+  const { t } = useLanguage();
   const { invoiceId } = useParams();
   const navigate = useNavigate();
   const toast = useToast();

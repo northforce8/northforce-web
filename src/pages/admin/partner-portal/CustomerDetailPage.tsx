@@ -17,6 +17,7 @@ import { PlanPricingCard } from '../../../components/admin/CreditsWithMoneyDispl
 import { creditsToMoney, formatCurrency as formatCurrencyUtil, getPlanDetails } from '../../../lib/credits-pricing-config';
 import CustomerHealthAI from '../../../components/admin/CustomerHealthAI';
 import { supabase } from '../../../lib/supabase';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface TimelineEvent {
   id: string;

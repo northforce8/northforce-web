@@ -23,8 +23,10 @@ import { enterpriseAPI } from '../../../lib/enterprise-api';
 import { swotAIService } from '../../../lib/swot-ai-service';
 import type { SwotAnalysisWithItems, SwotItem, SwotAIInsight, SwotCrossAnalysis } from '../../../lib/enterprise-types';
 import { useToast } from '../../../contexts/ToastContext';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 export default function SWOTDetailPage() {
+  const { t } = useLanguage();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { showToast } = useToast();

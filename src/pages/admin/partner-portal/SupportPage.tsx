@@ -16,6 +16,7 @@ import {
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { getCurrentUser } from '../../../lib/auth';
+import { useLanguage } from '../../../contexts/LanguageContext';
 import type {
   SupportTicket,
   SupportTicketWithRelations,

@@ -15,6 +15,7 @@ import {
 import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { ADMIN_ROUTES } from '../../../lib/admin-routes';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface Framework {
   id: string;
@@ -27,6 +28,7 @@ interface Framework {
 }
 
 export default function StrategicFrameworksOverviewPage() {
+  const { t } = useLanguage();
   const frameworks: Framework[] = [
     {
       id: 'okr',

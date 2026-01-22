@@ -5,8 +5,10 @@ import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
 import { supabase } from '../../../lib/supabase';
 import { logAdminError } from '../../../lib/admin-error-logger';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 export default function BSCPage() {
+  const { t } = useLanguage();
   const [scorecards, setScorecards] = useState<any[]>([]);
   const [customers, setCustomers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -136,7 +138,7 @@ export default function BSCPage() {
       )}
 
       <PageHeader
-        title="Balanced Scorecard"
+        title={t('admin.nav.balanced_scorecard')}
         description="Measure organizational performance across financial, customer, internal processes, and learning perspectives."
         action={{
           label: 'Create Scorecard',

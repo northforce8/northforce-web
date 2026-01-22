@@ -10,6 +10,7 @@ import { OKRAIInsights } from '../../../components/admin/okr/OKRAIInsights';
 import { KeyResultCard } from '../../../components/admin/okr/KeyResultCard';
 import { supabase } from '../../../lib/supabase';
 import { logAdminError } from '../../../lib/admin-error-logger';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface Objective {
   id: string;
@@ -26,6 +27,7 @@ interface Objective {
 }
 
 export default function OKRDetailPage() {
+  const { t } = useLanguage();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [objective, setObjective] = useState<Objective | null>(null);

@@ -5,6 +5,7 @@ import { isAdmin } from '../../../lib/auth';
 import { partnerPortalApi } from '../../../lib/partner-portal-api';
 import { PageHeader } from '../../../components/admin/PageHeader';
 import type { Partner } from '../../../lib/partner-portal-types';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 const PartnersPage: React.FC = () => {
   const navigate = useNavigate();

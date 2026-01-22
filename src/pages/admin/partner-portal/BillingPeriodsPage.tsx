@@ -3,6 +3,7 @@ import { Calendar, DollarSign, TrendingUp, AlertCircle, Download, Plus, AlertTri
 import { supabase } from '../../../lib/supabase';
 import { CurrencyDisplay } from '../../../components/admin/CurrencyDisplay';
 import { PageHeader } from '../../../components/admin/PageHeader';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface BillingPeriod {
   id: string;
