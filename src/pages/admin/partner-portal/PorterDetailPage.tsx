@@ -6,6 +6,7 @@ import { Card } from '../../../components/admin/ui/Card';
 import { Modal } from '../../../components/admin/ui/Modal';
 import { supabase } from '../../../lib/supabase';
 import { logAdminError } from '../../../lib/admin-error-logger';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface PorterAnalysis {
   id: string;
@@ -23,6 +24,7 @@ interface PorterAnalysis {
 }
 
 export default function PorterDetailPage() {
+  const { t } = useLanguage();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [analysis, setAnalysis] = useState<PorterAnalysis | null>(null);
@@ -55,7 +57,7 @@ export default function PorterDetailPage() {
   };
 
   const handleDelete = async () => {
-    if (!confirm('Are you sure you want to delete this Porter analysis?')) return;
+    if (!confirm(t('admin.detail.confirm_delete_porter'))) return;
 
     try {
       const { error } = await supabase.from('porter_analyses').delete().eq('id', id);
@@ -70,7 +72,10 @@ export default function PorterDetailPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">{t('admin.detail.loading_porter')}</p>
+        </div>
       </div>
     );
   }
@@ -80,12 +85,12 @@ export default function PorterDetailPage() {
       <div className="max-w-7xl mx-auto p-6">
         <div className="text-center py-12 bg-yellow-50 border border-yellow-200 rounded-lg">
           <Shield className="w-12 h-12 text-yellow-600 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Analysis not found</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('admin.detail.porter_not_found')}</h3>
           <button
             onClick={() => navigate('/admin/partner-portal/strategic-frameworks/porter')}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
-            Back to Porter Analyses
+            {t('admin.detail.back_to_porter')}
           </button>
         </div>
       </div>
@@ -93,11 +98,11 @@ export default function PorterDetailPage() {
   }
 
   const forceData = [
-    { name: 'Competitive Rivalry', score: analysis.competitive_rivalry, color: 'bg-red-500' },
-    { name: 'Supplier Power', score: analysis.supplier_power, color: 'bg-orange-500' },
-    { name: 'Buyer Power', score: analysis.buyer_power, color: 'bg-yellow-500' },
-    { name: 'Threat of Substitutes', score: analysis.threat_of_substitutes, color: 'bg-green-500' },
-    { name: 'Threat of New Entrants', score: analysis.threat_of_new_entrants, color: 'bg-blue-500' }
+    { name: t('admin.detail.competitive_rivalry'), score: analysis.competitive_rivalry, color: 'bg-red-500' },
+    { name: t('admin.detail.supplier_power'), score: analysis.supplier_power, color: 'bg-orange-500' },
+    { name: t('admin.detail.buyer_power'), score: analysis.buyer_power, color: 'bg-yellow-500' },
+    { name: t('admin.detail.threat_substitutes'), score: analysis.threat_of_substitutes, color: 'bg-green-500' },
+    { name: t('admin.detail.threat_new_entrants'), score: analysis.threat_of_new_entrants, color: 'bg-blue-500' }
   ];
 
   return (
@@ -113,7 +118,7 @@ export default function PorterDetailPage() {
           title={analysis.analysis_name}
           description={`${analysis.customer_name} • ${analysis.industry}`}
           action={{
-            label: 'Edit',
+            label: t('admin.detail.edit'),
             onClick: () => setShowEditModal(true),
             icon: Edit2
           }}
@@ -139,7 +144,7 @@ export default function PorterDetailPage() {
 
       {analysis.notes && (
         <Card className="p-6">
-          <h3 className="font-semibold text-gray-900 mb-3">Analysis Notes</h3>
+          <h3 className="font-semibold text-gray-900 mb-3">{t('admin.detail.analysis_notes')}</h3>
           <p className="text-gray-600 whitespace-pre-wrap">{analysis.notes}</p>
         </Card>
       )}
@@ -150,7 +155,7 @@ export default function PorterDetailPage() {
           className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg flex items-center gap-2"
         >
           <Trash2 className="w-4 h-4" />
-          Delete Analysis
+          {t('admin.detail.delete_analysis')}
         </button>
       </div>
     </div>

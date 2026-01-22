@@ -5,6 +5,7 @@ import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { supabase } from '../../../lib/supabase';
 import { logAdminError } from '../../../lib/admin-error-logger';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface BMCCanvas {
   id: string;
@@ -24,6 +25,7 @@ interface BMCCanvas {
 }
 
 export default function BMCDetailPage() {
+  const { t } = useLanguage();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [canvas, setCanvas] = useState<BMCCanvas | null>(null);
@@ -55,7 +57,7 @@ export default function BMCDetailPage() {
   };
 
   const handleDelete = async () => {
-    if (!confirm('Are you sure you want to delete this Business Model Canvas?')) return;
+    if (!confirm(t('admin.detail.confirm_delete_bmc'))) return;
 
     try {
       const { error } = await supabase.from('bmc_canvases').delete().eq('id', id);
@@ -69,7 +71,10 @@ export default function BMCDetailPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">{t('admin.detail.loading_bmc')}</p>
+        </div>
       </div>
     );
   }
@@ -79,12 +84,12 @@ export default function BMCDetailPage() {
       <div className="max-w-7xl mx-auto p-6">
         <div className="text-center py-12 bg-yellow-50 border border-yellow-200 rounded-lg">
           <Layers className="w-12 h-12 text-yellow-600 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Canvas not found</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('admin.detail.bmc_not_found')}</h3>
           <button
             onClick={() => navigate('/admin/partner-portal/strategic-frameworks/bmc')}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
-            Back to Business Model Canvas
+            {t('admin.detail.back_to_bmc')}
           </button>
         </div>
       </div>
@@ -92,15 +97,15 @@ export default function BMCDetailPage() {
   }
 
   const sections = [
-    { title: 'Key Partners', content: canvas.key_partners, color: 'border-blue-200 bg-blue-50' },
-    { title: 'Key Activities', content: canvas.key_activities, color: 'border-green-200 bg-green-50' },
-    { title: 'Key Resources', content: canvas.key_resources, color: 'border-purple-200 bg-purple-50' },
-    { title: 'Value Propositions', content: canvas.value_propositions, color: 'border-red-200 bg-red-50' },
-    { title: 'Customer Relationships', content: canvas.customer_relationships, color: 'border-yellow-200 bg-yellow-50' },
-    { title: 'Channels', content: canvas.channels, color: 'border-indigo-200 bg-indigo-50' },
-    { title: 'Customer Segments', content: canvas.customer_segments, color: 'border-pink-200 bg-pink-50' },
-    { title: 'Cost Structure', content: canvas.cost_structure, color: 'border-gray-200 bg-gray-50' },
-    { title: 'Revenue Streams', content: canvas.revenue_streams, color: 'border-emerald-200 bg-emerald-50' }
+    { title: t('admin.detail.key_partners'), content: canvas.key_partners, color: 'border-blue-200 bg-blue-50' },
+    { title: t('admin.detail.key_activities'), content: canvas.key_activities, color: 'border-green-200 bg-green-50' },
+    { title: t('admin.detail.key_resources'), content: canvas.key_resources, color: 'border-purple-200 bg-purple-50' },
+    { title: t('admin.detail.value_propositions'), content: canvas.value_propositions, color: 'border-red-200 bg-red-50' },
+    { title: t('admin.detail.customer_relationships'), content: canvas.customer_relationships, color: 'border-yellow-200 bg-yellow-50' },
+    { title: t('admin.detail.channels'), content: canvas.channels, color: 'border-indigo-200 bg-indigo-50' },
+    { title: t('admin.detail.customer_segments'), content: canvas.customer_segments, color: 'border-pink-200 bg-pink-50' },
+    { title: t('admin.detail.cost_structure'), content: canvas.cost_structure, color: 'border-gray-200 bg-gray-50' },
+    { title: t('admin.detail.revenue_streams'), content: canvas.revenue_streams, color: 'border-emerald-200 bg-emerald-50' }
   ];
 
   return (
@@ -122,7 +127,7 @@ export default function BMCDetailPage() {
         {sections.map((section) => (
           <Card key={section.title} className={`p-4 border-2 ${section.color}`}>
             <h3 className="font-semibold text-gray-900 mb-2">{section.title}</h3>
-            <p className="text-sm text-gray-700 whitespace-pre-wrap">{section.content || 'Not defined'}</p>
+            <p className="text-sm text-gray-700 whitespace-pre-wrap">{section.content || t('admin.detail.not_defined')}</p>
           </Card>
         ))}
       </div>
@@ -133,7 +138,7 @@ export default function BMCDetailPage() {
           className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg flex items-center gap-2"
         >
           <Trash2 className="w-4 h-4" />
-          Delete Canvas
+          {t('admin.detail.delete_canvas')}
         </button>
       </div>
     </div>

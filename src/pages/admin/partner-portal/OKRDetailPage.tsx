@@ -87,7 +87,7 @@ export default function OKRDetailPage() {
         action: 'Loading OKR objective detail'
       });
       console.error(`[${errorId}] Error loading objective:`, err);
-      setError(err instanceof Error ? err.message : 'Kunde inte ladda OKR-mål. Försök igen.');
+      setError(err instanceof Error ? err.message : t('admin.detail.error_loading_okr'));
     } finally {
       setLoading(false);
     }
@@ -115,7 +115,7 @@ export default function OKRDetailPage() {
   };
 
   const handleDelete = async () => {
-    if (!confirm('Are you sure you want to delete this OKR objective? This will also delete all associated key results. This action cannot be undone.')) {
+    if (!confirm(t('admin.detail.confirm_delete_okr'))) {
       return;
     }
 
@@ -142,7 +142,7 @@ export default function OKRDetailPage() {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Laddar OKR-mål...</p>
+          <p className="text-gray-600">{t('admin.detail.loading_okr')}</p>
         </div>
       </div>
     );
@@ -154,12 +154,12 @@ export default function OKRDetailPage() {
       <div className="max-w-7xl mx-auto p-6">
         <div className="text-center py-12 bg-yellow-50 border border-yellow-200 rounded-lg">
           <Target className="w-12 h-12 text-yellow-600 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">OKR-mål hittades inte</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('admin.detail.okr_not_found')}</h3>
           <button
             onClick={() => navigate('/admin/partner-portal/okr')}
             className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
           >
-            Tillbaka till OKR
+            {t('admin.detail.back_to_okr')}
           </button>
         </div>
       </div>
@@ -179,7 +179,7 @@ export default function OKRDetailPage() {
           title={objective.title}
           description={`${objective.customer_name} • ${objective.time_period}`}
           action={{
-            label: 'Edit Objective',
+            label: t('admin.detail.edit_objective'),
             onClick: () => setShowEditModal(true),
             icon: Edit2
           }}
@@ -205,20 +205,20 @@ export default function OKRDetailPage() {
             )}
             <div className="flex items-center gap-6 text-sm text-gray-600">
               <div>
-                <span className="font-medium">Start:</span> {objective.start_date}
+                <span className="font-medium">{t('admin.detail.start')}:</span> {objective.start_date}
               </div>
               <div>
-                <span className="font-medium">End:</span> {objective.end_date}
+                <span className="font-medium">{t('admin.detail.end')}:</span> {objective.end_date}
               </div>
               <div>
-                <span className="font-medium">Progress:</span> {objective.progress_percentage}%
+                <span className="font-medium">{t('admin.detail.progress')}:</span> {objective.progress_percentage}%
               </div>
             </div>
           </div>
           <button
             onClick={handleDelete}
             className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-            title="Delete objective"
+            title={t('admin.detail.delete_objective')}
           >
             <Trash2 className="w-5 h-5" />
           </button>
@@ -244,12 +244,12 @@ export default function OKRDetailPage() {
       <Modal
         isOpen={showEditModal}
         onClose={() => setShowEditModal(false)}
-        title="Edit Objective"
+        title={t('admin.detail.edit_objective')}
       >
         <form onSubmit={handleUpdate} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Objective Title
+              {t('admin.detail.objective_title')}
             </label>
             <input
               type="text"
@@ -262,7 +262,7 @@ export default function OKRDetailPage() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Description
+              {t('admin.detail.description')}
             </label>
             <textarea
               value={formData.description}
@@ -275,31 +275,31 @@ export default function OKRDetailPage() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Time Period
+                {t('admin.detail.time_period')}
               </label>
               <input
                 type="text"
                 value={formData.time_period}
                 onChange={(e) => setFormData({ ...formData, time_period: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                placeholder="e.g., Q1 2026"
+                placeholder={t('admin.detail.time_period_placeholder')}
                 required
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Status
+                {t('admin.detail.status')}
               </label>
               <select
                 value={formData.status}
                 onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg"
               >
-                <option value="draft">Draft</option>
-                <option value="active">Active</option>
-                <option value="completed">Completed</option>
-                <option value="cancelled">Cancelled</option>
+                <option value="draft">{t('admin.detail.status_draft')}</option>
+                <option value="active">{t('admin.detail.status_active')}</option>
+                <option value="completed">{t('admin.detail.status_completed')}</option>
+                <option value="cancelled">{t('admin.detail.status_cancelled')}</option>
               </select>
             </div>
           </div>
@@ -307,7 +307,7 @@ export default function OKRDetailPage() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Start Date
+                {t('admin.detail.start_date')}
               </label>
               <input
                 type="date"
@@ -320,7 +320,7 @@ export default function OKRDetailPage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                End Date
+                {t('admin.detail.end_date')}
               </label>
               <input
                 type="date"
@@ -338,13 +338,13 @@ export default function OKRDetailPage() {
               onClick={() => setShowEditModal(false)}
               className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
             >
-              Cancel
+              {t('admin.detail.cancel')}
             </button>
             <button
               type="submit"
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
             >
-              Update Objective
+              {t('admin.detail.update_objective')}
             </button>
           </div>
         </form>

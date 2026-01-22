@@ -5,6 +5,7 @@ import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { supabase } from '../../../lib/supabase';
 import { logAdminError } from '../../../lib/admin-error-logger';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface BSCScorecard {
   id: string;
@@ -19,6 +20,7 @@ interface BSCScorecard {
 }
 
 export default function BSCDetailPage() {
+  const { t } = useLanguage();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [scorecard, setScorecard] = useState<BSCScorecard | null>(null);
@@ -50,7 +52,7 @@ export default function BSCDetailPage() {
   };
 
   const handleDelete = async () => {
-    if (!confirm('Are you sure you want to delete this Balanced Scorecard?')) return;
+    if (!confirm(t('admin.detail.confirm_delete_bsc'))) return;
 
     try {
       const { error } = await supabase.from('bsc_scorecards').delete().eq('id', id);
@@ -64,7 +66,10 @@ export default function BSCDetailPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">{t('admin.detail.loading_bsc')}</p>
+        </div>
       </div>
     );
   }
@@ -74,12 +79,12 @@ export default function BSCDetailPage() {
       <div className="max-w-7xl mx-auto p-6">
         <div className="text-center py-12 bg-yellow-50 border border-yellow-200 rounded-lg">
           <Target className="w-12 h-12 text-yellow-600 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Scorecard not found</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('admin.detail.bsc_not_found')}</h3>
           <button
             onClick={() => navigate('/admin/partner-portal/strategic-frameworks/bsc')}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
-            Back to Balanced Scorecard
+            {t('admin.detail.back_to_bsc')}
           </button>
         </div>
       </div>
@@ -88,25 +93,25 @@ export default function BSCDetailPage() {
 
   const perspectives = [
     {
-      title: 'Financial Perspective',
+      title: t('admin.detail.financial_perspective'),
       content: scorecard.financial_objectives,
       icon: '💰',
       color: 'border-green-300 bg-green-50'
     },
     {
-      title: 'Customer Perspective',
+      title: t('admin.detail.customer_perspective'),
       content: scorecard.customer_objectives,
       icon: '👥',
       color: 'border-blue-300 bg-blue-50'
     },
     {
-      title: 'Internal Process Perspective',
+      title: t('admin.detail.internal_process_perspective'),
       content: scorecard.internal_process_objectives,
       icon: '⚙️',
       color: 'border-orange-300 bg-orange-50'
     },
     {
-      title: 'Learning & Growth Perspective',
+      title: t('admin.detail.learning_growth_perspective'),
       content: scorecard.learning_growth_objectives,
       icon: '📚',
       color: 'border-purple-300 bg-purple-50'
@@ -124,7 +129,7 @@ export default function BSCDetailPage() {
         </button>
         <PageHeader
           title={scorecard.scorecard_name}
-          description={scorecard.customer_name || 'Balanced Scorecard'}
+          description={scorecard.customer_name || t('admin.detail.balanced_scorecard')}
         />
       </div>
 
@@ -135,7 +140,7 @@ export default function BSCDetailPage() {
               <span className="text-3xl">{perspective.icon}</span>
               <h3 className="font-semibold text-gray-900">{perspective.title}</h3>
             </div>
-            <p className="text-gray-700 whitespace-pre-wrap">{perspective.content || 'No objectives defined'}</p>
+            <p className="text-gray-700 whitespace-pre-wrap">{perspective.content || t('admin.detail.no_objectives_defined')}</p>
           </Card>
         ))}
       </div>
@@ -146,7 +151,7 @@ export default function BSCDetailPage() {
           className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg flex items-center gap-2"
         >
           <Trash2 className="w-4 h-4" />
-          Delete Scorecard
+          {t('admin.detail.delete_scorecard')}
         </button>
       </div>
     </div>

@@ -5,6 +5,7 @@ import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { supabase } from '../../../lib/supabase';
 import { logAdminError } from '../../../lib/admin-error-logger';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface ADKARAssessment {
   id: string;
@@ -21,6 +22,7 @@ interface ADKARAssessment {
 }
 
 export default function ADKARDetailPage() {
+  const { t } = useLanguage();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [assessment, setAssessment] = useState<ADKARAssessment | null>(null);
@@ -52,7 +54,7 @@ export default function ADKARDetailPage() {
   };
 
   const handleDelete = async () => {
-    if (!confirm('Are you sure you want to delete this ADKAR assessment?')) return;
+    if (!confirm(t('admin.detail.confirm_delete_adkar'))) return;
 
     try {
       const { error } = await supabase.from('adkar_assessments').delete().eq('id', id);
@@ -66,7 +68,10 @@ export default function ADKARDetailPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">{t('admin.detail.loading_adkar')}</p>
+        </div>
       </div>
     );
   }
@@ -76,12 +81,12 @@ export default function ADKARDetailPage() {
       <div className="max-w-7xl mx-auto p-6">
         <div className="text-center py-12 bg-yellow-50 border border-yellow-200 rounded-lg">
           <TrendingUp className="w-12 h-12 text-yellow-600 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Assessment not found</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('admin.detail.adkar_not_found')}</h3>
           <button
             onClick={() => navigate('/admin/partner-portal/strategic-frameworks/adkar')}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
-            Back to ADKAR
+            {t('admin.detail.back_to_adkar')}
           </button>
         </div>
       </div>
@@ -89,11 +94,11 @@ export default function ADKARDetailPage() {
   }
 
   const elements = [
-    { name: 'Awareness', score: assessment.awareness_score, color: 'bg-blue-500' },
-    { name: 'Desire', score: assessment.desire_score, color: 'bg-green-500' },
-    { name: 'Knowledge', score: assessment.knowledge_score, color: 'bg-yellow-500' },
-    { name: 'Ability', score: assessment.ability_score, color: 'bg-orange-500' },
-    { name: 'Reinforcement', score: assessment.reinforcement_score, color: 'bg-red-500' }
+    { name: t('admin.detail.awareness'), score: assessment.awareness_score, color: 'bg-blue-500' },
+    { name: t('admin.detail.desire'), score: assessment.desire_score, color: 'bg-green-500' },
+    { name: t('admin.detail.knowledge'), score: assessment.knowledge_score, color: 'bg-yellow-500' },
+    { name: t('admin.detail.ability'), score: assessment.ability_score, color: 'bg-orange-500' },
+    { name: t('admin.detail.reinforcement'), score: assessment.reinforcement_score, color: 'bg-red-500' }
   ];
 
   const averageScore = elements.reduce((sum, el) => sum + el.score, 0) / elements.length;
@@ -109,13 +114,13 @@ export default function ADKARDetailPage() {
         </button>
         <PageHeader
           title={assessment.assessment_name}
-          description={assessment.customer_name || 'ADKAR Assessment'}
+          description={assessment.customer_name || t('admin.detail.adkar_assessment')}
         />
       </div>
 
       <Card className="p-6">
         <div className="text-center mb-6">
-          <h3 className="text-sm font-medium text-gray-600 mb-2">Overall ADKAR Score</h3>
+          <h3 className="text-sm font-medium text-gray-600 mb-2">{t('admin.detail.overall_adkar_score')}</h3>
           <div className="text-4xl font-bold text-blue-600">{averageScore.toFixed(1)}/10</div>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-4">
@@ -145,7 +150,7 @@ export default function ADKARDetailPage() {
 
       {assessment.notes && (
         <Card className="p-6">
-          <h3 className="font-semibold text-gray-900 mb-3">Assessment Notes</h3>
+          <h3 className="font-semibold text-gray-900 mb-3">{t('admin.detail.assessment_notes')}</h3>
           <p className="text-gray-600 whitespace-pre-wrap">{assessment.notes}</p>
         </Card>
       )}
@@ -156,7 +161,7 @@ export default function ADKARDetailPage() {
           className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg flex items-center gap-2"
         >
           <Trash2 className="w-4 h-4" />
-          Delete Assessment
+          {t('admin.detail.delete_assessment')}
         </button>
       </div>
     </div>

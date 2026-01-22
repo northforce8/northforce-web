@@ -5,6 +5,7 @@ import { PageHeader } from '../../../components/admin/PageHeader';
 import { Card } from '../../../components/admin/ui/Card';
 import { supabase } from '../../../lib/supabase';
 import { logAdminError } from '../../../lib/admin-error-logger';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface DesignThinkingProject {
   id: string;
@@ -20,6 +21,7 @@ interface DesignThinkingProject {
 }
 
 export default function DesignThinkingDetailPage() {
+  const { t } = useLanguage();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [project, setProject] = useState<DesignThinkingProject | null>(null);
@@ -51,7 +53,7 @@ export default function DesignThinkingDetailPage() {
   };
 
   const handleDelete = async () => {
-    if (!confirm('Are you sure you want to delete this Design Thinking project?')) return;
+    if (!confirm(t('admin.detail.confirm_delete_design_thinking'))) return;
 
     try {
       const { error } = await supabase.from('design_thinking_projects').delete().eq('id', id);
@@ -65,7 +67,10 @@ export default function DesignThinkingDetailPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">{t('admin.detail.loading_design_thinking')}</p>
+        </div>
       </div>
     );
   }
@@ -75,12 +80,12 @@ export default function DesignThinkingDetailPage() {
       <div className="max-w-7xl mx-auto p-6">
         <div className="text-center py-12 bg-yellow-50 border border-yellow-200 rounded-lg">
           <Lightbulb className="w-12 h-12 text-yellow-600 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Project not found</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('admin.detail.design_thinking_not_found')}</h3>
           <button
             onClick={() => navigate('/admin/partner-portal/strategic-frameworks/design-thinking')}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
-            Back to Design Thinking
+            {t('admin.detail.back_to_design_thinking')}
           </button>
         </div>
       </div>
@@ -88,11 +93,11 @@ export default function DesignThinkingDetailPage() {
   }
 
   const phases = [
-    { title: 'Empathize', content: project.empathize, icon: '❤️', color: 'border-red-300 bg-red-50' },
-    { title: 'Define', content: project.define, icon: '🎯', color: 'border-orange-300 bg-orange-50' },
-    { title: 'Ideate', content: project.ideate, icon: '💡', color: 'border-yellow-300 bg-yellow-50' },
-    { title: 'Prototype', content: project.prototype, icon: '🔨', color: 'border-green-300 bg-green-50' },
-    { title: 'Test', content: project.test, icon: '🧪', color: 'border-blue-300 bg-blue-50' }
+    { title: t('admin.detail.empathize'), content: project.empathize, icon: '❤️', color: 'border-red-300 bg-red-50' },
+    { title: t('admin.detail.define'), content: project.define, icon: '🎯', color: 'border-orange-300 bg-orange-50' },
+    { title: t('admin.detail.ideate'), content: project.ideate, icon: '💡', color: 'border-yellow-300 bg-yellow-50' },
+    { title: t('admin.detail.prototype'), content: project.prototype, icon: '🔨', color: 'border-green-300 bg-green-50' },
+    { title: t('admin.detail.test'), content: project.test, icon: '🧪', color: 'border-blue-300 bg-blue-50' }
   ];
 
   return (
@@ -106,7 +111,7 @@ export default function DesignThinkingDetailPage() {
         </button>
         <PageHeader
           title={project.project_name}
-          description={project.customer_name || 'Design Thinking Project'}
+          description={project.customer_name || t('admin.detail.design_thinking_project')}
         />
       </div>
 
@@ -117,7 +122,7 @@ export default function DesignThinkingDetailPage() {
               <span className="text-3xl">{phase.icon}</span>
               <div className="flex-1">
                 <h3 className="font-semibold text-gray-900 mb-2 text-lg">{phase.title}</h3>
-                <p className="text-gray-700 whitespace-pre-wrap">{phase.content || 'Not defined'}</p>
+                <p className="text-gray-700 whitespace-pre-wrap">{phase.content || t('admin.detail.not_defined')}</p>
               </div>
             </div>
           </Card>
@@ -130,7 +135,7 @@ export default function DesignThinkingDetailPage() {
           className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg flex items-center gap-2"
         >
           <Trash2 className="w-4 h-4" />
-          Delete Project
+          {t('admin.detail.delete_project')}
         </button>
       </div>
     </div>
