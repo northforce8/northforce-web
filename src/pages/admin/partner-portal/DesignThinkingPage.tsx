@@ -215,7 +215,7 @@ export default function DesignThinkingPage() {
         if (insights.filter(i => i.phase_name === 'empathize').length >= 3) score += 34;
         break;
       case 'define':
-        if (selectedProject?.challenge_statement.length! > 50) score += 50;
+        if ((selectedProject?.challenge_statement?.length ?? 0) > 50) score += 50;
         if (insights.filter(i => i.phase_name === 'define').length >= 2) score += 50;
         break;
       case 'ideate':
