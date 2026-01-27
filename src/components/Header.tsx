@@ -12,6 +12,7 @@ const Header = () => {
     { name: t('nav.hybrid_model'), href: '/hybrid-model' },
     { name: t('nav.systems'), href: '/system' },
     { name: t('nav.capabilities'), href: '/capabilities' },
+    { name: t('nav.strategic_websites'), href: '/strategic-websites' },
     { name: t('nav.industries'), href: '/industries' },
     { name: language === 'sv' ? 'Lösningar' : 'Solutions', href: '/solutions' },
     { name: t('nav.ai_automation'), href: '/ai-automation' },

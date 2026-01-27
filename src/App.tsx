@@ -33,6 +33,7 @@ import CMOPlusSystemPage from './pages/CMOPlusSystemPage';
 import MethodPage from './pages/MethodPage';
 import PricingPage from './pages/PricingPage';
 import TokensPage from './pages/TokensPage';
+import StrategicWebsitesPage from './pages/StrategicWebsitesPage';
 
 // Admin Pages
 import AdminLogin from './pages/admin/AdminLogin';
@@ -145,6 +146,7 @@ function App() {
         <Route path="/proof" element={<ImpactPage />} />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/tokens" element={<TokensPage />} />
+        <Route path="/strategic-websites" element={<StrategicWebsitesPage />} />
 
         {/* Admin Login & Setup (outside AdminLayout) */}
         <Route path={ADMIN_ROUTES.LOGIN} element={<AdminLogin />} />
