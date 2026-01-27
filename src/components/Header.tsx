@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Zap, Sparkles, Globe, ChevronDown } from 'lucide-react';
+import {
+  Menu, X, Zap, Sparkles, Globe, ChevronDown,
+  Package, Target, Rocket, Building2
+} from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const Header = () => {
@@ -8,27 +11,50 @@ const Header = () => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const location = useLocation();
   const { language, setLanguage, t } = useLanguage();
+  const headerRef = useRef<HTMLDivElement>(null);
 
   const navigation = [
-    { name: t('nav.hybrid_model'), href: '/hybrid-model' },
     {
-      name: language === 'sv' ? 'Produkter' : 'Products',
+      name: language === 'sv' ? 'Erbjudanden' : 'Offerings',
+      icon: Package,
       dropdown: [
-        { name: t('nav.systems'), href: '/system' },
-        { name: t('nav.strategic_websites'), href: '/strategic-websites' },
+        { name: language === 'sv' ? 'Hybridmodellen' : 'Hybrid Model', href: '/hybrid-model' },
+        { name: 'NorthForce System', href: '/system' },
+        { name: language === 'sv' ? 'Strategiska Webbplatser' : 'Strategic Websites', href: '/strategic-websites' },
         { name: language === 'sv' ? 'Affärsdata' : 'Business Data', href: '/business-data' },
+        { name: language === 'sv' ? 'AI & Automation' : 'AI & Automation', href: '/ai-automation' },
       ]
     },
     {
       name: language === 'sv' ? 'Lösningar' : 'Solutions',
+      icon: Target,
       dropdown: [
         { name: language === 'sv' ? 'Lösningar' : 'Solutions', href: '/solutions' },
-        { name: t('nav.industries'), href: '/industries' },
-        { name: t('nav.capabilities'), href: '/capabilities' },
+        { name: language === 'sv' ? 'Branscher' : 'Industries', href: '/industries' },
+        { name: language === 'sv' ? 'Kapabiliteter' : 'Capabilities', href: '/capabilities' },
+        { name: language === 'sv' ? 'Kundeffekt' : 'Client Impact', href: '/impact' },
       ]
     },
-    { name: t('nav.ai_automation'), href: '/ai-automation' },
-    { name: t('nav.about'), href: '/about' },
+    {
+      name: language === 'sv' ? 'Kom Igång' : 'Get Started',
+      icon: Rocket,
+      dropdown: [
+        { name: language === 'sv' ? 'Priser & Investering' : 'Pricing & Investment', href: '/pricing' },
+        { name: language === 'sv' ? 'Gratis Analys' : 'Free Analysis', href: '/audit' },
+        { name: language === 'sv' ? 'Kontakt' : 'Contact', href: '/contact' },
+        { name: language === 'sv' ? 'Bli Partner' : 'Become Partner', href: '/partners' },
+      ]
+    },
+    {
+      name: language === 'sv' ? 'Företag' : 'Company',
+      icon: Building2,
+      dropdown: [
+        { name: language === 'sv' ? 'Om Oss' : 'About Us', href: '/about' },
+        { name: language === 'sv' ? 'Insikter' : 'Insights', href: '/insights' },
+        { name: language === 'sv' ? 'Karriär' : 'Careers', href: '/careers' },
+        { name: language === 'sv' ? 'Juridik & Integritet' : 'Legal & Privacy', href: '/legal' },
+      ]
+    },
   ];
 
   const isActive = (href: string) => {
@@ -38,8 +64,43 @@ const Header = () => {
     return location.pathname.startsWith(href);
   };
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (headerRef.current && !headerRef.current.contains(event.target as Node)) {
+        setOpenDropdown(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Close dropdown on ESC key
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setOpenDropdown(null);
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscKey);
+    return () => document.removeEventListener('keydown', handleEscKey);
+  }, []);
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMenuOpen(false);
+    setOpenDropdown(null);
+  }, [location.pathname]);
+
+  const toggleDropdown = (name: string) => {
+    setOpenDropdown(openDropdown === name ? null : name);
+  };
+
   return (
-    <header className="bg-white/95 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50 shadow-soft">
+    <header ref={headerRef} className="bg-white/95 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50 shadow-soft">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
@@ -52,26 +113,39 @@ const Header = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-4">
-            {navigation.map((item) => (
-              'dropdown' in item ? (
+          <nav className="hidden lg:flex items-center space-x-1">
+            {navigation.map((item) => {
+              const Icon = item.icon;
+              const isDropdownOpen = openDropdown === item.name;
+              const isAnySubItemActive = item.dropdown.some(subItem => isActive(subItem.href));
+
+              return (
                 <div
                   key={item.name}
-                  className="relative group"
+                  className="relative"
                   onMouseEnter={() => setOpenDropdown(item.name)}
                   onMouseLeave={() => setOpenDropdown(null)}
                 >
-                  <button className="font-body text-sm font-medium transition-colors text-gray-700 hover:text-primary-600 whitespace-nowrap flex items-center gap-1">
+                  <button
+                    onClick={() => toggleDropdown(item.name)}
+                    className={`font-body text-sm font-medium transition-all whitespace-nowrap flex items-center gap-1.5 px-3 py-2 rounded-xl ${
+                      isAnySubItemActive
+                        ? 'text-primary-700 bg-primary-50'
+                        : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50'
+                    }`}
+                  >
+                    <Icon className="h-4 w-4" />
                     {item.name}
-                    <ChevronDown className="h-4 w-4" />
+                    <ChevronDown className={`h-4 w-4 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
                   </button>
-                  {openDropdown === item.name && (
-                    <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 py-2 min-w-[200px]">
+
+                  {isDropdownOpen && (
+                    <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 py-2 min-w-[240px] animate-fadeIn">
                       {item.dropdown.map((subItem) => (
                         <Link
                           key={subItem.href}
                           to={subItem.href}
-                          className={`block px-4 py-2 text-sm font-medium transition-colors ${
+                          className={`block px-4 py-2.5 text-sm font-medium transition-colors ${
                             isActive(subItem.href)
                               ? 'text-primary-600 bg-primary-50'
                               : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50'
@@ -84,23 +158,8 @@ const Header = () => {
                     </div>
                   )}
                 </div>
-              ) : (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={`font-body text-sm font-medium transition-colors relative group whitespace-nowrap ${
-                    isActive(item.href)
-                      ? 'text-primary-800'
-                      : 'text-gray-700 hover:text-primary-600'
-                  }`}
-                >
-                  {item.name}
-                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-primary-600 to-accent-cyan transition-all duration-300 ${
-                    isActive(item.href) ? 'w-full' : 'w-0 group-hover:w-full'
-                  }`}></span>
-                </Link>
-              )
-            ))}
+              );
+            })}
           </nav>
 
           {/* CTA Buttons */}
@@ -131,6 +190,7 @@ const Header = () => {
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-colors flex-shrink-0"
+            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
           >
             {isMenuOpen ? (
               <X className="h-7 w-7 text-gray-700" />
@@ -143,27 +203,34 @@ const Header = () => {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <div className="lg:hidden py-6 border-t border-gray-200/50 bg-white/95 backdrop-blur-md">
-            <div className="space-y-4">
-              {navigation.map((item) => (
-                'dropdown' in item ? (
+            <div className="space-y-3">
+              {navigation.map((item) => {
+                const Icon = item.icon;
+                const isDropdownOpen = openDropdown === item.name;
+
+                return (
                   <div key={item.name}>
                     <button
-                      onClick={() => setOpenDropdown(openDropdown === item.name ? null : item.name)}
-                      className="flex items-center justify-between w-full font-body font-medium py-2 text-gray-700 hover:text-primary-600"
+                      onClick={() => toggleDropdown(item.name)}
+                      className="flex items-center justify-between w-full font-body font-semibold py-2.5 px-3 rounded-xl text-gray-900 hover:bg-gray-50 transition-colors"
                     >
-                      {item.name}
-                      <ChevronDown className={`h-4 w-4 transition-transform ${openDropdown === item.name ? 'rotate-180' : ''}`} />
+                      <div className="flex items-center gap-2">
+                        <Icon className="h-5 w-5 text-primary-600" />
+                        {item.name}
+                      </div>
+                      <ChevronDown className={`h-5 w-5 text-gray-500 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
                     </button>
-                    {openDropdown === item.name && (
-                      <div className="pl-4 mt-2 space-y-2">
+
+                    {isDropdownOpen && (
+                      <div className="pl-9 mt-2 space-y-1 animate-fadeIn">
                         {item.dropdown.map((subItem) => (
                           <Link
                             key={subItem.href}
                             to={subItem.href}
-                            className={`block font-body py-2 ${
+                            className={`block font-body py-2 px-3 rounded-lg text-sm ${
                               isActive(subItem.href)
-                                ? 'text-primary-800'
-                                : 'text-gray-600 hover:text-primary-600'
+                                ? 'text-primary-700 bg-primary-50 font-medium'
+                                : 'text-gray-600 hover:text-primary-600 hover:bg-gray-50'
                             }`}
                             onClick={() => {
                               setIsMenuOpen(false);
@@ -176,22 +243,10 @@ const Header = () => {
                       </div>
                     )}
                   </div>
-                ) : (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className={`block font-body font-medium py-2 ${
-                      isActive(item.href)
-                        ? 'text-primary-800'
-                        : 'text-gray-700 hover:text-primary-600'
-                    }`}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.name}
-                  </Link>
-                )
-              ))}
-              <div className="pt-4 space-y-2">
+                );
+              })}
+
+              <div className="pt-4 space-y-2 border-t border-gray-200">
                 <button
                   onClick={() => setLanguage(language === 'en' ? 'sv' : 'en')}
                   className="flex items-center space-x-2 w-full px-4 py-2 rounded-xl hover:bg-gray-100 transition-colors"
@@ -201,14 +256,14 @@ const Header = () => {
                 </button>
                 <Link
                   to="/audit"
-                  className="block text-primary-600 hover:text-accent-cyan font-medium py-2"
+                  className="block text-primary-600 hover:text-accent-cyan font-medium py-2 px-4"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {t('nav.free_audit')}
                 </Link>
                 <Link
                   to="/contact"
-                  className="block bg-gradient-to-r from-primary-600 to-accent-cyan text-white px-6 py-3 rounded-2xl font-medium text-center"
+                  className="block bg-gradient-to-r from-primary-600 to-accent-cyan text-white px-6 py-3 rounded-2xl font-medium text-center hover:shadow-glow transition-all"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {t('nav.book_meeting')}
