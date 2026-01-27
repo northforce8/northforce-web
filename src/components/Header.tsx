@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import {
-  Menu, X, Zap, Sparkles, Globe, ChevronDown,
-  Package, Target, Rocket, Building2
-} from 'lucide-react';
+import { Menu, X, Zap, Sparkles, Globe, ChevronDown } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const Header = () => {
@@ -16,7 +13,6 @@ const Header = () => {
   const navigation = [
     {
       name: language === 'sv' ? 'Erbjudanden' : 'Offerings',
-      icon: Package,
       dropdown: [
         { name: language === 'sv' ? 'Hybridmodellen' : 'Hybrid Model', href: '/hybrid-model' },
         { name: 'NorthForce System', href: '/system' },
@@ -27,7 +23,6 @@ const Header = () => {
     },
     {
       name: language === 'sv' ? 'Lösningar' : 'Solutions',
-      icon: Target,
       dropdown: [
         { name: language === 'sv' ? 'Lösningar' : 'Solutions', href: '/solutions' },
         { name: language === 'sv' ? 'Branscher' : 'Industries', href: '/industries' },
@@ -37,7 +32,6 @@ const Header = () => {
     },
     {
       name: language === 'sv' ? 'Kom Igång' : 'Get Started',
-      icon: Rocket,
       dropdown: [
         { name: language === 'sv' ? 'Priser & Investering' : 'Pricing & Investment', href: '/pricing' },
         { name: language === 'sv' ? 'Gratis Analys' : 'Free Analysis', href: '/audit' },
@@ -47,7 +41,6 @@ const Header = () => {
     },
     {
       name: language === 'sv' ? 'Företag' : 'Company',
-      icon: Building2,
       dropdown: [
         { name: language === 'sv' ? 'Om Oss' : 'About Us', href: '/about' },
         { name: language === 'sv' ? 'Insikter' : 'Insights', href: '/insights' },
@@ -115,7 +108,6 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-1">
             {navigation.map((item) => {
-              const Icon = item.icon;
               const isDropdownOpen = openDropdown === item.name;
               const isAnySubItemActive = item.dropdown.some(subItem => isActive(subItem.href));
 
@@ -128,19 +120,18 @@ const Header = () => {
                 >
                   <button
                     onClick={() => toggleDropdown(item.name)}
-                    className={`font-body text-sm font-medium transition-all whitespace-nowrap flex items-center gap-1.5 px-3 py-2 rounded-xl ${
+                    className={`font-body text-sm font-medium transition-all whitespace-nowrap flex items-center gap-1 px-4 py-2 rounded-xl ${
                       isAnySubItemActive
                         ? 'text-primary-700 bg-primary-50'
                         : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50'
                     }`}
                   >
-                    <Icon className="h-4 w-4" />
                     {item.name}
                     <ChevronDown className={`h-4 w-4 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
                   </button>
 
                   {isDropdownOpen && (
-                    <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 py-2 min-w-[240px] animate-fadeIn">
+                    <div className="absolute top-full left-0 mt-1 bg-white rounded-xl shadow-xl border border-gray-200 py-2 min-w-[240px] animate-fadeIn">
                       {item.dropdown.map((subItem) => (
                         <Link
                           key={subItem.href}
@@ -203,31 +194,27 @@ const Header = () => {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <div className="lg:hidden py-6 border-t border-gray-200/50 bg-white/95 backdrop-blur-md">
-            <div className="space-y-3">
+            <div className="space-y-2">
               {navigation.map((item) => {
-                const Icon = item.icon;
                 const isDropdownOpen = openDropdown === item.name;
 
                 return (
                   <div key={item.name}>
                     <button
                       onClick={() => toggleDropdown(item.name)}
-                      className="flex items-center justify-between w-full font-body font-semibold py-2.5 px-3 rounded-xl text-gray-900 hover:bg-gray-50 transition-colors"
+                      className="flex items-center justify-between w-full font-body font-semibold py-3 px-4 rounded-xl text-gray-900 hover:bg-gray-50 transition-colors"
                     >
-                      <div className="flex items-center gap-2">
-                        <Icon className="h-5 w-5 text-primary-600" />
-                        {item.name}
-                      </div>
+                      <span>{item.name}</span>
                       <ChevronDown className={`h-5 w-5 text-gray-500 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
                     </button>
 
                     {isDropdownOpen && (
-                      <div className="pl-9 mt-2 space-y-1 animate-fadeIn">
+                      <div className="pl-6 mt-2 space-y-1 animate-fadeIn">
                         {item.dropdown.map((subItem) => (
                           <Link
                             key={subItem.href}
                             to={subItem.href}
-                            className={`block font-body py-2 px-3 rounded-lg text-sm ${
+                            className={`block font-body py-2.5 px-4 rounded-lg text-sm ${
                               isActive(subItem.href)
                                 ? 'text-primary-700 bg-primary-50 font-medium'
                                 : 'text-gray-600 hover:text-primary-600 hover:bg-gray-50'
@@ -246,7 +233,7 @@ const Header = () => {
                 );
               })}
 
-              <div className="pt-4 space-y-2 border-t border-gray-200">
+              <div className="pt-4 space-y-2 border-t border-gray-200 mt-4">
                 <button
                   onClick={() => setLanguage(language === 'en' ? 'sv' : 'en')}
                   className="flex items-center space-x-2 w-full px-4 py-2 rounded-xl hover:bg-gray-100 transition-colors"
