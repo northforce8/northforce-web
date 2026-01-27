@@ -518,36 +518,48 @@ const StrategicWebsitesPage = () => {
                 </span>
               </div>
 
-              <h1 className="font-heading text-5xl md:text-6xl font-black text-gray-900 mb-6 leading-tight">
-                {language === 'sv' ? 'Din Webbplats Ska ' : 'Your Website Should '}
+              <h1 className="font-heading text-5xl md:text-6xl font-black text-gray-900 mb-4 leading-tight">
+                {language === 'sv'
+                  ? 'Webbplatser Byggda för '
+                  : 'Websites Built for '}
                 <span className="bg-gradient-to-r from-primary-600 to-accent-cyan bg-clip-text text-transparent">
-                  {language === 'sv' ? 'Driva Affär' : 'Drive Business'}
+                  {language === 'sv' ? 'Tillväxt, Försäljning och Förtroende' : 'Growth, Sales and Trust'}
                 </span>
-                <br />
-                {language === 'sv' ? 'Inte Bara Existera' : 'Not Just Exist'}
               </h1>
 
-              <p className="text-xl text-gray-600 mb-10 leading-relaxed">
+              <p className="text-2xl text-gray-700 mb-3 font-medium leading-snug">
                 {language === 'sv'
-                  ? 'Custom-byggda, strategiska webbplatser som fungerar som centrala nav för tillväxt, försäljning och förtroende. Ingen mallar – varje element designat för att aktivt driva affärsresultat.'
-                  : 'Custom-built, strategic websites functioning as central hubs for growth, sales and trust. No templates – every element designed to actively drive business results.'}
+                  ? 'Inte statiska skyltfönster. Inte mallar. Utan ett affärssystem som arbetar för dig.'
+                  : 'Not static showpieces. Not templates. But a business system working for you.'}
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link
-                  to="/audit"
+              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                {language === 'sv'
+                  ? 'Högre konvertering. Starkare position. Skalbar grund.'
+                  : 'Higher conversion. Stronger position. Scalable foundation.'}
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+                <a
+                  href="#how-it-works"
                   className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-primary-600 to-accent-cyan text-white rounded-2xl hover:shadow-glow transition-all duration-300 font-semibold text-lg transform hover:scale-105"
                 >
-                  {language === 'sv' ? 'Boka Strategisession' : 'Book Strategy Session'}
+                  {language === 'sv' ? 'Se Hur Det Fungerar' : 'See How It Works'}
                   <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
+                </a>
                 <Link
-                  to="/contact"
+                  to="/audit"
                   className="inline-flex items-center justify-center px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-2xl hover:border-primary-600 hover:text-primary-600 transition-all duration-300 font-semibold text-lg"
                 >
-                  {language === 'sv' ? 'Se Exempel' : 'View Examples'}
+                  {language === 'sv' ? 'Boka Strategisk Genomgång' : 'Book Strategic Review'}
                 </Link>
               </div>
+
+              <p className="text-sm text-gray-500 max-w-2xl mx-auto">
+                {language === 'sv'
+                  ? 'Custom-byggda strategiska webbplatser som fungerar som centrala nav för marknad, sälj och tillväxt.'
+                  : 'Custom-built strategic websites functioning as central hubs for marketing, sales and growth.'}
+              </p>
             </div>
           </div>
         </section>
@@ -586,6 +598,205 @@ const StrategicWebsitesPage = () => {
                   </p>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* How It Works Section - Practical business flows */}
+        <section id="how-it-works" className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-50 rounded-full mb-6">
+                <Rocket className="h-4 w-4 text-primary-600" />
+                <span className="text-sm font-medium text-primary-600">
+                  {language === 'sv' ? 'Affärslogik i Praktiken' : 'Business Logic in Practice'}
+                </span>
+              </div>
+              <h2 className="font-heading text-4xl font-bold text-gray-900 mb-4">
+                {language === 'sv' ? 'Så Används Detta i Praktiken' : 'How This Works in Practice'}
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                {language === 'sv'
+                  ? 'Er webbplats blir navet för marknad, sälj och tillväxt. Här är de konkreta flödena.'
+                  : 'Your website becomes the hub for marketing, sales and growth. Here are the concrete flows.'}
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Flow 1: Sales Journey */}
+              <div className="bg-gradient-to-br from-primary-50 to-white rounded-2xl p-8 border border-primary-100">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center">
+                    <Users className="h-5 w-5 text-white" />
+                  </div>
+                  <h3 className="font-heading text-xl font-bold text-gray-900">
+                    {language === 'sv' ? 'Försäljningsflöde' : 'Sales Flow'}
+                  </h3>
+                </div>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-primary-600 font-bold text-sm shadow-sm">1</div>
+                    <p className="text-gray-700 font-medium">
+                      {language === 'sv' ? 'Besökare → Strategiskt innehåll' : 'Visitor → Strategic content'}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-primary-600 font-bold text-sm shadow-sm">2</div>
+                    <p className="text-gray-700 font-medium">
+                      {language === 'sv' ? 'Lead → Kvalificering & nurturing' : 'Lead → Qualification & nurturing'}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-primary-600 font-bold text-sm shadow-sm">3</div>
+                    <p className="text-gray-700 font-medium">
+                      {language === 'sv' ? 'Möte → Försäljningschans' : 'Meeting → Sales opportunity'}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center shadow-sm">
+                      <CheckCircle className="h-5 w-5 text-white" />
+                    </div>
+                    <p className="text-gray-900 font-bold">
+                      {language === 'sv' ? 'Affär → Mätbar intäkt' : 'Deal → Measurable revenue'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Flow 2: Inbound Marketing */}
+              <div className="bg-gradient-to-br from-accent-cyan/10 to-white rounded-2xl p-8 border border-accent-cyan/20">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 bg-accent-cyan rounded-xl flex items-center justify-center">
+                    <Search className="h-5 w-5 text-white" />
+                  </div>
+                  <h3 className="font-heading text-xl font-bold text-gray-900">
+                    {language === 'sv' ? 'Inbound-flöde' : 'Inbound Flow'}
+                  </h3>
+                </div>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-accent-cyan font-bold text-sm shadow-sm">1</div>
+                    <p className="text-gray-700 font-medium">
+                      {language === 'sv' ? 'Innehåll → SEO & synlighet' : 'Content → SEO & visibility'}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-accent-cyan font-bold text-sm shadow-sm">2</div>
+                    <p className="text-gray-700 font-medium">
+                      {language === 'sv' ? 'Förtroende → Positionering' : 'Trust → Positioning'}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-accent-cyan font-bold text-sm shadow-sm">3</div>
+                    <p className="text-gray-700 font-medium">
+                      {language === 'sv' ? 'Organisk trafik → Kvalificerade leads' : 'Organic traffic → Qualified leads'}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-accent-cyan rounded-full flex items-center justify-center shadow-sm">
+                      <CheckCircle className="h-5 w-5 text-white" />
+                    </div>
+                    <p className="text-gray-900 font-bold">
+                      {language === 'sv' ? 'Skalbar tillväxt → Långsiktig ROI' : 'Scalable growth → Long-term ROI'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Flow 3: Data & Optimization */}
+              <div className="bg-gradient-to-br from-accent-emerald/10 to-white rounded-2xl p-8 border border-accent-emerald/20">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 bg-accent-emerald rounded-xl flex items-center justify-center">
+                    <LineChart className="h-5 w-5 text-white" />
+                  </div>
+                  <h3 className="font-heading text-xl font-bold text-gray-900">
+                    {language === 'sv' ? 'Data & Optimering' : 'Data & Optimization'}
+                  </h3>
+                </div>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-accent-emerald font-bold text-sm shadow-sm">1</div>
+                    <p className="text-gray-700 font-medium">
+                      {language === 'sv' ? 'Mäta → Beteende & konvertering' : 'Measure → Behavior & conversion'}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-accent-emerald font-bold text-sm shadow-sm">2</div>
+                    <p className="text-gray-700 font-medium">
+                      {language === 'sv' ? 'Analysera → Insikter & mönster' : 'Analyze → Insights & patterns'}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-accent-emerald font-bold text-sm shadow-sm">3</div>
+                    <p className="text-gray-700 font-medium">
+                      {language === 'sv' ? 'Optimera → A/B-test & förbättring' : 'Optimize → A/B-test & improvement'}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-accent-emerald rounded-full flex items-center justify-center shadow-sm">
+                      <CheckCircle className="h-5 w-5 text-white" />
+                    </div>
+                    <p className="text-gray-900 font-bold">
+                      {language === 'sv' ? 'Kontinuerlig förbättring → Högre ROI' : 'Continuous improvement → Higher ROI'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Flow 4: Customer Journey */}
+              <div className="bg-gradient-to-br from-primary-100 to-white rounded-2xl p-8 border border-primary-200">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 bg-primary-700 rounded-xl flex items-center justify-center">
+                    <Target className="h-5 w-5 text-white" />
+                  </div>
+                  <h3 className="font-heading text-xl font-bold text-gray-900">
+                    {language === 'sv' ? 'Kundresa' : 'Customer Journey'}
+                  </h3>
+                </div>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-primary-700 font-bold text-sm shadow-sm">1</div>
+                    <p className="text-gray-700 font-medium">
+                      {language === 'sv' ? 'Medvetenhet → Problemerkännande' : 'Awareness → Problem recognition'}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-primary-700 font-bold text-sm shadow-sm">2</div>
+                    <p className="text-gray-700 font-medium">
+                      {language === 'sv' ? 'Övervägande → Lösningsutvärdering' : 'Consideration → Solution evaluation'}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-primary-700 font-bold text-sm shadow-sm">3</div>
+                    <p className="text-gray-700 font-medium">
+                      {language === 'sv' ? 'Beslut → Förtroende & trygghet' : 'Decision → Trust & confidence'}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-primary-700 rounded-full flex items-center justify-center shadow-sm">
+                      <CheckCircle className="h-5 w-5 text-white" />
+                    </div>
+                    <p className="text-gray-900 font-bold">
+                      {language === 'sv' ? 'Retention → Lojalitet & återköp' : 'Retention → Loyalty & repurchase'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-12 text-center">
+              <p className="text-gray-600 text-lg mb-6">
+                {language === 'sv'
+                  ? 'Ingen teknik, ingen jargong – endast affärslogik som fungerar.'
+                  : 'No tech jargon – just business logic that works.'}
+              </p>
+              <a
+                href="#pricing"
+                className="inline-flex items-center gap-2 text-primary-600 hover:text-accent-cyan font-semibold transition-colors"
+              >
+                {language === 'sv' ? 'Se prissättning och börja' : 'See pricing and get started'}
+                <ArrowRight className="h-5 w-5" />
+              </a>
             </div>
           </div>
         </section>
@@ -682,7 +893,13 @@ const StrategicWebsitesPage = () => {
         {/* Problem Section */}
         <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
+            <div className="text-center mb-12">
+              <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto italic">
+                {language === 'sv'
+                  ? 'De flesta företag vi möter har redan gjort "allt rätt" – modern design, responsiv, snabb – ändå levererar webbplatsen inte affärsresultat.'
+                  : 'Most companies we meet have already done "everything right" – modern design, responsive, fast – yet the website still doesn\'t deliver business results.'}
+              </p>
+
               <h2 className="font-heading text-4xl font-bold text-gray-900 mb-4">
                 {language === 'sv' ? 'Varför Traditionella Webbplatser' : 'Why Traditional Websites'}
                 <span className="block text-red-600">
@@ -691,8 +908,8 @@ const StrategicWebsitesPage = () => {
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
                 {language === 'sv'
-                  ? 'De flesta webbplatser är vackra men passiva. De missar affärsmöjligheter varje dag.'
-                  : 'Most websites are beautiful but passive. They miss business opportunities every day.'}
+                  ? 'Problemet ligger inte i hur sidan ser ut – utan i hur den fungerar som affärssystem.'
+                  : 'The problem isn\'t how the site looks – but how it functions as a business system.'}
               </p>
             </div>
 
@@ -1246,12 +1463,17 @@ const StrategicWebsitesPage = () => {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="font-heading text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                {language === 'sv' ? 'Kom Igång Idag' : 'Get Started Today'}
+                {language === 'sv' ? 'Starta Ditt Projekt' : 'Start Your Project'}
               </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-4">
                 {language === 'sv'
-                  ? 'Välj hur du vill ta nästa steg – boka direkt, begär offert eller diskutera er specifika situation.'
-                  : 'Choose how you want to take the next step – book directly, request a quote or discuss your specific situation.'}
+                  ? 'Nu har du sett vad som är möjligt. Välj din ambitionsnivå och börja bygga er tillväxtmotor.'
+                  : 'Now you\'ve seen what\'s possible. Choose your ambition level and start building your growth engine.'}
+              </p>
+              <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+                {language === 'sv'
+                  ? 'Låg starttröskel. Transparent prissättning. Partner på riktigt.'
+                  : 'Low entry threshold. Transparent pricing. Real partnership.'}
               </p>
             </div>
 
