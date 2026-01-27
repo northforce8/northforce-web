@@ -552,8 +552,135 @@ const StrategicWebsitesPage = () => {
           </div>
         </section>
 
-        {/* Problem Section */}
+        {/* Outcomes Section - Moved up for faster value demonstration */}
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary-50 to-accent-cyan/5">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full mb-6 shadow-sm">
+                <TrendingUp className="h-4 w-4 text-accent-emerald" />
+                <span className="text-sm font-medium text-gray-700">
+                  {language === 'sv' ? 'Mätbara Resultat' : 'Measurable Results'}
+                </span>
+              </div>
+              <h2 className="font-heading text-4xl font-bold text-gray-900 mb-4">
+                {language === 'sv' ? 'Vad Du Får' : 'What You Get'}
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                {language === 'sv'
+                  ? 'Varje projekt är designat för att leverera konkreta, mätbara affärsförbättringar.'
+                  : 'Every project is designed to deliver concrete, measurable business improvements.'}
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {outcomes.map((outcome, index) => (
+                <div key={index} className="bg-white rounded-xl p-6 shadow-soft border border-gray-100 hover:shadow-lg transition-shadow">
+                  <div className="w-12 h-12 bg-gradient-to-br from-primary-100 to-accent-cyan/20 rounded-xl flex items-center justify-center text-primary-600 mb-4">
+                    {outcome.icon}
+                  </div>
+                  <h3 className="font-heading text-lg font-bold text-gray-900 mb-2">
+                    {outcome.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {outcome.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Quick Pricing Preview - New section for early price anchoring */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+          <div className="max-w-6xl mx-auto">
+            <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-8 md:p-12 text-white shadow-xl">
+              <div className="text-center mb-8">
+                <h2 className="font-heading text-3xl md:text-4xl font-bold mb-3">
+                  {language === 'sv' ? 'Transparent Prissättning' : 'Transparent Pricing'}
+                </h2>
+                <p className="text-white/80 text-lg max-w-2xl mx-auto">
+                  {language === 'sv'
+                    ? 'Låg startavgift + månadskostnad som täcker allt. Välj din ambitionsnivå.'
+                    : 'Low setup fee + monthly cost covering everything. Choose your ambition level.'}
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="bg-white/10 backdrop-blur rounded-xl p-6 border border-white/20 hover:border-white/40 transition-all">
+                  <div className="text-sm font-semibold text-accent-cyan mb-2">Foundation</div>
+                  <div className="text-3xl font-black mb-1">{language === 'sv' ? '29 000 kr' : '€2,900'}</div>
+                  <div className="text-white/70 text-sm mb-4">{language === 'sv' ? '+ 1 990 kr/mån' : '+ €190/mo'}</div>
+                  <p className="text-white/80 text-sm">
+                    {language === 'sv' ? 'Kom igång snabbt med låg tröskel' : 'Get started quickly with low threshold'}
+                  </p>
+                </div>
+
+                <div className="bg-gradient-to-br from-primary-600 to-accent-cyan rounded-xl p-6 border-2 border-white/30 shadow-glow transform scale-105">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="text-sm font-semibold text-white">Growth</div>
+                    <Star className="h-4 w-4 text-white" />
+                  </div>
+                  <div className="text-3xl font-black mb-1">{language === 'sv' ? '59 000 kr' : '€5,900'}</div>
+                  <div className="text-white/90 text-sm mb-4">{language === 'sv' ? '+ 3 990 kr/mån' : '+ €390/mo'}</div>
+                  <p className="text-white/90 text-sm font-medium">
+                    {language === 'sv' ? 'Bästa balansen mellan värde och pris' : 'Best balance between value and price'}
+                  </p>
+                </div>
+
+                <div className="bg-white/10 backdrop-blur rounded-xl p-6 border border-white/20 hover:border-white/40 transition-all">
+                  <div className="text-sm font-semibold text-accent-cyan mb-2">Scale</div>
+                  <div className="text-3xl font-black mb-1">{language === 'sv' ? '99 000 kr' : '€9,900'}</div>
+                  <div className="text-white/70 text-sm mb-4">{language === 'sv' ? '+ 6 990 kr/mån' : '+ €690/mo'}</div>
+                  <p className="text-white/80 text-sm">
+                    {language === 'sv' ? 'För företag som vill skala på allvar' : 'For companies serious about scaling'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-8 text-center">
+                <a href="#pricing" className="inline-flex items-center gap-2 text-white hover:text-accent-cyan transition-colors font-semibold">
+                  {language === 'sv' ? 'Se alla detaljer' : 'See all details'}
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Differentiators Section - Moved up for early credibility */}
         <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="font-heading text-4xl font-bold text-gray-900 mb-4">
+                {language === 'sv' ? 'Varför NorthForce' : 'Why NorthForce'}
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                {language === 'sv'
+                  ? 'Vi är inte en byrå. Vi är en strategisk partner som kombinerar business insights med teknisk excellens.'
+                  : 'We\'re not an agency. We\'re a strategic partner combining business insights with technical excellence.'}
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {differentiators.map((diff, index) => (
+                <div key={index} className="bg-white rounded-xl p-8 shadow-soft border border-gray-100">
+                  <div className="w-12 h-12 bg-gradient-to-br from-primary-100 to-accent-cyan/20 rounded-xl flex items-center justify-center text-primary-600 mb-4">
+                    {diff.icon}
+                  </div>
+                  <h3 className="font-heading text-xl font-bold text-gray-900 mb-3">
+                    {diff.title}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    {diff.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Problem Section */}
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="font-heading text-4xl font-bold text-gray-900 mb-4">
@@ -627,59 +754,6 @@ const StrategicWebsitesPage = () => {
                   </div>
                 </div>
               ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Technical Architecture Section */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-50 rounded-full mb-6">
-                <Code className="h-4 w-4 text-primary-600" />
-                <span className="text-sm font-medium text-primary-600">
-                  {language === 'sv' ? 'Teknisk Grund' : 'Technical Foundation'}
-                </span>
-              </div>
-              <h2 className="font-heading text-4xl font-bold text-gray-900 mb-4">
-                {language === 'sv' ? 'Byggd För Försäljning & Skalning' : 'Built For Sales & Scaling'}
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                {language === 'sv'
-                  ? 'Modern arkitektur som möjliggör affärsautomation, direktförsäljning och tillväxt från dag ett.'
-                  : 'Modern architecture enabling business automation, direct sales and growth from day one.'}
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {technicalCapabilities.map((capability, index) => (
-                <div key={index} className="bg-white rounded-xl p-8 shadow-soft border border-gray-100 hover:shadow-lg transition-shadow">
-                  <div className="w-14 h-14 bg-gradient-to-br from-primary-100 to-accent-cyan/20 rounded-xl flex items-center justify-center text-primary-600 mb-4">
-                    {capability.icon}
-                  </div>
-                  <h3 className="font-heading text-xl font-bold text-gray-900 mb-3">
-                    {capability.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    {capability.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-12 bg-gradient-to-r from-primary-600 to-accent-cyan rounded-2xl p-8 text-center">
-              <div className="flex items-center justify-center gap-2 mb-4">
-                <CreditCard className="h-6 w-6 text-white" />
-                <Shield className="h-6 w-6 text-white" />
-              </div>
-              <h3 className="font-heading text-2xl font-bold text-white mb-3">
-                {language === 'sv' ? 'Stripe Kortbetalning – Standard På Alla Webbplatser' : 'Stripe Card Payments – Standard On All Websites'}
-              </h3>
-              <p className="text-white/90 text-lg max-w-3xl mx-auto">
-                {language === 'sv'
-                  ? 'Säker, PCI-compliant kortbetalning integrerad från start. Ta betalt för tjänster, produkter eller prenumerationer direkt på er webbplats.'
-                  : 'Secure, PCI-compliant card payments integrated from the start. Accept payments for services, products or subscriptions directly on your website.'}
-              </p>
             </div>
           </div>
         </section>
@@ -810,7 +884,7 @@ const StrategicWebsitesPage = () => {
         </section>
 
         {/* Pricing Packages Section */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-50 rounded-full mb-6">
@@ -942,6 +1016,59 @@ const StrategicWebsitesPage = () => {
                 {language === 'sv' ? 'Behöver du något helt anpassat?' : 'Need something completely custom?'}
                 <ArrowRight className="h-5 w-5" />
               </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Technical Architecture Section - Moved down for better flow */}
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-50 rounded-full mb-6">
+                <Code className="h-4 w-4 text-primary-600" />
+                <span className="text-sm font-medium text-primary-600">
+                  {language === 'sv' ? 'Teknisk Grund' : 'Technical Foundation'}
+                </span>
+              </div>
+              <h2 className="font-heading text-4xl font-bold text-gray-900 mb-4">
+                {language === 'sv' ? 'Byggd För Försäljning & Skalning' : 'Built For Sales & Scaling'}
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                {language === 'sv'
+                  ? 'Modern arkitektur som möjliggör affärsautomation, direktförsäljning och tillväxt från dag ett.'
+                  : 'Modern architecture enabling business automation, direct sales and growth from day one.'}
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {technicalCapabilities.map((capability, index) => (
+                <div key={index} className="bg-white rounded-xl p-8 shadow-soft border border-gray-100 hover:shadow-lg transition-shadow">
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary-100 to-accent-cyan/20 rounded-xl flex items-center justify-center text-primary-600 mb-4">
+                    {capability.icon}
+                  </div>
+                  <h3 className="font-heading text-xl font-bold text-gray-900 mb-3">
+                    {capability.title}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    {capability.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-12 bg-gradient-to-r from-primary-600 to-accent-cyan rounded-2xl p-8 text-center">
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <CreditCard className="h-6 w-6 text-white" />
+                <Shield className="h-6 w-6 text-white" />
+              </div>
+              <h3 className="font-heading text-2xl font-bold text-white mb-3">
+                {language === 'sv' ? 'Stripe Kortbetalning – Standard På Alla Webbplatser' : 'Stripe Card Payments – Standard On All Websites'}
+              </h3>
+              <p className="text-white/90 text-lg max-w-3xl mx-auto">
+                {language === 'sv'
+                  ? 'Säker, PCI-compliant kortbetalning integrerad från start. Ta betalt för tjänster, produkter eller prenumerationer direkt på er webbplats.'
+                  : 'Secure, PCI-compliant card payments integrated from the start. Accept payments for services, products or subscriptions directly on your website.'}
+              </p>
             </div>
           </div>
         </section>
@@ -1085,38 +1212,6 @@ const StrategicWebsitesPage = () => {
           </div>
         </section>
 
-        {/* Outcomes Section */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary-50 to-accent-cyan/5">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="font-heading text-4xl font-bold text-gray-900 mb-4">
-                {language === 'sv' ? 'Mätbara Affärsresultat' : 'Measurable Business Outcomes'}
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                {language === 'sv'
-                  ? 'Varje projekt är designat för att leverera konkreta, mätbara förbättringar.'
-                  : 'Every project is designed to deliver concrete, measurable improvements.'}
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {outcomes.map((outcome, index) => (
-                <div key={index} className="bg-white rounded-xl p-6 shadow-soft border border-gray-100 hover:shadow-lg transition-shadow">
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary-100 to-accent-cyan/20 rounded-xl flex items-center justify-center text-primary-600 mb-4">
-                    {outcome.icon}
-                  </div>
-                  <h3 className="font-heading text-lg font-bold text-gray-900 mb-2">
-                    {outcome.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    {outcome.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* Capabilities Section */}
         <section className="py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
@@ -1139,38 +1234,6 @@ const StrategicWebsitesPage = () => {
                   </h3>
                   <p className="text-gray-600 leading-relaxed">
                     {capability.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Differentiators Section */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="font-heading text-4xl font-bold text-gray-900 mb-4">
-                {language === 'sv' ? 'Varför NorthForce' : 'Why NorthForce'}
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                {language === 'sv'
-                  ? 'Vi är inte en byrå. Vi är en strategisk partner som kombinerar business insights med teknisk excellens.'
-                  : 'We\'re not an agency. We\'re a strategic partner combining business insights with technical excellence.'}
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              {differentiators.map((diff, index) => (
-                <div key={index} className="bg-white rounded-xl p-8 shadow-soft border border-gray-100">
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary-100 to-accent-cyan/20 rounded-xl flex items-center justify-center text-primary-600 mb-4">
-                    {diff.icon}
-                  </div>
-                  <h3 className="font-heading text-xl font-bold text-gray-900 mb-3">
-                    {diff.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    {diff.description}
                   </p>
                 </div>
               ))}
