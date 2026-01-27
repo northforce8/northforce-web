@@ -1,21 +1,32 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Zap, Sparkles, Globe } from 'lucide-react';
+import { Menu, X, Zap, Sparkles, Globe, ChevronDown } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const location = useLocation();
   const { language, setLanguage, t } = useLanguage();
 
   const navigation = [
     { name: t('nav.hybrid_model'), href: '/hybrid-model' },
-    { name: t('nav.systems'), href: '/system' },
-    { name: t('nav.capabilities'), href: '/capabilities' },
-    { name: t('nav.strategic_websites'), href: '/strategic-websites' },
-    { name: language === 'sv' ? 'Affärsdata' : 'Business Data', href: '/business-data' },
-    { name: t('nav.industries'), href: '/industries' },
-    { name: language === 'sv' ? 'Lösningar' : 'Solutions', href: '/solutions' },
+    {
+      name: language === 'sv' ? 'Produkter' : 'Products',
+      dropdown: [
+        { name: t('nav.systems'), href: '/system' },
+        { name: t('nav.strategic_websites'), href: '/strategic-websites' },
+        { name: language === 'sv' ? 'Affärsdata' : 'Business Data', href: '/business-data' },
+      ]
+    },
+    {
+      name: language === 'sv' ? 'Lösningar' : 'Solutions',
+      dropdown: [
+        { name: language === 'sv' ? 'Lösningar' : 'Solutions', href: '/solutions' },
+        { name: t('nav.industries'), href: '/industries' },
+        { name: t('nav.capabilities'), href: '/capabilities' },
+      ]
+    },
     { name: t('nav.ai_automation'), href: '/ai-automation' },
     { name: t('nav.about'), href: '/about' },
   ];
@@ -43,20 +54,52 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-4">
             {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={`font-body text-sm font-medium transition-colors relative group whitespace-nowrap ${
-                  isActive(item.href) 
-                    ? 'text-primary-800' 
-                    : 'text-gray-700 hover:text-primary-600'
-                }`}
-              >
-                {item.name}
-                <span className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-primary-600 to-accent-cyan transition-all duration-300 ${
-                  isActive(item.href) ? 'w-full' : 'w-0 group-hover:w-full'
-                }`}></span>
-              </Link>
+              'dropdown' in item ? (
+                <div
+                  key={item.name}
+                  className="relative group"
+                  onMouseEnter={() => setOpenDropdown(item.name)}
+                  onMouseLeave={() => setOpenDropdown(null)}
+                >
+                  <button className="font-body text-sm font-medium transition-colors text-gray-700 hover:text-primary-600 whitespace-nowrap flex items-center gap-1">
+                    {item.name}
+                    <ChevronDown className="h-4 w-4" />
+                  </button>
+                  {openDropdown === item.name && (
+                    <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 py-2 min-w-[200px]">
+                      {item.dropdown.map((subItem) => (
+                        <Link
+                          key={subItem.href}
+                          to={subItem.href}
+                          className={`block px-4 py-2 text-sm font-medium transition-colors ${
+                            isActive(subItem.href)
+                              ? 'text-primary-600 bg-primary-50'
+                              : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50'
+                          }`}
+                          onClick={() => setOpenDropdown(null)}
+                        >
+                          {subItem.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={`font-body text-sm font-medium transition-colors relative group whitespace-nowrap ${
+                    isActive(item.href)
+                      ? 'text-primary-800'
+                      : 'text-gray-700 hover:text-primary-600'
+                  }`}
+                >
+                  {item.name}
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-primary-600 to-accent-cyan transition-all duration-300 ${
+                    isActive(item.href) ? 'w-full' : 'w-0 group-hover:w-full'
+                  }`}></span>
+                </Link>
+              )
             ))}
           </nav>
 
@@ -102,18 +145,51 @@ const Header = () => {
           <div className="lg:hidden py-6 border-t border-gray-200/50 bg-white/95 backdrop-blur-md">
             <div className="space-y-4">
               {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={`block font-body font-medium py-2 ${
-                    isActive(item.href)
-                      ? 'text-primary-800'
-                      : 'text-gray-700 hover:text-primary-600'
-                  }`}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.name}
-                </Link>
+                'dropdown' in item ? (
+                  <div key={item.name}>
+                    <button
+                      onClick={() => setOpenDropdown(openDropdown === item.name ? null : item.name)}
+                      className="flex items-center justify-between w-full font-body font-medium py-2 text-gray-700 hover:text-primary-600"
+                    >
+                      {item.name}
+                      <ChevronDown className={`h-4 w-4 transition-transform ${openDropdown === item.name ? 'rotate-180' : ''}`} />
+                    </button>
+                    {openDropdown === item.name && (
+                      <div className="pl-4 mt-2 space-y-2">
+                        {item.dropdown.map((subItem) => (
+                          <Link
+                            key={subItem.href}
+                            to={subItem.href}
+                            className={`block font-body py-2 ${
+                              isActive(subItem.href)
+                                ? 'text-primary-800'
+                                : 'text-gray-600 hover:text-primary-600'
+                            }`}
+                            onClick={() => {
+                              setIsMenuOpen(false);
+                              setOpenDropdown(null);
+                            }}
+                          >
+                            {subItem.name}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className={`block font-body font-medium py-2 ${
+                      isActive(item.href)
+                        ? 'text-primary-800'
+                        : 'text-gray-700 hover:text-primary-600'
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                )
               ))}
               <div className="pt-4 space-y-2">
                 <button

@@ -1477,85 +1477,111 @@ const StrategicWebsitesPage = () => {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6 mb-12">
-              <div className="bg-white rounded-2xl p-8 shadow-soft border border-gray-200 hover:border-primary-600 transition-all">
-                <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center text-primary-600 mb-4">
+            {/* Two Main Packages in Center */}
+            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-8">
+              <div className="bg-white rounded-2xl p-8 shadow-soft border-2 border-gray-200 hover:border-primary-600 transition-all">
+                <div className="w-12 h-12 bg-gradient-to-br from-primary-100 to-accent-cyan/20 rounded-xl flex items-center justify-center text-primary-600 mb-4">
                   <CreditCard className="h-6 w-6" />
                 </div>
-                <h3 className="font-heading text-xl font-bold text-gray-900 mb-2">
+                <h3 className="font-heading text-2xl font-bold text-gray-900 mb-2">
                   {language === 'sv' ? 'Foundation' : 'Foundation'}
                 </h3>
-                <p className="text-gray-600 mb-2 text-sm">
+                <p className="text-gray-600 mb-4 text-sm">
                   {language === 'sv'
                     ? 'Kom igång direkt med låg startkostnad.'
                     : 'Get started immediately with low setup cost.'}
                 </p>
                 <div className="mb-6">
-                  <div className="text-2xl font-black text-gray-900">{language === 'sv' ? '29 000 kr' : '€2,900'}</div>
+                  <div className="text-4xl font-black text-gray-900 mb-2">
+                    {language === 'sv' ? '19 000' : '€1,900'}
+                    <span className="text-lg font-normal text-gray-600"> {language === 'sv' ? 'kr' : ''}</span>
+                  </div>
                   <div className="text-sm text-gray-500">{language === 'sv' ? '+ 1 990 kr/mån' : '+ €190/mo'}</div>
                 </div>
                 <Link
                   to="/contact"
-                  className="block w-full text-center px-6 py-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all font-semibold text-sm"
+                  className="block w-full text-center px-6 py-4 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all font-semibold"
                 >
                   {language === 'sv' ? 'Köp Foundation' : 'Buy Foundation'}
-                  <ArrowRight className="inline-block ml-2 h-4 w-4" />
+                  <ArrowRight className="inline-block ml-2 h-5 w-5" />
                 </Link>
               </div>
 
-              <div className="bg-gradient-to-br from-primary-600 to-accent-cyan rounded-2xl p-8 shadow-glow text-white transform lg:-mt-2">
+              <div className="bg-gradient-to-br from-primary-600 to-accent-cyan rounded-2xl p-8 shadow-glow text-white relative border-2 border-primary-600">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                  <div className="bg-accent-emerald text-white px-4 py-1 rounded-full text-xs font-bold">
+                    {language === 'sv' ? 'POPULÄRAST' : 'MOST POPULAR'}
+                  </div>
+                </div>
                 <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-4">
                   <Star className="h-6 w-6" />
                 </div>
-                <div className="absolute top-4 right-4">
-                  <div className="bg-white/20 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                    {language === 'sv' ? 'Populärast' : 'Most Popular'}
-                  </div>
-                </div>
-                <h3 className="font-heading text-xl font-bold mb-2">
+                <h3 className="font-heading text-2xl font-bold mb-2">
                   {language === 'sv' ? 'Growth' : 'Growth'}
                 </h3>
-                <p className="text-white/90 mb-2 text-sm">
+                <p className="text-white/90 mb-4 text-sm">
                   {language === 'sv'
                     ? 'Bästa balansen mellan investering och värde.'
                     : 'Best balance between investment and value.'}
                 </p>
                 <div className="mb-6">
-                  <div className="text-2xl font-black">{language === 'sv' ? '59 000 kr' : '€5,900'}</div>
+                  <div className="text-4xl font-black mb-2">
+                    {language === 'sv' ? '39 000' : '€3,900'}
+                    <span className="text-lg font-normal text-white/80"> {language === 'sv' ? 'kr' : ''}</span>
+                  </div>
                   <div className="text-sm text-white/80">{language === 'sv' ? '+ 3 990 kr/mån' : '+ €390/mo'}</div>
                 </div>
                 <Link
                   to="/contact"
-                  className="block w-full text-center px-6 py-3 bg-white text-primary-600 rounded-xl hover:shadow-xl transition-all font-semibold text-sm"
+                  className="block w-full text-center px-6 py-4 bg-white text-primary-600 rounded-xl hover:shadow-xl transition-all font-semibold"
                 >
                   {language === 'sv' ? 'Köp Growth' : 'Buy Growth'}
-                  <ArrowRight className="inline-block ml-2 h-4 w-4" />
+                  <ArrowRight className="inline-block ml-2 h-5 w-5" />
                 </Link>
               </div>
+            </div>
 
-              <div className="bg-white rounded-2xl p-8 shadow-soft border border-gray-200 hover:border-primary-600 transition-all">
-                <div className="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center text-white mb-4">
-                  <Rocket className="h-6 w-6" />
+            {/* Enterprise Package Below */}
+            <div className="max-w-5xl mx-auto mb-12">
+              <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 shadow-xl text-white border-2 border-gray-700">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+                        <Rocket className="h-6 w-6" />
+                      </div>
+                      <div>
+                        <h3 className="font-heading text-2xl font-bold mb-1">
+                          {language === 'sv' ? 'Enterprise' : 'Enterprise'}
+                        </h3>
+                        <p className="text-white/80 text-sm">
+                          {language === 'sv'
+                            ? 'För bolag som vill skala på allvar'
+                            : 'For companies serious about scaling'}
+                        </p>
+                      </div>
+                    </div>
+                    <p className="text-white/90 text-sm">
+                      {language === 'sv'
+                        ? 'Skräddarsydda lösningar, dedikerad support och fullständig integration med era befintliga system.'
+                        : 'Custom solutions, dedicated support and full integration with your existing systems.'}
+                    </p>
+                  </div>
+                  <div className="md:text-right">
+                    <div className="text-4xl font-black mb-2">
+                      {language === 'sv' ? '59 000' : '€5,900'}
+                      <span className="text-lg font-normal text-white/80"> {language === 'sv' ? 'kr' : ''}</span>
+                    </div>
+                    <div className="text-sm text-white/80 mb-4">{language === 'sv' ? '+ 6 990 kr/mån' : '+ €690/mo'}</div>
+                    <Link
+                      to="/contact"
+                      className="inline-flex items-center justify-center px-8 py-4 bg-white text-gray-900 rounded-xl hover:bg-gray-100 transition-all font-semibold"
+                    >
+                      {language === 'sv' ? 'Begär Offert' : 'Request Quote'}
+                      <ArrowRight className="inline-block ml-2 h-5 w-5" />
+                    </Link>
+                  </div>
                 </div>
-                <h3 className="font-heading text-xl font-bold text-gray-900 mb-2">
-                  {language === 'sv' ? 'Scale' : 'Scale'}
-                </h3>
-                <p className="text-gray-600 mb-2 text-sm">
-                  {language === 'sv'
-                    ? 'För bolag som vill skala på allvar.'
-                    : 'For companies serious about scaling.'}
-                </p>
-                <div className="mb-6">
-                  <div className="text-2xl font-black text-gray-900">{language === 'sv' ? '99 000 kr' : '€9,900'}</div>
-                  <div className="text-sm text-gray-500">{language === 'sv' ? '+ 6 990 kr/mån' : '+ €690/mo'}</div>
-                </div>
-                <Link
-                  to="/contact"
-                  className="block w-full text-center px-6 py-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all font-semibold text-sm"
-                >
-                  {language === 'sv' ? 'Köp Scale' : 'Buy Scale'}
-                  <ArrowRight className="inline-block ml-2 h-4 w-4" />
-                </Link>
               </div>
             </div>
 

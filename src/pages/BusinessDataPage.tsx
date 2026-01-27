@@ -211,13 +211,13 @@ const BusinessDataPage = () => {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                <Link
-                  to="/contact"
+                <a
+                  href="#order-form"
                   className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-primary-600 to-accent-cyan text-white rounded-2xl hover:shadow-glow transition-all duration-300 font-semibold text-lg transform hover:scale-105"
                 >
                   {language === 'sv' ? 'Beställ Leads Nu' : 'Order Leads Now'}
                   <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
+                </a>
                 <a
                   href="#specifications"
                   className="inline-flex items-center justify-center px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-2xl hover:border-primary-600 hover:text-primary-600 transition-all duration-300 font-semibold text-lg"
@@ -328,19 +328,17 @@ const BusinessDataPage = () => {
               ))}
             </div>
 
-            <div className="mt-12 bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl p-8 border border-amber-200">
-              <div className="flex items-start gap-4">
-                <Phone className="h-6 w-6 text-amber-600 flex-shrink-0 mt-1" />
-                <div>
-                  <h3 className="font-heading text-lg font-bold text-gray-900 mb-2">
-                    {language === 'sv' ? 'Om Telefonnummer' : 'About Phone Numbers'}
-                  </h3>
-                  <p className="text-gray-700 leading-relaxed">
-                    {language === 'sv'
-                      ? 'Vi arbetar aktivt med att berika data med telefonnummer där de finns tillgängliga i öppna källor. Ingen garanti kan ges för täckning, men vi strävar efter högsta möjliga komplettering.'
-                      : 'We actively work to enrich data with phone numbers where available in public sources. No guarantee can be given for coverage, but we strive for the highest possible completion.'}
-                  </p>
-                </div>
+            <div className="mt-12 bg-gray-50 rounded-xl p-6 border border-gray-200">
+              <div className="flex items-start gap-3">
+                <Phone className="h-4 w-4 text-gray-400 flex-shrink-0 mt-0.5" />
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  <span className="font-medium text-gray-700">
+                    {language === 'sv' ? 'Om telefonnummer: ' : 'About phone numbers: '}
+                  </span>
+                  {language === 'sv'
+                    ? 'Vi arbetar aktivt med att berika data med telefonnummer där de finns tillgängliga i öppna källor. Ingen garanti kan ges för täckning.'
+                    : 'We actively work to enrich data with phone numbers where available in public sources. No guarantee can be given for coverage.'}
+                </p>
               </div>
             </div>
           </div>
@@ -477,6 +475,256 @@ const BusinessDataPage = () => {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Order Form & Pricing Section */}
+        <section id="order-form" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary-50 via-white to-accent-cyan/5">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary-100 to-accent-cyan/20 rounded-full mb-6">
+                <Sparkles className="h-4 w-4 text-primary-600" />
+                <span className="text-sm font-medium text-primary-600">
+                  {language === 'sv' ? 'Beställ Nu' : 'Order Now'}
+                </span>
+              </div>
+              <h2 className="font-heading text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                {language === 'sv' ? 'Skapa Din ' : 'Create Your '}
+                <span className="bg-gradient-to-r from-primary-600 to-accent-cyan bg-clip-text text-transparent">
+                  {language === 'sv' ? 'Målgrupp' : 'Target List'}
+                </span>
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                {language === 'sv'
+                  ? 'Välj era kriterier nedan, välj paket och gå vidare till betalning. Leverans inom 3 timmar.'
+                  : 'Select your criteria below, choose package and proceed to payment. Delivery within 3 hours.'}
+              </p>
+            </div>
+
+            {/* Selection Form */}
+            <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-8 mb-12">
+              <div className="grid md:grid-cols-2 gap-8">
+                {/* Industry Selection */}
+                <div>
+                  <label className="block font-heading font-bold text-gray-900 mb-3">
+                    <Building2 className="inline-block h-5 w-5 mr-2 text-primary-600" />
+                    {language === 'sv' ? 'Bransch' : 'Industry'}
+                  </label>
+                  <select className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-600 focus:ring-2 focus:ring-primary-100 transition-all">
+                    <option>{language === 'sv' ? 'Välj bransch...' : 'Select industry...'}</option>
+                    <option>{language === 'sv' ? 'IT & Tech' : 'IT & Tech'}</option>
+                    <option>{language === 'sv' ? 'Tillverkning' : 'Manufacturing'}</option>
+                    <option>{language === 'sv' ? 'Detaljhandel' : 'Retail'}</option>
+                    <option>{language === 'sv' ? 'Finans & Försäkring' : 'Finance & Insurance'}</option>
+                    <option>{language === 'sv' ? 'Hälsa & Vård' : 'Healthcare'}</option>
+                    <option>{language === 'sv' ? 'Professionella Tjänster' : 'Professional Services'}</option>
+                    <option>{language === 'sv' ? 'Fastighet & Bygg' : 'Real Estate & Construction'}</option>
+                    <option>{language === 'sv' ? 'Transport & Logistik' : 'Transport & Logistics'}</option>
+                    <option>{language === 'sv' ? 'Utbildning' : 'Education'}</option>
+                    <option>{language === 'sv' ? 'Övrigt' : 'Other'}</option>
+                  </select>
+                </div>
+
+                {/* Geographic Area */}
+                <div>
+                  <label className="block font-heading font-bold text-gray-900 mb-3">
+                    <Globe className="inline-block h-5 w-5 mr-2 text-primary-600" />
+                    {language === 'sv' ? 'Geografiskt Område' : 'Geographic Area'}
+                  </label>
+                  <select className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-600 focus:ring-2 focus:ring-primary-100 transition-all">
+                    <option>{language === 'sv' ? 'Välj område...' : 'Select area...'}</option>
+                    <option>{language === 'sv' ? 'Hela Sverige' : 'All of Sweden'}</option>
+                    <option>{language === 'sv' ? 'Stockholmsregionen' : 'Stockholm Region'}</option>
+                    <option>{language === 'sv' ? 'Göteborgsregionen' : 'Gothenburg Region'}</option>
+                    <option>{language === 'sv' ? 'Malmöregionen' : 'Malmö Region'}</option>
+                    <option>{language === 'sv' ? 'Norden' : 'Nordics'}</option>
+                    <option>{language === 'sv' ? 'Europa' : 'Europe'}</option>
+                    <option>{language === 'sv' ? 'Global' : 'Global'}</option>
+                  </select>
+                </div>
+
+                {/* Role/Title */}
+                <div>
+                  <label className="block font-heading font-bold text-gray-900 mb-3">
+                    <Users className="inline-block h-5 w-5 mr-2 text-primary-600" />
+                    {language === 'sv' ? 'Roll/Titel' : 'Role/Title'}
+                  </label>
+                  <select className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-600 focus:ring-2 focus:ring-primary-100 transition-all">
+                    <option>{language === 'sv' ? 'Välj roll...' : 'Select role...'}</option>
+                    <option>{language === 'sv' ? 'VD/CEO' : 'CEO'}</option>
+                    <option>{language === 'sv' ? 'Försäljningschef' : 'Sales Manager'}</option>
+                    <option>{language === 'sv' ? 'Marknadschef' : 'Marketing Manager'}</option>
+                    <option>{language === 'sv' ? 'IT-chef/CTO' : 'IT Manager/CTO'}</option>
+                    <option>{language === 'sv' ? 'CFO' : 'CFO'}</option>
+                    <option>{language === 'sv' ? 'HR-chef' : 'HR Manager'}</option>
+                    <option>{language === 'sv' ? 'Produktchef' : 'Product Manager'}</option>
+                    <option>{language === 'sv' ? 'Inköpschef' : 'Procurement Manager'}</option>
+                  </select>
+                </div>
+
+                {/* Company Size */}
+                <div>
+                  <label className="block font-heading font-bold text-gray-900 mb-3">
+                    <TrendingUp className="inline-block h-5 w-5 mr-2 text-primary-600" />
+                    {language === 'sv' ? 'Företagsstorlek' : 'Company Size'}
+                  </label>
+                  <select className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-600 focus:ring-2 focus:ring-primary-100 transition-all">
+                    <option>{language === 'sv' ? 'Välj storlek...' : 'Select size...'}</option>
+                    <option>{language === 'sv' ? '1-10 anställda' : '1-10 employees'}</option>
+                    <option>{language === 'sv' ? '11-50 anställda' : '11-50 employees'}</option>
+                    <option>{language === 'sv' ? '51-200 anställda' : '51-200 employees'}</option>
+                    <option>{language === 'sv' ? '201-500 anställda' : '201-500 employees'}</option>
+                    <option>{language === 'sv' ? '501-1000 anställda' : '501-1000 employees'}</option>
+                    <option>{language === 'sv' ? '1000+ anställda' : '1000+ employees'}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="mt-8 p-6 bg-gradient-to-r from-primary-50 to-accent-cyan/10 rounded-xl">
+                <p className="text-sm text-gray-600 flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-primary-600 flex-shrink-0" />
+                  <span>
+                    {language === 'sv'
+                      ? 'Behöver du mer specifika filter? Kontakta oss för skräddarsydd målgruppsval.'
+                      : 'Need more specific filters? Contact us for customized targeting options.'}
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            {/* Pricing Options */}
+            <div className="mb-12">
+              <h3 className="font-heading text-2xl font-bold text-gray-900 mb-8 text-center">
+                {language === 'sv' ? 'Välj Ditt Paket' : 'Choose Your Package'}
+              </h3>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                {/* Starter Package */}
+                <div className="bg-white rounded-2xl p-8 shadow-soft border-2 border-gray-200 hover:border-primary-600 transition-all">
+                  <div className="text-center mb-6">
+                    <h4 className="font-heading text-xl font-bold text-gray-900 mb-2">Starter</h4>
+                    <p className="text-sm text-gray-600 mb-4">{language === 'sv' ? 'Perfekt för test' : 'Perfect for testing'}</p>
+                    <div className="text-4xl font-black text-gray-900 mb-1">
+                      {language === 'sv' ? '4 990' : '€490'}
+                      <span className="text-lg font-normal text-gray-600"> {language === 'sv' ? 'kr' : ''}</span>
+                    </div>
+                    <div className="text-sm text-gray-500">{language === 'sv' ? '100 leads' : '100 leads'}</div>
+                  </div>
+                  <ul className="space-y-3 mb-6">
+                    <li className="flex items-start gap-2 text-sm text-gray-700">
+                      <CheckCircle className="h-5 w-5 text-primary-600 flex-shrink-0" />
+                      {language === 'sv' ? 'Verifierade e-postadresser' : 'Verified email addresses'}
+                    </li>
+                    <li className="flex items-start gap-2 text-sm text-gray-700">
+                      <CheckCircle className="h-5 w-5 text-primary-600 flex-shrink-0" />
+                      {language === 'sv' ? 'Företagsdata' : 'Company data'}
+                    </li>
+                    <li className="flex items-start gap-2 text-sm text-gray-700">
+                      <CheckCircle className="h-5 w-5 text-primary-600 flex-shrink-0" />
+                      {language === 'sv' ? 'Leverans < 3h' : 'Delivery < 3h'}
+                    </li>
+                  </ul>
+                  <button className="w-full px-6 py-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all font-semibold">
+                    {language === 'sv' ? 'Välj Starter' : 'Choose Starter'}
+                  </button>
+                </div>
+
+                {/* Professional Package - Most Popular */}
+                <div className="bg-gradient-to-br from-primary-600 to-accent-cyan rounded-2xl p-8 shadow-glow text-white transform md:-mt-2 border-2 border-primary-600 relative">
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                    <div className="bg-accent-emerald text-white px-4 py-1 rounded-full text-xs font-bold">
+                      {language === 'sv' ? 'POPULÄRAST' : 'MOST POPULAR'}
+                    </div>
+                  </div>
+                  <div className="text-center mb-6">
+                    <h4 className="font-heading text-xl font-bold mb-2">Professional</h4>
+                    <p className="text-sm text-white/90 mb-4">{language === 'sv' ? 'Bäst för tillväxt' : 'Best for growth'}</p>
+                    <div className="text-4xl font-black mb-1">
+                      {language === 'sv' ? '19 900' : '€1,990'}
+                      <span className="text-lg font-normal text-white/80"> {language === 'sv' ? 'kr' : ''}</span>
+                    </div>
+                    <div className="text-sm text-white/80">{language === 'sv' ? '500 leads' : '500 leads'}</div>
+                  </div>
+                  <ul className="space-y-3 mb-6">
+                    <li className="flex items-start gap-2 text-sm">
+                      <CheckCircle className="h-5 w-5 flex-shrink-0" />
+                      {language === 'sv' ? 'Allt i Starter' : 'Everything in Starter'}
+                    </li>
+                    <li className="flex items-start gap-2 text-sm">
+                      <CheckCircle className="h-5 w-5 flex-shrink-0" />
+                      {language === 'sv' ? 'Telefonnummer (där tillgängliga)' : 'Phone numbers (where available)'}
+                    </li>
+                    <li className="flex items-start gap-2 text-sm">
+                      <CheckCircle className="h-5 w-5 flex-shrink-0" />
+                      {language === 'sv' ? 'Prioriterad leverans' : 'Priority delivery'}
+                    </li>
+                    <li className="flex items-start gap-2 text-sm">
+                      <CheckCircle className="h-5 w-5 flex-shrink-0" />
+                      {language === 'sv' ? 'Dedikerad support' : 'Dedicated support'}
+                    </li>
+                  </ul>
+                  <button className="w-full px-6 py-3 bg-white text-primary-600 rounded-xl hover:shadow-xl transition-all font-semibold">
+                    {language === 'sv' ? 'Välj Professional' : 'Choose Professional'}
+                  </button>
+                </div>
+
+                {/* Enterprise Package */}
+                <div className="bg-white rounded-2xl p-8 shadow-soft border-2 border-gray-200 hover:border-primary-600 transition-all">
+                  <div className="text-center mb-6">
+                    <h4 className="font-heading text-xl font-bold text-gray-900 mb-2">Enterprise</h4>
+                    <p className="text-sm text-gray-600 mb-4">{language === 'sv' ? 'För stora kampanjer' : 'For large campaigns'}</p>
+                    <div className="text-4xl font-black text-gray-900 mb-1">
+                      {language === 'sv' ? '49 900' : '€4,990'}
+                      <span className="text-lg font-normal text-gray-600"> {language === 'sv' ? 'kr' : ''}</span>
+                    </div>
+                    <div className="text-sm text-gray-500">{language === 'sv' ? '1000+ leads' : '1000+ leads'}</div>
+                  </div>
+                  <ul className="space-y-3 mb-6">
+                    <li className="flex items-start gap-2 text-sm text-gray-700">
+                      <CheckCircle className="h-5 w-5 text-primary-600 flex-shrink-0" />
+                      {language === 'sv' ? 'Allt i Professional' : 'Everything in Professional'}
+                    </li>
+                    <li className="flex items-start gap-2 text-sm text-gray-700">
+                      <CheckCircle className="h-5 w-5 text-primary-600 flex-shrink-0" />
+                      {language === 'sv' ? 'Skräddarsydda filter' : 'Custom filters'}
+                    </li>
+                    <li className="flex items-start gap-2 text-sm text-gray-700">
+                      <CheckCircle className="h-5 w-5 text-primary-600 flex-shrink-0" />
+                      {language === 'sv' ? 'Återkommande leveranser' : 'Recurring deliveries'}
+                    </li>
+                    <li className="flex items-start gap-2 text-sm text-gray-700">
+                      <CheckCircle className="h-5 w-5 text-primary-600 flex-shrink-0" />
+                      {language === 'sv' ? 'Strategisk rådgivning' : 'Strategic advisory'}
+                    </li>
+                  </ul>
+                  <button className="w-full px-6 py-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all font-semibold">
+                    {language === 'sv' ? 'Välj Enterprise' : 'Choose Enterprise'}
+                  </button>
+                </div>
+              </div>
+
+              <div className="mt-8 text-center">
+                <p className="text-gray-600 mb-4">
+                  {language === 'sv'
+                    ? 'Alla priser är exklusive moms. Säker betalning via Stripe.'
+                    : 'All prices excluding VAT. Secure payment via Stripe.'}
+                </p>
+                <div className="flex items-center justify-center gap-4 text-sm text-gray-500">
+                  <div className="flex items-center gap-2">
+                    <Shield className="h-4 w-4" />
+                    {language === 'sv' ? 'GDPR-compliant' : 'GDPR-compliant'}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Lock className="h-4 w-4" />
+                    {language === 'sv' ? 'Säker betalning' : 'Secure payment'}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4" />
+                    {language === 'sv' ? 'Kvalitetsgaranti' : 'Quality guarantee'}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
