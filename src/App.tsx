@@ -34,6 +34,7 @@ import MethodPage from './pages/MethodPage';
 import PricingPage from './pages/PricingPage';
 import TokensPage from './pages/TokensPage';
 import StrategicWebsitesPage from './pages/StrategicWebsitesPage';
+import BusinessDataPage from './pages/BusinessDataPage';
 
 // Admin Pages
 import AdminLogin from './pages/admin/AdminLogin';
@@ -147,6 +148,7 @@ function App() {
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/tokens" element={<TokensPage />} />
         <Route path="/strategic-websites" element={<StrategicWebsitesPage />} />
+        <Route path="/business-data" element={<BusinessDataPage />} />
 
         {/* Admin Login & Setup (outside AdminLayout) */}
         <Route path={ADMIN_ROUTES.LOGIN} element={<AdminLogin />} />
