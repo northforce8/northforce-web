@@ -285,101 +285,168 @@ const StrategicWebsitesPage = () => {
   const pricingPackages = [
     {
       name: language === 'sv' ? 'Foundation' : 'Foundation',
-      tagline: language === 'sv' ? 'Snabb lansering' : 'Quick Launch',
-      price: language === 'sv' ? 'från 89 000 kr' : 'from €7,900',
+      tagline: language === 'sv' ? 'Kom igång snabbt – låg startkostnad' : 'Get Started Quick – Low Entry Cost',
+      setupFee: language === 'sv' ? '29 000 kr' : '€2,900',
+      monthlyFee: language === 'sv' ? '1 990 kr' : '€190',
+      commitment: language === 'sv' ? '12 månader' : '12 months',
       description: language === 'sv'
-        ? 'Perfekt för mindre bolag som vill etablera professionell närvaro och börja generera leads online.'
-        : 'Perfect for smaller companies wanting to establish professional presence and start generating leads online.',
-      features: language === 'sv'
+        ? 'Professionell, konverteringsfokuserad webbplats som aktivt driver leads och affär. Perfekt för att etablera stark närvaro snabbt.'
+        : 'Professional, conversion-focused website that actively drives leads and business. Perfect for establishing strong presence quickly.',
+      implementationFeatures: language === 'sv'
         ? [
-            'Upp till 8 sidor',
-            'Strategisk struktur & UX-design',
-            'SEO-grundoptimering',
-            'Mobil-responsiv design',
-            'Kontaktformulär & lead capture',
-            'Google Analytics integration',
-            'CMS för enkel redigering',
-            ' 30 dagars support efter lansering',
+            '5–7 strategiskt uppbyggda sidor',
+            'Konverteringslogik & CTA-struktur',
+            'Stripe-förberedd betalning',
+            'SEO- och EEAT-grundstruktur',
+            'Mobil-först design',
           ]
         : [
-            'Up to 8 pages',
-            'Strategic structure & UX design',
-            'Basic SEO optimization',
-            'Mobile-responsive design',
-            'Contact forms & lead capture',
-            'Google Analytics integration',
-            'CMS for easy editing',
-            '30 days post-launch support',
+            '5–7 strategically built pages',
+            'Conversion logic & CTA structure',
+            'Stripe payment-ready',
+            'SEO and EEAT foundation',
+            'Mobile-first design',
+          ],
+      monthlyIncludes: language === 'sv'
+        ? [
+            'Hosting, säkerhet & drift',
+            'Löpande tekniska uppdateringar',
+            'Support & teknisk förvaltning',
+            '99.9% uptime-garanti',
+          ]
+        : [
+            'Hosting, security & operations',
+            'Ongoing technical updates',
+            'Support & technical management',
+            '99.9% uptime guarantee',
           ],
       ideal: language === 'sv' ? 'Startups, lokala företag, konsulter' : 'Startups, local businesses, consultants',
-      cta: language === 'sv' ? 'Boka Möte' : 'Book Meeting',
+      cta: language === 'sv' ? 'Köp Nu' : 'Buy Now',
+      ctaType: 'primary',
     },
     {
       name: language === 'sv' ? 'Growth' : 'Growth',
-      tagline: language === 'sv' ? 'Skalbar tillväxt' : 'Scalable Growth',
-      price: language === 'sv' ? 'från 189 000 kr' : 'from €16,900',
+      tagline: language === 'sv' ? 'Bästa balans mellan investering och affärsvärde' : 'Best Balance Between Investment and Business Value',
+      setupFee: language === 'sv' ? '59 000 kr' : '€5,900',
+      monthlyFee: language === 'sv' ? '3 990 kr' : '€390',
+      commitment: language === 'sv' ? '12–24 månader' : '12–24 months',
       description: language === 'sv'
-        ? 'För växande bolag som behöver avancerad funktionalitet, integrationer och aktiv leadgenerering.'
-        : 'For growing companies needing advanced functionality, integrations and active lead generation.',
-      features: language === 'sv'
+        ? 'Avancerad lösning för tillväxtbolag som vill skala försäljning med CRM-integrationer, lead-automation och kontinuerlig optimering.'
+        : 'Advanced solution for growth companies wanting to scale sales with CRM integrations, lead automation and continuous optimization.',
+      implementationFeatures: language === 'sv'
         ? [
-            'Upp till 20 sidor',
+            '10–15 dynamiska sidor',
             'Avancerad UX & konverteringsoptimering',
-            'Omfattande SEO & EEAT-optimering',
-            'Kalenderbokning-integration',
-            'CRM/Marketing automation-integration',
-            'Stripe-betalningar för direktförsäljning',
+            'Bokning, formulär & lead-flöden',
+            'CRM- och marknadsintegrationer',
             'A/B-testing setup',
-            'Multi-språkstöd',
-            '3 månaders support & optimering',
           ]
         : [
-            'Up to 20 pages',
+            '10–15 dynamic pages',
             'Advanced UX & conversion optimization',
-            'Comprehensive SEO & EEAT optimization',
-            'Calendar booking integration',
-            'CRM/Marketing automation integration',
-            'Stripe payments for direct sales',
+            'Booking, forms & lead flows',
+            'CRM and marketing integrations',
             'A/B testing setup',
-            'Multi-language support',
-            '3 months support & optimization',
           ],
-      ideal: language === 'sv' ? 'SMB, B2B-bolag, professionella tjänster' : 'SMB, B2B companies, professional services',
-      cta: language === 'sv' ? 'Boka Möte' : 'Book Meeting',
+      monthlyIncludes: language === 'sv'
+        ? [
+            'Allt från Foundation +',
+            'Löpande optimering kopplat till affärsmål',
+            'Månatlig prestanda-analys',
+            'CRO & datadriven förbättring',
+          ]
+        : [
+            'Everything from Foundation +',
+            'Ongoing optimization tied to business goals',
+            'Monthly performance analysis',
+            'CRO & data-driven improvement',
+          ],
+      ideal: language === 'sv' ? 'SMB, B2B-bolag, tillväxtföretag' : 'SMB, B2B companies, growth companies',
+      cta: language === 'sv' ? 'Köp Nu' : 'Buy Now',
       popular: true,
+      ctaType: 'gradient',
     },
     {
-      name: language === 'sv' ? 'Scale / Enterprise' : 'Scale / Enterprise',
-      tagline: language === 'sv' ? 'Skräddarsytt' : 'Custom Built',
-      price: language === 'sv' ? 'Offert' : 'Quote',
+      name: language === 'sv' ? 'Scale' : 'Scale',
+      tagline: language === 'sv' ? 'För bolag som vill skala på allvar' : 'For Companies Serious About Scaling',
+      setupFee: language === 'sv' ? '99 000 kr' : '€9,900',
+      monthlyFee: language === 'sv' ? '6 990 kr' : '€690',
+      commitment: language === 'sv' ? '24 månader' : '24 months',
       description: language === 'sv'
-        ? 'Fullständigt skräddarsydd lösning för enterprise-bolag med komplexa krav och integrationer.'
-        : 'Fully custom solution for enterprise companies with complex requirements and integrations.',
-      features: language === 'sv'
+        ? 'Premium-lösning med prioriterad leverans, strategiskt stöd och avancerad affärsautomation för maximal skalbarhet.'
+        : 'Premium solution with priority delivery, strategic support and advanced business automation for maximum scalability.',
+      implementationFeatures: language === 'sv'
+        ? [
+            'Prioriterad leverans & dedikerad tid',
+            'Avancerad spårning & funnels',
+            'Komplex affärslogik & automatisering',
+            'Omfattande SEO & teknisk optimering',
+            'Multi-språk & internationalisering',
+          ]
+        : [
+            'Priority delivery & dedicated time',
+            'Advanced tracking & funnels',
+            'Complex business logic & automation',
+            'Comprehensive SEO & technical optimization',
+            'Multi-language & internationalization',
+          ],
+      monthlyIncludes: language === 'sv'
+        ? [
+            'Allt från Growth +',
+            'Strategiskt stöd & rådgivning',
+            'Kontinuerlig tillväxtoptimering',
+            'VIP-support med SLA',
+          ]
+        : [
+            'Everything from Growth +',
+            'Strategic support & consulting',
+            'Continuous growth optimization',
+            'VIP support with SLA',
+          ],
+      ideal: language === 'sv' ? 'Skalbara bolag, internationella företag' : 'Scalable companies, international firms',
+      cta: language === 'sv' ? 'Köp Nu' : 'Buy Now',
+      ctaType: 'dark',
+    },
+    {
+      name: language === 'sv' ? 'Enterprise' : 'Enterprise',
+      tagline: language === 'sv' ? 'Skräddarsytt för komplexa behov' : 'Tailored for Complex Needs',
+      setupFee: language === 'sv' ? 'Offert' : 'Quote',
+      monthlyFee: language === 'sv' ? 'Offert' : 'Quote',
+      commitment: language === 'sv' ? 'Anpassad' : 'Custom',
+      description: language === 'sv'
+        ? 'Fullständigt skräddarsydd lösning för stora organisationer med unika krav, ERP-integrationer och multi-region setup.'
+        : 'Fully customized solution for large organizations with unique requirements, ERP integrations and multi-region setup.',
+      implementationFeatures: language === 'sv'
         ? [
             'Obegränsat antal sidor',
-            'Custom funktionalitet & affärslogik',
-            'Enterprise SEO-strategi',
-            'Avancerade integrationer (ERP, CRM, etc)',
-            'Multi-site & internationalisering',
-            'Headless architecture',
-            'Dedicerad projektledning',
-            'API-utveckling',
-            'SLA & continuous support',
+            'Custom funktionalitet efter behov',
+            'Enterprise-arkitektur',
+            'Advanced API & ERP-integration',
+            'Dedikerad projektledning',
           ]
         : [
             'Unlimited pages',
-            'Custom functionality & business logic',
-            'Enterprise SEO strategy',
-            'Advanced integrations (ERP, CRM, etc)',
-            'Multi-site & internationalization',
-            'Headless architecture',
+            'Custom functionality as needed',
+            'Enterprise architecture',
+            'Advanced API & ERP integration',
             'Dedicated project management',
-            'API development',
-            'SLA & continuous support',
           ],
-      ideal: language === 'sv' ? 'Enterprise, multinationella bolag' : 'Enterprise, multinational companies',
+      monthlyIncludes: language === 'sv'
+        ? [
+            'White-glove support',
+            'SLA med garanterad responstid',
+            'Strategisk rådgivning',
+            'Continuous optimization',
+          ]
+        : [
+            'White-glove support',
+            'SLA with guaranteed response time',
+            'Strategic consulting',
+            'Continuous optimization',
+          ],
+      ideal: language === 'sv' ? 'Stora företag, internationella koncerner, komplexa affärsmodeller' : 'Large companies, international corporations, complex business models',
       cta: language === 'sv' ? 'Begär Offert' : 'Request Quote',
+      ctaType: 'outline',
     },
   ];
 
@@ -617,6 +684,131 @@ const StrategicWebsitesPage = () => {
           </div>
         </section>
 
+        {/* Subscription Explanation Section */}
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary-50 to-white">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="font-heading text-4xl font-bold text-gray-900 mb-4">
+                {language === 'sv' ? 'Låg Tröskel In – Långsiktig Partner Ut' : 'Low Threshold In – Long-term Partner Out'}
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                {language === 'sv'
+                  ? 'Abonnemangsmodell designad för att du ska komma igång snabbt med låg initial kostnad, samtidigt som din webbplats växer och optimeras kontinuerligt.'
+                  : 'Subscription model designed for you to get started quickly with low initial cost, while your website grows and optimizes continuously.'}
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8 mb-12">
+              <div className="bg-white rounded-xl p-6 shadow-soft border border-gray-100">
+                <div className="w-12 h-12 bg-gradient-to-br from-accent-emerald/20 to-primary-100 rounded-xl flex items-center justify-center text-accent-emerald mb-4">
+                  <Rocket className="h-6 w-6" />
+                </div>
+                <h3 className="font-heading text-lg font-bold text-gray-900 mb-2">
+                  {language === 'sv' ? 'Låg Startavgift' : 'Low Setup Fee'}
+                </h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  {language === 'sv'
+                    ? 'Reducerad initial kostnad så du kan komma igång utan att belasta kassaflödet.'
+                    : 'Reduced initial cost so you can get started without straining cash flow.'}
+                </p>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 shadow-soft border border-gray-100">
+                <div className="w-12 h-12 bg-gradient-to-br from-primary-100 to-accent-cyan/20 rounded-xl flex items-center justify-center text-primary-600 mb-4">
+                  <TrendingUp className="h-6 w-6" />
+                </div>
+                <h3 className="font-heading text-lg font-bold text-gray-900 mb-2">
+                  {language === 'sv' ? 'Löpande Värde' : 'Ongoing Value'}
+                </h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  {language === 'sv'
+                    ? 'Månadsavgiften inkluderar hosting, support, säkerhet och kontinuerlig optimering.'
+                    : 'Monthly fee includes hosting, support, security and continuous optimization.'}
+                </p>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 shadow-soft border border-gray-100">
+                <div className="w-12 h-12 bg-gradient-to-br from-accent-cyan/20 to-primary-100 rounded-xl flex items-center justify-center text-accent-cyan mb-4">
+                  <Shield className="h-6 w-6" />
+                </div>
+                <h3 className="font-heading text-lg font-bold text-gray-900 mb-2">
+                  {language === 'sv' ? 'Ingen Gisslan' : 'No Hostage'}
+                </h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  {language === 'sv'
+                    ? '100% betalt vid köp. Du äger din webbplats från dag ett – inget hålls gisslan.'
+                    : '100% paid at purchase. You own your website from day one – nothing held hostage.'}
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-2xl p-8 shadow-soft border border-gray-100">
+              <h3 className="font-heading text-xl font-bold text-gray-900 mb-6 text-center">
+                {language === 'sv' ? 'Så Fungerar Betalningen' : 'How Payment Works'}
+              </h3>
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-primary-600 to-accent-cyan rounded-full flex items-center justify-center text-white mx-auto mb-4 font-black text-lg">
+                    1
+                  </div>
+                  <h4 className="font-semibold text-gray-900 mb-2">
+                    {language === 'sv' ? 'Betala Startavgift' : 'Pay Setup Fee'}
+                  </h4>
+                  <p className="text-sm text-gray-600">
+                    {language === 'sv'
+                      ? '100% av startavgiften betalas direkt vid köp via Stripe. Projektet startar omedelbart.'
+                      : '100% of setup fee paid directly at purchase via Stripe. Project starts immediately.'}
+                  </p>
+                </div>
+
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-primary-600 to-accent-cyan rounded-full flex items-center justify-center text-white mx-auto mb-4 font-black text-lg">
+                    2
+                  </div>
+                  <h4 className="font-semibold text-gray-900 mb-2">
+                    {language === 'sv' ? 'Vi Levererar' : 'We Deliver'}
+                  </h4>
+                  <p className="text-sm text-gray-600">
+                    {language === 'sv'
+                      ? 'Vi bygger din webbplats enligt överenskommet scope. Full insyn och kontroll under hela processen.'
+                      : 'We build your website according to agreed scope. Full transparency and control throughout the process.'}
+                  </p>
+                </div>
+
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-primary-600 to-accent-cyan rounded-full flex items-center justify-center text-white mx-auto mb-4 font-black text-lg">
+                    3
+                  </div>
+                  <h4 className="font-semibold text-gray-900 mb-2">
+                    {language === 'sv' ? 'Go-live & Månadsavgift' : 'Go-live & Monthly Fee'}
+                  </h4>
+                  <p className="text-sm text-gray-600">
+                    {language === 'sv'
+                      ? 'Månadsavgift aktiveras vid go-live. Täcker hosting, support, säkerhet och optimering.'
+                      : 'Monthly fee activates at go-live. Covers hosting, support, security and optimization.'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-8 p-4 bg-gradient-to-r from-accent-emerald/10 to-primary-50 rounded-xl border border-accent-emerald/20">
+                <div className="flex items-start gap-3">
+                  <Gauge className="h-5 w-5 text-accent-emerald flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900 mb-1">
+                      {language === 'sv' ? 'Exempel: Growth-paket' : 'Example: Growth Package'}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      {language === 'sv'
+                        ? 'Startavgift 59 000 kr betalas idag. Webbplatsen byggs och lanseras. Månadsavgift 3 990 kr aktiveras vid go-live och täcker allt löpande.'
+                        : 'Setup fee €5,900 paid today. Website built and launched. Monthly fee €390 activates at go-live and covers all ongoing costs.'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Pricing Packages Section */}
         <section className="py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
@@ -632,12 +824,12 @@ const StrategicWebsitesPage = () => {
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
                 {language === 'sv'
-                  ? 'Transparenta paket från snabb lansering till enterprise-lösningar. Alla priser exkl. moms.'
-                  : 'Transparent packages from quick launch to enterprise solutions. All prices exclude VAT.'}
+                  ? 'Abonnemangsbaserade paket från snabb lansering till enterprise-lösningar. Alla priser exkl. moms.'
+                  : 'Subscription-based packages from quick launch to enterprise solutions. All prices exclude VAT.'}
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            <div className="grid lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
               {pricingPackages.map((pkg, index) => (
                 <div
                   key={index}
@@ -654,47 +846,83 @@ const StrategicWebsitesPage = () => {
                     </div>
                   )}
 
-                  <div className="p-8">
+                  <div className="p-6">
                     <div className="mb-6">
-                      <h3 className="font-heading text-2xl font-bold text-gray-900 mb-2">
+                      <h3 className="font-heading text-xl font-bold text-gray-900 mb-2">
                         {pkg.name}
                       </h3>
-                      <p className="text-primary-600 font-medium mb-4">{pkg.tagline}</p>
-                      <div className="text-4xl font-black text-gray-900 mb-2">{pkg.price}</div>
+                      <p className="text-primary-600 font-medium text-sm mb-4">{pkg.tagline}</p>
+
+                      <div className="space-y-3 mb-4">
+                        <div>
+                          <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
+                            {language === 'sv' ? 'Startavgift' : 'Setup Fee'}
+                          </div>
+                          <div className="text-3xl font-black text-gray-900">{pkg.setupFee}</div>
+                        </div>
+                        <div className="pt-3 border-t border-gray-200">
+                          <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
+                            {language === 'sv' ? 'Månadsavgift' : 'Monthly Fee'}
+                          </div>
+                          <div className="text-2xl font-bold text-primary-600">{pkg.monthlyFee}</div>
+                          <div className="text-xs text-gray-500 mt-1">
+                            {language === 'sv' ? 'Bindning: ' : 'Commitment: '}{pkg.commitment}
+                          </div>
+                        </div>
+                      </div>
+
                       <p className="text-gray-600 text-sm leading-relaxed">{pkg.description}</p>
                     </div>
 
-                    <div className="mb-8">
-                      <div className="text-sm font-semibold text-gray-900 mb-3">
-                        {language === 'sv' ? 'Inkluderat:' : 'Included:'}
+                    <div className="mb-6">
+                      <div className="text-xs font-semibold text-gray-900 uppercase tracking-wide mb-3">
+                        {language === 'sv' ? 'Implementation' : 'Implementation'}
                       </div>
-                      <ul className="space-y-3">
-                        {pkg.features.map((feature, idx) => (
+                      <ul className="space-y-2">
+                        {pkg.implementationFeatures.map((feature, idx) => (
                           <li key={idx} className="flex items-start gap-2">
-                            <CheckCircle className="h-5 w-5 text-accent-emerald flex-shrink-0 mt-0.5" />
-                            <span className="text-gray-700 text-sm">{feature}</span>
+                            <CheckCircle className="h-4 w-4 text-accent-emerald flex-shrink-0 mt-0.5" />
+                            <span className="text-gray-700 text-xs">{feature}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
 
-                    <div className="mb-6 p-4 bg-gray-50 rounded-xl">
-                      <div className="text-xs font-semibold text-gray-600 mb-1">
-                        {language === 'sv' ? 'Idealisk för:' : 'Ideal for:'}
+                    <div className="mb-6 p-4 bg-gradient-to-br from-primary-50 to-accent-cyan/10 rounded-xl border border-primary-100">
+                      <div className="text-xs font-semibold text-primary-900 uppercase tracking-wide mb-3">
+                        {language === 'sv' ? 'Månadsavgift inkluderar' : 'Monthly Fee Includes'}
+                      </div>
+                      <ul className="space-y-2">
+                        {pkg.monthlyIncludes.map((feature, idx) => (
+                          <li key={idx} className="flex items-start gap-2">
+                            <CheckCircle className="h-4 w-4 text-primary-600 flex-shrink-0 mt-0.5" />
+                            <span className="text-gray-700 text-xs">{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="mb-6">
+                      <div className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">
+                        {language === 'sv' ? 'Idealisk för' : 'Ideal for'}
                       </div>
                       <div className="text-sm text-gray-900">{pkg.ideal}</div>
                     </div>
 
                     <Link
-                      to="/contact"
-                      className={`block w-full text-center px-6 py-4 rounded-xl font-semibold transition-all ${
-                        pkg.popular
+                      to={pkg.ctaType === 'outline' ? '/contact' : '/contact'}
+                      className={`block w-full text-center px-6 py-3 rounded-xl font-semibold transition-all text-sm ${
+                        pkg.ctaType === 'gradient'
                           ? 'bg-gradient-to-r from-primary-600 to-accent-cyan text-white hover:shadow-glow'
-                          : 'bg-gray-900 text-white hover:bg-gray-800'
+                          : pkg.ctaType === 'dark'
+                          ? 'bg-gray-900 text-white hover:bg-gray-800'
+                          : pkg.ctaType === 'outline'
+                          ? 'border-2 border-gray-300 text-gray-700 hover:border-primary-600 hover:text-primary-600'
+                          : 'bg-primary-600 text-white hover:bg-primary-700'
                       }`}
                     >
                       {pkg.cta}
-                      <ArrowRight className="inline-block ml-2 h-5 w-5" />
+                      <ArrowRight className="inline-block ml-2 h-4 w-4" />
                     </Link>
                   </div>
                 </div>
@@ -967,77 +1195,102 @@ const StrategicWebsitesPage = () => {
             <div className="grid md:grid-cols-3 gap-6 mb-12">
               <div className="bg-white rounded-2xl p-8 shadow-soft border border-gray-200 hover:border-primary-600 transition-all">
                 <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center text-primary-600 mb-4">
-                  <Calendar className="h-6 w-6" />
+                  <CreditCard className="h-6 w-6" />
                 </div>
                 <h3 className="font-heading text-xl font-bold text-gray-900 mb-2">
-                  {language === 'sv' ? 'Boka Möte' : 'Book Meeting'}
+                  {language === 'sv' ? 'Foundation' : 'Foundation'}
                 </h3>
-                <p className="text-gray-600 mb-6 text-sm">
+                <p className="text-gray-600 mb-2 text-sm">
                   {language === 'sv'
-                    ? 'Välj Foundation eller Growth-paketet och boka ett strategimöte för att komma igång.'
-                    : 'Choose Foundation or Growth package and book a strategy meeting to get started.'}
+                    ? 'Kom igång direkt med låg startkostnad.'
+                    : 'Get started immediately with low setup cost.'}
                 </p>
+                <div className="mb-6">
+                  <div className="text-2xl font-black text-gray-900">{language === 'sv' ? '29 000 kr' : '€2,900'}</div>
+                  <div className="text-sm text-gray-500">{language === 'sv' ? '+ 1 990 kr/mån' : '+ €190/mo'}</div>
+                </div>
                 <Link
                   to="/contact"
-                  className="block w-full text-center px-6 py-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all font-semibold"
+                  className="block w-full text-center px-6 py-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all font-semibold text-sm"
                 >
-                  {language === 'sv' ? 'Välj Paket' : 'Choose Package'}
+                  {language === 'sv' ? 'Köp Foundation' : 'Buy Foundation'}
                   <ArrowRight className="inline-block ml-2 h-4 w-4" />
                 </Link>
               </div>
 
               <div className="bg-gradient-to-br from-primary-600 to-accent-cyan rounded-2xl p-8 shadow-glow text-white transform lg:-mt-2">
                 <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-4">
-                  <Rocket className="h-6 w-6" />
+                  <Star className="h-6 w-6" />
+                </div>
+                <div className="absolute top-4 right-4">
+                  <div className="bg-white/20 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                    {language === 'sv' ? 'Populärast' : 'Most Popular'}
+                  </div>
                 </div>
                 <h3 className="font-heading text-xl font-bold mb-2">
-                  {language === 'sv' ? 'Begär Offert' : 'Request Quote'}
+                  {language === 'sv' ? 'Growth' : 'Growth'}
                 </h3>
-                <p className="text-white/90 mb-6 text-sm">
+                <p className="text-white/90 mb-2 text-sm">
                   {language === 'sv'
-                    ? 'Enterprise-projekt, webbshop eller skräddarsydda lösningar? Vi skickar en detaljerad offert.'
-                    : 'Enterprise project, webshop or custom solutions? We\'ll send a detailed quote.'}
+                    ? 'Bästa balansen mellan investering och värde.'
+                    : 'Best balance between investment and value.'}
                 </p>
+                <div className="mb-6">
+                  <div className="text-2xl font-black">{language === 'sv' ? '59 000 kr' : '€5,900'}</div>
+                  <div className="text-sm text-white/80">{language === 'sv' ? '+ 3 990 kr/mån' : '+ €390/mo'}</div>
+                </div>
                 <Link
                   to="/contact"
-                  className="block w-full text-center px-6 py-3 bg-white text-primary-600 rounded-xl hover:shadow-xl transition-all font-semibold"
+                  className="block w-full text-center px-6 py-3 bg-white text-primary-600 rounded-xl hover:shadow-xl transition-all font-semibold text-sm"
                 >
-                  {language === 'sv' ? 'Begär Offert' : 'Request Quote'}
+                  {language === 'sv' ? 'Köp Growth' : 'Buy Growth'}
                   <ArrowRight className="inline-block ml-2 h-4 w-4" />
                 </Link>
               </div>
 
               <div className="bg-white rounded-2xl p-8 shadow-soft border border-gray-200 hover:border-primary-600 transition-all">
-                <div className="w-12 h-12 bg-accent-cyan/10 rounded-xl flex items-center justify-center text-accent-cyan mb-4">
-                  <Sparkles className="h-6 w-6" />
+                <div className="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center text-white mb-4">
+                  <Rocket className="h-6 w-6" />
                 </div>
                 <h3 className="font-heading text-xl font-bold text-gray-900 mb-2">
-                  {language === 'sv' ? 'Gratis Analys' : 'Free Analysis'}
+                  {language === 'sv' ? 'Scale' : 'Scale'}
                 </h3>
-                <p className="text-gray-600 mb-6 text-sm">
+                <p className="text-gray-600 mb-2 text-sm">
                   {language === 'sv'
-                    ? 'Osäker på vad ni behöver? Boka en kostnadsfri digital analys och strategisession.'
-                    : 'Unsure what you need? Book a free digital analysis and strategy session.'}
+                    ? 'För bolag som vill skala på allvar.'
+                    : 'For companies serious about scaling.'}
                 </p>
+                <div className="mb-6">
+                  <div className="text-2xl font-black text-gray-900">{language === 'sv' ? '99 000 kr' : '€9,900'}</div>
+                  <div className="text-sm text-gray-500">{language === 'sv' ? '+ 6 990 kr/mån' : '+ €690/mo'}</div>
+                </div>
                 <Link
-                  to="/audit"
-                  className="block w-full text-center px-6 py-3 border-2 border-gray-900 text-gray-900 rounded-xl hover:bg-gray-900 hover:text-white transition-all font-semibold"
+                  to="/contact"
+                  className="block w-full text-center px-6 py-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all font-semibold text-sm"
                 >
-                  {language === 'sv' ? 'Boka Analys' : 'Book Analysis'}
+                  {language === 'sv' ? 'Köp Scale' : 'Buy Scale'}
                   <ArrowRight className="inline-block ml-2 h-4 w-4" />
                 </Link>
               </div>
             </div>
 
-            <div className="bg-gray-50 rounded-2xl p-8 text-center">
-              <p className="text-gray-700 mb-2">
-                {language === 'sv' ? 'Har du frågor?' : 'Have questions?'}
+            <div className="bg-gradient-to-r from-gray-50 to-primary-50 rounded-2xl p-8 text-center border border-gray-200">
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <Shield className="h-5 w-5 text-primary-600" />
+                <p className="text-gray-900 font-semibold">
+                  {language === 'sv' ? 'Säker betalning via Stripe' : 'Secure Payment via Stripe'}
+                </p>
+              </div>
+              <p className="text-gray-600 text-sm mb-4">
+                {language === 'sv'
+                  ? 'Alla betalningar hanteras säkert via Stripe. Vi accepterar kort, Apple Pay och Google Pay. Du äger din webbplats från dag ett.'
+                  : 'All payments handled securely via Stripe. We accept cards, Apple Pay and Google Pay. You own your website from day one.'}
               </p>
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 text-primary-600 hover:text-accent-cyan font-semibold transition-colors"
+                className="inline-flex items-center gap-2 text-primary-600 hover:text-accent-cyan font-semibold transition-colors text-sm"
               >
-                {language === 'sv' ? 'Kontakta oss direkt' : 'Contact us directly'}
+                {language === 'sv' ? 'Behöver du Enterprise eller webbshop? Begär offert' : 'Need Enterprise or webshop? Request quote'}
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
