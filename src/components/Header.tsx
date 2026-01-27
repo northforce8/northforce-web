@@ -9,6 +9,7 @@ const Header = () => {
   const location = useLocation();
   const { language, setLanguage, t } = useLanguage();
   const headerRef = useRef<HTMLDivElement>(null);
+  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const navigation = [
     {
@@ -92,6 +93,31 @@ const Header = () => {
     setOpenDropdown(openDropdown === name ? null : name);
   };
 
+  const handleMouseEnter = (name: string) => {
+    // Clear any pending close timeout
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+    setOpenDropdown(name);
+  };
+
+  const handleMouseLeave = () => {
+    // Delay closing to allow mouse movement to dropdown
+    closeTimeoutRef.current = setTimeout(() => {
+      setOpenDropdown(null);
+    }, 150);
+  };
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (closeTimeoutRef.current) {
+        clearTimeout(closeTimeoutRef.current);
+      }
+    };
+  }, []);
+
   return (
     <header ref={headerRef} className="bg-white/95 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50 shadow-soft">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -115,8 +141,8 @@ const Header = () => {
                 <div
                   key={item.name}
                   className="relative"
-                  onMouseEnter={() => setOpenDropdown(item.name)}
-                  onMouseLeave={() => setOpenDropdown(null)}
+                  onMouseEnter={() => handleMouseEnter(item.name)}
+                  onMouseLeave={handleMouseLeave}
                 >
                   <button
                     onClick={() => toggleDropdown(item.name)}
@@ -141,7 +167,12 @@ const Header = () => {
                               ? 'text-primary-600 bg-primary-50'
                               : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50'
                           }`}
-                          onClick={() => setOpenDropdown(null)}
+                          onClick={() => {
+                            if (closeTimeoutRef.current) {
+                              clearTimeout(closeTimeoutRef.current);
+                            }
+                            setOpenDropdown(null);
+                          }}
                         >
                           {subItem.name}
                         </Link>
