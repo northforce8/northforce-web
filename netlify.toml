@@ -3,7 +3,7 @@ command = "npx vite build"
 publish = "dist"
 
 [build.environment]
-NODE_VERSION = "18"
+NODE_VERSION = "20"
 NPM_FLAGS = "--legacy-peer-deps"
 VITE_SUPABASE_URL = "https://acafwflefwgdodpskfkm.supabase.co"
 VITE_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFjYWZ3ZmxlZndnZG9kcHNrZmttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzOTM4MzAsImV4cCI6MjA3NDk2OTgzMH0.jgRCUbbadkgXB_CCKIX7DDasy59iJ0HmK4CMZcbzy30"
