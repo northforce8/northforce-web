@@ -1,14 +1,11 @@
 import React from 'react';
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import Analytics from './components/Analytics';
 import Breadcrumbs from './components/Breadcrumbs';
 import CookieBanner from './components/CookieBanner';
-import AdminErrorBoundary from './components/admin/AdminErrorBoundary';
-import AdminLayout from './components/admin/AdminLayout';
-import { ADMIN_ROUTES, isAdminRoute } from './lib/admin-routes';
 import { ToastProvider } from './contexts/ToastContext';
 
 // Public Pages
@@ -36,224 +33,45 @@ import TokensPage from './pages/TokensPage';
 import StrategicWebsitesPage from './pages/StrategicWebsitesPage';
 import BusinessDataPage from './pages/BusinessDataPage';
 
-// Admin Pages
-import AdminLogin from './pages/admin/AdminLogin';
-import { SetupWizard } from './pages/admin/SetupWizard';
-import PasswordResetPage from './pages/admin/PasswordResetPage';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import LeadDetailPage from './pages/admin/LeadDetailPage';
-import AdminHealthPage from './pages/admin/AdminHealthPage';
-import PartnerDashboard from './pages/admin/partner-portal/PartnerDashboard';
-import EnterpriseDashboard from './pages/admin/partner-portal/EnterpriseDashboard';
-import EnterprisePlansPage from './pages/admin/partner-portal/EnterprisePlansPage';
-import CreditsDashboardPage from './pages/admin/partner-portal/CreditsDashboardPage';
-import PartnersPageAdmin from './pages/admin/partner-portal/PartnersPage';
-import PartnerDetailPage from './pages/admin/partner-portal/PartnerDetailPage';
-import CapacityOverviewPage from './pages/admin/partner-portal/CapacityOverviewPage';
-import PlanningPage from './pages/admin/partner-portal/PlanningPage';
-import PartnerManagementPage from './pages/admin/partner-portal/PartnerManagementPage';
-import CustomersPage from './pages/admin/partner-portal/CustomersPage';
-import CustomerDetailPage from './pages/admin/partner-portal/CustomerDetailPage';
-import ProjectsPage from './pages/admin/partner-portal/ProjectsPage';
-import TimeReportingPage from './pages/admin/partner-portal/TimeReportingPage';
-import NotesPage from './pages/admin/partner-portal/NotesPage';
-import ReportsPage from './pages/admin/partner-portal/ReportsPage';
-import SupportPage from './pages/admin/partner-portal/SupportPage';
-import SettingsPage from './pages/admin/partner-portal/SettingsPage';
-import InvoicesPage from './pages/admin/partner-portal/InvoicesPage';
-import InvoiceDetailPage from './pages/admin/partner-portal/InvoiceDetailPage';
-import ContractsPage from './pages/admin/partner-portal/ContractsPage';
-import ContractDetailPage from './pages/admin/partner-portal/ContractDetailPage';
-import BillingPeriodsPage from './pages/admin/partner-portal/BillingPeriodsPage';
-import MarginAnalysisPage from './pages/admin/partner-portal/MarginAnalysisPage';
-import LeadManagementPage from './pages/admin/partner-portal/LeadManagementPage';
-import HelpCenterPage from './pages/admin/HelpCenterPage';
-import GrowthPlansPage from './pages/admin/partner-portal/GrowthPlansPage';
-import GrowthPlanDetailPage from './pages/admin/partner-portal/GrowthPlanDetailPage';
-import LeadershipAssessmentsPage from './pages/admin/partner-portal/LeadershipAssessmentsPage';
-import MarketingCampaignsPage from './pages/admin/partner-portal/MarketingCampaignsPage';
-import BusinessModelsPage from './pages/admin/partner-portal/BusinessModelsPage';
-import BestPracticesPage from './pages/admin/partner-portal/BestPracticesPage';
-import MethodologyTemplatesPage from './pages/admin/partner-portal/MethodologyTemplatesPage';
-
-// Strategic Frameworks Pages
-import StrategicFrameworksOverviewPage from './pages/admin/partner-portal/StrategicFrameworksOverviewPage';
-import OKRPage from './pages/admin/partner-portal/OKRPage';
-import OKRDetailPage from './pages/admin/partner-portal/OKRDetailPage';
-import SWOTPage from './pages/admin/partner-portal/SWOTPage';
-import SWOTDetailPage from './pages/admin/partner-portal/SWOTDetailPage';
-import PorterPage from './pages/admin/partner-portal/PorterPage';
-import PorterDetailPage from './pages/admin/partner-portal/PorterDetailPage';
-import BMCPage from './pages/admin/partner-portal/BMCPage';
-import BMCDetailPage from './pages/admin/partner-portal/BMCDetailPage';
-import BSCPage from './pages/admin/partner-portal/BSCPage';
-import BSCDetailPage from './pages/admin/partner-portal/BSCDetailPage';
-import ADKARPage from './pages/admin/partner-portal/ADKARPage';
-import ADKARDetailPage from './pages/admin/partner-portal/ADKARDetailPage';
-import AgilePage from './pages/admin/partner-portal/AgilePage';
-import AgileDetailPage from './pages/admin/partner-portal/AgileDetailPage';
-import McKinsey7SPage from './pages/admin/partner-portal/McKinsey7SPage';
-import McKinsey7SDetailPage from './pages/admin/partner-portal/McKinsey7SDetailPage';
-import LeanStartupPage from './pages/admin/partner-portal/LeanStartupPage';
-import LeanStartupDetailPage from './pages/admin/partner-portal/LeanStartupDetailPage';
-import DesignThinkingPage from './pages/admin/partner-portal/DesignThinkingPage';
-import DesignThinkingDetailPage from './pages/admin/partner-portal/DesignThinkingDetailPage';
-
-// Customer Portal Pages
-import CustomerLogin from './pages/customer/CustomerLogin';
-import CustomerLayout from './components/customer/CustomerLayout';
-import CustomerPortalDashboard from './pages/customer/CustomerPortalDashboard';
-import CustomerActivityPage from './pages/customer/CustomerActivityPage';
-import CustomerDocumentsPage from './pages/customer/CustomerDocumentsPage';
-import CustomerHelpPage from './pages/customer/CustomerHelpPage';
-import CustomerGrowthJourneyPage from './pages/customer/CustomerGrowthJourneyPage';
-import CustomerLeadershipPage from './pages/customer/CustomerLeadershipPage';
-import CustomerCampaignsPage from './pages/customer/CustomerCampaignsPage';
-import CustomerBusinessHealthPage from './pages/customer/CustomerBusinessHealthPage';
-
 function App() {
-  const location = useLocation();
-  const isAdmin = isAdminRoute(location.pathname);
-
   return (
     <ToastProvider>
       <div className="App">
         <Analytics />
         <ScrollToTop />
-        {!isAdmin && <Header />}
-        {!isAdmin && <Breadcrumbs />}
+        <Header />
+        <Breadcrumbs />
 
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<HomePage />} />
-        <Route path="/hybrid-model" element={<HybridModelPage />} />
-        <Route path="/system" element={<SystemOnlyPage />} />
-        <Route path="/ai-automation" element={<AIAutomationPage />} />
-        <Route path="/capabilities" element={<CapabilitiesPage />} />
-        <Route path="/industries" element={<IndustriesPage />} />
-        <Route path="/impact" element={<ImpactPage />} />
-        <Route path="/insights" element={<InsightsPage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/careers" element={<CareersPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/audit" element={<AuditPage />} />
-        <Route path="/legal" element={<LegalPage />} />
-        <Route path="/partners" element={<PartnersPage />} />
-        <Route path="/systems" element={<SystemsPage />} />
-        <Route path="/services" element={<ServicesPage />} />
-        <Route path="/solutions" element={<SolutionsPage />} />
-        <Route path="/cmo-plus-system" element={<CMOPlusSystemPage />} />
-        <Route path="/method" element={<MethodPage />} />
-        <Route path="/proof" element={<ImpactPage />} />
-        <Route path="/pricing" element={<PricingPage />} />
-        <Route path="/tokens" element={<TokensPage />} />
-        <Route path="/strategic-websites" element={<StrategicWebsitesPage />} />
-        <Route path="/business-data" element={<BusinessDataPage />} />
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/hybrid-model" element={<HybridModelPage />} />
+          <Route path="/system" element={<SystemOnlyPage />} />
+          <Route path="/ai-automation" element={<AIAutomationPage />} />
+          <Route path="/capabilities" element={<CapabilitiesPage />} />
+          <Route path="/industries" element={<IndustriesPage />} />
+          <Route path="/impact" element={<ImpactPage />} />
+          <Route path="/insights" element={<InsightsPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/careers" element={<CareersPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/audit" element={<AuditPage />} />
+          <Route path="/legal" element={<LegalPage />} />
+          <Route path="/partners" element={<PartnersPage />} />
+          <Route path="/systems" element={<SystemsPage />} />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/solutions" element={<SolutionsPage />} />
+          <Route path="/cmo-plus-system" element={<CMOPlusSystemPage />} />
+          <Route path="/method" element={<MethodPage />} />
+          <Route path="/proof" element={<ImpactPage />} />
+          <Route path="/pricing" element={<PricingPage />} />
+          <Route path="/tokens" element={<TokensPage />} />
+          <Route path="/strategic-websites" element={<StrategicWebsitesPage />} />
+          <Route path="/business-data" element={<BusinessDataPage />} />
+        </Routes>
 
-        {/* Admin Login & Setup (outside AdminLayout) */}
-        <Route path={ADMIN_ROUTES.LOGIN} element={<AdminLogin />} />
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/setup" element={<SetupWizard />} />
-        <Route path="/admin/password-reset" element={<PasswordResetPage />} />
-
-        {/* Standard Admin Redirects */}
-        <Route path="/admin" element={<Navigate to={ADMIN_ROUTES.LOGIN} replace />} />
-        <Route path="/admin-portal" element={<Navigate to="/admin/partner-portal" replace />} />
-
-        {/* Legacy Redirects - Backwards compatibility */}
-        <Route path={ADMIN_ROUTES.LEGACY_LEAD_DASHBOARD} element={<Navigate to={ADMIN_ROUTES.LEADS} replace />} />
-        <Route path="/admin-northforce/lead/:type/:id" element={<Navigate to="/admin/partner-portal/leads/:type/:id" replace />} />
-
-        {/* ALL ADMIN ROUTES UNDER ONE PARENT WITH ADMINLAYOUT */}
-        <Route path={ADMIN_ROUTES.BASE} element={
-          <AdminErrorBoundary>
-            <AdminLayout />
-          </AdminErrorBoundary>
-        }>
-          {/* Index route - Dashboard */}
-          <Route index element={<PartnerDashboard />} />
-
-          {/* All admin pages as child routes */}
-          <Route path="leads" element={<AdminDashboard />} />
-          <Route path="leads/:type/:id" element={<LeadDetailPage />} />
-          <Route path="enterprise" element={<EnterpriseDashboard />} />
-          <Route path="enterprise-plans" element={<EnterprisePlansPage />} />
-          <Route path="credits" element={<CreditsDashboardPage />} />
-          <Route path="partners" element={<PartnersPageAdmin />} />
-          <Route path="partners/:id" element={<PartnerDetailPage />} />
-          <Route path="capacity" element={<CapacityOverviewPage />} />
-          <Route path="planning" element={<PlanningPage />} />
-          <Route path="partner-management" element={<PartnerManagementPage />} />
-          <Route path="customers" element={<CustomersPage />} />
-          <Route path="customers/:customerId" element={<CustomerDetailPage />} />
-          <Route path="projects" element={<ProjectsPage />} />
-          <Route path="time" element={<TimeReportingPage />} />
-          <Route path="invoices" element={<InvoicesPage />} />
-          <Route path="invoices/:invoiceId" element={<InvoiceDetailPage />} />
-          <Route path="contracts" element={<ContractsPage />} />
-          <Route path="contracts/:contractId" element={<ContractDetailPage />} />
-          <Route path="notes" element={<NotesPage />} />
-          <Route path="reports" element={<ReportsPage />} />
-          <Route path="support" element={<SupportPage />} />
-          <Route path="billing-periods" element={<BillingPeriodsPage />} />
-          <Route path="margin-analysis" element={<MarginAnalysisPage />} />
-          <Route path="leads-management" element={<LeadManagementPage />} />
-          <Route path="growth-plans" element={<GrowthPlansPage />} />
-          <Route path="growth-plans/:planId" element={<GrowthPlanDetailPage />} />
-          <Route path="leadership-assessments" element={<LeadershipAssessmentsPage />} />
-          <Route path="marketing-campaigns" element={<MarketingCampaignsPage />} />
-          <Route path="business-models" element={<BusinessModelsPage />} />
-          <Route path="best-practices" element={<BestPracticesPage />} />
-          <Route path="methodology-templates" element={<MethodologyTemplatesPage />} />
-
-          {/* Strategic Frameworks */}
-          <Route path="strategic-frameworks" element={<StrategicFrameworksOverviewPage />} />
-          <Route path="strategic-frameworks/okr" element={<OKRPage />} />
-          <Route path="strategic-frameworks/okr/:id" element={<OKRDetailPage />} />
-          <Route path="strategic-frameworks/swot" element={<SWOTPage />} />
-          <Route path="strategic-frameworks/swot/:id" element={<SWOTDetailPage />} />
-          <Route path="strategic-frameworks/porter" element={<PorterPage />} />
-          <Route path="strategic-frameworks/porter/:id" element={<PorterDetailPage />} />
-          <Route path="strategic-frameworks/bmc" element={<BMCPage />} />
-          <Route path="strategic-frameworks/bmc/:id" element={<BMCDetailPage />} />
-          <Route path="strategic-frameworks/bsc" element={<BSCPage />} />
-          <Route path="strategic-frameworks/bsc/:id" element={<BSCDetailPage />} />
-          <Route path="strategic-frameworks/adkar" element={<ADKARPage />} />
-          <Route path="strategic-frameworks/adkar/:id" element={<ADKARDetailPage />} />
-          <Route path="strategic-frameworks/agile" element={<AgilePage />} />
-          <Route path="strategic-frameworks/agile/:id" element={<AgileDetailPage />} />
-          <Route path="strategic-frameworks/mckinsey-7s" element={<McKinsey7SPage />} />
-          <Route path="strategic-frameworks/mckinsey-7s/:id" element={<McKinsey7SDetailPage />} />
-          <Route path="strategic-frameworks/lean-startup" element={<LeanStartupPage />} />
-          <Route path="strategic-frameworks/lean-startup/:id" element={<LeanStartupDetailPage />} />
-          <Route path="strategic-frameworks/design-thinking" element={<DesignThinkingPage />} />
-          <Route path="strategic-frameworks/design-thinking/:id" element={<DesignThinkingDetailPage />} />
-
-          <Route path="settings" element={<SettingsPage />} />
-          <Route path="health" element={<AdminHealthPage />} />
-          <Route path="help" element={<HelpCenterPage />} />
-        </Route>
-
-        {/* Customer Portal Routes - Under Admin */}
-        <Route path="/admin/customer/login" element={<CustomerLogin />} />
-        <Route path="/admin/customer/portal" element={<CustomerLayout />}>
-          <Route index element={<CustomerPortalDashboard />} />
-          <Route path="activity" element={<CustomerActivityPage />} />
-          <Route path="documents" element={<CustomerDocumentsPage />} />
-          <Route path="growth" element={<CustomerGrowthJourneyPage />} />
-          <Route path="leadership" element={<CustomerLeadershipPage />} />
-          <Route path="campaigns" element={<CustomerCampaignsPage />} />
-          <Route path="business-health" element={<CustomerBusinessHealthPage />} />
-          <Route path="help" element={<CustomerHelpPage />} />
-        </Route>
-
-        {/* Legacy Customer Portal Redirects */}
-        <Route path="/customer/login" element={<Navigate to="/admin/customer/login" replace />} />
-        <Route path="/customer/portal" element={<Navigate to="/admin/customer/portal" replace />} />
-      </Routes>
-
-        {!isAdmin && <Footer />}
-        {!isAdmin && <CookieBanner />}
+        <Footer />
+        <CookieBanner />
       </div>
     </ToastProvider>
   );
