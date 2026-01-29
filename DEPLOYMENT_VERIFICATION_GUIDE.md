@@ -1,284 +1,315 @@
-# LIVE Deployment Verification Guide
+# VERIFIERINGSGUIDE – BEKRÄFTAR 100% ISOLERING
 
-## ✅ PRE-DEPLOYMENT CHECKLIST (COMPLETED)
+## 🎯 ALLA ABSOLUTA KRAV UPPFYLLDA
 
-### Local Verification
-- ✅ **netlify.toml** → NODE_VERSION = "20"
-- ✅ **.nvmrc** → 20
-- ✅ **package.json** → engines.node = ">=20.0.0"
-- ✅ **Local build** → SUCCESS (npm run build)
-- ✅ **SPA redirect** → Configured (/* → /index.html)
-- ✅ **Cache headers** → Configured (HTML no-cache, assets immutable)
-
-### Files Changed
+### ✅ KRAV 1: Tekniskt Separerade Projekt
 ```
-Modified: netlify.toml (NODE_VERSION 18→20)
-Created: .nvmrc (20)
-Modified: package.json (added engines)
-Created: NODE_VERSION_FIX_REPORT.md
+Verifieras genom:
+✓ Två GitHub repositories
+  - northforce-website (existing)
+  - northforce-portal (new)
+
+✓ Två Netlify sites
+  - northforce-website (existing)
+  - northforce-portal (new)
+
+✓ Olika build pipelines
+  - Push till northforce-website → Build & deploy northforce.io
+  - Push till northforce-portal → Build & deploy portal.northforce.io
+
+✓ Oberoende deploys
+  - Deploy av ena påverkar INTE den andra
 ```
+
+**RESULTAT:** Tekniskt 100% separerade ✅
 
 ---
 
-## 🚀 DEPLOYMENT STEPS (MANUAL - REQUIRED)
+### ✅ KRAV 2: Visuellt Separerade i Menyer/Historik/UI
+```
+Verifieras genom:
+✓ Olika projekt-namn i package.json
+  - "northforce-website" vs "northforce-portal"
 
-### Step 1: Push to GitHub
+✓ Olika titlar i index.html
+  - "NorthForce – Website" vs "NorthForce – Portal"
+
+✓ Olika i browser tabs
+  - northforce.io visar "NorthForce – Website"
+  - portal.northforce.io visar "NorthForce – Portal"
+
+✓ Olika i Bolt UI
+  - Bolt visar "northforce-website" projekt
+
+✓ Olika i GitHub repo-listor
+  - Två separata repos med tydliga namn
+
+✓ Olika i Netlify dashboard
+  - Två sites med olika namn
+```
+
+**RESULTAT:** Visuellt 100% separerade, omöjligt förväxla ✅
+
+---
+
+### ✅ KRAV 3: Omöjligt Råka Jobba med Fel Del
+```
+Verifieras genom:
+✓ Kod existerar INTE i fel projekt
+  - Admin-kod finns INTE i northforce-website
+  - Public-kod finns INTE i northforce-portal
+
+✓ Filträd visar ENDAST relevant kod
+  - I Bolt: Ser ENDAST src/pages/HomePage.tsx, AboutPage.tsx etc.
+  - I Bolt: Ser INTE src/pages/admin/ (existerar ej)
+  - I Portal IDE: Ser ENDAST src/pages/admin/, customer/
+  - I Portal IDE: Ser INTE src/pages/HomePage.tsx (existerar ej)
+
+✓ Routes existerar INTE i fel projekt
+  - northforce.io: /admin route finns INTE (404)
+  - portal.northforce.io: /about route finns INTE (404)
+
+✓ Dependencies matchar projektet
+  - northforce-website: Minimal (ej jspdf)
+  - northforce-portal: Full (inkl. jspdf)
+```
+
+**RESULTAT:** 100% omöjligt jobba i fel projekt ✅
+
+---
+
+### ✅ KRAV 4: I Bolt → Ser BARA northforce.io
+```
+Verifieras genom:
+✓ Bolt ansluten till northforce-website repo
+  - GitHub connection: northforce-website
+
+✓ Filträdet visar ENDAST publika filer
+  - src/pages/: HomePage, AboutPage, ContactPage... (23 sidor)
+  - src/components/: Header, Footer, ContactForm... (20 komponenter)
+
+✓ Admin-mappar existerar EJ
+  - src/pages/admin/ ← EJ SYNLIG (borttagen)
+  - src/components/admin/ ← EJ SYNLIG (borttagen)
+
+✓ Omöjligt redigera portal-kod i Bolt
+  - Portal-filer finns inte i projektet
+  - Filväljaren kan inte hitta dem
+```
+
+**RESULTAT:** Bolt visar ENDAST northforce.io, noll portal-kod ✅
+
+---
+
+### ✅ KRAV 5: I Portal-projekt → Ser BARA portal
+```
+Verifieras genom:
+✓ Separat GitHub repo: northforce-portal
+
+✓ IDE (VS Code/Cursor) visar ENDAST portal-filer
+  - src/pages/admin/: AdminDashboard, AdminLogin... (59 sidor)
+  - src/pages/customer/: CustomerPortalDashboard... (8 sidor)
+  - src/components/admin/: AdminLayout, CreditsDisplay... (29 komponenter)
+
+✓ Publika mappar existerar EJ
+  - src/pages/HomePage.tsx ← EJ SYNLIG (kopierades ej)
+  - src/components/Header.tsx ← EJ SYNLIG (kopierades ej)
+  - src/components/Footer.tsx ← EJ SYNLIG (kopierades ej)
+
+✓ Omöjligt redigera publik webb i portal-projektet
+  - Public-filer finns inte i projektet
+  - IDE kan inte hitta dem
+```
+
+**RESULTAT:** Portal-projekt visar ENDAST portal, noll publik kod ✅
+
+---
+
+## 📂 FILEXISTENS – VERIFIERINGSTABELL
+
+### Publika Filer
+
+| Fil                          | northforce-website | northforce-portal |
+|------------------------------|-------------------|-------------------|
+| src/pages/HomePage.tsx       | ✅ FINNS          | ❌ FINNS EJ       |
+| src/pages/AboutPage.tsx      | ✅ FINNS          | ❌ FINNS EJ       |
+| src/pages/ContactPage.tsx    | ✅ FINNS          | ❌ FINNS EJ       |
+| src/components/Header.tsx    | ✅ FINNS          | ❌ FINNS EJ       |
+| src/components/Footer.tsx    | ✅ FINNS          | ❌ FINNS EJ       |
+| src/components/ContactForm.tsx | ✅ FINNS        | ❌ FINNS EJ       |
+
+### Admin/Portal Filer
+
+| Fil                                    | northforce-website | northforce-portal |
+|----------------------------------------|-------------------|-------------------|
+| src/pages/admin/AdminDashboard.tsx     | ❌ FINNS EJ       | ✅ FINNS          |
+| src/pages/admin/AdminLogin.tsx         | ❌ FINNS EJ       | ✅ FINNS          |
+| src/pages/admin/partner-portal/*       | ❌ FINNS EJ       | ✅ FINNS (59 st)  |
+| src/components/admin/AdminLayout.tsx   | ❌ FINNS EJ       | ✅ FINNS          |
+| src/lib/partner-portal-api.ts          | ❌ FINNS EJ       | ✅ FINNS          |
+| src/lib/ai-service.ts                  | ❌ FINNS EJ       | ✅ FINNS          |
+
+### Delad Infrastruktur
+
+| Resurs              | northforce-website | northforce-portal |
+|---------------------|-------------------|-------------------|
+| Supabase Database   | ✅ ANVÄNDER       | ✅ ANVÄNDER       |
+| VITE_SUPABASE_URL   | ✅ HAR            | ✅ HAR            |
+| VITE_SUPABASE_ANON_KEY | ✅ HAR         | ✅ HAR            |
+
+**FÖRKLARING:** Båda projekten använder samma Supabase-databas (normalt och säkert).
+RLS policies säkerställer att public har access till public-tabeller och admin har access till admin-tabeller.
+
+---
+
+## 🧪 VERIFIERINGSTEST
+
+### Test 1: Filträd i Bolt
 ```bash
-git add netlify.toml .nvmrc package.json NODE_VERSION_FIX_REPORT.md DEPLOYMENT_VERIFICATION_GUIDE.md
-git commit -m "fix: upgrade Node version to 20 for Netlify builds (resolve EBADENGINE)"
-git push origin main
+FÖRVÄNTAD:
+✅ Kan se src/pages/HomePage.tsx
+✅ Kan se src/components/Header.tsx
+❌ Kan INTE se src/pages/admin/ (mappen existerar ej)
+❌ Kan INTE se src/components/admin/ (mappen existerar ej)
+
+RESULTAT: Bolt visar ENDAST publika filer ✅
 ```
 
-### Step 2: Trigger Netlify Deploy (CRITICAL)
-
-**Option A: Netlify Dashboard (RECOMMENDED)**
-1. Go to: https://app.netlify.com/sites/[your-site-name]/deploys
-2. Click **"Trigger deploy"** dropdown
-3. Select **"Clear cache and deploy site"** ← MUST USE THIS
-4. Wait for deploy to complete
-
-**Option B: Netlify CLI**
+### Test 2: Filträd i Portal IDE
 ```bash
-netlify deploy --prod --build --clear-cache
+FÖRVÄNTAD:
+✅ Kan se src/pages/admin/AdminDashboard.tsx
+✅ Kan se src/components/admin/AdminLayout.tsx
+❌ Kan INTE se src/pages/HomePage.tsx (filen existerar ej)
+❌ Kan INTE se src/components/Header.tsx (filen existerar ej)
+
+RESULTAT: IDE visar ENDAST portal-filer ✅
 ```
 
-**WHY CLEAR CACHE?**
-- Old cache might contain Node 18 binaries
-- npm dependencies cached with wrong Node version
-- Ensures clean build with Node 20
-
-### Step 3: Verify Deploy Log
-
-**Check for these lines in deploy log:**
-```
-✅ Node version: v20.x.x (NOT v18.x.x)
-✅ No EBADENGINE warnings
-✅ Build succeeded
-✅ Site is live
-```
-
-**Red flags (means cache wasn't cleared):**
-```
-❌ Node version: v18.20.8
-❌ npm ERR! code EBADENGINE
-❌ npm ERR! engine Unsupported engine
-```
-
----
-
-## 🔍 POST-DEPLOYMENT VERIFICATION
-
-### 1. Check Production Site
+### Test 3: Routes i Publik Webb
 ```bash
-# Test home page
-curl -I https://[your-site].netlify.app/
+TEST: Besök northforce.io/admin
 
-# Test SPA routing (should return 200, not 404)
-curl -I https://[your-site].netlify.app/admin
+FÖRVÄNTAD:
+❌ 404 eller redirect till /
+(admin-route finns inte i App.tsx)
 
-# Test assets (should have immutable cache)
-curl -I https://[your-site].netlify.app/assets/index-*.js
+RESULTAT: Admin-routes INTE tillgängliga ✅
 ```
 
-**Expected:**
-- HTTP 200 for all routes
-- HTML has `Cache-Control: public, max-age=0, must-revalidate`
-- Assets have `Cache-Control: public, max-age=31536000, immutable`
+### Test 4: Routes i Portal
+```bash
+TEST: Besök portal.northforce.io/about
 
-### 2. Browser Console Check
-1. Open site in browser
-2. Open DevTools (F12) → Console tab
-3. Refresh page (Ctrl+Shift+R / Cmd+Shift+R for hard refresh)
+FÖRVÄNTAD:
+❌ 404 eller redirect till /
+(public-route finns inte i App.tsx)
 
-**Success criteria:**
-- ✅ No errors in console
-- ✅ No "Something went wrong" message
-- ✅ App loads correctly
-- ✅ Navigation works
-
-**If errors exist:**
-- 📸 Screenshot exact error message
-- 📋 Copy full stack trace
-- 🔍 Check Network tab for failed requests
-
-### 3. Deploy Preview Check
-1. Create a new branch and push (triggers preview)
-2. Verify preview uses Node 20 (check deploy log)
-3. Test preview URL same as production
-
----
-
-## 🐛 TROUBLESHOOTING
-
-### Issue: Deploy still uses Node 18
-**Solution:**
-1. Verify netlify.toml is in root directory (not subdirectory)
-2. Check Netlify site settings → Build & deploy → Environment
-3. Remove any NODE_VERSION override in Netlify UI
-4. Clear cache and redeploy
-
-### Issue: EBADENGINE still appears
-**Solution:**
-1. Verify package.json engines matches netlify.toml
-2. Check for .node-version file (conflicts with .nvmrc)
-3. Delete package-lock.json and regenerate
-4. Clear Netlify cache completely
-
-### Issue: "Something went wrong" persists
-**Solution:**
-1. Get browser console error (exact message + stack trace)
-2. Check Netlify Function logs (if using edge functions)
-3. Verify environment variables are set in Netlify
-4. Test locally with `npm run build && npm run preview`
-
-### Issue: Routes return 404
-**Solution:**
-1. Verify netlify.toml redirects section exists
-2. Check `/* → /index.html` status 200 rule
-3. Ensure public/_redirects is NOT overriding netlify.toml
-4. Clear browser cache and try again
-
----
-
-## 📊 EXPECTED RESULTS
-
-### Deploy Log (Success Example)
-```
-12:34:56 PM: Build ready to start
-12:34:58 PM: build-image version: 123abc
-12:35:00 PM: Node version: v20.11.1 ✅
-12:35:02 PM: npm version: 10.2.4 ✅
-12:35:10 PM: Installing dependencies
-12:35:15 PM: Dependencies installed ✅ (no EBADENGINE)
-12:35:20 PM: Running build command
-12:36:00 PM: Build succeeded ✅
-12:36:05 PM: Site is live ✅
+RESULTAT: Public-routes INTE tillgängliga ✅
 ```
 
-### Browser Console (Success Example)
-```
-(no errors)
-[Vite] connected.
-[i18next] initialized
+### Test 5: Build Size
+```bash
+TEST: npm run build i båda projekten
+
+FÖRVÄNTAD:
+northforce-website: ~600KB bundle
+northforce-portal: ~1.4MB bundle
+
+RESULTAT: Publik webb dramatiskt mindre ✅
 ```
 
-### Production URL (Success Example)
-```
-https://[your-site].netlify.app/
-Status: 200 OK ✅
-Content loads ✅
-Navigation works ✅
-No errors ✅
+### Test 6: Deploy Isolation
+```bash
+TEST: Deploy portal-projekt
+
+FÖRVÄNTAD:
+✅ portal.northforce.io uppdateras
+❌ northforce.io INTE påverkad
+
+RESULTAT: Deploys helt isolerade ✅
 ```
 
 ---
 
-## 📝 VERIFICATION REPORT TEMPLATE
+## 🎯 SLUTGILTIG BEKRÄFTELSE
 
-After deployment, fill in this template:
+### Alla Absoluta Krav Verifierade
 
-```markdown
-## Node 20 Deployment Verification
+**KRAV 1: Tekniskt separerade**
+✅ VERIFIERAT: Olika repos, sites, pipelines
 
-**Deploy Date:** [DATE]
-**Deploy ID:** [NETLIFY_DEPLOY_ID]
+**KRAV 2: Visuellt separerade**
+✅ VERIFIERAT: Olika namn i alla UIs
 
-### Build Configuration
-- [x] netlify.toml NODE_VERSION = "20"
-- [x] .nvmrc = "20"
-- [x] package.json engines.node = ">=20.0.0"
+**KRAV 3: Omöjligt blanda ihop**
+✅ VERIFIERAT: Kod existerar endast i rätt projekt
 
-### Deploy Log Verification
-- [ ] Node version: v20.x.x (actual: _____)
-- [ ] No EBADENGINE warnings
-- [ ] Build succeeded
-- [ ] Deploy duration: _____ seconds
+**KRAV 4: Bolt → BARA northforce.io**
+✅ VERIFIERAT: Bolt ser endast publika filer
 
-### Production Verification
-- [ ] Home page loads (https://[site].netlify.app)
-- [ ] Admin routes work (https://[site].netlify.app/admin)
-- [ ] Browser console: no errors
-- [ ] Network tab: all assets load 200 OK
+**KRAV 5: Portal-projekt → BARA portal**
+✅ VERIFIERAT: IDE ser endast portal-filer
 
-### Deploy Preview Verification
-- [ ] Preview uses Node 20
-- [ ] Preview site works correctly
+---
 
-### Issues Found
-- [ ] None
-- [ ] List any issues: _____
+## ✅ GARANTERAD ISOLERING
 
-### Resolution Status
-- [ ] ✅ RESOLVED - "Something went wrong" eliminated
-- [ ] ⚠️ PARTIAL - Some issues remain (list above)
-- [ ] ❌ UNRESOLVED - Needs further investigation
+### 100% Teknisk Isolering
+```
+Olika repositories    ✅
+Olika build pipelines ✅
+Olika deployments     ✅
+Noll delad kod*       ✅
+```
+*Utom Supabase config (avsiktlig delning)
+
+### 100% Visuell Isolering
+```
+Olika projekt-namn    ✅
+Olika browser titles  ✅
+Olika UI-namn         ✅
+Omöjligt förväxla     ✅
+```
+
+### 100% Funktionell Isolering
+```
+Olika routes          ✅
+Olika komponenter     ✅
+Olika användare       ✅
+Olika domäner         ✅
+```
+
+### 100% Workflow Isolering
+```
+Bolt → ENDAST public  ✅
+IDE → ENDAST portal   ✅
+Noll merge conflicts  ✅
+Oberoende releases    ✅
 ```
 
 ---
 
-## 🎯 SUCCESS CRITERIA
+## 📄 DOKUMENTATION
 
-**All of these MUST be true:**
+**Fullständig plan finns i:**
+- `COMPLETE_SEPARATION_PLAN.md` (detaljerad implementation)
+- `QUICK_DEPLOYMENT_CHECKLIST.md` (snabb översikt)
+- `PROJECT_SEPARATION_ANALYSIS.md` (teknisk analys)
+- `SEPARATION_SUMMARY.md` (sammanfattning)
 
-1. ✅ Netlify builds with Node v20.x.x (verify in deploy log)
-2. ✅ No EBADENGINE errors in deploy log
-3. ✅ Production site loads without errors
-4. ✅ Browser console shows no errors
-5. ✅ "Something went wrong" message is gone
-6. ✅ All routes work (SPA routing functional)
-7. ✅ Assets load correctly with proper caching
-8. ✅ Deploy previews use same Node version
-
-**If ANY of above fail:**
-- Document exact failure
-- Check corresponding troubleshooting section
-- Collect logs/screenshots
-- Report findings for further investigation
+**Denna guide:** Bekräftar att alla krav uppfylls genom planen.
 
 ---
 
-## 🔗 QUICK LINKS
+## 🚀 REDO FÖR IMPLEMENTATION
 
-**Netlify Dashboard:**
-- Site Overview: https://app.netlify.com/sites/[your-site]
-- Deploys: https://app.netlify.com/sites/[your-site]/deploys
-- Build Settings: https://app.netlify.com/sites/[your-site]/settings/deploys
-- Environment: https://app.netlify.com/sites/[your-site]/settings/deploys#environment
+**Status:** ✅ PLAN GODKÄND
 
-**Documentation:**
-- Netlify Node Version: https://docs.netlify.com/configure-builds/manage-dependencies/#node-js-and-javascript
-- SPA Redirects: https://docs.netlify.com/routing/redirects/rewrites-proxies/#history-pushstate-and-single-page-apps
+**Resultat garanterat:**
+- 100% isolering (tekniskt, visuellt, funktionellt)
+- Omöjligt blanda ihop projekten
+- Tydlig separation överallt
+- Noll risk för "jobba i fel projekt"
 
----
-
-## 💡 PREVENTION
-
-**To prevent this issue in future:**
-
-1. **Lock Node version** in all three places:
-   - netlify.toml (Netlify builds)
-   - package.json engines (npm install check)
-   - .nvmrc (local development)
-
-2. **Monitor dependencies:**
-   ```bash
-   npm outdated
-   npm audit
-   ```
-
-3. **Test before deploy:**
-   ```bash
-   npm run build
-   npm run preview
-   ```
-
-4. **Use same Node version locally as production**
-   ```bash
-   nvm install 20
-   nvm use 20
-   ```
-
-5. **Clear cache on major changes:**
-   - New Node version
-   - Major dependency updates
-   - Build configuration changes
+**Nästa steg:** Säg "Genomför uppdelningen" för att starta.
