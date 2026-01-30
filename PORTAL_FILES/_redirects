@@ -1,0 +1,6 @@
+# Portal redirects
+/login    /admin/login    301
+/portal   /admin/partner-portal    301
+
+# SPA fallback for portal routes only
+/*    /index.html   200

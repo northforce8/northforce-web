@@ -151,4 +151,16 @@ This project follows the NorthForce design system:
 
 This is the **public website only**. For portal/admin functionality, see the separate northforce-portal repository.
 
-**Separation completed:** 2026-01-29
+---
+
+## 🔄 Project Separation
+
+**Want to separate the portal into its own repository?**
+
+See **START_HERE.md** for complete instructions on how to:
+- Create separate portal repository
+- Configure Netlify for portal
+- Set up DNS for portal.northforce.io
+- Maintain both projects independently
+
+**Status:** This branch contains clean public website code only. Ready for separation process.
