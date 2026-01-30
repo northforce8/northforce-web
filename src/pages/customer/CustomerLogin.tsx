@@ -14,17 +14,25 @@ const CustomerLogin: React.FC = () => {
 
   useEffect(() => {
     const checkUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        const { data: profile } = await supabase
-          .from('user_profiles')
-          .select('role')
-          .eq('id', session.user.id)
-          .maybeSingle();
+      try {
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        if (sessionError) throw sessionError;
 
-        if (profile?.role === 'customer') {
-          navigate('/admin/customer/portal');
+        if (session) {
+          const { data: profile, error: profileError } = await supabase
+            .from('user_profiles')
+            .select('role')
+            .eq('id', session.user.id)
+            .maybeSingle();
+
+          if (profileError) throw profileError;
+
+          if (profile?.role === 'customer') {
+            navigate('/admin/customer/portal');
+          }
         }
+      } catch (err) {
+        console.error('Error checking user session:', err);
       }
     };
     checkUser();

@@ -23,22 +23,26 @@ const AdminDashboard = () => {
   const [filterStatus, setFilterStatus] = useState<'all' | LeadStatus>('all');
   const [selectedSubmission, setSelectedSubmission] = useState<ContactSubmission | BookingSubmission | NewsletterSubmission | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [classifications, setClassifications] = useState<Map<string, any>>(new Map());
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const allSubmissions = await getAllSubmissions();
-        setSubmissions(allSubmissions);
-        setFilteredSubmissions(allSubmissions);
-      } catch (error) {
-        console.error('Error loading submissions:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const loadData = async () => {
+    setIsLoading(true);
+    setLoadError(null);
+    try {
+      const allSubmissions = await getAllSubmissions();
+      setSubmissions(allSubmissions);
+      setFilteredSubmissions(allSubmissions);
+    } catch (error) {
+      console.error('Error loading submissions:', error);
+      setLoadError(error instanceof Error ? error.message : t('errorMessages.unknownError'));
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     loadData();
   }, [navigate]);
 
@@ -183,12 +187,33 @@ const AdminDashboard = () => {
     );
   }
 
+  if (loadError) {
+    return (
+      <div className="p-6 max-w-7xl mx-auto">
+        <PageHeader
+          title={t('admin.dashboard.title')}
+          description={t('admin.dashboard.description')}
+        />
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6 mt-6">
+          <h3 className="text-lg font-semibold text-red-900 mb-2">{t('errorMessages.failedToLoad')}</h3>
+          <p className="text-red-700 mb-4">{loadError}</p>
+          <button
+            onClick={loadData}
+            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+          >
+            {t('common.retry')}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="p-6 max-w-7xl mx-auto">
         <PageHeader
-          title="Lead Management"
-          description="Enterprise-grade lead management with AI classification and customer linking"
+          title={t('admin.dashboard.title')}
+          description={t('admin.dashboard.description')}
         />
 
         {/* Stats Cards */}
@@ -197,37 +222,37 @@ const AdminDashboard = () => {
             <div className="flex items-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-primary-600"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Leads</p>
+                <p className="text-sm font-medium text-gray-600">{t('admin.dashboard.totalLeads')}</p>
                 <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white rounded-lg shadow p-6">
             <div className="flex items-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-accent-cyan"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Contact Forms</p>
+                <p className="text-sm font-medium text-gray-600">{t('admin.dashboard.contactForms')}</p>
                 <p className="text-2xl font-bold text-gray-900">{stats.contact}</p>
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white rounded-lg shadow p-6">
             <div className="flex items-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-accent-emerald"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Bookings</p>
+                <p className="text-sm font-medium text-gray-600">{t('admin.dashboard.bookings')}</p>
                 <p className="text-2xl font-bold text-gray-900">{stats.booking}</p>
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white rounded-lg shadow p-6">
             <div className="flex items-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-accent-amber"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Newsletter</p>
+                <p className="text-sm font-medium text-gray-600">{t('admin.dashboard.newsletter')}</p>
                 <p className="text-2xl font-bold text-gray-900">{stats.newsletter}</p>
               </div>
             </div>
@@ -239,28 +264,28 @@ const AdminDashboard = () => {
           <div className="p-6 border-b border-gray-200">
             <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
               <div className="flex flex-col sm:flex-row gap-4 flex-1">
-                <div className="relative"> {/* Search input */}
+                <div className="relative">
                   <Search className="h-5 w-5 absolute left-3 top-3 text-gray-400" />
                   <input
                     type="text"
-                    placeholder="Search submissions..."
+                    placeholder={t('admin.dashboard.searchPlaceholder')}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                   />
                 </div>
-                
-                <div className="relative"> {/* Filter select */}
+
+                <div className="relative">
                   <Filter className="h-5 w-5 absolute left-3 top-3 text-gray-400" />
                   <select
                     value={filterType}
                     onChange={(e) => setFilterType(e.target.value as 'all' | 'contact' | 'booking' | 'newsletter')}
                     className="pl-10 pr-8 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                   >
-                    <option value="all">All Types</option>
-                    <option value="contact">Contact Forms</option>
-                    <option value="booking">Bookings</option>
-                    <option value="newsletter">Newsletter</option>
+                    <option value="all">{t('admin.dashboard.filterAllTypes')}</option>
+                    <option value="contact">{t('admin.dashboard.contactForms')}</option>
+                    <option value="booking">{t('admin.dashboard.bookings')}</option>
+                    <option value="newsletter">{t('admin.dashboard.newsletter')}</option>
                   </select>
                 </div>
               </div>
@@ -271,11 +296,11 @@ const AdminDashboard = () => {
                   onChange={(e) => setFilterStatus(e.target.value as 'all' | LeadStatus)}
                   className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                 >
-                  <option value="all">All Status</option>
-                  <option value="new">New</option>
-                  <option value="in_progress">In Progress</option>
-                  <option value="qualified">Qualified</option>
-                  <option value="archived">Archived</option>
+                  <option value="all">{t('admin.dashboard.filterAllStatus')}</option>
+                  <option value="new">{t('admin.dashboard.statusNew')}</option>
+                  <option value="in_progress">{t('admin.dashboard.statusInProgress')}</option>
+                  <option value="qualified">{t('admin.dashboard.statusQualified')}</option>
+                  <option value="archived">{t('admin.dashboard.statusArchived')}</option>
                 </select>
 
                 <button
@@ -301,12 +326,12 @@ const AdminDashboard = () => {
             <table className="w-full">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name/Email</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Company</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Submitted</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('admin.dashboard.columnType')}</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('admin.dashboard.columnStatus')}</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('admin.dashboard.columnNameEmail')}</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('admin.dashboard.columnCompany')}</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('admin.dashboard.columnSubmitted')}</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('admin.dashboard.columnActions')}</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -353,7 +378,7 @@ const AdminDashboard = () => {
                           className="text-primary-600 hover:text-primary-900 flex items-center"
                         >
                           <Eye className="h-4 w-4 mr-1" />
-                          Open
+                          {t('admin.dashboard.actionOpen')}
                         </button>
                       </td>
                     </tr>
@@ -371,7 +396,7 @@ const AdminDashboard = () => {
             <div className="p-6 border-b border-gray-200">
               <div className="flex justify-between items-center">
                 <h3 className="text-lg font-medium text-gray-900">
-                  {('type' in selectedSubmission ? String(selectedSubmission.type).charAt(0).toUpperCase() + String(selectedSubmission.type).slice(1) : 'Unknown')} Submission
+                  {t(`admin.dashboard.submissionType.${('type' in selectedSubmission ? selectedSubmission.type : 'unknown')}`)}
                 </h3>
                 <button
                   onClick={() => setSelectedSubmission(null)}
@@ -384,19 +409,19 @@ const AdminDashboard = () => {
             <div className="p-6">
               <dl className="grid grid-cols-1 gap-4">
                 <div>
-                  <dt className="text-sm font-medium text-gray-500">Email</dt>
+                  <dt className="text-sm font-medium text-gray-500">{t('admin.dashboard.fieldEmail')}</dt>
                   <dd className="text-sm text-gray-900">{selectedSubmission.email}</dd>
                 </div>
                 {('type' in selectedSubmission && selectedSubmission.type) !== 'newsletter' && (
                   <div>
-                    <dt className="text-sm font-medium text-gray-500">Name</dt>
+                    <dt className="text-sm font-medium text-gray-500">{t('admin.dashboard.fieldName')}</dt>
                     <dd className="text-sm text-gray-900">{'name' in selectedSubmission ? selectedSubmission.name : ''}</dd>
                   </div>
                 )}
                 {('type' in selectedSubmission && selectedSubmission.type) === 'contact' && (
                   <>
                     <div>
-                      <dt className="text-sm font-medium text-gray-500">Company</dt>
+                      <dt className="text-sm font-medium text-gray-500">{t('admin.dashboard.fieldCompany')}</dt>
                       <dd className="text-sm text-gray-900">{'company' in selectedSubmission ? selectedSubmission.company : ''}</dd>
                     </div>
                     <div>

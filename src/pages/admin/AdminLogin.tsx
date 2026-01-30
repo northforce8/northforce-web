@@ -77,7 +77,7 @@ const AdminLogin = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600 transition-all"
-                placeholder="admin@northforce.io"
+                placeholder={t('admin.login.email_placeholder')}
               />
             </div>
 
@@ -133,7 +133,7 @@ const AdminLogin = () => {
 
           <div className="mt-6 pt-4 border-t border-gray-200">
             <p className="text-center text-xs text-gray-400">
-              {t('build.version')} | {new Date().toLocaleString(language === 'sv' ? 'sv-SE' : 'en-US')}
+              {t('build.version')} | {new Date().toLocaleString(language === 'sv' ? 'sv' : 'en')}
             </p>
           </div>
         </div>

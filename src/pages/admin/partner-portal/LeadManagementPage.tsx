@@ -158,8 +158,8 @@ const LeadManagementPage: React.FC = () => {
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
       <PageHeader
-        title="Leadhantering"
-        description="Hantera och kvalificera inkommande leads från alla källor"
+        title={t('leads.title')}
+        description={t('leads.description')}
         icon={Users}
       />
 
@@ -167,7 +167,7 @@ const LeadManagementPage: React.FC = () => {
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Total Leads</p>
+              <p className="text-sm text-gray-600">{t('leads.stat.total_leads')}</p>
               <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
             </div>
             <Users className="h-8 w-8 text-blue-500" />
@@ -177,7 +177,7 @@ const LeadManagementPage: React.FC = () => {
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">New</p>
+              <p className="text-sm text-gray-600">{t('leads.stat.new')}</p>
               <p className="text-2xl font-bold text-gray-900">{stats.new}</p>
             </div>
             <Mail className="h-8 w-8 text-blue-500" />
@@ -187,7 +187,7 @@ const LeadManagementPage: React.FC = () => {
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Qualified</p>
+              <p className="text-sm text-gray-600">{t('leads.stat.qualified')}</p>
               <p className="text-2xl font-bold text-gray-900">{stats.qualified}</p>
             </div>
             <Star className="h-8 w-8 text-green-500" />
@@ -197,7 +197,7 @@ const LeadManagementPage: React.FC = () => {
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Converted</p>
+              <p className="text-sm text-gray-600">{t('leads.stat.converted')}</p>
               <p className="text-2xl font-bold text-gray-900">{stats.converted}</p>
             </div>
             <TrendingUp className="h-8 w-8 text-purple-500" />
@@ -216,7 +216,7 @@ const LeadManagementPage: React.FC = () => {
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
-              All Leads ({allLeads.length})
+              {t('leads.tab.all')} ({allLeads.length})
             </button>
             <button
               onClick={() => setActiveTab('contact')}
@@ -227,7 +227,7 @@ const LeadManagementPage: React.FC = () => {
               }`}
             >
               <Mail className="h-4 w-4 mr-2" />
-              Contacts ({contacts.length})
+              {t('leads.tab.contacts')} ({contacts.length})
             </button>
             <button
               onClick={() => setActiveTab('booking')}
@@ -238,7 +238,7 @@ const LeadManagementPage: React.FC = () => {
               }`}
             >
               <CalendarIcon className="h-4 w-4 mr-2" />
-              Bookings ({bookings.length})
+              {t('leads.tab.bookings')} ({bookings.length})
             </button>
             <button
               onClick={() => setActiveTab('newsletter')}
@@ -249,7 +249,7 @@ const LeadManagementPage: React.FC = () => {
               }`}
             >
               <Newspaper className="h-4 w-4 mr-2" />
-              Newsletter ({newsletters.length})
+              {t('leads.tab.newsletter')} ({newsletters.length})
             </button>
           </div>
         </div>
@@ -260,7 +260,7 @@ const LeadManagementPage: React.FC = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search leads..."
+                placeholder={t('leads.search_placeholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
@@ -272,11 +272,11 @@ const LeadManagementPage: React.FC = () => {
               onChange={(e) => setStatusFilter(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
             >
-              <option value="all">All Status</option>
-              <option value="new">New</option>
-              <option value="in_progress">In Progress</option>
-              <option value="qualified">Qualified</option>
-              <option value="archived">Archived</option>
+              <option value="all">{t('leads.filter.all_status')}</option>
+              <option value="new">{t('leads.filter.new')}</option>
+              <option value="in_progress">{t('leads.filter.in_progress')}</option>
+              <option value="qualified">{t('leads.filter.qualified')}</option>
+              <option value="archived">{t('leads.filter.archived')}</option>
             </select>
           </div>
         </div>
@@ -286,16 +286,16 @@ const LeadManagementPage: React.FC = () => {
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Type
+                  {t('leads.table.type')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Contact
+                  {t('leads.table.contact')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Company
+                  {t('leads.table.company')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Status
+                  {t('leads.table.status')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   AI Score
