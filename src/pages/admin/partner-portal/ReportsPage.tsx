@@ -25,6 +25,7 @@ import type {
 } from '../../../lib/partner-portal-types';
 
 const ReportsPage: React.FC = () => {
+  const { t } = useLanguage();
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [partners, setPartners] = useState<Partner[]>([]);
   const [marginReports, setMarginReports] = useState<MarginAnalysis[]>([]);
@@ -174,7 +175,7 @@ const ReportsPage: React.FC = () => {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Laddar rapporter...</p>
+          <p className="text-gray-600">{t('admin.loading')}</p>
         </div>
       </div>
     );
@@ -185,8 +186,8 @@ const ReportsPage: React.FC = () => {
     <div>
       <div className="p-6 max-w-7xl mx-auto">
         <PageHeader
-          title={t('admin.reports.title')}
-          description="Comprehensive business intelligence and data exports"
+          title={t('admin.page.reports')}
+          description={t('admin.subtitle.reports')}
         />
 
         {/* AI Intelligence - Top Actionable Insights */}

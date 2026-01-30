@@ -25,6 +25,7 @@ import type {
 } from '../../../lib/partner-portal-types';
 
 const SupportPage: React.FC = () => {
+  const { t } = useLanguage();
   const [tickets, setTickets] = useState<SupportTicketWithRelations[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [partners, setPartners] = useState<Partner[]>([]);
@@ -159,7 +160,7 @@ const SupportPage: React.FC = () => {
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Laddar supportärenden...</p>
+            <p className="text-gray-600">{t('admin.loading')}</p>
           </div>
         </div>
       </div>
@@ -173,13 +174,13 @@ const SupportPage: React.FC = () => {
           <div className="flex items-start gap-3">
             <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-red-900 mb-2">Fel vid laddning</h3>
+              <h3 className="text-lg font-semibold text-red-900 mb-2">{t('admin.error')}</h3>
               <p className="text-red-700 mb-4">{error}</p>
               <button
                 onClick={loadData}
                 className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
               >
-                Försök igen
+                {t('admin.refresh')}
               </button>
             </div>
           </div>
@@ -192,11 +193,11 @@ const SupportPage: React.FC = () => {
     <div>
       <div className="p-6 max-w-7xl mx-auto space-y-8">
         <PageHeader
-          title={t('admin.support.title')}
-          description="Spåra ärenden och övervaka servicenivåavtal"
+          title={t('admin.page.support')}
+          description={t('admin.subtitle.support')}
           icon={MessageSquare}
           action={{
-            label: 'Nytt ärende',
+            label: t('admin.button.new_ticket'),
             onClick: () => setShowCreateModal(true),
             icon: <Plus className="h-5 w-5" />
           }}

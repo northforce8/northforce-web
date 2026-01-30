@@ -8,6 +8,7 @@ import type { Partner } from '../../../lib/partner-portal-types';
 import { useLanguage } from '../../../contexts/LanguageContext';
 
 const PartnersPage: React.FC = () => {
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [partners, setPartners] = useState<Partner[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
