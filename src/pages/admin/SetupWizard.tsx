@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { CheckCircle2, AlertCircle, Loader2, Database, Users, Zap } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { ADMIN_ROUTES } from '../../lib/admin-routes';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 interface SetupStep {
   id: string;
@@ -13,10 +14,11 @@ interface SetupStep {
 
 export const SetupWizard: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [steps, setSteps] = useState<SetupStep[]>([
-    { id: 'admin', title: 'Create Admin User', status: 'pending' },
-    { id: 'data', title: 'Generate Test Data', status: 'pending' },
-    { id: 'verify', title: 'Verify Setup', status: 'pending' },
+    { id: 'admin', title: t('admin.setup.step.create_admin'), status: 'pending' },
+    { id: 'data', title: t('admin.setup.step.generate_data'), status: 'pending' },
+    { id: 'verify', title: t('admin.setup.step.verify'), status: 'pending' },
   ]);
   const [isRunning, setIsRunning] = useState(false);
   const [adminEmail, setAdminEmail] = useState('admin@northforce.io');
@@ -34,8 +36,7 @@ export const SetupWizard: React.FC = () => {
     setError(null);
 
     try {
-      // Step 1: Create Admin User
-      updateStep('admin', { status: 'running', message: 'Creating admin account...' });
+      updateStep('admin', { status: 'running', message: t('admin.setup.msg.creating_admin') });
 
       const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email: adminEmail,
@@ -61,17 +62,16 @@ export const SetupWizard: React.FC = () => {
 
         updateStep('admin', {
           status: 'complete',
-          message: 'Admin user already exists - logged in successfully'
+          message: t('admin.setup.msg.admin_exists')
         });
       } else {
         updateStep('admin', {
           status: 'complete',
-          message: `Admin created: ${adminEmail}`
+          message: `${t('admin.setup.msg.admin_created')} ${adminEmail}`
         });
       }
 
-      // Step 2: Generate Test Data
-      updateStep('data', { status: 'running', message: 'Creating test customers...' });
+      updateStep('data', { status: 'running', message: t('admin.setup.msg.creating_customers') });
 
       // Create test customers
       const testCustomers = [
@@ -128,12 +128,12 @@ export const SetupWizard: React.FC = () => {
         console.warn('Customer creation warning:', customersError.message);
         updateStep('data', {
           status: 'complete',
-          message: 'Test data might already exist - continuing...'
+          message: t('admin.setup.msg.data_exists')
         });
       } else {
         updateStep('data', {
           status: 'running',
-          message: `Created ${customers?.length || 0} customers, adding projects...`
+          message: t('admin.setup.msg.created_customers').replace('{count}', String(customers?.length || 0))
         });
 
         // Create test projects for first customer
@@ -163,12 +163,11 @@ export const SetupWizard: React.FC = () => {
 
         updateStep('data', {
           status: 'complete',
-          message: `Created ${customers?.length || 0} customers with projects`
+          message: t('admin.setup.msg.created_with_projects').replace('{count}', String(customers?.length || 0))
         });
       }
 
-      // Step 3: Verify Setup
-      updateStep('verify', { status: 'running', message: 'Verifying database setup...' });
+      updateStep('verify', { status: 'running', message: t('admin.setup.msg.verifying') });
 
       const { count: customerCount } = await supabase
         .from('customers')
@@ -180,7 +179,7 @@ export const SetupWizard: React.FC = () => {
 
       updateStep('verify', {
         status: 'complete',
-        message: `Setup complete! ${customerCount || 0} customers, ${projectCount || 0} projects`
+        message: t('admin.setup.msg.complete').replace('{customers}', String(customerCount || 0)).replace('{projects}', String(projectCount || 0))
       });
 
       // Wait a bit to show success state
@@ -200,17 +199,17 @@ export const SetupWizard: React.FC = () => {
   const isComplete = steps.every(step => step.status === 'complete');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-8">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
             <Zap className="h-8 w-8 text-white" />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Admin Portal Setup
+            {t('admin.setup.title')}
           </h1>
           <p className="text-gray-600">
-            Initialize your Northforce admin portal with one click
+            {t('admin.setup.subtitle')}
           </p>
         </div>
 
@@ -218,17 +217,17 @@ export const SetupWizard: React.FC = () => {
           <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
             <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
             <div className="flex-1">
-              <h3 className="font-semibold text-red-900 mb-1">Setup Error</h3>
+              <h3 className="font-semibold text-red-900 mb-1">{t('admin.setup.error')}</h3>
               <p className="text-sm text-red-700">{error}</p>
             </div>
           </div>
         )}
 
         <div className="mb-6 space-y-3 bg-gray-50 p-4 rounded-lg">
-          <h3 className="font-semibold text-gray-900 mb-3">Admin Credentials</h3>
+          <h3 className="font-semibold text-gray-900 mb-3">{t('admin.setup.credentials')}</h3>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email
+              {t('admin.setup.email')}
             </label>
             <input
               type="email"
@@ -240,7 +239,7 @@ export const SetupWizard: React.FC = () => {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Password
+              {t('admin.setup.password')}
             </label>
             <input
               type="password"
@@ -304,12 +303,12 @@ export const SetupWizard: React.FC = () => {
               {isRunning ? (
                 <>
                   <Loader2 className="h-5 w-5 animate-spin" />
-                  Setting up...
+                  {t('admin.setup.setting_up')}
                 </>
               ) : (
                 <>
                   <Zap className="h-5 w-5" />
-                  Start Setup
+                  {t('admin.setup.start')}
                 </>
               )}
             </button>
@@ -319,25 +318,25 @@ export const SetupWizard: React.FC = () => {
               className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2"
             >
               <CheckCircle2 className="h-5 w-5" />
-              Go to Dashboard
+              {t('admin.setup.go_to_dashboard')}
             </button>
           )}
         </div>
 
         <div className="mt-6 pt-6 border-t border-gray-200">
-          <h3 className="font-semibold text-gray-900 mb-2">What will be created:</h3>
+          <h3 className="font-semibold text-gray-900 mb-2">{t('admin.setup.what_created')}</h3>
           <ul className="space-y-2 text-sm text-gray-600">
             <li className="flex items-center gap-2">
               <Users className="h-4 w-4 text-blue-600" />
-              Admin user account with full access
+              {t('admin.setup.admin_account')}
             </li>
             <li className="flex items-center gap-2">
               <Database className="h-4 w-4 text-blue-600" />
-              3 test customers with realistic data
+              {t('admin.setup.test_customers')}
             </li>
             <li className="flex items-center gap-2">
               <Database className="h-4 w-4 text-blue-600" />
-              Sample projects and time entries
+              {t('admin.setup.sample_projects')}
             </li>
           </ul>
         </div>

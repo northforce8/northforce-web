@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { ADMIN_ROUTES, ADMIN_NAV_LABELS } from '../../lib/admin-routes';
 import { supabase } from '../../lib/supabase';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 interface TestResult {
   success: boolean;
@@ -38,6 +39,7 @@ interface DataTestResult {
 }
 
 const AdminHealthPage: React.FC = () => {
+  const { t } = useLanguage();
   const [routes, setRoutes] = useState<RouteHealth[]>([]);
   const [dataTests, setDataTests] = useState<DataTestResult[]>([]);
   const [testing, setTesting] = useState(false);
@@ -341,9 +343,9 @@ const AdminHealthPage: React.FC = () => {
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">System Health & Smoke Test Dashboard</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('admin.health.title')}</h1>
         <p className="text-gray-600">
-          Enterprise-grade health monitoring with runtime render tests, error detection, and data validation
+          {t('admin.health.subtitle')}
         </p>
       </div>
 
@@ -360,7 +362,7 @@ const AdminHealthPage: React.FC = () => {
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Total Routes</p>
+              <p className="text-sm font-medium text-gray-600">{t('admin.health.total_routes')}</p>
               <p className="text-3xl font-bold text-gray-900">{routes.length}</p>
             </div>
             <Activity className="h-8 w-8 text-gray-400" />
@@ -370,7 +372,7 @@ const AdminHealthPage: React.FC = () => {
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Healthy</p>
+              <p className="text-sm font-medium text-gray-600">{t('admin.health.healthy')}</p>
               <p className="text-3xl font-bold text-green-600">{okCount}</p>
             </div>
             <CheckCircle2 className="h-8 w-8 text-green-600" />
@@ -380,7 +382,7 @@ const AdminHealthPage: React.FC = () => {
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Warnings</p>
+              <p className="text-sm font-medium text-gray-600">{t('admin.health.warnings')}</p>
               <p className="text-3xl font-bold text-yellow-600">{warningCount}</p>
             </div>
             <AlertTriangle className="h-8 w-8 text-yellow-600" />
@@ -390,7 +392,7 @@ const AdminHealthPage: React.FC = () => {
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Errors</p>
+              <p className="text-sm font-medium text-gray-600">{t('admin.health.errors')}</p>
               <p className="text-3xl font-bold text-red-600">{errorCount}</p>
             </div>
             <XCircle className="h-8 w-8 text-red-600" />
@@ -401,9 +403,9 @@ const AdminHealthPage: React.FC = () => {
       <div className="bg-white rounded-lg shadow mb-6">
         <div className="p-6 border-b border-gray-200 flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-semibold text-gray-900">Route Health Tests</h2>
+            <h2 className="text-xl font-semibold text-gray-900">{t('admin.health.route_health_tests')}</h2>
             <p className="text-sm text-gray-600 mt-1">
-              Three-level validation: Route accessibility, runtime rendering, and data wiring
+              {t('admin.health.three_level_validation')}
             </p>
           </div>
           <button
@@ -412,7 +414,7 @@ const AdminHealthPage: React.FC = () => {
             className="flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <RefreshCw className={`h-4 w-4 mr-2 ${testing ? 'animate-spin' : ''}`} />
-            {testing ? 'Running Tests...' : 'Run Full Test Suite'}
+            {testing ? t('admin.health.running_tests') : t('admin.health.run_full_test_suite')}
           </button>
         </div>
 
@@ -440,7 +442,7 @@ const AdminHealthPage: React.FC = () => {
                       to={route.path}
                       className="px-3 py-1.5 text-sm font-medium text-primary-600 hover:text-primary-700 hover:bg-primary-50 rounded transition-colors"
                     >
-                      Visit
+                      {t('admin.health.visit')}
                     </Link>
                     <button
                       onClick={() => toggleExpanded(index)}
@@ -459,7 +461,7 @@ const AdminHealthPage: React.FC = () => {
                   <div className="flex items-center space-x-2">
                     {getTestResultIcon(route.routeAccessible)}
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-medium text-gray-700">Route Access</p>
+                      <p className="text-xs font-medium text-gray-700">{t('admin.health.route_access')}</p>
                       <p className="text-xs text-gray-600 truncate">{route.routeAccessible.message}</p>
                     </div>
                   </div>
@@ -467,7 +469,7 @@ const AdminHealthPage: React.FC = () => {
                   <div className="flex items-center space-x-2">
                     {getTestResultIcon(route.runtimeRender)}
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-medium text-gray-700">Runtime Render</p>
+                      <p className="text-xs font-medium text-gray-700">{t('admin.health.runtime_render')}</p>
                       <p className="text-xs text-gray-600 truncate">{route.runtimeRender.message}</p>
                     </div>
                   </div>
@@ -476,7 +478,7 @@ const AdminHealthPage: React.FC = () => {
                     <div className="flex items-center space-x-2">
                       {getTestResultIcon(route.dataWiring)}
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs font-medium text-gray-700">Data Wiring</p>
+                        <p className="text-xs font-medium text-gray-700">{t('admin.health.data_wiring')}</p>
                         <p className="text-xs text-gray-600 truncate">{route.dataWiring.message}</p>
                       </div>
                     </div>
@@ -488,17 +490,17 @@ const AdminHealthPage: React.FC = () => {
                     <div className="bg-white border border-gray-200 rounded-lg p-4">
                       <div className="flex items-center space-x-2 mb-2">
                         <Code className="h-4 w-4 text-gray-600" />
-                        <h4 className="text-sm font-semibold text-gray-900">Route Accessibility Test</h4>
+                        <h4 className="text-sm font-semibold text-gray-900">{t('admin.health.route_accessibility_test')}</h4>
                       </div>
                       <div className="text-sm text-gray-700">
-                        <p><strong>Status:</strong> {route.routeAccessible.success ? 'PASS' : 'FAIL'}</p>
-                        <p><strong>Message:</strong> {route.routeAccessible.message}</p>
+                        <p><strong>{t('admin.health.status')}:</strong> {route.routeAccessible.success ? t('admin.health.pass') : t('admin.health.fail')}</p>
+                        <p><strong>{t('admin.health.message')}:</strong> {route.routeAccessible.message}</p>
                         {route.routeAccessible.duration && (
-                          <p><strong>Duration:</strong> {route.routeAccessible.duration}ms</p>
+                          <p><strong>{t('admin.health.duration')}:</strong> {route.routeAccessible.duration}ms</p>
                         )}
                         {route.routeAccessible.error && (
                           <p className="text-red-600 mt-2">
-                            <strong>Error:</strong> {route.routeAccessible.error}
+                            <strong>{t('admin.health.error')}:</strong> {route.routeAccessible.error}
                           </p>
                         )}
                       </div>
@@ -507,17 +509,17 @@ const AdminHealthPage: React.FC = () => {
                     <div className="bg-white border border-gray-200 rounded-lg p-4">
                       <div className="flex items-center space-x-2 mb-2">
                         <Zap className="h-4 w-4 text-gray-600" />
-                        <h4 className="text-sm font-semibold text-gray-900">Runtime Render Test</h4>
+                        <h4 className="text-sm font-semibold text-gray-900">{t('admin.health.runtime_render_test')}</h4>
                       </div>
                       <div className="text-sm text-gray-700">
-                        <p><strong>Status:</strong> {route.runtimeRender.success ? 'PASS' : 'FAIL'}</p>
-                        <p><strong>Message:</strong> {route.runtimeRender.message}</p>
+                        <p><strong>{t('admin.health.status')}:</strong> {route.runtimeRender.success ? t('admin.health.pass') : t('admin.health.fail')}</p>
+                        <p><strong>{t('admin.health.message')}:</strong> {route.runtimeRender.message}</p>
                         {route.runtimeRender.duration && (
-                          <p><strong>Duration:</strong> {route.runtimeRender.duration}ms</p>
+                          <p><strong>{t('admin.health.duration')}:</strong> {route.runtimeRender.duration}ms</p>
                         )}
                         {route.runtimeRender.error && (
                           <div className="mt-3 p-3 bg-red-50 rounded border border-red-200">
-                            <p className="text-red-800 font-semibold mb-2">Runtime Error Detected:</p>
+                            <p className="text-red-800 font-semibold mb-2">{t('admin.health.runtime_error_detected')}</p>
                             <p className="text-red-700 mb-2">{route.runtimeRender.error}</p>
                             {route.runtimeRender.stackTrace && (
                               <pre className="text-xs bg-red-900 text-red-100 p-3 rounded overflow-x-auto whitespace-pre-wrap">
@@ -533,17 +535,17 @@ const AdminHealthPage: React.FC = () => {
                       <div className="bg-white border border-gray-200 rounded-lg p-4">
                         <div className="flex items-center space-x-2 mb-2">
                           <Database className="h-4 w-4 text-gray-600" />
-                          <h4 className="text-sm font-semibold text-gray-900">Data Wiring Test</h4>
+                          <h4 className="text-sm font-semibold text-gray-900">{t('admin.health.data_wiring_test')}</h4>
                         </div>
                         <div className="text-sm text-gray-700">
-                          <p><strong>Status:</strong> {route.dataWiring.success ? 'PASS' : 'FAIL'}</p>
-                          <p><strong>Message:</strong> {route.dataWiring.message}</p>
+                          <p><strong>{t('admin.health.status')}:</strong> {route.dataWiring.success ? t('admin.health.pass') : t('admin.health.fail')}</p>
+                          <p><strong>{t('admin.health.message')}:</strong> {route.dataWiring.message}</p>
                           {route.dataWiring.duration && (
-                            <p><strong>Duration:</strong> {route.dataWiring.duration}ms</p>
+                            <p><strong>{t('admin.health.duration')}:</strong> {route.dataWiring.duration}ms</p>
                           )}
                           {route.dataWiring.error && (
                             <p className="text-red-600 mt-2">
-                              <strong>Database Error:</strong> {route.dataWiring.error}
+                              <strong>{t('admin.health.database_error')}</strong> {route.dataWiring.error}
                             </p>
                           )}
                         </div>
@@ -561,17 +563,17 @@ const AdminHealthPage: React.FC = () => {
         <div className="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-6">
           <h3 className="text-lg font-semibold text-blue-900 mb-3 flex items-center">
             <Activity className="h-5 w-5 mr-2" />
-            About This Dashboard
+            {t('admin.health.about_this_dashboard')}
           </h3>
           <div className="text-blue-800 space-y-2 text-sm">
             <p>
-              This enterprise-grade health dashboard performs comprehensive testing beyond simple route accessibility.
+              {t('admin.health.about_description')}
             </p>
             <ul className="list-disc list-inside space-y-1 ml-2">
-              <li><strong>Route Access Test:</strong> Verifies route exists and responds</li>
-              <li><strong>Runtime Render Test:</strong> Detects JavaScript errors, missing imports, undefined variables</li>
-              <li><strong>Data Wiring Test:</strong> Validates database connectivity and CRUD operations</li>
-              <li><strong>Root Cause Analysis:</strong> Automatically identifies common error patterns</li>
+              <li><strong>{t('admin.health.route_access')}:</strong> {t('admin.health.route_access_test_desc')}</li>
+              <li><strong>{t('admin.health.runtime_render')}:</strong> {t('admin.health.runtime_render_test_desc')}</li>
+              <li><strong>{t('admin.health.data_wiring')}:</strong> {t('admin.health.data_wiring_test_desc')}</li>
+              <li><strong>{t('admin.health.root_cause_analysis_desc')}</strong></li>
             </ul>
           </div>
         </div>
@@ -579,53 +581,53 @@ const AdminHealthPage: React.FC = () => {
         <div className="bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-lg p-6">
           <h3 className="text-lg font-semibold text-green-900 mb-3 flex items-center">
             <CheckCircle2 className="h-5 w-5 mr-2" />
-            Status Legend
+            {t('admin.health.status_legend')}
           </h3>
           <div className="text-green-800 space-y-2 text-sm">
             <div className="flex items-start space-x-2">
               <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5" />
               <div>
-                <strong>Green (OK):</strong> All tests passed - route accessible, renders without errors, data accessible
+                <strong>{t('admin.health.green_ok')}</strong> {t('admin.health.green_ok_desc')}
               </div>
             </div>
             <div className="flex items-start space-x-2">
               <AlertTriangle className="h-4 w-4 text-yellow-600 mt-0.5" />
               <div>
-                <strong>Yellow (Warning):</strong> Route works but has performance or minor issues
+                <strong>{t('admin.health.yellow_warning')}</strong> {t('admin.health.yellow_warning_desc')}
               </div>
             </div>
             <div className="flex items-start space-x-2">
               <XCircle className="h-4 w-4 text-red-600 mt-0.5" />
               <div>
-                <strong>Red (Error):</strong> Critical failure - runtime error, missing import, or data access failure
+                <strong>{t('admin.health.red_error')}</strong> {t('admin.health.red_error_desc')}
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 rounded-lg p-6">
-        <h3 className="text-lg font-semibold text-purple-900 mb-3 flex items-center">
+      <div className="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-6">
+        <h3 className="text-lg font-semibold text-blue-900 mb-3 flex items-center">
           <Code className="h-5 w-5 mr-2" />
-          Common Issues Detected by This Tool
+          {t('admin.health.common_issues')}
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-purple-800">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-blue-800">
           <div>
-            <p className="font-semibold mb-1">Runtime Errors:</p>
+            <p className="font-semibold mb-1">{t('admin.health.runtime_errors')}</p>
             <ul className="list-disc list-inside space-y-1 ml-2">
-              <li>"X is not defined" (missing imports)</li>
-              <li>"Cannot read property of undefined"</li>
-              <li>"X is not a function"</li>
-              <li>React error boundary triggers</li>
+              <li>{t('admin.health.not_defined')}</li>
+              <li>{t('admin.health.cannot_read')}</li>
+              <li>{t('admin.health.not_a_function')}</li>
+              <li>{t('admin.health.react_error_boundary')}</li>
             </ul>
           </div>
           <div>
-            <p className="font-semibold mb-1">Data Errors:</p>
+            <p className="font-semibold mb-1">{t('admin.health.data_errors')}</p>
             <ul className="list-disc list-inside space-y-1 ml-2">
-              <li>Database connection failures</li>
-              <li>Missing tables or columns</li>
-              <li>Permission/RLS issues</li>
-              <li>Query timeout or syntax errors</li>
+              <li>{t('admin.health.db_connection')}</li>
+              <li>{t('admin.health.missing_tables')}</li>
+              <li>{t('admin.health.rls_issues')}</li>
+              <li>{t('admin.health.query_timeout')}</li>
             </ul>
           </div>
         </div>

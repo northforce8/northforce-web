@@ -24,12 +24,14 @@ import {
 } from '../../lib/supabase';
 import { isAdminAuthenticated, getCurrentAdminUser } from '../../lib/auth';
 import { ADMIN_ROUTES } from '../../lib/admin-routes';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 type Lead = ContactSubmission | BookingSubmission | NewsletterSubmission;
 
 const LeadDetailPage = () => {
   const { type, id } = useParams<{ type: LeadType; id: string }>();
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [lead, setLead] = useState<Lead | null>(null);
   const [notes, setNotes] = useState<LeadNote[]>([]);
   const [customerLink, setCustomerLink] = useState<any>(null);
@@ -93,7 +95,7 @@ const LeadDetailPage = () => {
       setCustomers(customersData);
     } catch (error) {
       console.error('Error loading lead details:', error);
-      showMessage('error', 'Failed to load lead details');
+      showMessage('error', t('admin.lead_detail.error.load'));
     } finally {
       setIsLoading(false);
     }
@@ -111,10 +113,10 @@ const LeadDetailPage = () => {
       setIsSaving(true);
       await updateLeadStatus(type, id, newStatus);
       setLead(prev => prev ? { ...prev, status: newStatus } : null);
-      showMessage('success', 'Status updated successfully');
+      showMessage('success', t('admin.lead_detail.success.status_updated'));
     } catch (error) {
       console.error('Error updating status:', error);
-      showMessage('error', 'Failed to update status');
+      showMessage('error', t('admin.lead_detail.error.status'));
     } finally {
       setIsSaving(false);
     }
@@ -138,10 +140,10 @@ const LeadDetailPage = () => {
 
       setNotes(prev => [note, ...prev]);
       setNewNote('');
-      showMessage('success', 'Note added successfully');
+      showMessage('success', t('admin.lead_detail.success.note_added'));
     } catch (error) {
       console.error('Error adding note:', error);
-      showMessage('error', 'Failed to add note');
+      showMessage('error', t('admin.lead_detail.error.note'));
     } finally {
       setIsSaving(false);
     }
@@ -166,10 +168,10 @@ const LeadDetailPage = () => {
       await loadData();
       setSelectedCustomerId('');
       setLinkNotes('');
-      showMessage('success', 'Lead linked to customer successfully');
+      showMessage('success', t('admin.lead_detail.success.linked'));
     } catch (error) {
       console.error('Error linking to customer:', error);
-      showMessage('error', 'Failed to link to customer');
+      showMessage('error', t('admin.lead_detail.error.link'));
     } finally {
       setIsSaving(false);
     }
@@ -193,10 +195,10 @@ const LeadDetailPage = () => {
       });
 
       setClassification(classification);
-      showMessage('success', 'Lead classified successfully');
+      showMessage('success', t('admin.lead_detail.success.classified'));
     } catch (error) {
       console.error('Error classifying lead:', error);
-      showMessage('error', 'Failed to classify lead');
+      showMessage('error', t('admin.lead_detail.error.classify'));
     } finally {
       setIsSaving(false);
     }
@@ -207,7 +209,7 @@ const LeadDetailPage = () => {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading lead details...</p>
+          <p className="text-gray-600">{t('admin.lead_detail.loading')}</p>
         </div>
       </div>
     );
@@ -218,14 +220,14 @@ const LeadDetailPage = () => {
       <div className="p-6 max-w-7xl mx-auto">
         <div className="bg-white rounded-lg shadow-lg p-8 text-center max-w-md mx-auto">
           <AlertCircle className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Lead Not Found</h2>
-          <p className="text-gray-600 mb-6">The lead you're looking for doesn't exist or has been removed.</p>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('admin.lead_detail.not_found')}</h2>
+          <p className="text-gray-600 mb-6">{t('admin.lead_detail.not_found_desc')}</p>
           <button
             onClick={() => navigate(ADMIN_ROUTES.LEADS)}
             className="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Leads
+            {t('admin.lead_detail.back_to_leads')}
           </button>
         </div>
       </div>
@@ -233,9 +235,9 @@ const LeadDetailPage = () => {
   }
 
   const getLeadTypeLabel = () => {
-    return type === 'contact' ? 'Contact Form' :
-           type === 'booking' ? 'Meeting Booking' :
-           'Newsletter Signup';
+    return type === 'contact' ? t('admin.lead_detail.lead_type.contact') :
+           type === 'booking' ? t('admin.lead_detail.lead_type.booking') :
+           t('admin.lead_detail.lead_type.newsletter');
   };
 
   const getStatusColor = (status: LeadStatus) => {
@@ -267,7 +269,7 @@ const LeadDetailPage = () => {
             className="flex items-center text-gray-600 hover:text-gray-900 mb-4"
           >
             <ArrowLeft className="h-5 w-5 mr-2" />
-            Back to Dashboard
+            {t('admin.lead_detail.back_to_dashboard')}
           </button>
 
           <div className="flex items-center justify-between">
@@ -279,7 +281,7 @@ const LeadDetailPage = () => {
                 </span>
               </div>
               <p className="text-gray-600">
-                Submitted {new Date(lead.created_at).toLocaleDateString()} at {new Date(lead.created_at).toLocaleTimeString()}
+                {t('admin.lead_detail.submitted')} {new Date(lead.created_at).toLocaleDateString()} {t('admin.lead_detail.at')} {new Date(lead.created_at).toLocaleTimeString()}
               </p>
             </div>
 
@@ -302,7 +304,7 @@ const LeadDetailPage = () => {
           <div className="lg:col-span-2 space-y-6">
             <div className="bg-white rounded-lg shadow">
               <div className="p-6 border-b border-gray-200">
-                <h2 className="text-xl font-semibold text-gray-900">Lead Information</h2>
+                <h2 className="text-xl font-semibold text-gray-900">{t('admin.lead_detail.lead_info')}</h2>
               </div>
               <div className="p-6">
                 <dl className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -310,7 +312,7 @@ const LeadDetailPage = () => {
                     <div>
                       <dt className="flex items-center text-sm font-medium text-gray-500 mb-1">
                         <User className="h-4 w-4 mr-2" />
-                        Name
+                        {t('admin.lead_detail.name')}
                       </dt>
                       <dd className="text-base text-gray-900">{lead.name}</dd>
                     </div>
@@ -319,7 +321,7 @@ const LeadDetailPage = () => {
                   <div>
                     <dt className="flex items-center text-sm font-medium text-gray-500 mb-1">
                       <Mail className="h-4 w-4 mr-2" />
-                      Email
+                      {t('admin.lead_detail.email')}
                     </dt>
                     <dd className="text-base text-gray-900">
                       <a href={`mailto:${lead.email}`} className="text-primary-600 hover:text-primary-700">
@@ -332,7 +334,7 @@ const LeadDetailPage = () => {
                     <div>
                       <dt className="flex items-center text-sm font-medium text-gray-500 mb-1">
                         <Building2 className="h-4 w-4 mr-2" />
-                        Company
+                        {t('admin.lead_detail.company')}
                       </dt>
                       <dd className="text-base text-gray-900">{lead.company}</dd>
                     </div>
@@ -342,7 +344,7 @@ const LeadDetailPage = () => {
                     <div>
                       <dt className="flex items-center text-sm font-medium text-gray-500 mb-1">
                         <Tag className="h-4 w-4 mr-2" />
-                        Industry
+                        {t('admin.lead_detail.industry')}
                       </dt>
                       <dd className="text-base text-gray-900">{lead.industry}</dd>
                     </div>
@@ -352,7 +354,7 @@ const LeadDetailPage = () => {
                     <div className="md:col-span-2">
                       <dt className="flex items-center text-sm font-medium text-gray-500 mb-1">
                         <FileText className="h-4 w-4 mr-2" />
-                        Challenge
+                        {t('admin.lead_detail.challenge')}
                       </dt>
                       <dd className="text-base text-gray-900">{lead.challenge}</dd>
                     </div>
@@ -362,7 +364,7 @@ const LeadDetailPage = () => {
                     <div className="md:col-span-2">
                       <dt className="flex items-center text-sm font-medium text-gray-500 mb-1">
                         <FileText className="h-4 w-4 mr-2" />
-                        Message
+                        {t('admin.lead_detail.message')}
                       </dt>
                       <dd className="text-base text-gray-900 whitespace-pre-wrap">{lead.message}</dd>
                     </div>
@@ -373,24 +375,24 @@ const LeadDetailPage = () => {
                       <div>
                         <dt className="flex items-center text-sm font-medium text-gray-500 mb-1">
                           <Clock className="h-4 w-4 mr-2" />
-                          Meeting Type
+                          {t('admin.lead_detail.meeting_type')}
                         </dt>
-                        <dd className="text-base text-gray-900">{lead.meeting_type} minutes</dd>
+                        <dd className="text-base text-gray-900">{lead.meeting_type} {t('admin.lead_detail.minutes')}</dd>
                       </div>
                       <div>
                         <dt className="flex items-center text-sm font-medium text-gray-500 mb-1">
                           <Calendar className="h-4 w-4 mr-2" />
-                          Preferred Date & Time
+                          {t('admin.lead_detail.preferred_datetime')}
                         </dt>
                         <dd className="text-base text-gray-900">
-                          {new Date(lead.preferred_date).toLocaleDateString()} at {lead.preferred_time}
+                          {new Date(lead.preferred_date).toLocaleDateString()} {t('admin.lead_detail.at')} {lead.preferred_time}
                         </dd>
                       </div>
                       {lead.message && (
                         <div className="md:col-span-2">
                           <dt className="flex items-center text-sm font-medium text-gray-500 mb-1">
                             <FileText className="h-4 w-4 mr-2" />
-                            Message
+                            {t('admin.lead_detail.message')}
                           </dt>
                           <dd className="text-base text-gray-900 whitespace-pre-wrap">{lead.message}</dd>
                         </div>
@@ -403,12 +405,12 @@ const LeadDetailPage = () => {
 
             <div className="bg-white rounded-lg shadow">
               <div className="p-6 border-b border-gray-200">
-                <h2 className="text-xl font-semibold text-gray-900">Notes</h2>
+                <h2 className="text-xl font-semibold text-gray-900">{t('admin.lead_detail.notes')}</h2>
               </div>
               <div className="p-6">
                 <div className="mb-6">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Add Note
+                    {t('admin.lead_detail.add_note')}
                   </label>
                   <div className="flex gap-3 mb-3">
                     <select
@@ -416,16 +418,16 @@ const LeadDetailPage = () => {
                       onChange={(e) => setNoteType(e.target.value as any)}
                       className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                     >
-                      <option value="internal">Internal</option>
-                      <option value="follow_up">Follow Up</option>
-                      <option value="qualification">Qualification</option>
-                      <option value="general">General</option>
+                      <option value="internal">{t('admin.lead_detail.note_type.internal')}</option>
+                      <option value="follow_up">{t('admin.lead_detail.note_type.follow_up')}</option>
+                      <option value="qualification">{t('admin.lead_detail.note_type.qualification')}</option>
+                      <option value="general">{t('admin.lead_detail.note_type.general')}</option>
                     </select>
                   </div>
                   <textarea
                     value={newNote}
                     onChange={(e) => setNewNote(e.target.value)}
-                    placeholder="Add internal note..."
+                    placeholder={t('admin.lead_detail.add_internal_note')}
                     rows={3}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                   />
@@ -435,13 +437,13 @@ const LeadDetailPage = () => {
                     className="mt-3 flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <Save className="h-4 w-4 mr-2" />
-                    Add Note
+                    {t('admin.lead_detail.add_note')}
                   </button>
                 </div>
 
                 <div className="space-y-4">
                   {notes.length === 0 ? (
-                    <p className="text-gray-500 text-center py-4">No notes yet</p>
+                    <p className="text-gray-500 text-center py-4">{t('admin.lead_detail.no_notes')}</p>
                   ) : (
                     notes.map((note) => (
                       <div key={note.id} className="border border-gray-200 rounded-lg p-4">
@@ -469,7 +471,7 @@ const LeadDetailPage = () => {
           <div className="space-y-6">
             <div className="bg-white rounded-lg shadow">
               <div className="p-6 border-b border-gray-200">
-                <h2 className="text-lg font-semibold text-gray-900">Status</h2>
+                <h2 className="text-lg font-semibold text-gray-900">{t('admin.lead_detail.status')}</h2>
               </div>
               <div className="p-6">
                 <div className="space-y-2">
@@ -484,7 +486,7 @@ const LeadDetailPage = () => {
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       } disabled:opacity-50 disabled:cursor-not-allowed`}
                     >
-                      {status.replace('_', ' ').charAt(0).toUpperCase() + status.slice(1).replace('_', ' ')}
+                      {t(`admin.lead_detail.status.${status}`)}
                     </button>
                   ))}
                 </div>
@@ -494,7 +496,7 @@ const LeadDetailPage = () => {
             {classification && (
               <div className="bg-white rounded-lg shadow">
                 <div className="p-6 border-b border-gray-200">
-                  <h2 className="text-lg font-semibold text-gray-900">AI Classification</h2>
+                  <h2 className="text-lg font-semibold text-gray-900">{t('admin.lead_detail.ai_classification')}</h2>
                 </div>
                 <div className="p-6">
                   <div className={`border-2 rounded-lg p-4 ${getClassificationColor(classification.classification)}`}>
@@ -505,7 +507,7 @@ const LeadDetailPage = () => {
                       </span>
                     </div>
                     <div className="text-sm mb-2">
-                      Confidence: {Math.round(classification.confidence_score * 100)}%
+                      {t('admin.lead_detail.confidence')}: {Math.round(classification.confidence_score * 100)}%
                     </div>
                     <p className="text-sm">{classification.reasoning}</p>
                   </div>
@@ -516,11 +518,11 @@ const LeadDetailPage = () => {
             {!classification && (
               <div className="bg-white rounded-lg shadow">
                 <div className="p-6 border-b border-gray-200">
-                  <h2 className="text-lg font-semibold text-gray-900">AI Classification</h2>
+                  <h2 className="text-lg font-semibold text-gray-900">{t('admin.lead_detail.ai_classification')}</h2>
                 </div>
                 <div className="p-6">
                   <p className="text-sm text-gray-600 mb-4">
-                    Use AI to automatically classify this lead based on potential value.
+                    {t('admin.lead_detail.classify_desc')}
                   </p>
                   <button
                     onClick={handleClassifyLead}
@@ -528,7 +530,7 @@ const LeadDetailPage = () => {
                     className="w-full flex items-center justify-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50"
                   >
                     <Sparkles className="h-4 w-4 mr-2" />
-                    Classify Lead
+                    {t('admin.lead_detail.classify_lead')}
                   </button>
                 </div>
               </div>
@@ -537,16 +539,16 @@ const LeadDetailPage = () => {
             {customerLink ? (
               <div className="bg-white rounded-lg shadow">
                 <div className="p-6 border-b border-gray-200">
-                  <h2 className="text-lg font-semibold text-gray-900">Linked Customer</h2>
+                  <h2 className="text-lg font-semibold text-gray-900">{t('admin.lead_detail.linked_customer')}</h2>
                 </div>
                 <div className="p-6">
                   <div className="border border-green-300 bg-green-50 rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2 text-green-800">
                       <LinkIcon className="h-5 w-5" />
-                      <span className="font-semibold">Connected</span>
+                      <span className="font-semibold">{t('admin.lead_detail.connected')}</span>
                     </div>
                     <p className="text-gray-900 font-medium">
-                      {customerLink.customers?.company_name || 'Unknown Customer'}
+                      {customerLink.customers?.company_name || t('admin.lead_detail.unknown_customer')}
                     </p>
                     {customerLink.notes && (
                       <p className="text-sm text-gray-600 mt-2">{customerLink.notes}</p>
@@ -557,18 +559,18 @@ const LeadDetailPage = () => {
             ) : (
               <div className="bg-white rounded-lg shadow">
                 <div className="p-6 border-b border-gray-200">
-                  <h2 className="text-lg font-semibold text-gray-900">Link to Customer</h2>
+                  <h2 className="text-lg font-semibold text-gray-900">{t('admin.lead_detail.link_to_customer')}</h2>
                 </div>
                 <div className="p-6">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Select Customer
+                    {t('admin.lead_detail.select_customer')}
                   </label>
                   <select
                     value={selectedCustomerId}
                     onChange={(e) => setSelectedCustomerId(e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600 mb-3"
                   >
-                    <option value="">Select a customer...</option>
+                    <option value="">{t('admin.lead_detail.select_customer_placeholder')}</option>
                     {customers.map((customer) => (
                       <option key={customer.id} value={customer.id}>
                         {customer.company_name}
@@ -577,12 +579,12 @@ const LeadDetailPage = () => {
                   </select>
 
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Notes (Optional)
+                    {t('admin.lead_detail.notes_optional')}
                   </label>
                   <textarea
                     value={linkNotes}
                     onChange={(e) => setLinkNotes(e.target.value)}
-                    placeholder="Add notes about this conversion..."
+                    placeholder={t('admin.lead_detail.add_notes_conversion')}
                     rows={3}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600 mb-3"
                   />
@@ -593,7 +595,7 @@ const LeadDetailPage = () => {
                     className="w-full flex items-center justify-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50"
                   >
                     <LinkIcon className="h-4 w-4 mr-2" />
-                    Link to Customer
+                    {t('admin.lead_detail.link_to_customer')}
                   </button>
                 </div>
               </div>

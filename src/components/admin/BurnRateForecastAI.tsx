@@ -18,12 +18,14 @@ import {
 } from 'lucide-react';
 import { aiService } from '../../lib/ai-service';
 import type { BurnRateForecast } from '../../lib/ai-service';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 interface BurnRateForecastAIProps {
   customerId: string;
 }
 
 const BurnRateForecastAI: React.FC<BurnRateForecastAIProps> = ({ customerId }) => {
+  const { t } = useLanguage();
   const [forecast, setForecast] = useState<BurnRateForecast | null>(null);
   const [loading, setLoading] = useState(true);
   const [showDetails, setShowDetails] = useState(false);
@@ -79,7 +81,7 @@ const BurnRateForecastAI: React.FC<BurnRateForecastAIProps> = ({ customerId }) =
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-2">
             {getTrendIcon()}
-            <h4 className="text-sm font-semibold text-gray-900">AI Burn Rate Forecast</h4>
+            <h4 className="text-sm font-semibold text-gray-900">{t('admin.burnrate.title')}</h4>
           </div>
           <span className={`text-xs px-2 py-1 rounded-full font-medium ${
             forecast.confidence === 'high'
@@ -88,24 +90,24 @@ const BurnRateForecastAI: React.FC<BurnRateForecastAIProps> = ({ customerId }) =
               ? 'bg-yellow-100 text-yellow-800'
               : 'bg-gray-100 text-gray-800'
           }`}>
-            {forecast.confidence} confidence
+            {forecast.confidence} {t('admin.burnrate.confidence')}
           </span>
         </div>
 
         <div className="space-y-3">
           <div className="flex justify-between items-center">
-            <span className="text-sm text-gray-600">Current burn rate:</span>
+            <span className="text-sm text-gray-600">{t('admin.burnrate.current_burn_rate')}</span>
             <span className="text-lg font-bold text-gray-900">
-              {forecast.current_burn_rate.toFixed(1)} <span className="text-sm font-normal">credits/day</span>
+              {forecast.current_burn_rate.toFixed(1)} <span className="text-sm font-normal">{t('admin.burnrate.credits_per_day')}</span>
             </span>
           </div>
 
           {forecast.days_remaining < 999 && (
             <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-blue-200">
-              <span className="text-sm font-medium text-gray-700">Depletion forecast:</span>
+              <span className="text-sm font-medium text-gray-700">{t('admin.burnrate.depletion_forecast')}</span>
               <div className="text-right">
                 <div className={`text-xl font-bold ${getDaysColor(forecast.days_remaining)}`}>
-                  {forecast.days_remaining} days
+                  {forecast.days_remaining} {t('admin.burnrate.days')}
                 </div>
                 <div className="text-xs text-gray-500">{forecast.forecasted_depletion_date}</div>
               </div>
@@ -113,18 +115,18 @@ const BurnRateForecastAI: React.FC<BurnRateForecastAIProps> = ({ customerId }) =
           )}
 
           <div className="bg-white rounded-lg p-3 border border-blue-200">
-            <div className="text-xs text-gray-500 mb-2">Confidence Band</div>
+            <div className="text-xs text-gray-500 mb-2">{t('admin.burnrate.confidence_band')}</div>
             <div className="flex justify-between text-sm">
               <div>
-                <div className="text-gray-600">Best case</div>
+                <div className="text-gray-600">{t('admin.burnrate.best_case')}</div>
                 <div className="font-semibold text-green-600">{forecast.confidence_band.best_case_days}d</div>
               </div>
               <div className="text-center">
-                <div className="text-gray-600">Most likely</div>
+                <div className="text-gray-600">{t('admin.burnrate.most_likely')}</div>
                 <div className="font-bold text-blue-600">{forecast.days_remaining}d</div>
               </div>
               <div className="text-right">
-                <div className="text-gray-600">Worst case</div>
+                <div className="text-gray-600">{t('admin.burnrate.worst_case')}</div>
                 <div className="font-semibold text-red-600">{forecast.confidence_band.worst_case_days}d</div>
               </div>
             </div>
@@ -158,31 +160,30 @@ const BurnRateForecastAI: React.FC<BurnRateForecastAIProps> = ({ customerId }) =
             </div>
           )}
 
-          {/* Show Data Points */}
           <button
             onClick={() => setShowDetails(!showDetails)}
             className="w-full flex items-center justify-center space-x-2 text-xs text-blue-700 hover:text-blue-800 py-2"
           >
             {showDetails ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-            <span>{showDetails ? 'Hide' : 'Show'} data points</span>
+            <span>{showDetails ? t('admin.burnrate.hide_data_points') : t('admin.burnrate.show_data_points')}</span>
           </button>
 
           {showDetails && (
             <div className="bg-white rounded-lg p-3 border border-blue-200 space-y-2">
               <div className="flex justify-between text-xs">
-                <span className="text-gray-600">Credits balance:</span>
+                <span className="text-gray-600">{t('admin.burnrate.credits_balance')}</span>
                 <span className="font-semibold">{forecast.data_points.credits_balance.toFixed(1)}</span>
               </div>
               <div className="flex justify-between text-xs">
-                <span className="text-gray-600">Avg daily (7d):</span>
+                <span className="text-gray-600">{t('admin.burnrate.avg_daily_7d')}</span>
                 <span className="font-semibold">{forecast.data_points.avg_daily_consumption_7d.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-xs">
-                <span className="text-gray-600">Avg daily (30d):</span>
+                <span className="text-gray-600">{t('admin.burnrate.avg_daily_30d')}</span>
                 <span className="font-semibold">{forecast.data_points.avg_daily_consumption_30d.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-xs">
-                <span className="text-gray-600">Trend:</span>
+                <span className="text-gray-600">{t('admin.burnrate.trend')}</span>
                 <span className={`font-semibold capitalize ${
                   forecast.data_points.trend === 'increasing'
                     ? 'text-red-600'
