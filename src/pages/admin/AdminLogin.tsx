@@ -44,7 +44,7 @@ const AdminLogin = () => {
             <button
               onClick={() => setLanguage(language === 'en' ? 'sv' : 'en')}
               className="flex items-center space-x-1 px-3 py-2 rounded-xl hover:bg-gray-100 transition-colors"
-              title={language === 'en' ? 'Switch to Swedish' : 'Växla till engelska'}
+              title={t('nav.switch_language')}
             >
               <Globe className="h-4 w-4 text-gray-700" />
 {(language || 'en').toUpperCase()}
@@ -124,10 +124,10 @@ const AdminLogin = () => {
               className="inline-flex items-center gap-2 text-sm text-primary-600 hover:text-primary-700 font-medium transition-colors"
             >
               <Zap className="h-4 w-4" />
-              {language === 'sv' ? 'Första gången? Kör initial setup' : 'First time? Run initial setup'}
+              {t('admin.login.first_time_setup')}
             </Link>
             <p className="text-sm text-gray-500">
-              {language === 'sv' ? 'Säker adminåtkomst endast för NorthForce-teammedlemmar' : 'Secure admin access for NorthForce team members only'}
+              {t('admin.login.secure_access')}
             </p>
           </div>
 

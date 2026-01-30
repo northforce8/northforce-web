@@ -9,6 +9,7 @@ import { ContextualHelp } from '../../../components/admin/ContextualHelp';
 import { useLanguage } from '../../../contexts/LanguageContext';
 
 const EnterprisePlansPage: React.FC = () => {
+  const { t } = useLanguage();
   const [plans, setPlans] = useState<EnterprisePlan[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);

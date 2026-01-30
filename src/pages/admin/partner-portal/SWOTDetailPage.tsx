@@ -59,7 +59,7 @@ export default function SWOTDetailPage() {
       setAnalysis(data);
     } catch (err) {
       console.error('Error loading SWOT analysis:', err);
-      setError(err instanceof Error ? err.message : 'Kunde inte ladda SWOT-analys. Försök igen.');
+      setError(err instanceof Error ? err.message : t('swot.error_loading'));
     } finally {
       setLoading(false);
     }
@@ -81,13 +81,13 @@ export default function SWOTDetailPage() {
         swot_analysis_id: id,
         ...data
       });
-      showToast('SWOT-element tillagt!', 'success');
+      showToast(t('swot.item_added'), 'success');
       setShowItemModal(false);
       setEditingItem(null);
       await loadAnalysis();
     } catch (error) {
       console.error('Error adding SWOT item:', error);
-      showToast('Kunde inte lägga till element', 'error');
+      showToast(t('swot.error_adding_item'), 'error');
     } finally {
       setSaving(false);
     }

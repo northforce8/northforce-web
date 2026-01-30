@@ -23,6 +23,7 @@ import {
   Clock,
 } from 'lucide-react';
 import { aiService } from '../../lib/ai-service';
+import { useLanguage } from '../../contexts/LanguageContext';
 import type { CustomerHealthSummary, AIFlag, AIAction, RiskLevel } from '../../lib/ai-service';
 
 interface CustomerHealthAIProps {
@@ -31,6 +32,7 @@ interface CustomerHealthAIProps {
 }
 
 const CustomerHealthAI: React.FC<CustomerHealthAIProps> = ({ customerId, onActionTaken }) => {
+  const { t } = useLanguage();
   const [health, setHealth] = useState<CustomerHealthSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [showReasoningData, setShowReasoningData] = useState(false);
@@ -48,7 +50,7 @@ const CustomerHealthAI: React.FC<CustomerHealthAIProps> = ({ customerId, onActio
       setHealth(analysis);
     } catch (err) {
       console.error('Error loading health analysis:', err);
-      setError('Failed to load health analysis');
+      setError(t('customer_health.error_loading'));
     } finally {
       setLoading(false);
     }

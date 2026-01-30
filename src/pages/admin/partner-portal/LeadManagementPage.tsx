@@ -26,6 +26,7 @@ interface Lead {
 }
 
 const LeadManagementPage: React.FC = () => {
+  const { t } = useLanguage();
   const [contacts, setContacts] = useState<Lead[]>([]);
   const [bookings, setBookings] = useState<Lead[]>([]);
   const [newsletters, setNewsletters] = useState<Lead[]>([]);
@@ -42,7 +43,7 @@ const LeadManagementPage: React.FC = () => {
   const loadLeads = async () => {
     if (!supabase) {
       setLoading(false);
-      setError('Supabase är inte konfigurerat.');
+      setError(t('common.supabase_not_configured'));
       return;
     }
 
@@ -87,7 +88,7 @@ const LeadManagementPage: React.FC = () => {
       setNewsletters((newslettersRes.data || []).map(n => ({ ...n, type: 'newsletter' as const })));
     } catch (err) {
       console.error('Error loading leads:', err);
-      setError(err instanceof Error ? err.message : 'Kunde inte ladda leads. Försök igen.');
+      setError(err instanceof Error ? err.message : t('leads.error_loading'));
     } finally {
       setLoading(false);
     }
@@ -147,7 +148,7 @@ const LeadManagementPage: React.FC = () => {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Laddar leads...</p>
+          <p className="text-gray-600">{t('leads.loading')}</p>
         </div>
       </div>
     );

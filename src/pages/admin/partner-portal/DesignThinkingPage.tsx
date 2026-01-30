@@ -81,7 +81,7 @@ export default function DesignThinkingPage() {
       }
     } catch (err) {
       console.error('Error loading projects:', err);
-      setError(err instanceof Error ? err.message : 'Kunde inte ladda Design Thinking-projekt. Försök igen.');
+      setError(err instanceof Error ? err.message : t('design_thinking.error_loading'));
     } finally {
       setLoading(false);
     }

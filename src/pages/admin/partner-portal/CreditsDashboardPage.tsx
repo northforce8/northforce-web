@@ -34,6 +34,7 @@ interface CustomerCreditsStatus {
 }
 
 const CreditsDashboardPage: React.FC = () => {
+  const { t } = useLanguage();
   const [customersStatus, setCustomersStatus] = useState<CustomerCreditsStatus[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -167,7 +168,7 @@ const CreditsDashboardPage: React.FC = () => {
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading credits dashboard...</p>
+            <p className="text-gray-600">{t('credits.loading')}</p>
           </div>
         </div>
       </div>

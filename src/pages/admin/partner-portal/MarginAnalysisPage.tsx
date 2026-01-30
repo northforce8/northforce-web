@@ -28,6 +28,7 @@ interface MarginAnalysis {
 }
 
 const MarginAnalysisPage: React.FC = () => {
+  const { t } = useLanguage();
   const [analyses, setAnalyses] = useState<MarginAnalysis[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -39,7 +40,7 @@ const MarginAnalysisPage: React.FC = () => {
 
   const loadMarginAnalysis = async () => {
     if (!supabase) {
-      setError('Databas ej tillgänglig');
+      setError(t('common.database_unavailable'));
       setLoading(false);
       return;
     }
@@ -61,7 +62,7 @@ const MarginAnalysisPage: React.FC = () => {
       setAnalyses(data || []);
     } catch (err) {
       console.error('Error loading margin analysis:', err);
-      setError(err instanceof Error ? err.message : 'Kunde inte ladda marginalanalys. Försök igen.');
+      setError(err instanceof Error ? err.message : t('margin.error_loading'));
     } finally {
       setLoading(false);
     }
@@ -86,7 +87,7 @@ const MarginAnalysisPage: React.FC = () => {
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Laddar marginalanalys...</p>
+            <p className="text-gray-600">{t('margin.loading')}</p>
           </div>
         </div>
       </div>

@@ -1646,5 +1646,60 @@
   "admin.design.phase_ideate": "Ideate",
   "admin.design.phase_prototype": "Prototype",
   "admin.design.phase_test": "Test",
-  "admin.design.phase_not_defined": "Not defined"
+  "admin.design.phase_not_defined": "Not defined",
+
+  "nav.offerings": "Offerings",
+  "nav.solutions": "Solutions",
+  "nav.get_started": "Get Started",
+  "nav.pricing": "Pricing & Investment",
+  "nav.free_analysis": "Free Analysis",
+  "nav.become_partner": "Become Partner",
+  "nav.company": "Company",
+  "nav.insights": "Insights",
+  "nav.legal": "Legal & Privacy",
+  "nav.client_impact": "Client Impact",
+  "nav.business_data": "Business Data",
+  "nav.switch_language": "Switch language",
+  "nav.language_name": "English",
+
+  "common.redirecting": "Redirecting...",
+  "common.supabase_not_configured": "Supabase is not configured.",
+  "common.database_unavailable": "Database unavailable",
+
+  "admin.login.first_time_setup": "First time? Run initial setup",
+  "admin.login.secure_access": "Secure admin access for NorthForce team members only",
+
+  "billing.error_loading": "Failed to load billing periods. Please try again.",
+  "billing.loading": "Loading billing periods...",
+
+  "capacity.error_loading": "Failed to load capacity data",
+  "capacity.error_generating_recommendations": "Failed to generate recommendations",
+  "capacity.loading": "Loading capacity overview...",
+
+  "credits.loading": "Loading credits dashboard...",
+
+  "partner.loading": "Loading partner details...",
+  "partner.error_loading": "Failed to load partner data. Please try again.",
+  "partner.loading_list": "Loading partners...",
+
+  "leads.error_loading": "Failed to load leads. Please try again.",
+  "leads.loading": "Loading leads...",
+
+  "margin.error_loading": "Failed to load margin analysis. Please try again.",
+  "margin.loading": "Loading margin analysis...",
+
+  "design_thinking.error_loading": "Failed to load Design Thinking projects. Please try again.",
+
+  "mckinsey.loading": "Loading McKinsey 7S analyses...",
+
+  "planning.loading": "Loading planning data...",
+  "planning.error.load": "Failed to load planning data. Please try again.",
+
+  "swot.error_loading": "Failed to load SWOT analysis. Please try again.",
+  "swot.item_added": "SWOT item added!",
+  "swot.error_adding_item": "Failed to add item",
+
+  "customer_health.error_loading": "Failed to load health analysis",
+
+  "time.error.load": "Failed to load data. Please try again."
 }

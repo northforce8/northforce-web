@@ -280,7 +280,7 @@ Build: 2025.01.15-1411
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">{authLoading ? 'Loading...' : 'Redirecting...'}</p>
+          <p className="text-gray-600">{authLoading ? t('common.loading') : t('common.redirecting')}</p>
         </div>
       </div>
     );
@@ -393,7 +393,7 @@ Build: 2025.01.15-1411
             <button
               onClick={() => setLanguage(language === 'en' ? 'sv' : 'en')}
               className="w-full flex items-center justify-center px-3 py-2 mb-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-              title={language === 'en' ? 'Switch to Swedish' : 'Växla till engelska'}
+              title={t('nav.switch_language')}
             >
               <Globe className="h-4 w-4 mr-2" />
 {(language || 'en').toUpperCase()}

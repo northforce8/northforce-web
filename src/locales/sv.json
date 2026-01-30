@@ -1646,5 +1646,60 @@
   "admin.design.phase_ideate": "Idégenerering",
   "admin.design.phase_prototype": "Prototyp",
   "admin.design.phase_test": "Testa",
-  "admin.design.phase_not_defined": "Ej definierad"
+  "admin.design.phase_not_defined": "Ej definierad",
+
+  "nav.offerings": "Erbjudanden",
+  "nav.solutions": "Lösningar",
+  "nav.get_started": "Kom Igång",
+  "nav.pricing": "Priser & Investering",
+  "nav.free_analysis": "Gratis Analys",
+  "nav.become_partner": "Bli Partner",
+  "nav.company": "Företag",
+  "nav.insights": "Insikter",
+  "nav.legal": "Juridik & Integritet",
+  "nav.client_impact": "Kundeffekt",
+  "nav.business_data": "Affärsdata",
+  "nav.switch_language": "Växla språk",
+  "nav.language_name": "Svenska",
+
+  "common.redirecting": "Omdirigerar...",
+  "common.supabase_not_configured": "Supabase är inte konfigurerat.",
+  "common.database_unavailable": "Databas ej tillgänglig",
+
+  "admin.login.first_time_setup": "Första gången? Kör initial setup",
+  "admin.login.secure_access": "Säker adminåtkomst endast för NorthForce-teammedlemmar",
+
+  "billing.error_loading": "Kunde inte ladda faktureringsperioder. Försök igen.",
+  "billing.loading": "Laddar faktureringsperioder...",
+
+  "capacity.error_loading": "Kunde inte ladda kapacitetsdata",
+  "capacity.error_generating_recommendations": "Kunde inte generera rekommendationer",
+  "capacity.loading": "Laddar kapacitetsöversikt...",
+
+  "credits.loading": "Laddar krediter...",
+
+  "partner.loading": "Laddar partnerdetaljer...",
+  "partner.error_loading": "Kunde inte ladda partnerdata. Försök igen.",
+  "partner.loading_list": "Laddar partners...",
+
+  "leads.error_loading": "Kunde inte ladda leads. Försök igen.",
+  "leads.loading": "Laddar leads...",
+
+  "margin.error_loading": "Kunde inte ladda marginalanalys. Försök igen.",
+  "margin.loading": "Laddar marginalanalys...",
+
+  "design_thinking.error_loading": "Kunde inte ladda Design Thinking-projekt. Försök igen.",
+
+  "mckinsey.loading": "Laddar McKinsey 7S-analyser...",
+
+  "planning.loading": "Laddar planeringsdata...",
+  "planning.error.load": "Kunde inte ladda planeringsdata. Försök igen.",
+
+  "swot.error_loading": "Kunde inte ladda SWOT-analys. Försök igen.",
+  "swot.item_added": "SWOT-element tillagt!",
+  "swot.error_adding_item": "Kunde inte lägga till element",
+
+  "customer_health.error_loading": "Kunde inte ladda hälsoanalys",
+
+  "time.error.load": "Kunde inte ladda data. Försök igen."
 }

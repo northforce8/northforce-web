@@ -28,6 +28,7 @@ interface BillingPeriod {
 }
 
 const BillingPeriodsPage: React.FC = () => {
+  const { t } = useLanguage();
   const [periods, setPeriods] = useState<BillingPeriod[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -40,7 +41,7 @@ const BillingPeriodsPage: React.FC = () => {
   const loadBillingPeriods = async () => {
     if (!supabase) {
       setLoading(false);
-      setError('Supabase är inte konfigurerat.');
+      setError(t('common.supabase_not_configured'));
       return;
     }
 
@@ -64,7 +65,7 @@ const BillingPeriodsPage: React.FC = () => {
       setPeriods(data || []);
     } catch (err) {
       console.error('Error loading billing periods:', err);
-      setError(err instanceof Error ? err.message : 'Kunde inte ladda faktureringsperioder. Försök igen.');
+      setError(err instanceof Error ? err.message : t('billing.error_loading'));
     } finally {
       setLoading(false);
     }
@@ -98,7 +99,7 @@ const BillingPeriodsPage: React.FC = () => {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Laddar faktureringsperioder...</p>
+          <p className="text-gray-600">{t('billing.loading')}</p>
         </div>
       </div>
     );

@@ -13,40 +13,40 @@ const Header = () => {
 
   const navigation = [
     {
-      name: language === 'sv' ? 'Erbjudanden' : 'Offerings',
+      name: t('nav.offerings'),
       dropdown: [
-        { name: language === 'sv' ? 'Hybridmodellen' : 'Hybrid Model', href: '/hybrid-model' },
-        { name: 'NorthForce System', href: '/system' },
-        { name: language === 'sv' ? 'Strategiska Webbplatser' : 'Strategic Websites', href: '/strategic-websites' },
-        { name: language === 'sv' ? 'Affärsdata' : 'Business Data', href: '/business-data' },
-        { name: language === 'sv' ? 'AI & Automation' : 'AI & Automation', href: '/ai-automation' },
+        { name: t('nav.hybrid_model'), href: '/hybrid-model' },
+        { name: t('nav.systems'), href: '/system' },
+        { name: t('nav.strategic_websites'), href: '/strategic-websites' },
+        { name: t('nav.business_data'), href: '/business-data' },
+        { name: t('nav.ai_automation'), href: '/ai-automation' },
       ]
     },
     {
-      name: language === 'sv' ? 'Lösningar' : 'Solutions',
+      name: t('nav.solutions'),
       dropdown: [
-        { name: language === 'sv' ? 'Lösningar' : 'Solutions', href: '/solutions' },
-        { name: language === 'sv' ? 'Branscher' : 'Industries', href: '/industries' },
-        { name: language === 'sv' ? 'Kapabiliteter' : 'Capabilities', href: '/capabilities' },
-        { name: language === 'sv' ? 'Kundeffekt' : 'Client Impact', href: '/impact' },
+        { name: t('nav.solutions'), href: '/solutions' },
+        { name: t('nav.industries'), href: '/industries' },
+        { name: t('nav.capabilities'), href: '/capabilities' },
+        { name: t('nav.client_impact'), href: '/impact' },
       ]
     },
     {
-      name: language === 'sv' ? 'Kom Igång' : 'Get Started',
+      name: t('nav.get_started'),
       dropdown: [
-        { name: language === 'sv' ? 'Priser & Investering' : 'Pricing & Investment', href: '/pricing' },
-        { name: language === 'sv' ? 'Gratis Analys' : 'Free Analysis', href: '/audit' },
-        { name: language === 'sv' ? 'Kontakt' : 'Contact', href: '/contact' },
-        { name: language === 'sv' ? 'Bli Partner' : 'Become Partner', href: '/partners' },
+        { name: t('nav.pricing'), href: '/pricing' },
+        { name: t('nav.free_analysis'), href: '/audit' },
+        { name: t('nav.contact'), href: '/contact' },
+        { name: t('nav.become_partner'), href: '/partners' },
       ]
     },
     {
-      name: language === 'sv' ? 'Företag' : 'Company',
+      name: t('nav.company'),
       dropdown: [
-        { name: language === 'sv' ? 'Om Oss' : 'About Us', href: '/about' },
-        { name: language === 'sv' ? 'Insikter' : 'Insights', href: '/insights' },
-        { name: language === 'sv' ? 'Karriär' : 'Careers', href: '/careers' },
-        { name: language === 'sv' ? 'Juridik & Integritet' : 'Legal & Privacy', href: '/legal' },
+        { name: t('nav.about'), href: '/about' },
+        { name: t('nav.insights'), href: '/insights' },
+        { name: t('nav.careers'), href: '/careers' },
+        { name: t('nav.legal'), href: '/legal' },
       ]
     },
   ];
@@ -189,7 +189,7 @@ const Header = () => {
             <button
               onClick={() => setLanguage(language === 'en' ? 'sv' : 'en')}
               className="flex items-center space-x-1 px-3 py-2 rounded-xl hover:bg-gray-100 transition-colors"
-              title={language === 'en' ? 'Switch to Swedish' : 'Växla till engelska'}
+              title={t('nav.switch_language')}
             >
               <Globe className="h-4 w-4 text-gray-700" />
               <span className="text-sm font-medium text-gray-700">{language.toUpperCase()}</span>
@@ -270,7 +270,7 @@ const Header = () => {
                   className="flex items-center space-x-2 w-full px-4 py-2 rounded-xl hover:bg-gray-100 transition-colors"
                 >
                   <Globe className="h-5 w-5 text-gray-700" />
-                  <span className="text-sm font-medium text-gray-700">{language === 'en' ? 'English' : 'Svenska'}</span>
+                  <span className="text-sm font-medium text-gray-700">{t('nav.language_name')}</span>
                 </button>
                 <Link
                   to="/audit"

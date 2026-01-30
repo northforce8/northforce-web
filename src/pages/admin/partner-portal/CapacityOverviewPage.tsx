@@ -20,6 +20,7 @@ import type {
 } from '../../../lib/partner-portal-types';
 
 const CapacityOverviewPage: React.FC = () => {
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [partners, setPartners] = useState<PartnerAvailabilitySummary[]>([]);
   const [recommendations, setRecommendations] = useState<PartnerWorkloadRecommendationWithRelations[]>([]);
@@ -46,7 +47,7 @@ const CapacityOverviewPage: React.FC = () => {
       setRecommendations(recommendationsData);
     } catch (err) {
       console.error('Error loading capacity data:', err);
-      setError('Failed to load capacity data');
+      setError(t('capacity.error_loading'));
     } finally {
       setLoading(false);
     }
@@ -59,7 +60,7 @@ const CapacityOverviewPage: React.FC = () => {
       await loadData();
     } catch (err) {
       console.error('Error generating recommendations:', err);
-      setError('Failed to generate recommendations');
+      setError(t('capacity.error_generating_recommendations'));
     } finally {
       setGeneratingRecommendations(false);
     }
@@ -119,7 +120,7 @@ const CapacityOverviewPage: React.FC = () => {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading capacity overview...</p>
+          <p className="text-gray-600">{t('capacity.loading')}</p>
         </div>
       </div>
     );

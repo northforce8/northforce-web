@@ -37,6 +37,7 @@ import type {
 } from '../../../lib/partner-portal-types';
 
 const PartnerDetailPage: React.FC = () => {
+  const { t } = useLanguage();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [partner, setPartner] = useState<Partner | null>(null);
@@ -206,7 +207,7 @@ const PartnerDetailPage: React.FC = () => {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading partner details...</p>
+          <p className="text-gray-600">{t('partner.loading')}</p>
         </div>
       </div>
     );
