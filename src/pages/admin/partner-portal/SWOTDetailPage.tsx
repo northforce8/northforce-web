@@ -100,36 +100,36 @@ export default function SWOTDetailPage() {
     try {
       setSaving(true);
       await enterpriseAPI.updateSwotItem(itemId, updates);
-      showToast('Element uppdaterat!', 'success');
+      showToast(t('swot.item_updated'), 'success');
       setShowItemModal(false);
       setEditingItem(null);
       await loadAnalysis();
     } catch (error) {
       console.error('Error updating SWOT item:', error);
-      showToast('Kunde inte uppdatera element', 'error');
+      showToast(t('swot.error_updating_item'), 'error');
     } finally {
       setSaving(false);
     }
   };
 
   const handleDeleteItem = async (itemId: string) => {
-    if (!confirm('Är du säker på att du vill radera detta element?')) {
+    if (!confirm(t('swot.confirm_delete_item'))) {
       return;
     }
 
     try {
       await enterpriseAPI.deleteSwotItem(itemId);
-      showToast('Element raderat', 'success');
+      showToast(t('swot.item_deleted'), 'success');
       await loadAnalysis();
     } catch (error) {
       console.error('Error deleting SWOT item:', error);
-      showToast('Kunde inte radera element', 'error');
+      showToast(t('swot.error_deleting_item'), 'error');
     }
   };
 
   const generateAIInsights = async () => {
     if (!analysis?.customer_id) {
-      showToast('Ingen kund kopplad till analysen', 'warning');
+      showToast(t('swot.no_customer_linked'), 'warning');
       return;
     }
 
@@ -141,10 +141,10 @@ export default function SWOTDetailPage() {
       );
       setAiInsights(insights);
       setShowAIPanel(true);
-      showToast('AI-insikter genererade!', 'success');
+      showToast(t('swot.ai_insights_generated'), 'success');
     } catch (error) {
       console.error('Error generating AI insights:', error);
-      showToast('Kunde inte generera AI-insikter', 'error');
+      showToast(t('swot.error_generating_ai'), 'error');
     } finally {
       setGeneratingAI(false);
     }
@@ -157,10 +157,10 @@ export default function SWOTDetailPage() {
     try {
       const crossData = await swotAIService.generateCrossAnalysis(analysis);
       setCrossAnalysis(crossData);
-      showToast('Korsanalys genererad!', 'success');
+      showToast(t('swot.cross_analysis_generated'), 'success');
     } catch (error) {
       console.error('Error generating cross analysis:', error);
-      showToast('Kunde inte generera korsanalys', 'error');
+      showToast(t('swot.error_generating_cross'), 'error');
     } finally {
       setGeneratingAI(false);
     }
@@ -179,11 +179,11 @@ export default function SWOTDetailPage() {
         actionable: true,
         action_plan: insight.recommended_actions.join('\n')
       });
-      showToast('AI-insikt tillagd!', 'success');
+      showToast(t('swot.ai_insight_added'), 'success');
       await loadAnalysis();
     } catch (error) {
       console.error('Error adding AI insight:', error);
-      showToast('Kunde inte lägga till AI-insikt', 'error');
+      showToast(t('swot.error_adding_ai_insight'), 'error');
     }
   };
 
@@ -192,11 +192,11 @@ export default function SWOTDetailPage() {
 
     try {
       await enterpriseAPI.updateSwotAnalysis(id, { status });
-      showToast('Status uppdaterad!', 'success');
+      showToast(t('swot.status_updated'), 'success');
       await loadAnalysis();
     } catch (error) {
       console.error('Error updating status:', error);
-      showToast('Kunde inte uppdatera status', 'error');
+      showToast(t('swot.error_updating_status'), 'error');
     }
   };
 
@@ -206,7 +206,7 @@ export default function SWOTDetailPage() {
         <div className="flex items-center justify-center h-96">
           <div className="text-center">
             <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mb-4"></div>
-            <p className="text-gray-600">Laddar SWOT-analys...</p>
+            <p className="text-gray-600">{t('swot.loading')}</p>
           </div>
         </div>
       </AdminLayout>
@@ -219,12 +219,12 @@ export default function SWOTDetailPage() {
       <AdminLayout>
         <div className="flex items-center justify-center h-96">
           <div className="text-center">
-            <p className="text-gray-600 mb-4">SWOT-analys hittades inte.</p>
+            <p className="text-gray-600 mb-4">{t('swot.not_found')}</p>
             <button
               onClick={() => navigate('/admin/partner-portal/swot')}
               className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
             >
-              Tillbaka till översikt
+              {t('swot.back_to_overview')}
             </button>
           </div>
         </div>
@@ -254,10 +254,10 @@ export default function SWOTDetailPage() {
 
   const getCategoryName = (category: string) => {
     const names: Record<string, string> = {
-      strength: 'Styrkor',
-      weakness: 'Svagheter',
-      opportunity: 'Möjligheter',
-      threat: 'Hot'
+      strength: t('swot.strengths'),
+      weakness: t('swot.weaknesses'),
+      opportunity: t('swot.opportunities'),
+      threat: t('swot.threats')
     };
     return names[category] || category;
   };
@@ -280,7 +280,7 @@ export default function SWOTDetailPage() {
           className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4"
         >
           <ArrowLeft className="w-4 h-4" />
-          Tillbaka till SWOT-analyser
+          {t('admin.detail.back_to_swot')}
         </Link>
 
         <div className="flex items-start justify-between">
@@ -291,7 +291,7 @@ export default function SWOTDetailPage() {
             )}
             {analysis.customer && (
               <p className="text-sm text-gray-500">
-                Kund: <span className="font-medium">{analysis.customer.company_name}</span>
+                {t('swot.customer')}: <span className="font-medium">{analysis.customer.company_name}</span>
               </p>
             )}
           </div>
@@ -303,7 +303,7 @@ export default function SWOTDetailPage() {
               className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 transition-all"
             >
               <Sparkles className="w-5 h-5" />
-              {generatingAI ? 'Genererar...' : 'AI-Insikter'}
+              {generatingAI ? t('common.generating') : t('swot.ai_insights')}
             </button>
 
             <button
@@ -312,7 +312,7 @@ export default function SWOTDetailPage() {
               className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
             >
               <BarChart3 className="w-5 h-5" />
-              Korsanalys
+              {t('swot.cross_analysis')}
             </button>
           </div>
         </div>
@@ -323,20 +323,20 @@ export default function SWOTDetailPage() {
             onChange={(e) => updateAnalysisStatus(e.target.value)}
             className="px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
-            <option value="draft">Utkast</option>
-            <option value="in_progress">Pågående</option>
-            <option value="completed">Klar</option>
-            <option value="archived">Arkiverad</option>
+            <option value="draft">{t('status.draft')}</option>
+            <option value="in_progress">{t('status.in_progress')}</option>
+            <option value="completed">{t('status.completed')}</option>
+            <option value="archived">{t('status.archived')}</option>
           </select>
 
           <span className="text-sm text-gray-500">
-            Skapad: {new Date(analysis.created_at).toLocaleDateString('sv-SE')}
+            {t('common.created')}: {new Date(analysis.created_at).toLocaleDateString('sv-SE')}
           </span>
         </div>
       </div>
 
       {aiInsights.length > 0 && showAIPanel && (
-        <Card title="🤖 AI-Genererade Insikter" className="mb-6 bg-gradient-to-br from-purple-50 to-blue-50">
+        <Card title={t('swot.ai_generated_insights')} className="mb-6 bg-gradient-to-br from-purple-50 to-blue-50">
           <div className="space-y-4">
             {aiInsights.map((insight, index) => {
               const Icon = getCategoryIcon(insight.category);
@@ -360,7 +360,7 @@ export default function SWOTDetailPage() {
                           className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors"
                         >
                           <Plus className="w-4 h-4" />
-                          Lägg till
+                          {t('common.add')}
                         </button>
                       </div>
 
@@ -378,10 +378,10 @@ export default function SWOTDetailPage() {
 
                       <div className="text-sm">
                         <p className="text-gray-700 mb-2">
-                          <span className="font-medium">Resonemang:</span> {insight.reasoning}
+                          <span className="font-medium">{t('swot.reasoning')}:</span> {insight.reasoning}
                         </p>
                         <div>
-                          <span className="font-medium text-gray-700">Rekommenderade åtgärder:</span>
+                          <span className="font-medium text-gray-700">{t('swot.recommended_actions')}:</span>
                           <ul className="list-disc list-inside mt-1 space-y-1 text-gray-600">
                             {insight.recommended_actions.map((action, i) => (
                               <li key={i}>{action}</li>
@@ -399,10 +399,10 @@ export default function SWOTDetailPage() {
       )}
 
       {crossAnalysis && (
-        <Card title="📊 Strategisk Korsanalys (TOWS Matrix)" className="mb-6">
+        <Card title={t('swot.strategic_cross_analysis')} className="mb-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="p-4 bg-green-50 rounded-lg border-2 border-green-200">
-              <h4 className="font-semibold text-green-900 mb-3">SO-Strategier (Styrkor + Möjligheter)</h4>
+              <h4 className="font-semibold text-green-900 mb-3">{t('swot.so_strategies')}</h4>
               <ul className="space-y-2">
                 {crossAnalysis.so_strategies.map((strategy, index) => (
                   <li key={index} className="text-sm text-gray-700 flex items-start gap-2">
@@ -414,7 +414,7 @@ export default function SWOTDetailPage() {
             </div>
 
             <div className="p-4 bg-blue-50 rounded-lg border-2 border-blue-200">
-              <h4 className="font-semibold text-blue-900 mb-3">WO-Strategier (Svagheter + Möjligheter)</h4>
+              <h4 className="font-semibold text-blue-900 mb-3">{t('swot.wo_strategies')}</h4>
               <ul className="space-y-2">
                 {crossAnalysis.wo_strategies.map((strategy, index) => (
                   <li key={index} className="text-sm text-gray-700 flex items-start gap-2">
@@ -426,7 +426,7 @@ export default function SWOTDetailPage() {
             </div>
 
             <div className="p-4 bg-yellow-50 rounded-lg border-2 border-yellow-200">
-              <h4 className="font-semibold text-yellow-900 mb-3">ST-Strategier (Styrkor + Hot)</h4>
+              <h4 className="font-semibold text-yellow-900 mb-3">{t('swot.st_strategies')}</h4>
               <ul className="space-y-2">
                 {crossAnalysis.st_strategies.map((strategy, index) => (
                   <li key={index} className="text-sm text-gray-700 flex items-start gap-2">
@@ -438,7 +438,7 @@ export default function SWOTDetailPage() {
             </div>
 
             <div className="p-4 bg-red-50 rounded-lg border-2 border-red-200">
-              <h4 className="font-semibold text-red-900 mb-3">WT-Strategier (Svagheter + Hot)</h4>
+              <h4 className="font-semibold text-red-900 mb-3">{t('swot.wt_strategies')}</h4>
               <ul className="space-y-2">
                 {crossAnalysis.wt_strategies.map((strategy, index) => (
                   <li key={index} className="text-sm text-gray-700 flex items-start gap-2">
@@ -469,7 +469,7 @@ export default function SWOTDetailPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg">{getCategoryName(category)}</h3>
-                    <p className="text-sm opacity-75">{items.length} element</p>
+                    <p className="text-sm opacity-75">{items.length} {t('common.items')}</p>
                   </div>
                 </div>
                 <button
@@ -487,7 +487,7 @@ export default function SWOTDetailPage() {
               <div className="space-y-3">
                 {items.length === 0 ? (
                   <div className="text-center py-8 text-sm opacity-75">
-                    Inga element ännu. Klicka på + för att lägga till.
+                    {t('swot.no_items_yet')}
                   </div>
                 ) : (
                   items.map((item) => (
@@ -536,7 +536,7 @@ export default function SWOTDetailPage() {
 
                       {item.action_plan && (
                         <div className="mt-3 pt-3 border-t border-gray-100">
-                          <p className="text-xs font-medium text-gray-700 mb-1">Handlingsplan:</p>
+                          <p className="text-xs font-medium text-gray-700 mb-1">{t('swot.action_plan')}:</p>
                           <p className="text-xs text-gray-600">{item.action_plan}</p>
                         </div>
                       )}
@@ -566,6 +566,7 @@ export default function SWOTDetailPage() {
             }
           }}
           saving={saving}
+          t={t}
         />
       )}
     </AdminLayout>
@@ -577,13 +578,15 @@ function SwotItemModal({
   item,
   onClose,
   onSave,
-  saving
+  saving,
+  t
 }: {
   category: 'strength' | 'weakness' | 'opportunity' | 'threat';
   item: SwotItem | null;
   onClose: () => void;
   onSave: (data: any) => void;
   saving: boolean;
+  t: (key: string) => string;
 }) {
   const [formData, setFormData] = useState({
     title: item?.title || '',
@@ -600,10 +603,10 @@ function SwotItemModal({
 
   const getCategoryName = (cat: string) => {
     const names: Record<string, string> = {
-      strength: 'Styrka',
-      weakness: 'Svaghet',
-      opportunity: 'Möjlighet',
-      threat: 'Hot'
+      strength: t('swot.strength'),
+      weakness: t('swot.weakness'),
+      opportunity: t('swot.opportunity'),
+      threat: t('swot.threat')
     };
     return names[cat];
   };
@@ -613,51 +616,51 @@ function SwotItemModal({
       <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6 border-b border-gray-200">
           <h2 className="text-xl font-semibold text-gray-900">
-            {item ? 'Redigera' : 'Lägg till'} {getCategoryName(category)}
+            {item ? t('common.edit') : t('common.add')} {getCategoryName(category)}
           </h2>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Titel *
+              {t('form.title')} *
             </label>
             <input
               type="text"
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Kort beskrivande titel"
+              placeholder={t('form.title_placeholder')}
               required
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Beskrivning
+              {t('form.description')}
             </label>
             <textarea
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               rows={4}
-              placeholder="Detaljerad beskrivning..."
+              placeholder={t('form.description_placeholder')}
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Påverkansnivå
+              {t('form.impact_level')}
             </label>
             <select
               value={formData.impact_level}
               onChange={(e) => setFormData({ ...formData, impact_level: e.target.value as any })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
-              <option value="low">Låg</option>
-              <option value="medium">Medium</option>
-              <option value="high">Hög</option>
-              <option value="critical">Kritisk</option>
+              <option value="low">{t('impact.low')}</option>
+              <option value="medium">{t('impact.medium')}</option>
+              <option value="high">{t('impact.high')}</option>
+              <option value="critical">{t('impact.critical')}</option>
             </select>
           </div>
 
@@ -670,21 +673,21 @@ function SwotItemModal({
               className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
             />
             <label htmlFor="actionable" className="text-sm font-medium text-gray-700">
-              Kräver åtgärder
+              {t('form.requires_action')}
             </label>
           </div>
 
           {formData.actionable && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Handlingsplan
+                {t('swot.action_plan')}
               </label>
               <textarea
                 value={formData.action_plan}
                 onChange={(e) => setFormData({ ...formData, action_plan: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 rows={3}
-                placeholder="Beskriv konkreta åtgärder..."
+                placeholder={t('form.action_plan_placeholder')}
               />
             </div>
           )}
@@ -696,14 +699,14 @@ function SwotItemModal({
               disabled={saving}
               className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50"
             >
-              Avbryt
+              {t('common.cancel')}
             </button>
             <button
               type="submit"
               disabled={saving}
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
             >
-              {saving ? 'Sparar...' : item ? 'Uppdatera' : 'Lägg till'}
+              {saving ? t('common.saving') : item ? t('common.update') : t('common.add')}
             </button>
           </div>
         </form>
